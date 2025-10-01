@@ -3,71 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DirAnalyse Matrix v3.2.2 - AI Refactor & Patch</title>
-    <!-- REFACSORED CSS LINKS -->
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/modals.css">
-    <link rel="stylesheet" href="css/editor.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <!-- END REFACTORED CSS LINKS -->
-    <link rel="icon" href="logo.png" type="image/png">
-
+    <title>DirAnalyze Streamline v4.0</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📁</text></svg>">
+    
     <!-- CodeMirror CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/material-darker.min.css">
-
-    <script src="js/lib/diff_match_patch.js"></script>
-    <script src="js/lib/jszip.min.js"></script>
-
-    <!-- CodeMirror JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/javascript/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/css/css.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/xml/xml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/htmlmixed/htmlmixed.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/markdown/markdown.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/python/python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/addon/edit/closebrackets.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/addon/edit/matchbrackets.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/addon/selection/active-line.min.js"></script>
-
-    <script type="importmap">
-    {
-      "imports": {
-        "fileSystem": "./js/fileSystem.js",
-        "uiManager": "./js/uiManager.js",
-        "treeView": "./js/treeView.js",
-        "statsManager": "./js/statsManager.js",
-        "reportGenerator": "./js/reportGenerator.js",
-        "utils": "./js/utils.js",
-        "notificationSystem": "./js/notificationSystem.js",
-        "errorHandler": "./js/errorHandler.js",
-        "fileEditor": "./js/fileEditor.js",
-        "aiPatcher": "./js/aiPatcher.js",
-        "zipManager": "./js/zipManager.js",
-        "scaffoldImporter": "./js/scaffoldImporter.js",
-        "aiDebriefingAssistant": "./js/aiDebriefingAssistant.js",
-        "./lib-wrappers/dmp-wrapper.js": "./js/lib-wrappers/dmp-wrapper.js"
-      }
-    }
-    </script>
+    
+    <style>
+        /* --- START: Consolidated CSS from base.css, layout.css, components.css, etc. --- */
+        :root {
+            --disabled-opacity: 0.4; --error-color: #c62828; --warning-color: #f57c00; --border-radius-small: 4px;
+            --border-radius-medium: 8px; --animation-speed: 0.3s; --shadow-small: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.1); --scroll-thumb-width: 10px; --transition-smooth: all 0.2s ease-in-out;
+            --bg-color: #ffffff; --text-color: #1d1d1f; --accent-color: #007aff; --dim-color: #8a8a8e;
+            --border-color: #d1d1d6; --panel-bg: #f9f9f9; --highlight-bg: #e5e5ea; --font-main: 'Roboto Mono', monospace;
+            --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            --terminal-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); --header-color: #000000; --button-bg: #f5f5f7;
+            --button-text: var(--text-color); --button-hover-bg: #e9e9eb; --button-active-bg: var(--accent-color);
+            --button-active-text: white; --notification-bg: rgba(0, 0, 0, 0.85); --notification-border: var(--accent-color);
+            --scroll-track-color: var(--highlight-bg); --scroll-thumb-color: #c7c7cc; --scroll-thumb-hover-color: #aeaeb2;
+            --initial-left-sidebar-width: 300px; --right-stats-panel-width: 320px; --tabs-height: 40px; --resizer-width: 6px;
+        }
+        @keyframes slideDown { 0% { transform: translateY(-100%); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        @keyframes slideUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100%); opacity: 0; } }
+        html, body { height: 100%; margin: 0; overflow: hidden; font-family: var(--font-ui); }
+        body { background-color: var(--bg-color); color: var(--text-color); display: flex; flex-direction: column; font-size: 14px; letter-spacing: 0.1px; line-height: 1.45; }
+        ::-webkit-scrollbar { width: var(--scroll-thumb-width); height: var(--scroll-thumb-width); }
+        ::-webkit-scrollbar-track { background: var(--scroll-track-color); border-radius: var(--border-radius-small); }
+        ::-webkit-scrollbar-thumb { background: var(--scroll-thumb-color); border-radius: var(--border-radius-small); border: 2px solid var(--scroll-track-color); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--scroll-thumb-hover-color); }
+        #pageLoader { position: fixed; top:0; left:0; width:100vw; height:100vh; background-color:var(--bg-color); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; opacity:1; transition:opacity 0.5s ease-out .2s; }
+        #pageLoader.hidden { opacity:0; pointer-events:none; }
+        #pageLoader p { font-size:1.1em; color:var(--text-color); }
+        #appContainer { display: flex; flex-direction: row; flex-grow: 1; height: 100vh; overflow: hidden; }
+        #leftSidebar { width: var(--initial-left-sidebar-width); min-width: 220px; max-width: 60%; flex-shrink: 0; background-color: var(--panel-bg); padding: 15px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; height: 100%; box-sizing: border-box; position: relative; }
+        #sidebarResizer { width: var(--resizer-width); background-color: var(--border-color); cursor: col-resize; flex-shrink: 0; z-index: 10; transition: background-color 0.2s ease-in-out; position: relative; }
+        #sidebarResizer:hover, #sidebarResizer.resizing { background-color: var(--accent-color); }
+        #mainView { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; height: 100%; background-color: var(--bg-color); padding: 15px; box-sizing: border-box; gap: 10px; border-left: 1px solid var(--border-color); }
+        #rightStatsPanel { width: var(--right-stats-panel-width); min-width: 240px; flex-shrink: 0; background-color: var(--panel-bg); padding: 15px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; border-left: 1px solid var(--border-color); height: 100%; box-sizing: border-box; }
+        #sidebarHeader { text-align: center; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
+        #sidebarHeader h1 { font-size: 1.5em; color: var(--header-color); margin: 0; font-weight: 500; }
+        .header-logo { height: auto; width: 200px; max-width: 100%; margin-bottom: 10px; }
+        #mainAction { width: 100%; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+        #dropZone { width: 100%; min-height: 130px; border: 2px dashed var(--accent-color); border-radius: var(--border-radius-medium); display: flex; align-items: center; justify-content: center; text-align: center; background-color: var(--bg-color); transition: var(--transition-smooth); cursor: pointer; box-shadow: var(--terminal-shadow); margin-bottom: 10px; }
+        #dropZone.dragover { background-color: var(--highlight-bg); border-color: var(--text-color); box-shadow: 0 0 10px var(--accent-color); transform: scale(1.01); }
+        .drop-content { padding: 10px; } .drop-icon { font-size: 1.8rem; margin-bottom: 6px; color: var(--accent-color); } .drop-text { font-size: 0.85rem; margin-bottom: 6px; color: var(--text-color); } .drop-alternative { margin: 4px 0; font-size: 0.75rem; color: var(--dim-color); }
+        .folder-select-btn { padding: 6px 12px; background-color: var(--button-bg); color: var(--button-text); border-radius: var(--border-radius-small); cursor: pointer; transition: var(--transition-smooth); margin-top: 4px; border: 1px solid var(--border-color); font-size: 0.8em; font-family: var(--font-ui); }
+        .folder-select-btn:hover { background-color: var(--button-hover-bg); box-shadow: var(--shadow-small); }
+        #loader { display: none; font-size: 0.9rem; color: var(--accent-color); margin: 10px 0; text-align: center; flex-shrink: 0; }
+        #loader.visible { display: block; }
+        .sidebar-hr { border: none; border-top: 1px solid var(--border-color); margin: 10px 0; }
+        #treeViewControls, #generalActions { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+        button.action-button, button.utility-button { background-color: var(--button-bg); color: var(--button-text); border: 1px solid var(--border-color); padding: 7px 14px; font-family: var(--font-ui); font-size: 0.85em; border-radius: var(--border-radius-small); cursor: pointer; transition: var(--transition-smooth); letter-spacing: 0.3px; text-transform: none; font-weight: 500; width: 100%; text-align: center; }
+        button.utility-button { text-align: left; }
+        button.action-button:not(:disabled):hover, button.utility-button:not(:disabled):hover { background-color: var(--button-hover-bg); box-shadow: var(--shadow-small); }
+        button.action-button:disabled, button.utility-button:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; background-color: var(--button-bg); color: var(--dim-color); }
+        button.action-button.primary:not(:disabled) { background-color: var(--accent-color); color: var(--button-active-text); border-color: var(--accent-color); }
+        button.action-button.primary:not(:disabled):hover { background-color: #0056b3; }
+        #leftSidebar #visualOutputContainer { flex-grow: 1; border: 1px solid var(--border-color); box-shadow: var(--terminal-shadow); padding: 10px; background-color: var(--bg-color); border-radius: var(--border-radius-medium); display: flex; flex-direction: column; overflow: hidden; min-height: 200px; }
+        #leftSidebar #visualOutputContainer .panel-header { padding-bottom: 6px; margin-bottom: 6px; flex-shrink: 0; }
+        #leftSidebar #treeContainer { flex-grow: 1; overflow-y: auto; }
+        .tree ul { list-style-type: none; padding-left: 20px; margin: 2px 0; } .tree li { margin: 0; position: relative; padding: 0; display: flex; flex-direction: column; }
+        .tree li > .item-line { display: flex; align-items: center; padding: 2px 0; } .tree li.dimmed-uncommitted > .item-line { opacity: 0.6; }
+        .tree li.dimmed-uncommitted > .item-line .name, .tree li.dimmed-uncommitted > .item-line .stats, .tree li.dimmed-uncommitted > .item-line .icon svg, .tree li.dimmed-uncommitted > .item-line .folder-toggle { color: var(--dim-color) !important; fill: var(--dim-color) !important; }
+        .tree li.dimmed-uncommitted > .item-line .selector { opacity: 0.65; } .tree li::before { content: ""; position: absolute; left: -11px; top: 0.7em; border-left: 1px solid var(--dim-color); height: 100%; }
+        .tree > li:last-child::before { height: 0.7em; } .tree ul > li::before { top: -0.5em; height: calc(100% + 0.5em); } .tree ul > li:last-child::before { height: 1.2em; }
+        .item-prefix { display: inline-flex; align-items: center; margin-right: 5px; } .tree .selector { margin-right: 6px; width: 12px; height: 12px; flex-shrink: 0; }
+        .tree .folder-toggle { display: inline-block; width: 14px; text-align: center; margin-right: 4px; cursor: pointer; color: var(--accent-color); font-size: 1.1em; line-height: 1; user-select: none; }
+        .tree .icon { display: flex; align-items: center; justify-content: center; width: 16px; height: 16px; color: var(--dim-color); }
+        .tree .folder > .item-line > .item-prefix > .icon { color: var(--accent-color); } .tree .icon svg { width: 100%; height: 100%; vertical-align: middle; fill: currentColor; }
+        .tree .name { cursor: pointer; flex-grow: 1; font-size: 0.9em; font-family: var(--font-ui); } .tree .folder > .item-line > .name { font-weight: 500; }
+        .tree .name:hover { color: var(--accent-color); } .tree .stats { font-size: 0.75em; color: var(--dim-color); margin-left: 8px; white-space: nowrap; }
+        .tree .folder > ul { display: block; } .tree .folder.collapsed > ul { display: none; }
+        #mainViewTabs { display: flex; gap: 1px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; height: var(--tabs-height); align-items: flex-end; }
+        .tab-button { padding: 8px 15px; font-family: var(--font-ui); font-size: 0.9em; font-weight: 500; background-color: transparent; color: var(--dim-color); border: 1px solid transparent; border-bottom: none; border-radius: var(--border-radius-small) var(--border-radius-small) 0 0; cursor: pointer; transition: var(--transition-smooth); margin-bottom: -1px; position: relative; }
+        .tab-button:hover { color: var(--text-color); background-color: var(--highlight-bg); } .tab-button.active { background-color: var(--panel-bg); border-color: var(--border-color); border-bottom-color: var(--panel-bg); color: var(--accent-color); z-index: 1; }
+        #tabContentArea { flex-grow: 1; overflow: hidden; position: relative; display: flex; flex-direction: column; border: 1px solid var(--border-color); border-top: none; border-radius: 0 0 var(--border-radius-medium) var(--border-radius-medium); background-color: var(--panel-bg); }
+        .tab-content-item { display: none; flex-grow: 1; overflow: hidden; } .tab-content-item.active { display: flex; flex-direction: column; }
+        #tabContentArea .content-panel { flex-grow: 1; margin-bottom: 0; width: 100%; box-sizing: border-box; border: none; box-shadow: none; border-radius: 0; display: flex; flex-direction: column; overflow: hidden; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding: 10px 15px; margin-bottom: 0; flex-shrink: 0; background-color: var(--highlight-bg); }
+        .panel-header h2 { margin: 0; color: var(--header-color); font-size: 1.05em; font-weight: 500; }
+        .button-container { margin-top: auto; text-align: right; display: flex; justify-content: flex-end; gap: 10px; padding: 15px; flex-shrink:0; border-top:1px solid var(--border-color); background-color: var(--panel-bg); }
+        #textOutputContainerOuter { padding: 0; } #textOutput { font-family: var(--font-main); white-space: pre; line-height: 1.6; font-size: 0.85em; padding: 15px 20px; background-color: var(--bg-color); border-radius: 0; color: var(--text-color); overflow-y: auto; flex-grow: 1; height: 0; border-bottom: 1px solid var(--border-color); }
+        #rightStatsPanel .panel-header h2 { font-size: 1.1em; color: var(--header-color); font-weight: 500; margin: 0; }
+        #globalStats, .file-type-stats { padding: 5px; } .selection-summary { font-size: 0.85em; color: var(--dim-color); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .stat-item { margin-bottom: 7px; font-size: 0.85em; } .stat-item strong { color: var(--text-color); font-weight: 500; }
+        .file-type-stats table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.85em; } .file-type-stats th, .file-type-stats td { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--border-color); }
+        .file-type-stats th { background-color: var(--highlight-bg); font-weight: 500; color: var(--header-color); } .empty-notice { text-align: center; padding: 20px; color: var(--dim-color); font-size: 0.9em; flex-grow: 1; display:flex; align-items:center; justify-content:center; }
+        .notification { position: fixed; top: 20px; right: 20px; background-color: var(--notification-bg); color: white; padding: 10px 15px; border-radius: var(--border-radius-medium); z-index: 2100; max-width: 300px; transform: translateY(-150%); border-left: 4px solid var(--notification-border); box-shadow: var(--shadow-medium); font-size: 0.9em; transition: transform 0.3s ease-in-out; }
+        .notification.show { transform: translateY(0); }
+        .diff-modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden; background-color: rgba(0,0,0,0.65); align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        .diff-modal-content { background-color: var(--bg-color); padding: 0; border: 1px solid #c8c8c8; border-radius: var(--border-radius-medium); width: auto; min-width: 320px; max-width: 90%; box-shadow: 0 8px 16px rgba(0,0,0,0.15); position: relative; display: flex; flex-direction: column; max-height: 90vh; overflow: hidden; }
+        .diff-modal-content > div:first-child:not(.modal-scrollable-content) { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; background-color: var(--panel-bg); }
+        .diff-modal-content > div:first-child h3 { margin: 0; font-size: 1.15em; color: var(--header-color); font-weight: 500; }
+        .diff-modal-close { color: var(--dim-color); font-size: 22px; font-weight: bold; cursor: pointer; line-height:1; background:none; border:none; padding:0 5px; }
+        .diff-modal-close:hover, .diff-modal-close:focus { color: var(--text-color); } .modal-scrollable-content { padding: 18px; overflow-y: auto; flex-grow: 1; }
+        .diff-modal-actions { text-align: right; padding: 12px 18px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; flex-shrink: 0; background-color: var(--panel-bg); }
+        .diff-modal-actions .action-button.secondary { background-color: var(--highlight-bg); color: var(--text-color); border-color: var(--border-color); }
+        .diff-modal-actions .action-button.secondary:hover:not(:disabled) { background-color: var(--border-color); }
+        #scaffoldImportModal .diff-modal-content { max-width: 600px; }
+        #aiScaffoldJsonInput { width: 98%; font-family: var(--font-main); padding: 8px; border: 1px solid var(--border-color); border-radius: var(--border-radius-small); margin-bottom:15px; min-height: 150px; resize: vertical; }
+        #fileViewer { flex-direction: column; flex-grow: 1; height: 100%; width: 100%; overflow: hidden; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: var(--border-radius-medium); box-sizing: border-box; }
+        .viewer-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background-color: var(--panel-bg); border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
+        .viewer-header h3 { margin: 0; font-size: 1.1em; font-weight:500; }
+        .viewer-container { flex-grow: 1; overflow: hidden; position: relative; display: flex; padding: 1px; background-color: var(--bg-color); }
+        #viewerContent { flex-grow: 1; height: 100%; width: 100%; }
+        .viewer-footer { padding: 8px 15px; border-top: 1px solid var(--border-color); font-size: 0.8em; color: var(--dim-color); background-color: var(--panel-bg); flex-shrink: 0; }
+        .viewer-actions { display: flex; gap: 10px; }
+        .viewer-button { padding: 5px 10px; background-color: var(--button-bg); color: var(--button-text); border: 1px solid var(--border-color); border-radius: var(--border-radius-small); cursor: pointer; font-size: 0.85em; font-family:var(--font-ui); }
+        .viewer-button:hover { background-color: var(--button-hover-bg); }
+        .CodeMirror { height: 100% !important; font-family: var(--font-main) !important; font-size: 0.9em !important; line-height: 1.5 !important; }
+        .viewer-container .CodeMirror { height: 100%; width: 100%; border: none; }
+        /* --- END: Consolidated CSS --- */
+    </style>
 </head>
 <body>
     <div id="pageLoader">
-        <video autoplay loop muted playsinline>
-            <source src="loading.webm" type="video/webm">
-            Your browser does not support the video tag.
-        </video>
-        <p>Loading DirAnalyse Matrix...</p>
-    </div>
+    <video autoplay loop muted playsinline>
+        <source src="loading.webm" type="video/webm">
+        Your browser does not support the video tag.
+    </video>
+    <p>Loading DirAnalyze</p>
+</div>
 
     <div id="appContainer">
         <aside id="leftSidebar">
             <header id="sidebarHeader">
-                 <img src="logo.png" alt="Logo" class="header-logo" style="width: 250px; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <img src="logo.png" alt="DirAnalyze Logo" class="header-logo">
             </header>
 
             <div id="mainAction">
@@ -82,17 +145,17 @@
                 <div id="loader">ANALYSING...</div>
             </div>
 
-            <button id="importAiScaffoldBtn" class="action-button utility-button" title="Import an AI-generated project scaffold (JSON)">IMPORT AI SCAFFOLD</button>
+            <button id="importAiScaffoldBtn" class="action-button utility-button" title="Create a project from an AI-generated scaffold (JSON)">IMPORT AI SCAFFOLD</button>
             <button id="copyScaffoldPromptBtn" class="action-button utility-button" title="Copy AI prompt template for generating scaffold JSON">COPY SCAFFOLD PROMPT</button>
             <hr class="sidebar-hr">
 
             <div id="treeViewControls">
-                <button id="selectAllBtn" class="action-button utility-button" title="Select All Items in Tree">SELECT ALL</button>
-                <button id="deselectAllBtn" class="action-button utility-button" title="Deselect All Items in Tree">DESELECT ALL</button>
-                <button id="commitSelectionsBtn" class="action-button utility-button" title="Commit current selections for report & combine mode">COMMIT</button>
+                <button id="selectAllBtn" class="action-button utility-button" title="Select All Items in Tree" disabled>SELECT ALL</button>
+                <button id="deselectAllBtn" class="action-button utility-button" title="Deselect All Items in Tree" disabled>DESELECT ALL</button>
+                <button id="commitSelectionsBtn" class="action-button utility-button" title="Commit current selections for report" disabled>COMMIT</button>
                 <hr class="sidebar-hr">
-                <button id="expandAllBtn" class="action-button utility-button" title="Expand All Folders">EXPAND ALL</button>
-                <button id="collapseAllBtn" class="action-button utility-button" title="Collapse All Folders">COLLAPSE ALL</button>
+                <button id="expandAllBtn" class="action-button utility-button" title="Expand All Folders" disabled>EXPAND ALL</button>
+                <button id="collapseAllBtn" class="action-button utility-button" title="Collapse All Folders" disabled>COLLAPSE ALL</button>
             </div>
             <hr class="sidebar-hr">
 
@@ -103,7 +166,7 @@
             <hr class="sidebar-hr">
 
             <div id="generalActions">
-                <button id="aiDebriefingAssistantBtn" class="action-button primary" title="Export the combined text of all committed files">🚀 EXPORT COMBINED TEXT</button>
+                <button id="aiDebriefingAssistantBtn" class="action-button primary" title="Export the combined text of all committed files" disabled>🚀 EXPORT COMBINED TEXT</button>
                 <hr class="sidebar-hr" style="margin-top: 8px; margin-bottom: 8px;">
                 <button id="downloadProjectBtn" class="action-button utility-button" disabled title="Download project as ZIP">DOWNLOAD ZIP</button>
                 <button id="clearProjectBtn" class="action-button utility-button" disabled title="Clear all project data">CLEAR PROJECT</button>
@@ -115,52 +178,27 @@
         <main id="mainView">
             <nav id="mainViewTabs">
                 <button class="tab-button active" data-tab="textReportTab" title="View Comprehensive Text Report">Text Report</button>
-                <button class="tab-button" data-tab="aiPatcherTab" title="Apply AI-Generated Code Patches">AI Patcher</button>
             </nav>
             <div id="tabContentArea">
                 <div id="textReportTab" class="tab-content-item active">
                     <div id="textOutputContainerOuter" class="content-panel">
                         <div class="panel-header"><h2>COMPREHENSIVE TEXT REPORT</h2></div>
-                        <pre id="textOutput"></pre>
+                        <pre id="textOutput">// NO PROJECT LOADED //</pre>
                         <div class="button-container"><button id="copyReportButton" class="action-button" disabled>COPY REPORT</button></div>
                     </div>
                 </div>
-
-                <div id="aiPatcherTab" class="tab-content-item">
-                     <div id="aiPatchPanel" class="content-panel">
-                        <div class="panel-header"><h2>AI CODE PATCHER (Contextual Anchor Patches)</h2></div>
-                            <div class="patch-input-area">
-                            <button id="copyPatchPromptBtn" class="action-button" title="Copy prompt for AI to generate code patches" disabled>COPY PATCH PROMPT</button>
-                            <p style="margin-top: 10px; margin-bottom: 5px; font-size: 0.9em; line-height: 1.5;">
-                                <strong>Workflow to apply AI-generated patches:</strong><br>
-                                1. Ensure your AI Chat (e.g., Gemini, Claude, ChatGPT) has been debriefed with your project context (use the "🚀 AI DEBRIEFING ASSISTANT" on the left for this).<br>
-                                2. Click "COPY PATCH PROMPT" above. This copies instructions for the AI on the required JSON patch format.<br>
-                                3. In your AI chat, paste the copied prompt. Then, clearly describe the changes you want the AI to make to your project (e.g., "Refactor the login function in auth.js to use async/await and add error handling for network issues." or "Change the primary color in all CSS files to #3498db.").<br>
-                                4. The AI will provide a CAPCA JSON array. Paste this entire JSON response into the textarea below.<br>
-                                5. Click "Review & Apply Patches" to see a diff for each proposed change and confirm its application.
-                            </p>
-                            <textarea id="aiPatchInput" rows="6" placeholder='e.g., [{\"file\": \"path/to/your/file.ext\", \"operation\": \"replace_segment_after_anchor\", ...}]'></textarea>
-                            <button id="applyAiPatchBtn" class="action-button">Review & Apply Patches</button>
-                        </div>
-                        <div class="patch-results-area">
-                            <h3>Patch Application Log:</h3>
-                            <pre id="aiPatchOutputLog">Awaiting patch application...</pre>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div id="fileEditor" style="display:none;">
-                <div class="editor-header">
-                    <h3 id="editorFileTitle">FILE EDITOR</h3>
-                    <div class="editor-actions">
-                        <button id="saveFileBtn" class="editor-button" disabled>SAVE FILE (CTRL/CMD+S)</button>
-                        <button id="closeEditorBtn" class="editor-button">CLOSE</button>
+            <div id="fileViewer" style="display:none;">
+                <div class="viewer-header">
+                    <h3 id="viewerFileTitle">FILE VIEWER</h3>
+                    <div class="viewer-actions">
+                        <button id="closeViewerBtn" class="viewer-button">CLOSE</button>
                     </div>
                 </div>
-                <div class="editor-container">
-                    <div id="editorContent" style="height:100%; width:100%;"></div>
+                <div class="viewer-container">
+                    <div id="viewerContent" style="height:100%; width:100%;"></div>
                 </div>
-                <div class="editor-footer"><span id="editorInfo"></span></div>
+                <div class="viewer-footer"><span id="viewerInfo"></span></div>
             </div>
         </main>
 
@@ -178,54 +216,37 @@
         </aside>
     </div>
 
-    <div id="notification" class="notification"></div>
-
-    <div id="errorReport" class="error-panel">
-        <div class="error-header"><h3>ERROR REPORT</h3><button id="closeErrorBtn">×</button></div>
-        <div class="error-content">
-            <div class="error-title"></div><div class="error-message"></div>
-            <div class="error-details"></div><div class="error-suggestions"></div>
-        </div>
-    </div>
-
-    <div id="filePreview">
-        <button id="closePreview">×</button><h3 id="filePreviewTitle"></h3>
-        <div id="filePreviewContentWrapper" style="height: calc(100% - 40px); width: 100%;\">\n             <div id="filePreviewContent" style="height: 100%; width:100%; border: 1px solid var(--border-color);"></div>
-        </div>
-    </div>
-    
-    <!-- AI Debriefing Assistant Modal Removed -->
-
     <div id="scaffoldImportModal" class="diff-modal" style="display:none;">
         <div class="diff-modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:15px; border-bottom: 1px solid var(--border-color); padding-bottom:10px;">
-                <h3 style="margin:0;">Import AI-Generated Project Scaffold</h3>
-                <span class="diff-modal-close" id="closeScaffoldModalBtn" style="cursor:pointer; font-size:1.5em; line-height:1;">×</span>
+            <div>
+                <h3>Import AI-Generated Project Scaffold</h3>
+                <span class="diff-modal-close" id="closeScaffoldModalBtn">×</span>
             </div>
-             <div class="modal-scrollable-content" style="flex-grow:1; overflow-y:auto; padding-right:10px; width:100%;">
-                <p style="font-size:0.9em; color:var(--dim-color); margin-top:0;">Paste the JSON array of <code>create_scaffold_file</code> operations from your AI below. Ensure filePaths are like 'projectName/src/app.js' or 'projectName/index.html'.</p>
-                <textarea id="aiScaffoldJsonInput" rows="10" style="width: 98%; font-family: var(--font-main); padding: 8px; border: 1px solid var(--border-color); border-radius: var(--border-radius-small); margin-bottom:15px;" placeholder='[{\"operation\": \"create_scaffold_file\", \"filePath\": \"my-project/index.html\", \"content\": \"...\"}]'></textarea>
+             <div class="modal-scrollable-content">
+                <p style="font-size:0.9em; color:var(--dim-color); margin-top:0;">Paste the full JSON object from your AI below. It must include 'structureString' and 'fileContents'.</p>
+                <textarea id="aiScaffoldJsonInput" rows="10" placeholder='{ "structureString": "myApp(...)", "fileContents": [...] }'></textarea>
             </div>
             <div class="diff-modal-actions">
-                <button id="createProjectFromScaffoldBtn" class="action-button">Create Project from Scaffold</button>
+                <button id="createProjectFromScaffoldBtn" class="action-button primary">Create Project on Disk</button>
                 <button id="cancelScaffoldImportBtn" class="action-button secondary">Cancel</button>
             </div>
         </div>
     </div>
 
-    <div id="aiPatchDiffModal" class="diff-modal" style="display:none;">
-        <div class="diff-modal-content">
-            <span class="diff-modal-close" id="closeAiPatchDiffModal">×</span>
-            <h3>Review Changes for: <span id="diffFilePath" style="font-weight:normal;"></span></h3>
-            <div id="diffOutputContainer" class="modal-scrollable-content"></div>
-            <div class="diff-modal-actions">
-                <button id="confirmApplyPatchChanges" class="action-button">Apply This Change</button>
-                <button id="skipPatchChanges" class="action-button secondary">Skip This File</button>
-                <button id="cancelAllPatchChanges" class="action-button secondary">Cancel All</button>
-            </div>
-        </div>
-    </div>
+    <!-- JS Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/meta.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/addon/runmode/runmode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/markdown/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js"></script>
+    <script src="jszip.min.js"></script>
 
-    <script type="module" src="js/main.js"></script>
+    <!-- Main Application Logic -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>
