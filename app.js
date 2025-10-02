@@ -1,3 +1,7 @@
+// DIRANALYZE COMBINED TEXT EXPORT //
+// Project: diranalyze
+
+// ===== START OF FILE: diranalyze/app.js ===== //
 // =================================================================
 // DirAnalyze Streamline v4.0.2 - Consolidated Application Logic
 // =================================================================
@@ -168,17 +172,33 @@ async function readFileContent(fileHandle) {
 }
 
 async function writeFileContent(directoryHandle, fullPath, content) {
-    const pathParts = fullPath.split('/');
+    // --- START: MODIFIED ---
+    // Handle potential root folder in the path
+    const pathParts = fullPath.split('/').filter(p => p); // filter empty parts
+    const rootDirInPath = pathParts[0];
     const fileName = pathParts.pop();
+
     let currentHandle = directoryHandle;
-    for (const part of pathParts) {
-        if (!part) continue; // Handles cases like leading slashes
-        currentHandle = await currentHandle.getDirectoryHandle(part, { create: true });
+    // Check if the first part of the path is the intended root directory
+    // If it is, create it inside the user-selected destination
+    if (pathParts.length > 0) { 
+        currentHandle = await directoryHandle.getDirectoryHandle(rootDirInPath, { create: true });
+        // Create subdirectories if any
+        for (const part of pathParts.slice(1)) {
+            currentHandle = await currentHandle.getDirectoryHandle(part, { create: true });
+        }
+    } else {
+        // This case handles a file being at the root of the export.
+        // It's unlikely with the current logic but good to handle.
+        currentHandle = await directoryHandle.getDirectoryHandle(rootDirInPath, { create: true });
     }
+    
     const fileHandle = await currentHandle.getFileHandle(fileName, { create: true });
+    // --- END: MODIFIED ---
     const writable = await fileHandle.createWritable();
     await writable.write(content);
     await writable.close();
+    return directoryHandle.getDirectoryHandle(rootDirInPath);
 }
 
 
@@ -255,7 +275,7 @@ function displayGlobalStats(data) {
     const totalSize = allFilesList.reduce((sum, f) => sum + f.size, 0);
     
     if (appState.selectionCommitted) {
-        elements.selectionSummary.innerHTML = `Displaying stats for <strong>${allFilesList.length} selected files</strong> and <strong>${allFoldersList.length} selected folders</strong>.`;
+        elements.selectionSummary.innerHTML = `Displaying stats for <strong>${allFilesList.length} selected files</strong> and <strong>${allFoldersList.length} selected folders}</strong>.`;
         elements.selectionSummary.style.display = 'block';
     } else {
         elements.selectionSummary.style.display = 'none';
@@ -506,6 +526,86 @@ function closeViewer() {
 // --- Feature-Specific Logic (Scaffold, ZIP, etc.) ---
 // =================================================================
 
+// --- START: NEW ---
+/**
+ * Parses a combined text export file and returns an array of file objects.
+ * @param {string} fileContent The full content of the exported .txt file.
+ * @returns {Array<{filePath: string, content: string}>|null} An array of files or null if the format is invalid.
+ */
+function parseCombinedExport(fileContent) {
+    if (!fileContent.startsWith('// DIRANALYZE COMBINED TEXT EXPORT //')) {
+        return null; // Invalid format
+    }
+
+    const files = [];
+    const fileBlockRegex = /\/\/ ===== START OF FILE: (.*?) ===== \/\/\n([\s\S]*?)\n\/\/ ===== END OF FILE: \1 ===== \/\//g;
+    
+    let match;
+    while ((match = fileBlockRegex.exec(fileContent)) !== null) {
+        files.push({
+            filePath: match[1],
+            content: match[2]
+        });
+    }
+
+    return files;
+}
+
+/**
+ * Handles the process of importing and reconstructing a project from an exported text file.
+ */
+async function handleImportAndReconstruct() {
+    if (appState.processingInProgress) return;
+    
+    try {
+        const [fileHandle] = await window.showOpenFilePicker({
+            types: [{ description: 'DirAnalyze Export Files', accept: { 'text/plain': ['.txt'] } }],
+            multiple: false,
+        });
+
+        const file = await fileHandle.getFile();
+        const content = await file.text();
+
+        const parsedFiles = parseCombinedExport(content);
+
+        if (!parsedFiles || parsedFiles.length === 0) {
+            showNotification("Invalid or empty export file format.", 4000);
+            return;
+        }
+
+        const destHandle = await window.showDirectoryPicker({ id: 'reconstructDest', mode: 'readwrite' });
+        resetUIForProcessing("Reconstructing project...");
+
+        let projectRootHandle = null;
+        for (const file of parsedFiles) {
+            // writeFileContent will create the root directory and return a handle to it
+            const handle = await writeFileContent(destHandle, file.filePath, file.content);
+            if (!projectRootHandle) {
+                projectRootHandle = handle;
+            }
+        }
+
+        showNotification(`Project reconstructed! Now scanning...`, 3000);
+        // Scan the newly created root directory
+        if (projectRootHandle) {
+            await verifyAndProcessDirectory(projectRootHandle);
+        } else {
+             throw new Error("Could not determine the project's root directory after reconstruction.");
+        }
+
+    } catch (err) {
+        if (err.name !== 'AbortError') {
+            console.error("Error during project reconstruction:", err);
+            showNotification(`Error: ${err.message}`, 4000);
+            showFailedUI("Project reconstruction failed.");
+        } else {
+            clearProjectData();
+        }
+    }
+}
+// --- END: NEW ---
+
+
 const SCAFFOLD_PROMPT_TEMPLATE = `
 Please act as a project scaffolder. I need a JSON object with two main keys:
 1.  "structureString": A string representing the directory structure using parentheses for nesting and commas for siblings.
@@ -561,7 +661,8 @@ async function processScaffoldJsonInput() {
                 ? file.filePath.substring(projectName.length + 1)
                 : file.filePath;
             if (!relativePath) continue;
-            await writeFileContent(projectRootHandle, relativePath, file.content);
+            // A small change here to reuse the improved writeFileContent
+            await writeFileContent(destHandle, file.filePath, file.content);
         }
 
         showNotification(`Scaffold "${projectName}" written to disk! Now scanning...`, 3000);
@@ -577,6 +678,7 @@ async function processScaffoldJsonInput() {
         }
     }
 }
+
 
 function parseStructureString(structureStr) {
     const rootNameMatch = structureStr.trim().match(/^([^(]+)\((.*)\)$/);
@@ -657,6 +759,9 @@ function populateElements() {
         fileViewer: 'fileViewer', viewerFileTitle: 'viewerFileTitle', viewerContent: 'viewerContent',
         closeViewerBtn: 'closeViewerBtn', viewerInfo: 'viewerInfo',
         importAiScaffoldBtn: 'importAiScaffoldBtn',
+        // --- START: NEW ---
+        importFromExportBtn: 'importFromExportBtn',
+        // --- END: NEW ---
         copyScaffoldPromptBtn: 'copyScaffoldPromptBtn', scaffoldImportModal: 'scaffoldImportModal',
         closeScaffoldModalBtn: 'closeScaffoldModalBtn', aiScaffoldJsonInput: 'aiScaffoldJsonInput',
         createProjectFromScaffoldBtn: 'createProjectFromScaffoldBtn', cancelScaffoldImportBtn: 'cancelScaffoldImportBtn',
@@ -687,6 +792,9 @@ function setupEventListeners() {
     elements.closeViewerBtn.addEventListener('click', closeViewer);
     elements.aiDebriefingAssistantBtn.addEventListener('click', exportCombinedText);
     elements.importAiScaffoldBtn.addEventListener('click', openScaffoldModal);
+    // --- START: NEW ---
+    elements.importFromExportBtn.addEventListener('click', handleImportAndReconstruct);
+    // --- END: NEW ---
     elements.closeScaffoldModalBtn.addEventListener('click', closeScaffoldModal);
     elements.createProjectFromScaffoldBtn.addEventListener('click', processScaffoldJsonInput);
     elements.cancelScaffoldImportBtn.addEventListener('click', closeScaffoldModal);
@@ -762,10 +870,11 @@ function resetUIForProcessing(loaderMsg = "ANALYSING...") {
     appState.committedScanData = null;
     appState.selectionCommitted = false;
     appState.directoryHandle = null;
-    elements.treeContainer.innerHTML = '<div class="empty-notice">DROP FOLDER OR IMPORT SCAFFOLD</div>';
+    elements.treeContainer.innerHTML = '<div class="empty-notice">DROP FOLDER OR IMPORT</div>';
     disableUIControls();
     activateTab('textReportTab');
 }
+
 
 function showFailedUI(message = "OPERATION FAILED") {
     elements.textOutputEl.textContent = message;
@@ -795,11 +904,24 @@ function clearProjectData() {
 function enableUIControls(hasData = true) {
     const buttons = ['commitSelectionsBtn', 'downloadProjectBtn', 'clearProjectBtn', 'aiDebriefingAssistantBtn', 'selectAllBtn', 'deselectAllBtn', 'expandAllBtn', 'collapseAllBtn'];
     buttons.forEach(id => { if(elements[id]) elements[id].disabled = !hasData });
+    // --- START: MODIFIED ---
+    // Always keep import buttons enabled
     elements.importAiScaffoldBtn.disabled = false;
+    elements.importFromExportBtn.disabled = false; 
     elements.selectFolderBtn.disabled = false;
     elements.copyScaffoldPromptBtn.disabled = false;
+    // --- END: MODIFIED ---
 }
-const disableUIControls = () => enableUIControls(false);
+const disableUIControls = () => {
+    // --- START: MODIFIED ---
+    // Keep import buttons enabled even when disabling others
+    enableUIControls(false);
+    elements.importAiScaffoldBtn.disabled = false;
+    elements.importFromExportBtn.disabled = false;
+    elements.selectFolderBtn.disabled = false;
+    elements.copyScaffoldPromptBtn.disabled = false;
+    // --- END: MODIFIED ---
+};
 
 function initSidebarResizer() {
     const { leftSidebar, sidebarResizer } = elements;
@@ -848,3 +970,4 @@ function initApp() {
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
+// ===== END OF FILE: diranalyze/app.js ===== //
