@@ -133,7 +133,8 @@ async function initApp() {
     
     // Fetch external data and initialize modules
     try {
-        const response = await fetch('../public/data/filetypes.json');
+        // --- THIS IS THE CORRECTED LINE ---
+        const response = await fetch('public/data/filetypes.json');
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const filetypeData = await response.json();
         initializeFiletypeData(filetypeData);
