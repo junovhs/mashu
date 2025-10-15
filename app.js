@@ -40,23 +40,157 @@ function formatBytes(bytes, decimals = 2) {
     return parseFloat((bytes / Math.pow(k, BoundedI)).toFixed(dm)) + ' ' + sizes[BoundedI];
 }
 
-function isLikelyTextFile(filepath) {
-    if (!filepath || typeof filepath !== 'string') return false;
-    const textExtensions = [
-        '.txt', '.md', '.csv', '.json', '.xml', '.yaml', '.yml', '.html', '.htm', '.css', '.js', '.mjs', '.ts',
-        '.php', '.rb', '.py', '.java', '.c', '.cpp', '.h', '.hpp', '.cs', '.go', '.rs', '.swift', '.sh',
-        '.sql', '.ini', '.conf', '.cfg', '.toml', '.env', '.gitignore', '.svg', '.liquid'
-    ];
-    const lowerPath = filepath.toLowerCase();
-    const lastDotIndex = lowerPath.lastIndexOf('.');
-    if (lastDotIndex !== -1) {
-        const extension = lowerPath.substring(lastDotIndex);
-        return textExtensions.includes(extension);
+// Fast sync check by name only (no file reads)
+function isLikelyTextByName(filepath) {
+  if (!filepath || typeof filepath !== "string") return false;
+
+  const lower = filepath.toLowerCase();
+  const base = lower.split(/[\\/]/).pop() || lower;
+
+  // Basename allow-list (dotfiles & special)
+  const ALLOW_BASENAMES = new Set([
+    ".bash_history",".bash_profile",".bashrc",".dockerignore",".editorconfig",".env",".envrc",
+    ".eslintignore",".eslintrc",".gitattributes",".gitconfig",".gitignore",".gitkeep",".gitmodules",
+    ".npmignore",".nvmrc",".prettierignore",".prettierrc",".pylintrc",".ruby-version",".tool-versions",
+    ".yarnrc","cargo.lock","dockerfile","gemfile","makefile","rakefile","requirements.txt",
+    "license","license.txt","readme","readme.md","changelog","changelog.md","todo","todo.txt"
+  ]);
+  if (ALLOW_BASENAMES.has(base)) return true;
+
+  // Extension allow-list (curated to avoid known binaries/containers)
+  const TEXT_EXTENSIONS = new Set([
+    // Markup / docs
+    ".adoc",".asciidoc",".bbcode",".haml",".htm",".html",".jade",".jinja",".j2",".kit",".latte",
+    ".liquid",".markdown",".md",".mdown",".mdx",".mkd",".mkdn",".mkdown",".muse",".mustache",
+    ".nunjucks",".njk",".pug",".rst",".rtf",".slim",".text",".textile",".tpl",".twig",".xhtml",
+    ".xsl",".xslt",
+
+    // Data / config
+    ".csv",".geojson",".gql",".graphql",".hcl",".ini",".json",".json5",".jsonl",".ndjson",".plist",
+    ".properties",".proto",".toml",".tsv",".ttl",".yml",".yaml",".cson",".edn",".ron",".xml",
+
+    // Build / project metadata
+    ".bazel",".bzl",".buck",".cabal",".cfg",".cmake",".csproj",".deps",".gemspec",".gradle",".iml",
+    ".lock",".nix",".npmrc",".podspec",".pp",".project",".props",".sbt",".scm",".sln",".targets",
+    ".vcxproj",".xcscheme",
+
+    // Shell / batch / powershell
+    ".bash",".bat",".cmd",".fish",".ksh",".ps1",".psm1",".psd1",".sh",".zsh",
+
+    // Make / build scripts
+    ".am",".autogen",".configure",".make",".mk",
+
+    // Templates
+    ".ejs",".erb",".handlebars",".hbs",".hjs",".mustache",".njk",".razor",".volt",
+
+    // Web assets
+    ".css",".less",".sass",".scss",".styl",".svg",".webmanifest",
+
+    // JS/TS
+    ".cjs",".cts",".d.ts",".gs",".js",".jsx",".mjs",".mts",".ts",".tsx",
+
+    // Node/tooling
+    ".eslintrc.json",".prettierrc.json",".stylelintrc",".swcrc",".babelrc",".parcelrc",
+
+    // Rust
+    ".rs",".ron",".cargo",".slint", // (keep Cargo.lock via .lock or basename)
+
+    // Python
+    ".py",".pyi",".pyw",".pyx",".pxd",".pxi",".rst",".toml",".cfg",".in",
+
+    // Go
+    ".go",".mod",".sum",
+
+    // JVM family
+    ".java",".gradle",".kts",".kt",".scala",".sc",".groovy",".gvy",".gy",".gsh",
+
+    // C / C++ / Obj-C
+    ".c",".cc",".cpp",".cxx",".h",".hh",".hpp",".hxx",".m",".mm",".pch",
+
+    // C#
+    ".cs",".csx",
+
+    // Swift
+    ".swift",".plist",
+
+    // PHP / Hack
+    ".php",".phtml",".php3",".php4",".php5",".phpt",".hh",".hack",
+
+    // Ruby
+    ".rb",".rake",".gemspec",".erb",".haml",
+
+    // Elixir / Erlang
+    ".ex",".exs",".eex",".leex",".erl",".hrl",
+
+    // Lua
+    ".lua",".rockspec",
+
+    // Haskell / Cabal
+    ".hs",".lhs",".cabal",
+
+    // R / Julia / Matlab script
+    ".r",".rmd",".rprofile",".jl",".m", // (exclude .mat here)
+
+    // Infra / IaC
+    ".tf",".tfvars",".terraformrc",".terragrunt.hcl",".rego",".cue",".dockerfile",".compose",
+    ".env",".k8s",".helm",".chart",".yq",
+
+    // SQL / DB schema (exclude binary dbs)
+    ".sql",".psql",".mysql",".prisma",
+
+    // Scripting / misc
+    ".awk",".sed",".perl",".pl",".pm",".t",".d",".nim",".vim",".vimrc",".ahk",".applescript",
+    ".scpt",".wren",
+
+    // Functional / logic
+    ".clj",".cljs",".cljc",".edn",".elm",".fs",".fsi",".fsx",".ml",".mli",".re",".rei",
+
+    // Systems / HDL
+    ".s",".asm",".v",".vh",".sv",".svh",
+
+    // Docs / notes
+    ".note",".notes",".log",".todo",
+
+    // Testing
+    ".spec",".test",".snap",
+
+    // Misc vendor configs
+    ".editorconfig",".gitattributes",".gitignore",".gitmodules",".npmignore",
+
+    // Windows INI/RC variants
+    ".rc",".resx"
+  ]);
+
+  const dot = base.lastIndexOf(".");
+  if (dot !== -1) {
+    const ext = base.slice(dot);
+    if (TEXT_EXTENSIONS.has(ext)) return true;
+  }
+  return false;
+}
+
+
+// Async check using File System Access API
+async function sniffIsText(fileHandle, maxBytes = 8192) {
+  try {
+    const file = await fileHandle.getFile();
+    // quick size guard (prevents huge binaries from being read into the viewer/export)
+    const MAX_TEXT_BYTES = 5 * 1024 * 1024; // 5 MB
+    if (file.size > MAX_TEXT_BYTES) return false;
+
+    const slice = await file.slice(0, Math.min(file.size, maxBytes)).arrayBuffer();
+    const view = new Uint8Array(slice);
+    for (let i = 0; i < view.length; i++) {
+      if (view[i] === 0) return false; // NUL = likely binary
     }
+    return true;
+  } catch {
     return false;
+  }
 }
 
 function getFileExtension(filename) {
+
     if (!filename || typeof filename !== 'string') return '(no ext)';
     const lastDot = filename.lastIndexOf('.');
     if (lastDot === -1 || lastDot === 0 || lastDot === filename.length - 1) return '(no ext)';
@@ -392,10 +526,14 @@ function createNodeElement(nodeInfo) {
     const nameSpan = document.createElement('span');
     nameSpan.className = 'name';
     nameSpan.textContent = nodeInfo.name;
-    nameSpan.addEventListener('click', () => {
-        if (nodeInfo.type === 'file' && isLikelyTextFile(nodeInfo.path)) {
-            openFileInViewer(nodeInfo);
-        } else if (nodeInfo.type === 'folder') {
+    nameSpan.addEventListener('click', async () => {
+        if (nodeInfo.type === 'file') {
+            if (isLikelyTextFile(nodeInfo.path) || await sniffIsText(nodeInfo.entryHandle)) {
+                openFileInViewer(nodeInfo);
+            } else {
+                showNotification("That file doesn't look like text.", 2500);
+            }
+        } else {
             li.querySelector('.folder-toggle')?.click();
         }
     });
@@ -713,11 +851,21 @@ async function downloadProjectAsZip() {
 }
 
 async function exportCombinedText() {
-    if (!appState.selectionCommitted || !appState.committedScanData) return showNotification("Please commit a selection first.", 3000);
-    
-    const filesToExport = appState.committedScanData.allFilesList.filter(file => isLikelyTextFile(file.path));
-    if (filesToExport.length === 0) return showNotification("No text files in committed selection.", 3000);
-    
+    if (!appState.selectionCommitted || !appState.committedScanData)
+        return showNotification("Please commit a selection first.", 3000);
+
+    const candidates = appState.committedScanData.allFilesList;
+
+    // Filter asynchronously with name check + sniff
+    const tests = candidates.map(async f =>
+        isLikelyTextFile(f.path) ? true : await sniffIsText(f.entryHandle)
+    );
+    const results = await Promise.all(tests);
+    const filesToExport = candidates.filter((_, i) => results[i]);
+
+    if (filesToExport.length === 0)
+        return showNotification("No text files in committed selection.", 3000);
+
     showNotification("Preparing combined text file...", 2000);
     let combinedContent = `// DIRANALYZE COMBINED TEXT EXPORT //\n// Project: ${appState.fullScanData.directoryData.name}\n\n`;
 
@@ -731,7 +879,7 @@ async function exportCombinedText() {
             combinedContent += `// ERROR reading ${file.path}: ${e.message} //\n\n`;
         }
     }
-    
+
     const blob = new Blob([combinedContent], { type: 'text/plain;charset=utf-8' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
