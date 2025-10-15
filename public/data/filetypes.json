@@ -1,0 +1,35 @@
+{
+  "ALLOW_BASENAMES": [
+    ".bash_history",".bash_profile",".bashrc",".dockerignore",".editorconfig",".env",".envrc",
+    ".eslintignore",".eslintrc",".gitattributes",".gitconfig",".gitignore",".gitkeep",".gitmodules",
+    ".npmignore",".nvmrc",".prettierignore",".prettierrc",".pylintrc",".ruby-version",".tool-versions",
+    ".yarnrc","cargo.lock","dockerfile","gemfile","makefile","rakefile","requirements.txt",
+    "license","license.txt","readme","readme.md","changelog","changelog.md","todo","todo.txt"
+  ],
+  "TEXT_EXTENSIONS": [
+    ".adoc",".asciidoc",".bbcode",".haml",".htm",".html",".jade",".jinja",".j2",".kit",".latte",
+    ".liquid",".markdown",".md",".mdown",".mdx",".mkd",".mkdn",".mkdown",".muse",".mustache",
+    ".nunjucks",".njk",".pug",".rst",".rtf",".slim",".text",".textile",".tpl",".twig",".xhtml",
+    ".xsl",".xslt",".csv",".geojson",".gql",".graphql",".hcl",".ini",".json",".json5",".jsonl",
+    ".ndjson",".plist",".properties",".proto",".toml",".tsv",".ttl",".yml",".yaml",".cson",".edn",
+    ".ron",".xml",".bazel",".bzl",".buck",".cabal",".cfg",".cmake",".csproj",".deps",".gemspec",
+    ".gradle",".iml",".lock",".nix",".npmrc",".podspec",".pp",".project",".props",".sbt",".scm",
+    ".sln",".targets",".vcxproj",".xcscheme",".bash",".bat",".cmd",".fish",".ksh",".ps1",
+    ".psm1",".psd1",".sh",".zsh",".am",".autogen",".configure",".make",".mk",".ejs",".erb",
+    ".handlebars",".hbs",".hjs",".mustache",".njk",".razor",".volt",".css",".less",".sass",
+    ".scss",".styl",".svg",".webmanifest",".cjs",".cts",".d.ts",".gs",".js",".jsx",".mjs",
+    ".mts",".ts",".tsx",".eslintrc.json",".prettierrc.json",".stylelintrc",".swcrc",".babelrc",
+    ".parcelrc",".rs",".ron",".cargo",".slint",".py",".pyi",".pyw",".pyx",".pxd",".pxi",
+    ".rst",".toml",".cfg",".in",".go",".mod",".sum",".java",".gradle",".kts",".kt",".scala",
+    ".sc",".groovy",".gvy",".gy",".gsh",".c",".cc",".cpp",".cxx",".h",".hh",".hpp",".hxx",
+    ".m",".mm",".pch",".cs",".csx",".swift",".plist",".php",".phtml",".php3",".php4",".php5",
+    ".phpt",".hh",".hack",".rb",".rake",".gemspec",".erb",".haml",".ex",".exs",".eex",".leex",
+    ".erl",".hrl",".lua",".rockspec",".hs",".lhs",".cabal",".r",".rmd",".rprofile",".jl",
+    ".m",".tf",".tfvars",".terraformrc",".terragrunt.hcl",".rego",".cue",".dockerfile",
+    ".compose",".env",".k8s",".helm",".chart",".yq",".sql",".psql",".mysql",".prisma",".awk",
+    ".sed",".perl",".pl",".pm",".t",".d",".nim",".vim",".vimrc",".ahk",".applescript",".scpt",
+    ".wren",".clj",".cljs",".cljc",".edn",".elm",".fs",".fsi",".fsx",".ml",".mli",".re",
+    ".rei",".s",".asm",".v",".vh",".sv",".svh",".note",".notes",".log",".todo",".spec",".test",
+    ".snap",".editorconfig",".gitattributes",".gitignore",".gitmodules",".npmignore",".rc",".resx"
+  ]
+}
