@@ -528,7 +528,7 @@ function createNodeElement(nodeInfo) {
     nameSpan.textContent = nodeInfo.name;
     nameSpan.addEventListener('click', async () => {
         if (nodeInfo.type === 'file') {
-            if (isLikelyTextFile(nodeInfo.path) || await sniffIsText(nodeInfo.entryHandle)) {
+            if (isLikelyTextByName(nodeInfo.path) || await sniffIsText(nodeInfo.entryHandle)) {
                 openFileInViewer(nodeInfo);
             } else {
                 showNotification("That file doesn't look like text.", 2500);
@@ -858,7 +858,7 @@ async function exportCombinedText() {
 
     // Filter asynchronously with name check + sniff
     const tests = candidates.map(async f =>
-        isLikelyTextFile(f.path) ? true : await sniffIsText(f.entryHandle)
+        isLikelyTextByName(f.path) ? true : await sniffIsText(f.entryHandle)
     );
     const results = await Promise.all(tests);
     const filesToExport = candidates.filter((_, i) => results[i]);
