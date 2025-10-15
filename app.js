@@ -3,7 +3,7 @@
 
 // ===== START OF FILE: diranalyze/app.js ===== //
 // =================================================================
-// DirAnalyze Streamline v4.0.2 - Consolidated Application Logic
+// DirAnalyze Streamline v1.0.0 - Consolidated Application Logic
 // =================================================================
 
 // --- App State & Elements ---
@@ -1114,7 +1114,7 @@ function initApp() {
     setupEventListeners();
     disableUIControls();
     elements.pageLoader.classList.add('hidden');
-    console.log("DirAnalyze Streamline v4.0.2 Initialized.");
+    console.log("DirAnalyze Streamline v1.0.0 Initialized.");
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
