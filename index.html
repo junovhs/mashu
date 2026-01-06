@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DirAnalyze Streamline v4.0</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📁</text></svg>">
-    
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📁</text></svg>">
+
     <!-- CodeMirror CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/material-darker.min.css">
-    
-    <!-- Main Application Styles - PATH CORRECTED -->
-    <link rel="stylesheet" href="src/css/app.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/material-darker.min.css">
+
+    <!-- Main Application Styles -->
+    <link rel="stylesheet" href="/src/css/app.css">
+    <link rel="stylesheet" href="/src/css/components.css">
 </head>
+
 <body>
     <div id="pageLoader">
-    <!-- PATH CORRECTED -->
-    <video autoplay loop muted playsinline>
-        <source src="public/assets/loading.webm" type="video/webm">
-        Your browser does not support the video tag.
-    </video>
-    <p>Loading DirAnalyze</p>
-</div>
+        <!-- PATH CORRECTED -->
+        <video autoplay loop muted playsinline>
+            <source src="/assets/loading.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+        <p>Loading DirAnalyze</p>
+    </div>
 
     <div id="appContainer">
         <aside id="leftSidebar">
             <header id="sidebarHeader">
                 <!-- PATH CORRECTED -->
-                <img src="public/assets/logo.png" alt="DirAnalyze Logo" class="header-logo">
+                <img src="/assets/logo.png" alt="DirAnalyze Logo" class="header-logo">
             </header>
 
             <div id="mainAction">
@@ -42,32 +47,45 @@
                 <div id="loader">ANALYSING...</div>
             </div>
 
-            <button id="importAiScaffoldBtn" class="action-button utility-button" title="Create a project from an AI-generated scaffold (JSON)">IMPORT AI SCAFFOLD</button>
-            <button id="importFromExportBtn" class="action-button utility-button" title="Reconstruct a project from a DirAnalyze combined text export">IMPORT FROM EXPORT</button>
-            <button id="copyScaffoldPromptBtn" class="action-button utility-button" title="Copy AI prompt template for generating scaffold JSON">COPY SCAFFOLD PROMPT</button>
+            <button id="importAiScaffoldBtn" class="action-button utility-button"
+                title="Create a project from an AI-generated scaffold (JSON)">IMPORT AI SCAFFOLD</button>
+            <button id="importFromExportBtn" class="action-button utility-button"
+                title="Reconstruct a project from a DirAnalyze combined text export">IMPORT FROM EXPORT</button>
+            <button id="copyScaffoldPromptBtn" class="action-button utility-button"
+                title="Copy AI prompt template for generating scaffold JSON">COPY SCAFFOLD PROMPT</button>
             <hr class="sidebar-hr">
 
             <div id="treeViewControls">
-                <button id="selectAllBtn" class="action-button utility-button" title="Select All Items in Tree" disabled>SELECT ALL</button>
-                <button id="deselectAllBtn" class="action-button utility-button" title="Deselect All Items in Tree" disabled>DESELECT ALL</button>
-                <button id="commitSelectionsBtn" class="action-button utility-button" title="Commit current selections for report" disabled>COMMIT</button>
+                <button id="selectAllBtn" class="action-button utility-button" title="Select All Items in Tree"
+                    disabled>SELECT ALL</button>
+                <button id="deselectAllBtn" class="action-button utility-button" title="Deselect All Items in Tree"
+                    disabled>DESELECT ALL</button>
+                <button id="commitSelectionsBtn" class="action-button utility-button"
+                    title="Commit current selections for report" disabled>COMMIT</button>
                 <hr class="sidebar-hr">
-                <button id="expandAllBtn" class="action-button utility-button" title="Expand All Folders" disabled>EXPAND ALL</button>
-                <button id="collapseAllBtn" class="action-button utility-button" title="Collapse All Folders" disabled>COLLAPSE ALL</button>
+                <button id="expandAllBtn" class="action-button utility-button" title="Expand All Folders"
+                    disabled>EXPAND ALL</button>
+                <button id="collapseAllBtn" class="action-button utility-button" title="Collapse All Folders"
+                    disabled>COLLAPSE ALL</button>
             </div>
             <hr class="sidebar-hr">
 
             <div id="visualOutputContainer" class="content-panel tab-content-item">
-                <div class="panel-header"><h2>DIRECTORY TREE</h2></div>
+                <div class="panel-header">
+                    <h2>DIRECTORY TREE</h2>
+                </div>
                 <div id="treeContainer" class="tree"></div>
             </div>
             <hr class="sidebar-hr">
 
             <div id="generalActions">
-                <button id="aiDebriefingAssistantBtn" class="action-button primary" title="Export the combined text of all committed files" disabled>🚀 EXPORT COMBINED TEXT</button>
+                <button id="aiDebriefingAssistantBtn" class="action-button primary"
+                    title="Export the combined text of all committed files" disabled>🚀 EXPORT COMBINED TEXT</button>
                 <hr class="sidebar-hr" style="margin-top: 8px; margin-bottom: 8px;">
-                <button id="downloadProjectBtn" class="action-button utility-button" disabled title="Download project as ZIP">DOWNLOAD ZIP</button>
-                <button id="clearProjectBtn" class="action-button utility-button" disabled title="Clear all project data">CLEAR PROJECT</button>
+                <button id="downloadProjectBtn" class="action-button utility-button" disabled
+                    title="Download project as ZIP">DOWNLOAD ZIP</button>
+                <button id="clearProjectBtn" class="action-button utility-button" disabled
+                    title="Clear all project data">CLEAR PROJECT</button>
             </div>
         </aside>
 
@@ -75,14 +93,18 @@
 
         <main id="mainView">
             <nav id="mainViewTabs">
-                <button class="tab-button active" data-tab="textReportTab" title="View Comprehensive Text Report">Text Report</button>
+                <button class="tab-button active" data-tab="textReportTab" title="View Comprehensive Text Report">Text
+                    Report</button>
             </nav>
             <div id="tabContentArea">
                 <div id="textReportTab" class="tab-content-item active">
                     <div id="textOutputContainerOuter" class="content-panel">
-                        <div class="panel-header"><h2>COMPREHENSIVE TEXT REPORT</h2></div>
+                        <div class="panel-header">
+                            <h2>COMPREHENSIVE TEXT REPORT</h2>
+                        </div>
                         <pre id="textOutput">// NO PROJECT LOADED //</pre>
-                        <div class="button-container"><button id="copyReportButton" class="action-button" disabled>COPY REPORT</button></div>
+                        <div class="button-container"><button id="copyReportButton" class="action-button" disabled>COPY
+                                REPORT</button></div>
                     </div>
                 </div>
             </div>
@@ -101,35 +123,28 @@
         </main>
 
         <aside id="rightStatsPanel">
-            <div class="panel-header"><h2>STATISTICS</h2></div>
+            <div class="panel-header">
+                <h2>STATISTICS</h2>
+            </div>
             <div id="selectionSummary" class="selection-summary" style="display:none;"></div>
             <div id="globalStats"></div>
             <div class="file-type-stats">
                 <h3>FILE TYPE BREAKDOWN</h3>
                 <table id="fileTypeTable">
-                    <thead><tr><th>Extension</th><th>Count</th><th>Total Size</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>Extension</th>
+                            <th>Count</th>
+                            <th>Total Size</th>
+                        </tr>
+                    </thead>
                     <tbody></tbody>
                 </table>
             </div>
         </aside>
     </div>
 
-    <div id="scaffoldImportModal" class="diff-modal" style="display:none;">
-        <div class="diff-modal-content">
-            <div>
-                <h3>Import AI-Generated Project Scaffold</h3>
-                <span class="diff-modal-close" id="closeScaffoldModalBtn">×</span>
-            </div>
-             <div class="modal-scrollable-content">
-                <p style="font-size:0.9em; color:var(--dim-color); margin-top:0;">Paste the full JSON object from your AI below. It must include 'structureString' and 'fileContents'.</p>
-                <textarea id="aiScaffoldJsonInput" rows="10" placeholder='{ "structureString": "myApp(...)", "fileContents": [...] }'></textarea>
-            </div>
-            <div class="diff-modal-actions">
-                <button id="createProjectFromScaffoldBtn" class="action-button primary">Create Project on Disk</button>
-                <button id="cancelScaffoldImportBtn" class="action-button secondary">Cancel</button>
-            </div>
-        </div>
-    </div>
+    <div id="scaffoldImportModal" class="diff-modal" style="display:none;"></div>
 
     <!-- JS Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
@@ -143,9 +158,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/python/python.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js"></script>
     <!-- PATH CORRECTED -->
-    <script src="public/js/jszip.min.js"></script>
+    <script src="/js/jszip.min.js"></script>
 
     <!-- Main Application Logic - PATH CORRECTED -->
-    <script type="module" src="src/js/app.js"></script>
+    <script type="module" src="src/ts/app.ts"></script>
 </body>
+
 </html>
