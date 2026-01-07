@@ -138,7 +138,12 @@ async function handleDrop(event: DragEvent): Promise<void> {
 
   for (const item of Array.from(event.dataTransfer.items)) {
     if (item.kind === "file") {
-      const handle = await item.getAsFileSystemHandle();
+      // Cast to any to bypass TS error until global.d.ts is picked up,
+      // but correctly configured global.d.ts is the real fix.
+      // However, since we fixed global.d.ts, we can try without cast,
+      // OR cast to DataTransferItem if the interface merge works.
+      // For safety in this specific "rage-fix" moment:
+      const handle = await (item as any).getAsFileSystemHandle();
       if (handle?.kind === "directory") {
         return verifyAndProcess(handle as FileSystemDirectoryHandle);
       }
@@ -221,7 +226,7 @@ function setupListeners(): void {
 async function init(): Promise<void> {
   initLayout();
   initModals();
-  populateElements(); // Called ONCE after layout and modals are injected
+  populateElements();
 
   const response = await toResult(fetch("/data/filetypes.json"));
   if (response.ok) {
