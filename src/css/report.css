@@ -1,0 +1,38 @@
+/* --- REPORT VIEW STYLES --- */
+#tabContentArea {
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+}
+#textReportTab {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+#textOutputContainerOuter {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+#textOutput {
+    margin: 0;
+    padding: 15px;
+    font-family: var(--font-main);
+    font-size: 13px;
+    white-space: pre;
+    overflow-y: auto;
+    background-color: #fafafa;
+    flex-grow: 1;
+}
+.button-container {
+    padding: 10px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.button-container .action-button {
+    width: auto;
+}

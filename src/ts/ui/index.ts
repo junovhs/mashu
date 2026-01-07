@@ -1,17 +1,16 @@
 import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo } from "../types/index.js";
+import { initLayout } from "./layout.js";
+import { initModals } from "./modals.js";
 import { displayGlobalStats, generateTextReport } from "./stats.js";
 import { closeViewer } from "./viewer.js";
 
+export * from "./layout.js";
 export * from "./modals.js";
 export * from "./stats.js";
 export * from "./tree.js";
 export * from "./viewer.js";
 
-/**
- * Registers all UI elements into the global state.
- * Only call this once initModals() has finished injecting HTML.
- */
 export function populateElements(): void {
   const ids = [
     "selectFolderBtn",
@@ -46,6 +45,9 @@ export function populateElements(): void {
     "importAiScaffoldBtn",
     "importFromExportBtn",
     "copyScaffoldPromptBtn",
+    "fileTypeTableBody",
+    "selectionSummary",
+    "globalStats",
   ];
 
   ids.forEach((id) => {
@@ -53,9 +55,12 @@ export function populateElements(): void {
     if (el) elements[id] = el;
   });
 
-  // Alias specific elements that need type-casting for easier access elsewhere
   elements.viewerInfo = elements.viewerInfo as HTMLSpanElement;
   elements.viewerFileTitle = elements.viewerFileTitle as HTMLHeadingElement;
+  elements.fileTypeTableBody =
+    elements.fileTypeTableBody as HTMLTableSectionElement;
+  elements.selectionSummary = elements.selectionSummary as HTMLDivElement;
+  elements.globalStats = elements.globalStats as HTMLDivElement;
 }
 
 export function showNotification(message: string, duration = 3000): void {

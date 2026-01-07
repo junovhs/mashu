@@ -1,7 +1,7 @@
 import { downloadZip, exportCombined, handleImport } from "./features.js";
-import { processScaffold, SCAFFOLD_PROMPT_TEMPLATE } from "./scaffold.js";
 import type { ScanAggregator } from "./filesystem.js";
 import { filterScanData, initTypeData, scanDir } from "./filesystem.js";
+import { processScaffold, SCAFFOLD_PROMPT_TEMPLATE } from "./scaffold.js";
 import { appState, elements } from "./state.js";
 import type { FolderInfo } from "./types/index.js";
 import {
@@ -9,6 +9,7 @@ import {
   closeViewer,
   disableUIControls,
   enableUIControls,
+  initLayout,
   initModals,
   initSidebarResizer,
   initTabs,
@@ -89,13 +90,15 @@ async function finishScan(handle: FileSystemDirectoryHandle, data: FolderInfo) {
     updateUI(appState.fullScanData.directoryData as FolderInfo);
   }
   appState.processingInProgress = false;
-  elements.loader?.classList.remove("visible");
+  const loader = elements.loader;
+  if (loader) loader.classList.remove("visible");
 }
 
 function updateUI(data: FolderInfo) {
-  if (elements.treeContainer) {
-    elements.treeContainer.innerHTML = "";
-    renderTree(data, elements.treeContainer);
+  const container = elements.treeContainer;
+  if (container) {
+    container.innerHTML = "";
+    renderTree(data, container);
     refreshAllUI();
     enableUIControls();
   }
@@ -123,7 +126,8 @@ function commitSelections(): void {
 
 function clearProject(): void {
   resetUIForProcessing();
-  elements.loader?.classList.remove("visible");
+  const loader = elements.loader;
+  if (loader) loader.classList.remove("visible");
   enableUIControls(false);
 }
 
@@ -134,8 +138,10 @@ async function handleDrop(event: DragEvent): Promise<void> {
 
   for (const item of Array.from(event.dataTransfer.items)) {
     if (item.kind === "file") {
-      const handle = await (item as any).getAsFileSystemHandle();
-      if (handle?.kind === "directory") return verifyAndProcess(handle);
+      const handle = await item.getAsFileSystemHandle();
+      if (handle?.kind === "directory") {
+        return verifyAndProcess(handle as FileSystemDirectoryHandle);
+      }
     }
   }
   showNotification("Error: Please drop a single folder.", 4000);
@@ -147,7 +153,7 @@ async function handleSelect(): Promise<void> {
     window.showDirectoryPicker({ mode: "readwrite" }),
   );
   if (result.ok) {
-    await verifyAndProcess(result.value as FileSystemDirectoryHandle);
+    await verifyAndProcess(result.value);
   } else if (result.error.name !== "AbortError") {
     showNotification(`Error: ${result.error.message}`, 4000);
   }
@@ -213,8 +219,9 @@ function setupListeners(): void {
 }
 
 async function init(): Promise<void> {
+  initLayout();
   initModals();
-  populateElements(); // Called ONCE after modals are injected
+  populateElements(); // Called ONCE after layout and modals are injected
 
   const response = await toResult(fetch("/data/filetypes.json"));
   if (response.ok) {
