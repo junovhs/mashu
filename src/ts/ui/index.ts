@@ -8,181 +8,181 @@ export * from "./stats.js";
 export * from "./tree.js";
 export * from "./viewer.js";
 
+/**
+ * Registers all UI elements into the global state.
+ * Only call this once initModals() has finished injecting HTML.
+ */
 export function populateElements(): void {
-	const ids = [
-		"selectFolderBtn",
-		"dropZone",
-		"loader",
-		"treeContainer",
-		"commitSelectionsBtn",
-		"textOutput",
-		"copyReportButton",
-		"selectAllBtn",
-		"deselectAllBtn",
-		"expandAllBtn",
-		"collapseAllBtn",
-		"downloadProjectBtn",
-		"clearProjectBtn",
-		"pageLoader",
-		"viewerContent",
-		"viewerInfo",
-		"viewerFileTitle",
-		"closeViewerBtn",
-		"fileViewer",
-		"mainViewTabs",
-		"tabContentArea",
-		"sidebarResizer",
-		"leftSidebar",
-		"aiDebriefingAssistantBtn",
-		"scaffoldImportModal",
-		"closeScaffoldModalBtn",
-		"aiScaffoldJsonInput",
-		"createProjectFromScaffoldBtn",
-		"cancelScaffoldImportBtn",
-		"importAiScaffoldBtn",
-		"importFromExportBtn",
-		"copyScaffoldPromptBtn",
-	];
-	ids.forEach((id) => {
-		const el = document.getElementById(id);
-		if (el) elements[id] = el;
-	});
-	elements.textOutputEl = document.getElementById(
-		"textOutput",
-	) as HTMLPreElement;
-	elements.viewerInfo = document.getElementById(
-		"viewerInfo",
-	) as HTMLSpanElement;
-	elements.viewerFileTitle = document.getElementById(
-		"viewerFileTitle",
-	) as HTMLHeadingElement;
+  const ids = [
+    "selectFolderBtn",
+    "dropZone",
+    "loader",
+    "treeContainer",
+    "commitSelectionsBtn",
+    "textOutput",
+    "copyReportButton",
+    "selectAllBtn",
+    "deselectAllBtn",
+    "expandAllBtn",
+    "collapseAllBtn",
+    "downloadProjectBtn",
+    "clearProjectBtn",
+    "pageLoader",
+    "viewerContent",
+    "viewerInfo",
+    "viewerFileTitle",
+    "closeViewerBtn",
+    "fileViewer",
+    "mainViewTabs",
+    "tabContentArea",
+    "sidebarResizer",
+    "leftSidebar",
+    "aiDebriefingAssistantBtn",
+    "scaffoldImportModal",
+    "closeScaffoldModalBtn",
+    "aiScaffoldJsonInput",
+    "createProjectFromScaffoldBtn",
+    "cancelScaffoldImportBtn",
+    "importAiScaffoldBtn",
+    "importFromExportBtn",
+    "copyScaffoldPromptBtn",
+  ];
+
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) elements[id] = el;
+  });
+
+  // Alias specific elements that need type-casting for easier access elsewhere
+  elements.viewerInfo = elements.viewerInfo as HTMLSpanElement;
+  elements.viewerFileTitle = elements.viewerFileTitle as HTMLHeadingElement;
 }
 
 export function showNotification(message: string, duration = 3000): void {
-	const note = document.createElement("div");
-	note.className = "notification";
-	note.textContent = message;
-	document.body.appendChild(note);
-	setTimeout(() => {
-		note.classList.add("fade-out");
-		setTimeout(() => note.remove(), 500);
-	}, duration);
+  const note = document.createElement("div");
+  note.className = "notification";
+  note.textContent = message;
+  document.body.appendChild(note);
+  setTimeout(() => {
+    note.classList.add("fade-out");
+    setTimeout(() => note.remove(), 500);
+  }, duration);
 }
 
 export function resetUIForProcessing(message = "Processing..."): void {
-	if (elements.loader) {
-		elements.loader.textContent = message;
-		elements.loader.classList.add("visible");
-	}
-	if (elements.treeContainer) elements.treeContainer.innerHTML = "";
-	if (elements.textOutputEl)
-		elements.textOutputEl.textContent = "// NO PROJECT LOADED //";
-	closeViewer();
+  if (elements.loader) {
+    elements.loader.textContent = message;
+    elements.loader.classList.add("visible");
+  }
+  if (elements.treeContainer) elements.treeContainer.innerHTML = "";
+  if (elements.textOutput)
+    elements.textOutput.textContent = "// NO PROJECT LOADED //";
+  closeViewer();
 }
 
 export function showFailedUI(message: string): void {
-	if (elements.loader) {
-		elements.loader.textContent = message;
-		elements.loader.classList.add("error");
-	}
+  if (elements.loader) {
+    elements.loader.textContent = message;
+    elements.loader.classList.add("error");
+  }
 }
 
 export function initTabs(): void {
-	const tabs = elements.mainViewTabs?.querySelectorAll(".tab-button");
-	if (!tabs) return;
+  const tabs = elements.mainViewTabs?.querySelectorAll(".tab-button");
+  if (!tabs) return;
 
-	tabs.forEach((el: Element) => {
-		const button = el as HTMLButtonElement;
-		button.addEventListener("click", () => {
-			const tabName = button.getAttribute("data-tab");
-			if (tabName) setActiveTab(tabName);
-		});
-	});
+  tabs.forEach((el: Element) => {
+    const button = el as HTMLButtonElement;
+    button.addEventListener("click", () => {
+      const tabName = button.getAttribute("data-tab");
+      if (tabName) setActiveTab(tabName);
+    });
+  });
 }
 
 function setActiveTab(tabName: string): void {
-	const buttons = elements.mainViewTabs?.querySelectorAll(".tab-button");
-	buttons?.forEach((el: Element) => {
-		const btn = el as HTMLElement;
-		btn.classList.toggle("active", btn.getAttribute("data-tab") === tabName);
-	});
+  const buttons = elements.mainViewTabs?.querySelectorAll(".tab-button");
+  buttons?.forEach((el: Element) => {
+    const btn = el as HTMLElement;
+    btn.classList.toggle("active", btn.getAttribute("data-tab") === tabName);
+  });
 
-	const contents =
-		elements.tabContentArea?.querySelectorAll(".tab-content-item");
-	contents?.forEach((el: Element) => {
-		const content = el as HTMLElement;
-		const isActive = content.getAttribute("id") === tabName;
-		content.classList.toggle("active", isActive);
-		content.style.display = isActive ? "flex" : "none";
-	});
+  const contents =
+    elements.tabContentArea?.querySelectorAll(".tab-content-item");
+  contents?.forEach((el: Element) => {
+    const content = el as HTMLElement;
+    const isActive = content.getAttribute("id") === tabName;
+    content.classList.toggle("active", isActive);
+    content.style.display = isActive ? "flex" : "none";
+  });
 
-	if (tabName === "textReportTab") refreshAllUI();
+  if (tabName === "textReportTab") refreshAllUI();
 }
 
 export function refreshAllUI(): void {
-	const data = appState.selectionCommitted
-		? appState.committedScanData
-		: appState.fullScanData;
-	if (!data) return;
+  const data = appState.selectionCommitted
+    ? appState.committedScanData
+    : appState.fullScanData;
+  if (!data) return;
 
-	displayGlobalStats(data);
-	if (elements.textOutputEl) {
-		elements.textOutputEl.textContent = generateTextReport(data);
-	}
-	updateFilter();
+  displayGlobalStats(data);
+  if (elements.textOutput) {
+    elements.textOutput.textContent = generateTextReport(data);
+  }
+  updateFilter();
 }
 
 export function enableUIControls(enable = true): void {
-	const controls = [
-		"commitSelectionsBtn",
-		"selectAllBtn",
-		"deselectAllBtn",
-		"expandAllBtn",
-		"collapseAllBtn",
-		"downloadProjectBtn",
-		"clearProjectBtn",
-		"copyReportButton",
-		"aiDebriefingAssistantBtn",
-	];
-	controls.forEach((id) => {
-		const btn = elements[id];
-		if (btn) (btn as HTMLButtonElement).disabled = !enable;
-	});
+  const controls = [
+    "commitSelectionsBtn",
+    "selectAllBtn",
+    "deselectAllBtn",
+    "expandAllBtn",
+    "collapseAllBtn",
+    "downloadProjectBtn",
+    "clearProjectBtn",
+    "copyReportButton",
+    "aiDebriefingAssistantBtn",
+  ];
+  controls.forEach((id) => {
+    const btn = elements[id];
+    if (btn) (btn as HTMLButtonElement).disabled = !enable;
+  });
 }
 
 export function disableUIControls(): void {
-	enableUIControls(false);
+  enableUIControls(false);
 }
 
 function updateFilter(): void {
-	if (!appState.fullScanData || !elements.treeContainer) return;
-	const committedPaths = getCommits();
+  if (!appState.fullScanData || !elements.treeContainer) return;
+  const committedPaths = getCommits();
 
-	elements.treeContainer.querySelectorAll("li").forEach((el: Element) => {
-		const li = el as HTMLElement;
-		const path = li.dataset.path || "";
-		li.classList.remove("dimmed-uncommitted");
-		if (
-			appState.selectionCommitted &&
-			committedPaths.size > 0 &&
-			!committedPaths.has(path)
-		) {
-			li.classList.add("dimmed-uncommitted");
-		}
-	});
+  elements.treeContainer.querySelectorAll("li").forEach((el: Element) => {
+    const li = el as HTMLElement;
+    const path = li.dataset.path || "";
+    li.classList.remove("dimmed-uncommitted");
+    if (
+      appState.selectionCommitted &&
+      committedPaths.size > 0 &&
+      !committedPaths.has(path)
+    ) {
+      li.classList.add("dimmed-uncommitted");
+    }
+  });
 }
 
 function getCommits(): Set<string> {
-	const paths = new Set<string>();
-	if (
-		appState.selectionCommitted &&
-		appState.committedScanData?.directoryData
-	) {
-		const walk = (node: FolderInfo | FileInfo) => {
-			paths.add(node.path);
-			if (node.type === "folder") node.children.forEach(walk);
-		};
-		walk(appState.committedScanData.directoryData);
-	}
-	return paths;
+  const paths = new Set<string>();
+  if (
+    appState.selectionCommitted &&
+    appState.committedScanData?.directoryData
+  ) {
+    const walk = (node: FolderInfo | FileInfo) => {
+      paths.add(node.path);
+      if (node.type === "folder") node.children.forEach(walk);
+    };
+    walk(appState.committedScanData.directoryData);
+  }
+  return paths;
 }

@@ -1,10 +1,5 @@
-import {
-  downloadZip,
-  exportCombined,
-  handleImport,
-  processScaffold,
-  SCAFFOLD_PROMPT_TEMPLATE,
-} from "./features.js";
+import { downloadZip, exportCombined, handleImport } from "./features.js";
+import { processScaffold, SCAFFOLD_PROMPT_TEMPLATE } from "./scaffold.js";
 import type { ScanAggregator } from "./filesystem.js";
 import { filterScanData, initTypeData, scanDir } from "./filesystem.js";
 import { appState, elements } from "./state.js";
@@ -139,7 +134,6 @@ async function handleDrop(event: DragEvent): Promise<void> {
 
   for (const item of Array.from(event.dataTransfer.items)) {
     if (item.kind === "file") {
-      // biome-ignore lint/suspicious/noExplicitAny: DataTransferItem.getAsFileSystemHandle is not standard yet
       const handle = await (item as any).getAsFileSystemHandle();
       if (handle?.kind === "directory") return verifyAndProcess(handle);
     }
@@ -191,7 +185,7 @@ function setupListeners(): void {
     toggleAllFolders(true),
   );
   elements.copyReportButton?.addEventListener("click", () => {
-    const text = elements.textOutputEl?.textContent || "";
+    const text = elements.textOutput?.textContent || "";
     navigator.clipboard
       .writeText(text)
       .then(() => showNotification("Report copied!", 2000));
@@ -219,9 +213,8 @@ function setupListeners(): void {
 }
 
 async function init(): Promise<void> {
-  populateElements();
   initModals();
-  populateElements(); // Re-populate for injected elements
+  populateElements(); // Called ONCE after modals are injected
 
   const response = await toResult(fetch("/data/filetypes.json"));
   if (response.ok) {
