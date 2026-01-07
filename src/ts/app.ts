@@ -1,3 +1,12 @@
+// --- CSS IMPORTS (Forces bundling) ---
+import "../css/app.css";
+import "../css/components.css";
+import "../css/tree.css";
+import "../css/viewer.css";
+import "../css/modals.css";
+import "../css/report.css";
+import "../css/stats.css";
+
 import { downloadZip, exportCombined, handleImport } from "./features.js";
 import type { ScanAggregator } from "./filesystem.js";
 import { filterScanData, initTypeData, scanDir } from "./filesystem.js";
@@ -138,12 +147,7 @@ async function handleDrop(event: DragEvent): Promise<void> {
 
   for (const item of Array.from(event.dataTransfer.items)) {
     if (item.kind === "file") {
-      // Cast to any to bypass TS error until global.d.ts is picked up,
-      // but correctly configured global.d.ts is the real fix.
-      // However, since we fixed global.d.ts, we can try without cast,
-      // OR cast to DataTransferItem if the interface merge works.
-      // For safety in this specific "rage-fix" moment:
-      const handle = await (item as any).getAsFileSystemHandle();
+      const handle = await item.getAsFileSystemHandle();
       if (handle?.kind === "directory") {
         return verifyAndProcess(handle as FileSystemDirectoryHandle);
       }
