@@ -1,10 +1,9 @@
 import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo } from "../types/index.js";
-import { initLayout } from "./layout.js";
-import { initModals } from "./modals.js";
 import { displayGlobalStats, generateTextReport } from "./stats.js";
 import { closeViewer } from "./viewer.js";
 
+// Export everything so app.ts can find them
 export * from "./layout.js";
 export * from "./modals.js";
 export * from "./stats.js";
