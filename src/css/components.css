@@ -1,14 +1,17 @@
 /* --- DIRANALYZE BASE COMPONENT STYLES --- */
+
 /* Sidebar Header & Logo */
 #sidebarHeader {
     display: flex;
     align-items: center;
     padding-bottom: 5px;
 }
+
 .header-logo {
     height: 32px;
     width: auto;
 }
+
 /* Actions & Buttons */
 .action-button {
     display: flex;
@@ -30,31 +33,38 @@
     width: 100%;
     box-sizing: border-box;
 }
+
 .action-button:hover:not(:disabled) {
     background-color: var(--button-hover-bg);
     border-color: var(--dim-color);
 }
+
 .action-button:active:not(:disabled) {
     background-color: var(--button-active-bg);
     color: var(--button-active-text);
 }
+
 .action-button:disabled {
     opacity: var(--disabled-opacity);
     cursor: not-allowed;
 }
+
 .action-button.primary {
     background-color: var(--accent-color);
     color: white;
     border-color: var(--accent-color);
 }
+
 .action-button.primary:hover:not(:disabled) {
     filter: brightness(1.1);
 }
+
 .utility-button {
     text-transform: uppercase;
     font-size: 11px;
     letter-spacing: 0.5px;
 }
+
 /* Drop Zone */
 #dropZone {
     border: 2px dashed var(--border-color);
@@ -64,29 +74,35 @@
     transition: var(--transition-smooth);
     background-color: rgba(0, 122, 255, 0.02);
 }
+
 #dropZone.dragover {
     border-color: var(--accent-color);
     background-color: rgba(0, 122, 255, 0.08);
 }
+
 .drop-icon {
     font-size: 32px;
     margin-bottom: 8px;
 }
+
 .drop-text {
     font-weight: 600;
     font-size: 12px;
     color: var(--dim-color);
 }
+
 .drop-alternative {
     font-size: 10px;
     color: var(--dim-color);
     margin: 5px 0;
 }
+
 .folder-select-btn {
     margin-top: 8px;
     width: auto;
     display: inline-flex;
 }
+
 /* Loader */
 #loader {
     display: none;
@@ -96,6 +112,7 @@
     color: var(--accent-color);
     font-weight: bold;
 }
+
 /* Panels */
 .content-panel {
     display: flex;
@@ -107,12 +124,14 @@
     box-shadow: var(--shadow-small);
     height: 100%;
 }
+
 .panel-header {
     padding: 10px 15px;
     background-color: #f1f1f3;
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
 }
+
 .panel-header h2 {
     margin: 0;
     font-size: 14px;
@@ -120,6 +139,7 @@
     color: var(--header-color);
     letter-spacing: -0.2px;
 }
+
 /* Tabs */
 #mainViewTabs {
     display: flex;
@@ -129,6 +149,7 @@
     margin-bottom: 10px;
     flex-shrink: 0;
 }
+
 .tab-button {
     background: none;
     border: none;
@@ -140,12 +161,15 @@
     position: relative;
     transition: color 0.2s;
 }
+
 .tab-button:hover {
     color: var(--text-color);
 }
+
 .tab-button.active {
     color: var(--accent-color);
 }
+
 .tab-button.active::after {
     content: "";
     position: absolute;
@@ -155,6 +179,7 @@
     height: 2px;
     background-color: var(--accent-color);
 }
+
 /* Sidebar Resizer Decor */
 #sidebarResizer::after {
     content: "";
@@ -166,6 +191,7 @@
     height: 30px;
     background-color: rgba(0, 0, 0, 0.1);
 }
+
 /* Utility */
 .sidebar-hr {
     border: 0;

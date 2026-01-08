@@ -1,0 +1,81 @@
+/* --- TREE VIEW STYLES --- */
+
+.tree {
+    padding: 10px;
+    overflow-y: auto;
+    flex-grow: 1;
+    font-size: 13px;
+}
+
+.tree ul {
+    list-style: none;
+    padding-left: 18px;
+    margin: 0;
+}
+
+.tree li.collapsed > ul {
+    display: none;
+}
+
+.item-line {
+    display: flex;
+    align-items: center;
+    padding: 3px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.1s;
+    gap: 8px;
+}
+
+.item-line:hover {
+    background-color: var(--highlight-bg);
+}
+
+.item-prefix {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.selector {
+    margin: 0;
+    cursor: pointer;
+}
+
+.folder-toggle {
+    width: 14px;
+    cursor: pointer;
+    user-select: none;
+    color: var(--dim-color);
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--dim-color);
+}
+
+li.folder > .item-line > .item-prefix > .icon svg {
+    fill: #fbbc04;
+}
+
+.name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+
+.stats {
+    font-size: 11px;
+    color: var(--dim-color);
+    margin-left: auto;
+    padding-left: 10px;
+}
