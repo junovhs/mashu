@@ -1,4 +1,31 @@
 export function initLayout(): void {
+  // Add full-page drop overlay
+  const dropOverlay = document.createElement("div");
+  dropOverlay.id = "fullPageDropOverlay";
+  dropOverlay.innerHTML = `
+    <div class="drop-overlay-particles">
+      <div class="drop-particle"></div>
+      <div class="drop-particle"></div>
+      <div class="drop-particle"></div>
+      <div class="drop-particle"></div>
+      <div class="drop-particle"></div>
+      <div class="drop-particle"></div>
+      <div class="drop-particle"></div>
+      <div class="drop-particle"></div>
+      <div class="drop-particle"></div>
+    </div>
+    <div class="drop-overlay-corners">
+      <div class="drop-overlay-corner-bl"></div>
+      <div class="drop-overlay-corner-br"></div>
+    </div>
+    <div class="drop-overlay-content">
+      <div class="drop-overlay-icon">📂</div>
+      <h2 class="drop-overlay-title">Drop your folder here</h2>
+      <p class="drop-overlay-subtitle">Release to analyze directory structure</p>
+    </div>
+  `;
+  document.body.appendChild(dropOverlay);
+
   const leftSidebar = document.getElementById("leftSidebar");
   if (leftSidebar) {
     leftSidebar.innerHTML = `
@@ -10,7 +37,7 @@ export function initLayout(): void {
                 <div id="dropZone">
                     <div class="drop-content">
                         <div class="drop-icon">📁</div>
-                        <div class="drop-text">DROP FOLDER HERE</div>
+                        <div class="drop-text">DRAG FOLDER ANYWHERE</div>
                         <div class="drop-alternative">- OR -</div>
                         <button id="selectFolderBtn" class="folder-select-btn">SELECT FOLDER</button>
                     </div>

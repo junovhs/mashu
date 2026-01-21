@@ -6,6 +6,7 @@ import "../css/viewer.css";
 import "../css/modals.css";
 import "../css/report.css";
 import "../css/stats.css";
+import "../css/dropoverlay.css";
 
 import { downloadZip, exportCombined } from "./features.js";
 import type { ScanAggregator } from "./filesystem.js";
@@ -106,26 +107,130 @@ function clearProject(): void {
 }
 
 // ============================================================================
-// DRAG & DROP HANDLER (uses webkitGetAsEntry - works in all browsers)
+// FULL-PAGE DROP OVERLAY
 // ============================================================================
 
-async function handleDrop(event: DragEvent): Promise<void> {
-  event.preventDefault();
-  elements.dropZone?.classList.remove("dragover");
-  if (appState.processingInProgress || !event.dataTransfer) return;
+let dragCounter = 0; // Track nested drag events
 
-  const items = Array.from(event.dataTransfer.items);
-  
-  for (const item of items) {
-    if (item.kind === "file") {
-      const handle = await buildFromDropItem(item);
-      if (handle) {
-        return processDirectory(handle);
-      }
+function showDropOverlay(): void {
+  const overlay = document.getElementById("fullPageDropOverlay");
+  if (overlay && !appState.processingInProgress) {
+    overlay.classList.add("visible");
+  }
+}
+
+function hideDropOverlay(): void {
+  const overlay = document.getElementById("fullPageDropOverlay");
+  if (overlay) {
+    overlay.classList.remove("visible", "drag-over");
+  }
+}
+
+function setOverlayActive(active: boolean): void {
+  const overlay = document.getElementById("fullPageDropOverlay");
+  if (overlay) {
+    if (active) {
+      overlay.classList.add("drag-over");
+    } else {
+      overlay.classList.remove("drag-over");
     }
   }
+}
+
+function createRipple(x: number, y: number): void {
+  const overlay = document.getElementById("fullPageDropOverlay");
+  if (!overlay) return;
   
-  showNotification("Error: Please drop a single folder.", 4000);
+  const ripple = document.createElement("div");
+  ripple.className = "drop-ripple active";
+  ripple.style.left = `${x}px`;
+  ripple.style.top = `${y}px`;
+  overlay.appendChild(ripple);
+  
+  setTimeout(() => ripple.remove(), 600);
+}
+
+function setupFullPageDrop(): void {
+  // Prevent default drag behaviors on document
+  document.addEventListener("dragover", (e: DragEvent) => {
+    e.preventDefault();
+    if (e.dataTransfer) {
+      e.dataTransfer.dropEffect = "copy";
+    }
+  });
+
+  document.addEventListener("dragenter", (e: DragEvent) => {
+    e.preventDefault();
+    dragCounter++;
+    
+    // Check if dragging files/folders
+    if (e.dataTransfer?.types.includes("Files")) {
+      showDropOverlay();
+    }
+  });
+
+  document.addEventListener("dragleave", (e: DragEvent) => {
+    e.preventDefault();
+    dragCounter--;
+    
+    if (dragCounter === 0) {
+      hideDropOverlay();
+    }
+  });
+
+  document.addEventListener("drop", (e: DragEvent) => {
+    e.preventDefault();
+    dragCounter = 0;
+    hideDropOverlay();
+  });
+
+  // Setup the overlay itself for visual feedback
+  const overlay = document.getElementById("fullPageDropOverlay");
+  if (overlay) {
+    overlay.addEventListener("dragover", (e: DragEvent) => {
+      e.preventDefault();
+      setOverlayActive(true);
+    });
+
+    overlay.addEventListener("dragleave", (e: DragEvent) => {
+      // Only deactivate if leaving to outside the overlay content
+      const rect = overlay.getBoundingClientRect();
+      const x = e.clientX;
+      const y = e.clientY;
+      
+      if (x <= rect.left || x >= rect.right || y <= rect.top || y >= rect.bottom) {
+        setOverlayActive(false);
+      }
+    });
+
+    overlay.addEventListener("drop", async (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      createRipple(e.clientX, e.clientY);
+      
+      // Small delay for visual feedback
+      await new Promise(resolve => setTimeout(resolve, 150));
+      
+      dragCounter = 0;
+      hideDropOverlay();
+      
+      if (appState.processingInProgress || !e.dataTransfer) return;
+
+      const items = Array.from(e.dataTransfer.items);
+      
+      for (const item of items) {
+        if (item.kind === "file") {
+          const handle = await buildFromDropItem(item);
+          if (handle) {
+            return processDirectory(handle);
+          }
+        }
+      }
+      
+      showNotification("Please drop a folder, not a file.", 4000);
+    });
+  }
 }
 
 // ============================================================================
@@ -174,19 +279,8 @@ function setupHiddenInput(): void {
 }
 
 function setupListeners(): void {
-  const dz = elements.dropZone;
-  if (dz) {
-    dz.addEventListener("dragover", (e: DragEvent) => {
-      e.preventDefault();
-      if (e.dataTransfer) e.dataTransfer.dropEffect = "copy";
-    });
-    dz.addEventListener("dragenter", (e: DragEvent) => {
-      e.preventDefault();
-      dz.classList.add("dragover");
-    });
-    dz.addEventListener("dragleave", () => dz.classList.remove("dragover"));
-    dz.addEventListener("drop", (e: DragEvent) => handleDrop(e));
-  }
+  // Full-page drop is handled separately
+  setupFullPageDrop();
 
   elements.selectFolderBtn?.addEventListener("click", handleSelect);
   elements.commitSelectionsBtn?.addEventListener("click", commitSelections);
