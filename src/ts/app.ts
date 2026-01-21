@@ -30,7 +30,7 @@ import {
   toggleAllFolders,
 } from "./ui/index.js";
 import type { VirtualDirectoryHandle } from "./utils/crossbrowser_fs.js";
-import { buildFromDropItem, buildFromFileList, showFolderPicker } from "./utils/crossbrowser_fs.js";
+import { buildFromEntry, buildFromFileList, showFolderPicker } from "./utils/crossbrowser_fs.js";
 
 async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
   resetUIForProcessing(`Processing '${handle.name}'...`);
@@ -207,6 +207,20 @@ function setupFullPageDrop(): void {
       e.preventDefault();
       e.stopPropagation();
       
+      // IMPORTANT: Get the entry synchronously before any async operations
+      // DataTransferItem becomes invalid after the event handler yields
+      let entry: FileSystemEntry | null = null;
+      if (e.dataTransfer && !appState.processingInProgress) {
+        const items = Array.from(e.dataTransfer.items);
+        for (const item of items) {
+          if (item.kind === "file") {
+            entry = item.webkitGetAsEntry();
+            if (entry?.isDirectory) break;
+            entry = null;
+          }
+        }
+      }
+      
       createRipple(e.clientX, e.clientY);
       
       // Small delay for visual feedback
@@ -215,20 +229,20 @@ function setupFullPageDrop(): void {
       dragCounter = 0;
       hideDropOverlay();
       
-      if (appState.processingInProgress || !e.dataTransfer) return;
-
-      const items = Array.from(e.dataTransfer.items);
-      
-      for (const item of items) {
-        if (item.kind === "file") {
-          const handle = await buildFromDropItem(item);
-          if (handle) {
-            return processDirectory(handle);
-          }
+      if (!entry) {
+        if (!appState.processingInProgress) {
+          showNotification("Please drop a folder, not a file.", 4000);
         }
+        return;
       }
       
-      showNotification("Please drop a folder, not a file.", 4000);
+      // Now process the entry (this can be async)
+      const handle = await buildFromEntry(entry);
+      if (handle) {
+        return processDirectory(handle);
+      }
+      
+      showNotification("Could not read folder.", 4000);
     });
   }
 }

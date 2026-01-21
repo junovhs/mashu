@@ -137,6 +137,7 @@ type FSEntry = FSFileEntry | FSDirectoryEntry;
 
 /**
  * Build virtual directory handle from a dropped DataTransferItem
+ * @deprecated Use buildFromEntry instead - DataTransferItem becomes invalid after async operations
  */
 export async function buildFromDropItem(
   item: DataTransferItem
@@ -146,6 +147,19 @@ export async function buildFromDropItem(
     return null;
   }
   return processDirectory(entry as FSDirectoryEntry);
+}
+
+/**
+ * Build virtual directory handle from a FileSystemEntry.
+ * Use this when you've already called webkitGetAsEntry() synchronously.
+ */
+export async function buildFromEntry(
+  entry: FileSystemEntry
+): Promise<VirtualDirectoryHandle | null> {
+  if (!entry || !entry.isDirectory) {
+    return null;
+  }
+  return processDirectory(entry as unknown as FSDirectoryEntry);
 }
 
 async function processDirectory(dirEntry: FSDirectoryEntry): Promise<InternalDirectoryHandle> {
