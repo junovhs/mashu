@@ -1,5 +1,5 @@
 SLOPCHOP CHECK REPORT
-Generated: 2026-01-21 10:04:43
+Generated: 2026-01-21 10:12:49
 Status: FAILED
 
 === DASHBOARD ===
@@ -13,7 +13,7 @@ Top 5 Cognitive Complexity:
 Top 5 Largest Files (Tokens):
   2251  src\ts\app.ts
   1957  src\css\dropoverlay.css
-  1677  src\ts\filesystem.ts
+  1725  src\ts\filesystem.ts
   1659  src\ts\ui\tree.ts
   1592  src\ts\utils\crossbrowser_fs.ts
 
@@ -26,7 +26,7 @@ src\ts\app.ts:1 | LAW OF ATOMICITY | File size is 2251 tokens (Limit: 2000)
 === FULL OUTPUT LOGS ===
 
 >>> COMMAND: npx.cmd @biomejs/biome check src/
-Checked 23 files in 10ms. No fixes applied.
+Checked 23 files in 14ms. No fixes applied.
 
 
 >>> COMMAND: slopchop scan --locality

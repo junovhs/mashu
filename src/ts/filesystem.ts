@@ -1,7 +1,7 @@
 import type { FileInfo, FolderInfo, ScanData } from "./types/index.js";
 import type { VirtualDirectoryHandle, VirtualFileHandle } from "./utils/crossbrowser_fs.js";
 import { getExt } from "./utils/fs_utils.js";
-import { Ok, type Result, toResult } from "./utils/result.js";
+import { Err, Ok, type Result, toResult } from "./utils/result.js";
 
 export {
   formatBytes,
@@ -268,5 +268,12 @@ function collectNodes(node: FileInfo | FolderInfo) {
 export async function readFile(
   handle: VirtualFileHandle,
 ): Promise<Result<string>> {
-  return toResult((await handle.getFile()).text());
+  try {
+    const file = await handle.getFile();
+    const text = await file.text();
+    return Ok(text);
+  } catch (error) {
+    console.error("readFile failed:", error);
+    return Err(error instanceof Error ? error : new Error(String(error)));
+  }
 }

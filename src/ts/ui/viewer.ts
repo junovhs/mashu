@@ -55,21 +55,41 @@ export async function openFile(file: FileInfo): Promise<void> {
   )
     return;
 
-  const res = await readFile(file.entryHandle);
-  if (!res.ok) {
-    showNotification(`Error: ${res.error.message}`, 4000);
+  // Debug: verify the handle exists
+  if (!file.entryHandle) {
+    showNotification("Error: File handle is missing", 4000);
+    console.error("openFile: file.entryHandle is undefined", file);
     return;
   }
 
-  const content = res.value;
-  appState.currentViewingFile = file;
+  if (typeof file.entryHandle.getFile !== "function") {
+    showNotification("Error: Invalid file handle", 4000);
+    console.error("openFile: getFile is not a function", file.entryHandle);
+    return;
+  }
 
-  initOrSet(file, content);
-  showUI();
-  appState.isViewerActive = true;
-  setTimeout(() => {
-    appState.viewerInstance?.refresh();
-  }, 10);
+  try {
+    const res = await readFile(file.entryHandle);
+    if (!res.ok) {
+      showNotification(`Error reading file: ${res.error.message}`, 4000);
+      console.error("openFile: readFile failed", res.error);
+      return;
+    }
+
+    const content = res.value;
+    appState.currentViewingFile = file;
+
+    initOrSet(file, content);
+    showUI();
+    appState.isViewerActive = true;
+    setTimeout(() => {
+      appState.viewerInstance?.refresh();
+    }, 10);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    showNotification(`Error: ${msg}`, 4000);
+    console.error("openFile: unexpected error", err);
+  }
 }
 
 function initOrSet(file: FileInfo, content: string) {
