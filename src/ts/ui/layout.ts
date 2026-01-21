@@ -10,7 +10,7 @@ export function initLayout(): void {
                 <div id="dropZone">
                     <div class="drop-content">
                         <div class="drop-icon">📁</div>
-                        <div class="drop-text">DROP FOLDER</div>
+                        <div class="drop-text">DROP FOLDER HERE</div>
                         <div class="drop-alternative">- OR -</div>
                         <button id="selectFolderBtn" class="folder-select-btn">SELECT FOLDER</button>
                     </div>
@@ -18,12 +18,6 @@ export function initLayout(): void {
                 <div id="loader">ANALYSING...</div>
             </div>
 
-            <button id="importAiScaffoldBtn" class="action-button utility-button"
-                title="Create a project from an AI-generated scaffold (JSON)">IMPORT AI SCAFFOLD</button>
-            <button id="importFromExportBtn" class="action-button utility-button"
-                title="Reconstruct a project from a DirAnalyze combined text export">IMPORT FROM EXPORT</button>
-            <button id="copyScaffoldPromptBtn" class="action-button utility-button"
-                title="Copy AI prompt template for generating scaffold JSON">COPY SCAFFOLD PROMPT</button>
             <hr class="sidebar-hr">
 
             <div id="treeViewControls">

@@ -1,3 +1,5 @@
+import type { VirtualDirectoryHandle, VirtualFileHandle } from "../utils/crossbrowser_fs.js";
+
 export interface FileInfo {
   name: string;
   type: "file";
@@ -5,7 +7,7 @@ export interface FileInfo {
   path: string;
   extension: string;
   depth: number;
-  entryHandle: FileSystemFileHandle;
+  entryHandle: VirtualFileHandle;
 }
 
 export interface FolderInfo {
@@ -18,7 +20,7 @@ export interface FolderInfo {
   dirCount: number;
   totalSize: number;
   fileTypes: Record<string, { count: number; size: number }>;
-  entryHandle: FileSystemDirectoryHandle;
+  entryHandle: VirtualDirectoryHandle;
 }
 
 export interface ScanData {
@@ -27,7 +29,7 @@ export interface ScanData {
   allFoldersList: Array<{
     name: string;
     path: string;
-    entryHandle: FileSystemDirectoryHandle;
+    entryHandle: VirtualDirectoryHandle;
   }>;
   maxDepth: number;
 }
@@ -39,10 +41,8 @@ export interface AppState {
   selectionCommitted: boolean;
   processingInProgress: boolean;
   currentViewingFile: FileInfo | null;
-  // FIX: Use the specific type instead of unknown
   viewerInstance: CodeMirror.Editor | null;
   isViewerActive: boolean;
-  directoryHandle: FileSystemDirectoryHandle | null;
 }
 
 export interface FileTypeData {

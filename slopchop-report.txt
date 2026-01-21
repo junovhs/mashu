@@ -1,0 +1,29 @@
+SLOPCHOP CHECK REPORT
+Generated: 2026-01-21 09:55:12
+Status: PASSED
+
+=== DASHBOARD ===
+Top 5 Cognitive Complexity:
+  4    src\ts\ui\index.ts
+  3    src\ts\utils\fs_utils.ts
+  2    src\ts\features.ts
+  2    src\ts\ui\modals.ts
+  2    src\ts\ui\stats.ts
+
+Top 5 Largest Files (Tokens):
+  1677  src\ts\filesystem.ts
+  1659  src\ts\ui\tree.ts
+  1631  src\ts\app.ts
+  1492  src\ts\utils\crossbrowser_fs.ts
+  1234  src\css\app.css
+
+=== VIOLATIONS ===
+None. Codebase is clean.
+
+=== FULL OUTPUT LOGS ===
+
+>>> COMMAND: npx.cmd @biomejs/biome check src/
+Checked 22 files in 14ms. No fixes applied.
+
+
+>>> COMMAND: slopchop scan --locality

@@ -1,10 +1,25 @@
-import { formatBytes, getExt, readFile } from "../filesystem.js";
+import { readFile } from "../filesystem.js";
 import { appState, elements } from "../state.js";
 import type { FileInfo } from "../types/index.js";
+import { formatBytes, getExt } from "../utils/fs_utils.js";
 import { showNotification } from "./index.js";
 
-export function getMode(filePath: string): string {
-  if (typeof CodeMirror === "undefined") return "text/plain";
+declare const CodeMirror: {
+  (host: HTMLElement, options?: unknown): CodeMirror.Editor;
+  findModeByExtension(ext: string): { mode: string; name: string } | undefined;
+};
+
+declare namespace CodeMirror {
+  interface Editor {
+    refresh(): void;
+    setValue(content: string): void;
+    setOption(name: string, value: unknown): void;
+    getOption(name: string): unknown;
+    clearHistory(): void;
+  }
+}
+
+function getMode(filePath: string): string {
   const ext = getExt(filePath).substring(1);
   const info = CodeMirror.findModeByExtension(ext);
   return info ? info.mode || "text/plain" : "text/plain";

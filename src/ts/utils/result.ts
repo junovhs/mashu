@@ -1,6 +1,6 @@
 export type Result<T, E = Error> =
-	| { ok: true; value: T }
-	| { ok: false; error: E };
+  | { ok: true; value: T }
+  | { ok: false; error: E };
 
 export type Option<T> = { some: true; value: T } | { some: false };
 
@@ -14,12 +14,12 @@ export const None = <T>(): Option<T> => ({ some: false });
  * Helper to convert a promise to a Result.
  */
 export async function toResult<T>(
-	promise: Promise<T>,
+  promise: Promise<T>,
 ): Promise<Result<T, Error>> {
-	try {
-		const value = await promise;
-		return Ok(value);
-	} catch (error) {
-		return Err(error instanceof Error ? error : new Error(String(error)));
-	}
+  try {
+    const value = await promise;
+    return Ok(value);
+  } catch (error) {
+    return Err(error instanceof Error ? error : new Error(String(error)));
+  }
 }

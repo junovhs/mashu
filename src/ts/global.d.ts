@@ -1,67 +1,44 @@
-interface FileSystemHandle {
-  readonly kind: "file" | "directory";
-  readonly name: string;
-  queryPermission(
-    descriptor?: FileSystemHandlePermissionDescriptor,
-  ): Promise<PermissionState>;
-  requestPermission(
-    descriptor?: FileSystemHandlePermissionDescriptor,
-  ): Promise<PermissionState>;
+// Extend File to include webkitRelativePath (used by <input webkitdirectory>)
+interface File {
+  readonly webkitRelativePath: string;
 }
 
-interface FileSystemFileHandle extends FileSystemHandle {
-  readonly kind: "file";
-  getFile(): Promise<File>;
-  createWritable(
-    options?: FileSystemCreateWritableOptions,
-  ): Promise<FileSystemWritableFileStream>;
-}
-
-interface FileSystemDirectoryHandle extends FileSystemHandle {
-  readonly kind: "directory";
-  getDirectoryHandle(
-    name: string,
-    options?: FileSystemGetDirectoryOptions,
-  ): Promise<FileSystemDirectoryHandle>;
-  getFileHandle(
-    name: string,
-    options?: FileSystemGetFileOptions,
-  ): Promise<FileSystemFileHandle>;
-  values(): AsyncIterableIterator<FileSystemHandle>;
-}
-
-interface FileSystemHandlePermissionDescriptor {
-  mode?: "read" | "readwrite";
-}
-
-interface FileSystemCreateWritableOptions {
-  keepExistingData?: boolean;
-}
-
-interface FileSystemWritableFileStream extends WritableStream {
-  write(data: unknown): Promise<void>;
-  seek(position: number): Promise<void>;
-  truncate(size: number): Promise<void>;
-}
-
-interface FileSystemGetDirectoryOptions {
-  create?: boolean;
-}
-
-interface FileSystemGetFileOptions {
-  create?: boolean;
-}
-
-interface Window {
-  showOpenFilePicker(options?: unknown): Promise<FileSystemFileHandle[]>;
-  showDirectoryPicker(options?: unknown): Promise<FileSystemDirectoryHandle>;
-}
-
-// Extend the existing interface
+// webkitGetAsEntry for drag & drop
 interface DataTransferItem {
-  getAsFileSystemHandle(): Promise<FileSystemHandle | null>;
+  webkitGetAsEntry(): FileSystemEntry | null;
 }
 
+// FileSystem Entry API types (for drag & drop)
+interface FileSystemEntry {
+  readonly name: string;
+  readonly fullPath: string;
+  readonly isFile: boolean;
+  readonly isDirectory: boolean;
+}
+
+interface FileSystemFileEntry extends FileSystemEntry {
+  readonly isFile: true;
+  readonly isDirectory: false;
+  file(
+    successCallback: (file: File) => void,
+    errorCallback?: (err: DOMException) => void
+  ): void;
+}
+
+interface FileSystemDirectoryEntry extends FileSystemEntry {
+  readonly isFile: false;
+  readonly isDirectory: true;
+  createReader(): FileSystemDirectoryReader;
+}
+
+interface FileSystemDirectoryReader {
+  readEntries(
+    successCallback: (entries: FileSystemEntry[]) => void,
+    errorCallback?: (err: DOMException) => void
+  ): void;
+}
+
+// CodeMirror types
 declare namespace CodeMirror {
   interface Editor {
     refresh(): void;
@@ -80,6 +57,7 @@ declare function CodeMirror(
   options?: unknown,
 ): CodeMirror.Editor;
 
+// JSZip types
 interface JSZip {
   file(path: string, data: string | Blob | Promise<string | Blob>): void;
   generateAsync(options: { type: "blob" }): Promise<Blob>;

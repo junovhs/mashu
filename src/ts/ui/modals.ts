@@ -1,26 +1,4 @@
 import { appState, elements } from "../state.js";
-import { getModalHTML } from "./modals_html.js";
-
-export function initModals(): void {
-  // FIX: Use document.getElementById directly.
-  // The 'elements' registry is not populated yet when this runs.
-  const modal = document.getElementById("scaffoldImportModal");
-  if (modal) {
-    modal.innerHTML = getModalHTML();
-  }
-}
-
-export function openScaffoldModal(): void {
-  const input = elements.aiScaffoldJsonInput as HTMLTextAreaElement | undefined;
-  if (input) input.value = "";
-  const modal = elements.scaffoldImportModal;
-  if (modal) modal.style.display = "flex";
-}
-
-export function closeScaffoldModal(): void {
-  const modal = elements.scaffoldImportModal;
-  if (modal) modal.style.display = "none";
-}
 
 export function initSidebarResizer(): void {
   const leftSidebar = elements.leftSidebar;

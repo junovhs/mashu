@@ -7,22 +7,18 @@ import "../css/modals.css";
 import "../css/report.css";
 import "../css/stats.css";
 
-import { downloadZip, exportCombined, handleImport } from "./features.js";
+import { downloadZip, exportCombined } from "./features.js";
 import type { ScanAggregator } from "./filesystem.js";
 import { filterScanData, initTypeData, scanDir } from "./filesystem.js";
-import { processScaffold, SCAFFOLD_PROMPT_TEMPLATE } from "./scaffold.js";
 import { appState, elements } from "./state.js";
 import type { FolderInfo } from "./types/index.js";
 import {
-  closeScaffoldModal,
   closeViewer,
   disableUIControls,
   enableUIControls,
   initLayout,
-  initModals,
   initSidebarResizer,
   initTabs,
-  openScaffoldModal,
   populateElements,
   refreshAllUI,
   renderTree,
@@ -32,15 +28,11 @@ import {
   showNotification,
   toggleAllFolders,
 } from "./ui/index.js";
-import { toResult } from "./utils/result.js";
+import type { VirtualDirectoryHandle } from "./utils/crossbrowser_fs.js";
+import { buildFromDropItem, buildFromFileList, showFolderPicker } from "./utils/crossbrowser_fs.js";
 
-async function verifyAndProcess(
-  handle: FileSystemDirectoryHandle,
-): Promise<void> {
-  if (!(await checkPerms(handle))) return;
-
+async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
   resetUIForProcessing(`Processing '${handle.name}'...`);
-  appState.directoryHandle = handle;
 
   const res = await scanDir(handle, handle.name, 0);
   if (!res.ok) {
@@ -52,34 +44,7 @@ async function verifyAndProcess(
   await finishScan(handle, res.value);
 }
 
-async function checkPerms(handle: FileSystemDirectoryHandle): Promise<boolean> {
-  const res = await toResult(handle.queryPermission({ mode: "readwrite" }));
-  if (res.ok && res.value === "granted") return true;
-
-  const req = await toResult(handle.requestPermission({ mode: "readwrite" }));
-  if (req.ok && req.value === "granted") return true;
-
-  return await checkRead(handle);
-}
-
-async function checkRead(handle: FileSystemDirectoryHandle): Promise<boolean> {
-  const res = await toResult(handle.queryPermission({ mode: "read" }));
-  if (res.ok && res.value === "granted") {
-    showNotification("Read-only mode.", 4000);
-    return true;
-  }
-
-  const req = await toResult(handle.requestPermission({ mode: "read" }));
-  if (req.ok && req.value === "granted") {
-    showNotification("Read-only mode.", 4000);
-    return true;
-  }
-
-  showNotification("Read denied.", 4000);
-  return false;
-}
-
-async function finishScan(handle: FileSystemDirectoryHandle, data: FolderInfo) {
+async function finishScan(handle: VirtualDirectoryHandle, data: FolderInfo) {
   appState.fullScanData = {
     directoryData: data,
     allFilesList: [],
@@ -140,32 +105,72 @@ function clearProject(): void {
   enableUIControls(false);
 }
 
+// ============================================================================
+// DRAG & DROP HANDLER (uses webkitGetAsEntry - works in all browsers)
+// ============================================================================
+
 async function handleDrop(event: DragEvent): Promise<void> {
   event.preventDefault();
   elements.dropZone?.classList.remove("dragover");
   if (appState.processingInProgress || !event.dataTransfer) return;
 
-  for (const item of Array.from(event.dataTransfer.items)) {
+  const items = Array.from(event.dataTransfer.items);
+  
+  for (const item of items) {
     if (item.kind === "file") {
-      const handle = await item.getAsFileSystemHandle();
-      if (handle?.kind === "directory") {
-        return verifyAndProcess(handle as FileSystemDirectoryHandle);
+      const handle = await buildFromDropItem(item);
+      if (handle) {
+        return processDirectory(handle);
       }
     }
   }
+  
   showNotification("Error: Please drop a single folder.", 4000);
 }
 
+// ============================================================================
+// FOLDER SELECT BUTTON (uses <input webkitdirectory> - works in all browsers)
+// ============================================================================
+
 async function handleSelect(): Promise<void> {
   if (appState.processingInProgress) return;
-  const result = await toResult(
-    window.showDirectoryPicker({ mode: "readwrite" }),
-  );
-  if (result.ok) {
-    await verifyAndProcess(result.value);
-  } else if (result.error.name !== "AbortError") {
-    showNotification(`Error: ${result.error.message}`, 4000);
+  
+  const handle = await showFolderPicker();
+  if (handle) {
+    await processDirectory(handle);
   }
+  // If null, user cancelled - do nothing
+}
+
+// ============================================================================
+// HIDDEN FILE INPUT FOR FALLBACK (already in DOM via layout)
+// ============================================================================
+
+function setupHiddenInput(): void {
+  // Check if there's already a hidden input, if not create one
+  let hiddenInput = document.getElementById("hiddenFolderInput") as HTMLInputElement | null;
+  
+  if (!hiddenInput) {
+    hiddenInput = document.createElement("input");
+    hiddenInput.type = "file";
+    hiddenInput.id = "hiddenFolderInput";
+    hiddenInput.setAttribute("webkitdirectory", "");
+    hiddenInput.multiple = true;
+    hiddenInput.style.display = "none";
+    document.body.appendChild(hiddenInput);
+  }
+
+  hiddenInput.addEventListener("change", async () => {
+    const files = hiddenInput!.files;
+    if (files && files.length > 0) {
+      const handle = buildFromFileList(files);
+      if (handle) {
+        await processDirectory(handle);
+      }
+    }
+    // Reset for next use
+    hiddenInput!.value = "";
+  });
 }
 
 function setupListeners(): void {
@@ -207,46 +212,28 @@ function setupListeners(): void {
   });
   elements.closeViewerBtn?.addEventListener("click", closeViewer);
   elements.aiDebriefingAssistantBtn?.addEventListener("click", exportCombined);
-
-  elements.importAiScaffoldBtn?.addEventListener("click", openScaffoldModal);
-  elements.importFromExportBtn?.addEventListener("click", () =>
-    handleImport(verifyAndProcess),
-  );
-  elements.closeScaffoldModalBtn?.addEventListener("click", closeScaffoldModal);
-  elements.createProjectFromScaffoldBtn?.addEventListener("click", () =>
-    processScaffold(verifyAndProcess),
-  );
-  elements.cancelScaffoldImportBtn?.addEventListener(
-    "click",
-    closeScaffoldModal,
-  );
-  elements.copyScaffoldPromptBtn?.addEventListener("click", () => {
-    navigator.clipboard
-      .writeText(SCAFFOLD_PROMPT_TEMPLATE.trim())
-      .then(() => showNotification("Scaffold prompt copied!", 3000));
-  });
 }
 
-async function init(): Promise<void> {
+async function init() {
   initLayout();
-  initModals();
   populateElements();
-
-  const response = await toResult(fetch("/data/filetypes.json"));
-  if (response.ok) {
-    const data = await response.value.json();
-    initTypeData(data);
-  } else {
-    console.error("Fatal: Could not load filetypes.json", response.error);
-    showNotification("Error: Could not load file type data.", 5000);
-  }
-
   initTabs();
   initSidebarResizer();
+  setupHiddenInput();
+
+  // Load filetype data
+  try {
+    const response = await fetch("/data/filetypes.json");
+    const data = await response.json();
+    initTypeData(data);
+  } catch (e) {
+    console.warn("Could not load filetypes.json, using defaults");
+  }
+
   setupListeners();
   disableUIControls();
   elements.pageLoader?.classList.add("hidden");
-  console.log("DirAnalyze Streamline (TypeScript) Initialized.");
+  console.log("DirAnalyze Streamline (Cross-Browser) Initialized.");
 }
 
 document.addEventListener("DOMContentLoaded", init);
