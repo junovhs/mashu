@@ -72,11 +72,16 @@ interface FileWithPath extends File {
  * Files have webkitRelativePath like "myFolder/sub/file.txt"
  */
 export function buildFromFileList(files: FileList): VirtualDirectoryHandle | null {
+  console.log("[buildFromFileList] Starting with", files.length, "files");
+  
   if (files.length === 0) return null;
 
   const firstFile = files[0] as FileWithPath;
   const firstPath = firstFile.webkitRelativePath || firstFile.name;
+  console.log("[buildFromFileList] First file path:", firstPath);
+  
   const rootName = firstPath.split("/")[0];
+  console.log("[buildFromFileList] Root name:", rootName);
 
   const root = createDirectoryHandle(rootName, new Map());
 
@@ -102,6 +107,7 @@ export function buildFromFileList(files: FileList): VirtualDirectoryHandle | nul
     }
   }
 
+  console.log("[buildFromFileList] Built root with", root._children.size, "children");
   return root;
 }
 
@@ -219,6 +225,8 @@ function entryToFile(entry: FSFileEntry): Promise<File | null> {
  */
 export function showFolderPicker(): Promise<VirtualDirectoryHandle | null> {
   return new Promise((resolve) => {
+    console.log("[showFolderPicker] Creating input element");
+    
     const input = document.createElement("input");
     input.type = "file";
     input.setAttribute("webkitdirectory", "");
@@ -230,42 +238,27 @@ export function showFolderPicker(): Promise<VirtualDirectoryHandle | null> {
     input.style.left = "-10000px";
     document.body.appendChild(input);
 
-    let resolved = false;
-
-    const cleanup = () => {
-      if (!resolved) {
-        resolved = true;
-        input.remove();
-      }
-    };
-
     input.addEventListener("change", () => {
-      if (resolved) return;
-      resolved = true;
-
+      console.log("[showFolderPicker] Change event fired");
+      
       const files = input.files;
       input.remove();
 
       if (!files || files.length === 0) {
+        console.log("[showFolderPicker] No files selected");
         resolve(null);
         return;
       }
 
-      resolve(buildFromFileList(files));
+      console.log(`[showFolderPicker] Got ${files.length} files`);
+      const handle = buildFromFileList(files);
+      console.log("[showFolderPicker] Built handle:", handle);
+      resolve(handle);
     });
 
-    // Handle cancel via focus returning to window
-    const onFocus = () => {
-      setTimeout(() => {
-        if (!resolved) {
-          cleanup();
-          resolve(null);
-        }
-      }, 500);
-      window.removeEventListener("focus", onFocus);
-    };
-    window.addEventListener("focus", onFocus);
-
+    // Note: Removed the focus-based cancel detection as it interferes with
+    // browser confirmation dialogs ("Upload X files?")
+    
     input.click();
   });
 }

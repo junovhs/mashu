@@ -252,13 +252,16 @@ function setupFullPageDrop(): void {
 // ============================================================================
 
 async function handleSelect(): Promise<void> {
+  console.log("[handleSelect] Called, processingInProgress:", appState.processingInProgress);
   if (appState.processingInProgress) return;
   
   const handle = await showFolderPicker();
+  console.log("[handleSelect] Got handle:", handle);
   if (handle) {
     await processDirectory(handle);
+  } else {
+    console.log("[handleSelect] No handle returned (cancelled or error)");
   }
-  // If null, user cancelled - do nothing
 }
 
 // ============================================================================

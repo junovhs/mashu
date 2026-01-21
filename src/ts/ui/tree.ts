@@ -154,8 +154,11 @@ function createFileLi(file: FileInfo): HTMLLIElement {
   itemLine.appendChild(name);
   itemLine.appendChild(stats);
 
-  // Double-click to open file viewer
-  itemLine.addEventListener("dblclick", () => {
+  // Single-click to open file viewer
+  itemLine.addEventListener("click", (e) => {
+    // Don't open if clicking the checkbox
+    if ((e.target as HTMLElement).classList.contains("selector")) return;
+    console.log("[tree] Click on file:", file.path);
     openFile(file);
   });
 
