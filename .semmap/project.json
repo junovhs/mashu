@@ -1,0 +1,61 @@
+{
+  "name": "diranalyze",
+  "one_liner": "Desktop/web app for selecting files from a codebase, browsing the tree, and collapsing the chosen project contents into a single text export that can be uploaded to chat AI tools that cannot access the local filesystem.",
+  "language_primary": "typescript",
+  "languages": [
+    "typescript",
+    "javascript"
+  ],
+  "total_files": 31,
+  "total_lines": 4353,
+  "subsystems": [
+    "index",
+    "index-2",
+    "data",
+    "data-2",
+    "state",
+    "index-3",
+    "ts",
+    "data-3"
+  ],
+  "entry_points": [
+    "index.html",
+    "src/ts/ui/index.ts"
+  ],
+  "generated_at": "2026-05-11T23:33:22Z",
+  "omni_ast_version": "0.4.27",
+  "file_hashes": {
+    "README.md": "f63d38415c5af3eb4a2843c580fae9d6dc5990e4ede189ae62f06d0a84eb4d3d",
+    "index.html": "b1515292695daf6b5b5519b802fdda58eb555989669edc81490f4a763e2e4a29",
+    "package-lock.json": "1a4545723784b2d00777df84b4cf669c543928e93a15579b8a4a6db208a1a30a",
+    "package.json": "45069b5f808be631cbed522b1da2e98de593ff78508051d4048d2f421ee7e715",
+    "public/data/filetypes.json": "eae8b4b945d40f1fa5de7d0011628e4752b00dd83a8013d3b3757fe7f92c39dd",
+    "public/js/jszip.min.js": "f12f367798e35ee2d9993dba6167fc61ddb52fb89880f5a99fbb606335188410",
+    "src/css/app.css": "9e1eb1c4b5b5ec8c49166d78e120b6f795db4eef391596c8cb8c083d4ce0f5ec",
+    "src/css/components.css": "954a7b7d8b9c719d70d656dc4acc3e2b5eda4e588606a8754a57101e7f222586",
+    "src/css/dropoverlay.css": "364d356435879f8fa75e9d8270eff4b4840cb85cb4afa9858f32be78bb498de9",
+    "src/css/modals.css": "6b3c9d5ed72955017dfb8dffa046f6e0a4cf367df81c7e00cef4cdd2832412fb",
+    "src/css/report.css": "2d92a0d6206211388785bdd4e171c65d4cf54877599f70ea411367d59de32005",
+    "src/css/stats.css": "16df3a8c119104319719a5f6bdfeb66822254b7172afcb2d48b0cf67ebb7e2e2",
+    "src/css/tree.css": "87b325e0aff4cb521be739118da8134d39019ab8df6c7d373459e1a5a79cfd29",
+    "src/css/viewer.css": "2ba3afc4bb86579f42d6753a2f7b3bdfdfff356d6c56d7503a2644d2df28f75e",
+    "src/ts/app.ts": "f5f19dbfd762447063fad6f0439cfd7024f2c6cd805659ad9a16aa9a017951f0",
+    "src/ts/features.ts": "7492fa63e89287a9a635401e7133d4b3a0a5dc6a80a9c8878c3059dfc2c448c3",
+    "src/ts/filesystem.ts": "a8b7b70b2517f4a2c8be5eaa0bdb729e4a8f97862ba227a064826a61172df8b7",
+    "src/ts/global.d.ts": "a72dc9bb4dfe2efc5da486eba717ff26ce65e4852d29376cd354247074ad31ae",
+    "src/ts/state.ts": "d1c7f2cb80cec90430c859fabe79365844b63d3f49f0bbb11f233c43c3922f4b",
+    "src/ts/types/index.ts": "f6dfd9a452dac7f05801bfa2f3c2b21b6cca690dec9f75f8cee3e75447766eeb",
+    "src/ts/ui/index.ts": "360b0b0793ec4e5177f4333e9ed18ede23c09cc326995cb9e23281d4acbeb571",
+    "src/ts/ui/layout.ts": "825434013692a595d9b2864052277dcab228ec5dc531238ade0c6737ad0f1778",
+    "src/ts/ui/modals.ts": "25ba332b8f350b613f0b9b7ae549c53427214cec86b9712808d417a8f6bf9046",
+    "src/ts/ui/stats.ts": "82de09ca8449851280dbd0775ede0777d09e1b67fbb87c69b01059757819829a",
+    "src/ts/ui/tree.ts": "5220d104fe1991e2945499e20c073c14026fe27f238650fdd97ea0b1567599f6",
+    "src/ts/ui/viewer.ts": "7be98d8b5a8ba368e545ef3546ba6c38ae3a7071c60e5d41fea5225901a1bf55",
+    "src/ts/utils/crossbrowser_fs.ts": "cfa63256bfc1f43d8fc861fd0a9dfb0ba663183a9c581d2498cf0d32947002fd",
+    "src/ts/utils/fs_utils.ts": "2bd1d86eda5dc68bfe798c199aaedcf405730d912c30e8c4902debc05c721268",
+    "src/ts/utils/result.ts": "d311c4e8608917a201a0aee20d7830f745db2e32c220a2c1bdae607a6686e405",
+    "tsconfig.json": "dd021766ed13bbfc2712cf6bb7ef34b8c7ebe3c4c15f5d6201f707b468c6f668",
+    "vite.config.ts": "3e2903094960cbfa15342f63c0fb417dfeebfebb4e7aed8886d04fee66d15fc1"
+  },
+  "generated_at_commit": "df669a19f383f26d7e7febfc355a04e3a7d75614"
+}

@@ -28,3 +28,6 @@ dist-ssr/
 # OS metadata
 Thumbs.db
 Desktop.ini
+**/.ishoo/*.local.toml
+**/.ishoo/cache/
+**/.ishoo/worktrees/

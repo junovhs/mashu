@@ -3,27 +3,41 @@ import type { FileInfo, FolderInfo } from "../types/index.js";
 import { formatBytes } from "../utils/fs_utils.js";
 import { openFile } from "./viewer.js";
 
+interface RenderTreeOptions {
+  initialCollapsed?: boolean;
+  initialSelected?: boolean;
+}
+
+const fileLookup = new Map<string, FileInfo>();
+const boundTreeContainers = new WeakSet<HTMLElement>();
+
 export function renderTree(
   node: FolderInfo | FileInfo,
   container: HTMLElement,
   isRoot = true,
+  options: RenderTreeOptions = {},
 ): void {
+  if (isRoot) {
+    fileLookup.clear();
+    bindTreeInteractions(container);
+  }
+
   const ul = document.createElement("ul");
   if (isRoot) {
     ul.style.paddingLeft = "0";
   }
 
   if (node.type === "folder") {
-    const li = createFolderLi(node);
+    const li = createFolderLi(node, options);
     ul.appendChild(li);
 
     const childUl = document.createElement("ul");
     for (const child of node.children) {
-      renderTreeNode(child, childUl);
+      renderTreeNode(child, childUl, options);
     }
     li.appendChild(childUl);
   } else {
-    const li = createFileLi(node);
+    const li = createFileLi(node, options);
     ul.appendChild(li);
   }
 
@@ -33,27 +47,34 @@ export function renderTree(
 function renderTreeNode(
   node: FolderInfo | FileInfo,
   parentUl: HTMLElement,
+  options: RenderTreeOptions,
 ): void {
   if (node.type === "folder") {
-    const li = createFolderLi(node);
+    const li = createFolderLi(node, options);
     parentUl.appendChild(li);
 
     const childUl = document.createElement("ul");
     for (const child of node.children) {
-      renderTreeNode(child, childUl);
+      renderTreeNode(child, childUl, options);
     }
     li.appendChild(childUl);
   } else {
-    const li = createFileLi(node);
+    const li = createFileLi(node, options);
     parentUl.appendChild(li);
   }
 }
 
-function createFolderLi(folder: FolderInfo): HTMLLIElement {
+function createFolderLi(
+  folder: FolderInfo,
+  options: RenderTreeOptions,
+): HTMLLIElement {
+  const isSelected = options.initialSelected ?? true;
+  const isCollapsed = options.initialCollapsed ?? false;
   const li = document.createElement("li");
   li.className = "folder";
   li.dataset.path = folder.path;
-  li.dataset.selected = "true";
+  li.dataset.selected = String(isSelected);
+  li.classList.toggle("collapsed", isCollapsed);
 
   const itemLine = document.createElement("div");
   itemLine.className = "item-line";
@@ -64,19 +85,11 @@ function createFolderLi(folder: FolderInfo): HTMLLIElement {
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.className = "selector";
-  checkbox.checked = true;
-  checkbox.addEventListener("change", (e) => {
-    e.stopPropagation();
-    toggleSelection(li, checkbox.checked);
-  });
+  checkbox.checked = isSelected;
 
   const toggle = document.createElement("span");
   toggle.className = "folder-toggle";
-  toggle.textContent = "▼";
-  toggle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    toggleFolder(li, toggle);
-  });
+  toggle.textContent = isCollapsed ? "\u25b6" : "\u25bc";
 
   const icon = document.createElement("span");
   icon.className = "icon";
@@ -98,21 +111,20 @@ function createFolderLi(folder: FolderInfo): HTMLLIElement {
   itemLine.appendChild(name);
   itemLine.appendChild(stats);
 
-  itemLine.addEventListener("click", (e) => {
-    if ((e.target as HTMLElement).classList.contains("selector")) return;
-    if ((e.target as HTMLElement).classList.contains("folder-toggle")) return;
-    toggleFolder(li, toggle);
-  });
-
   li.appendChild(itemLine);
   return li;
 }
 
-function createFileLi(file: FileInfo): HTMLLIElement {
+function createFileLi(
+  file: FileInfo,
+  options: RenderTreeOptions,
+): HTMLLIElement {
+  const isSelected = options.initialSelected ?? true;
   const li = document.createElement("li");
   li.className = "file";
   li.dataset.path = file.path;
-  li.dataset.selected = "true";
+  li.dataset.selected = String(isSelected);
+  fileLookup.set(file.path, file);
 
   const itemLine = document.createElement("div");
   itemLine.className = "item-line";
@@ -123,16 +135,12 @@ function createFileLi(file: FileInfo): HTMLLIElement {
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.className = "selector";
-  checkbox.checked = true;
-  checkbox.addEventListener("change", (e) => {
-    e.stopPropagation();
-    toggleSelection(li, checkbox.checked);
-  });
+  checkbox.checked = isSelected;
 
   const spacer = document.createElement("span");
   spacer.className = "folder-toggle";
   spacer.style.visibility = "hidden";
-  spacer.textContent = "▼";
+  spacer.textContent = "\u25bc";
 
   const icon = document.createElement("span");
   icon.className = "icon";
@@ -154,27 +162,73 @@ function createFileLi(file: FileInfo): HTMLLIElement {
   itemLine.appendChild(name);
   itemLine.appendChild(stats);
 
-  // Single-click to open file viewer
-  itemLine.addEventListener("click", (e) => {
-    // Don't open if clicking the checkbox
-    if ((e.target as HTMLElement).classList.contains("selector")) return;
-    console.log("[tree] Click on file:", file.path);
-    openFile(file);
-  });
-
   li.appendChild(itemLine);
   return li;
 }
 
+function bindTreeInteractions(container: HTMLElement): void {
+  if (boundTreeContainers.has(container)) return;
+
+  container.addEventListener("change", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement)) return;
+    if (!target.classList.contains("selector")) return;
+
+    const li = target.closest("li");
+    if (!li) return;
+    toggleSelection(li as HTMLLIElement, target.checked);
+  });
+
+  container.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+
+    if (target.closest(".selector")) return;
+
+    const toggleEl = target.closest(".folder-toggle");
+    const toggleLi = toggleEl?.closest("li.folder");
+    if (toggleEl instanceof HTMLSpanElement && toggleLi instanceof HTMLLIElement) {
+      toggleFolder(toggleLi, toggleEl);
+      return;
+    }
+
+    const itemLine = target.closest(".item-line");
+    if (!(itemLine instanceof HTMLElement)) return;
+
+    const li = itemLine.closest("li");
+    if (!(li instanceof HTMLLIElement)) return;
+
+    if (li.classList.contains("folder")) {
+      const toggle = li.querySelector(
+        ":scope > .item-line .folder-toggle",
+      ) as HTMLSpanElement | null;
+      if (toggle) toggleFolder(li, toggle);
+      return;
+    }
+
+    const path = li.dataset.path;
+    if (!path) return;
+
+    const file = fileLookup.get(path);
+    if (!file) return;
+
+    console.log("[tree] Click on file:", file.path);
+    openFile(file);
+  });
+
+  boundTreeContainers.add(container);
+}
+
 function toggleFolder(li: HTMLLIElement, toggle: HTMLSpanElement): void {
   li.classList.toggle("collapsed");
-  toggle.textContent = li.classList.contains("collapsed") ? "▶" : "▼";
+  toggle.textContent = li.classList.contains("collapsed")
+    ? "\u25b6"
+    : "\u25bc";
 }
 
 function toggleSelection(li: HTMLLIElement, selected: boolean): void {
   li.dataset.selected = String(selected);
 
-  // If it's a folder, toggle all children too
   if (li.classList.contains("folder")) {
     const childCheckboxes = li.querySelectorAll(
       "ul .selector",
@@ -188,7 +242,6 @@ function toggleSelection(li: HTMLLIElement, selected: boolean): void {
     });
   }
 
-  // Update parent folder state
   updateParentState(li);
 }
 
@@ -225,7 +278,7 @@ function updateParentState(li: HTMLElement): void {
     } else {
       parentCheckbox.checked = false;
       parentCheckbox.indeterminate = true;
-      parentLi.dataset.selected = "true"; // Partial selection counts as selected
+      parentLi.dataset.selected = "true";
     }
   }
 
@@ -260,10 +313,10 @@ export function toggleAllFolders(collapse: boolean): void {
     const toggle = folder.querySelector(".folder-toggle") as HTMLSpanElement;
     if (collapse) {
       folder.classList.add("collapsed");
-      if (toggle) toggle.textContent = "▶";
+      if (toggle) toggle.textContent = "\u25b6";
     } else {
       folder.classList.remove("collapsed");
-      if (toggle) toggle.textContent = "▼";
+      if (toggle) toggle.textContent = "\u25bc";
     }
   });
 }

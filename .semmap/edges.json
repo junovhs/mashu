@@ -1,0 +1,362 @@
+[
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/css/app.css",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/css/components.css",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/css/tree.css",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/css/viewer.css",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/css/modals.css",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/css/report.css",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/css/stats.css",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/css/dropoverlay.css",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/features.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/filesystem.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/state.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/ui/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/utils/crossbrowser_fs.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/features.ts",
+    "to": "src/ts/filesystem.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/features.ts",
+    "to": "src/ts/state.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/features.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/features.ts",
+    "to": "src/ts/ui/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/filesystem.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/filesystem.ts",
+    "to": "src/ts/utils/crossbrowser_fs.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/filesystem.ts",
+    "to": "src/ts/utils/fs_utils.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/filesystem.ts",
+    "to": "src/ts/utils/result.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/state.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/modals.ts",
+    "to": "src/ts/state.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/stats.ts",
+    "to": "src/ts/filesystem.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/stats.ts",
+    "to": "src/ts/state.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/stats.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/tree.ts",
+    "to": "src/ts/state.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/tree.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/tree.ts",
+    "to": "src/ts/utils/fs_utils.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/tree.ts",
+    "to": "src/ts/ui/viewer.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/viewer.ts",
+    "to": "src/ts/filesystem.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/viewer.ts",
+    "to": "src/ts/state.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/viewer.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/viewer.ts",
+    "to": "src/ts/utils/fs_utils.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/viewer.ts",
+    "to": "src/ts/ui/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/utils/fs_utils.ts",
+    "to": "src/ts/utils/crossbrowser_fs.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/utils/fs_utils.ts",
+    "to": "src/ts/utils/result.ts",
+    "kind": "import"
+  },
+  {
+    "from": "index.html",
+    "to": "src/ts/app.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/types/index.ts",
+    "to": "src/ts/utils/crossbrowser_fs.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/state.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/ui/stats.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/ui/viewer.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/ui/layout.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/ui/modals.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/ui/tree.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/utils/crossbrowser_fs.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/ui/index.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/ui/tree.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/filesystem.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/features.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/ui/viewer.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/ui/layout.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/ui/modals.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/utils/fs_utils.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/features.ts",
+    "to": "src/ts/utils/fs_utils.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/filesystem.ts",
+    "to": "src/ts/utils/crossbrowser_fs.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/filesystem.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/filesystem.ts",
+    "to": "src/ts/utils/result.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/state.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/stats.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/stats.ts",
+    "to": "src/ts/utils/fs_utils.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/tree.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/tree.ts",
+    "to": "src/ts/utils/fs_utils.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/tree.ts",
+    "to": "src/ts/ui/viewer.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/viewer.ts",
+    "to": "src/ts/utils/fs_utils.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/utils/fs_utils.ts",
+    "to": "src/ts/utils/result.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/ui/viewer.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/ui/stats.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "call"
+  }
+]

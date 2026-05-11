@@ -1,6 +1,21 @@
 import { formatBytes } from "../filesystem.js";
 import { appState, elements } from "../state.js";
-import type { ScanData } from "../types/index.js";
+import type { FileInfo, FolderInfo, ScanData } from "../types/index.js";
+
+const REPORT_YIELD_EVERY = 400;
+
+interface TextTreeFrame {
+  isLastChild: boolean;
+  isRoot: boolean;
+  node: FileInfo | FolderInfo;
+  prefix: string;
+}
+
+async function yieldToMainThread(): Promise<void> {
+  await new Promise<void>((resolve) => {
+    setTimeout(resolve, 0);
+  });
+}
 
 export function displayGlobalStats(data: ScanData): void {
   const { directoryData, allFilesList, allFoldersList } = data;
@@ -37,57 +52,70 @@ export function displayGlobalStats(data: ScanData): void {
   );
   if (elements.fileTypeTableBody) {
     elements.fileTypeTableBody.innerHTML = "";
-    sortedTypes.forEach(([ext, data]) => {
+    sortedTypes.forEach(([ext, typeData]) => {
       const row = (
         elements.fileTypeTableBody as HTMLTableSectionElement
       ).insertRow();
-      row.innerHTML = `<td>${ext}</td><td>${data.count}</td><td>${formatBytes(data.size)}</td>`;
+      row.innerHTML = `<td>${ext}</td><td>${typeData.count}</td><td>${formatBytes(typeData.size)}</td>`;
     });
   }
 }
 
-export function generateTextReport(data: ScanData): string {
+export async function generateTextReportAsync(data: ScanData): Promise<string> {
   if (!data.directoryData) return "// NO DATA FOR REPORT //";
 
   const root = data.directoryData;
-  let report = `//--- DIRANALYSE STREAMLINE REPORT ---//\n`;
-  report += `// Timestamp: ${new Date().toISOString()}\n`;
-  report += `// Root: ${root.name}\n\n`;
-  report += `//--- DIRECTORY STRUCTURE ---\n`;
+  const lines = [
+    "//--- DIRANALYSE STREAMLINE REPORT ---//",
+    `// Timestamp: ${new Date().toISOString()}`,
+    `// Root: ${root.name}`,
+    "",
+    "//--- DIRECTORY STRUCTURE ---",
+  ];
 
-  report += buildTextTree(root, "", true);
-  report += `\n//--- END OF REPORT ---//`;
-  return report;
-}
+  const stack: TextTreeFrame[] = [
+    {
+      isLastChild: true,
+      isRoot: true,
+      node: root,
+      prefix: "",
+    },
+  ];
 
-interface TextTreeNode {
-  name: string;
-  type: "folder" | "file";
-  children?: Array<TextTreeNode>;
-  size?: number;
-  isLastChild?: boolean;
-}
+  let processedNodes = 0;
+  while (stack.length > 0) {
+    const frame = stack.pop() as TextTreeFrame;
+    const { node, prefix, isRoot, isLastChild } = frame;
+    const branch = isRoot ? "" : `${prefix}${isLastChild ? "\\u2514\\u2500 " : "\\u251c\\u2500 "}`;
 
-function buildTextTree(
-  node: TextTreeNode,
-  prefix = "",
-  isRoot = false,
-): string {
-  let entry = isRoot ? "" : prefix + (node.isLastChild ? "└─ " : "├─ ");
-  entry += node.name;
-
-  if (node.type === "folder") {
-    entry += "/\n";
-    const children = node.children || [];
-    children.forEach((child, index) => {
-      child.isLastChild = index === children.length - 1;
-      const childPrefix = isRoot
+    if (node.type === "folder") {
+      lines.push(`${branch}${node.name}/`);
+      const nextPrefix = isRoot
         ? ""
-        : prefix + (node.isLastChild ? "    " : "│   ");
-      entry += buildTextTree(child, childPrefix, false);
-    });
-  } else {
-    entry += ` (${formatBytes(node.size || 0)})\n`;
+        : `${prefix}${isLastChild ? "    " : "\\u2502   "}`;
+
+      for (let i = node.children.length - 1; i >= 0; i--) {
+        stack.push({
+          isLastChild: i === node.children.length - 1,
+          isRoot: false,
+          node: node.children[i],
+          prefix: nextPrefix,
+        });
+      }
+    } else {
+      lines.push(`${branch}${node.name} (${formatBytes(node.size)})`);
+    }
+
+    processedNodes++;
+    if (processedNodes % REPORT_YIELD_EVERY === 0) {
+      await yieldToMainThread();
+    }
   }
-  return entry;
+
+  lines.push("", "//--- END OF REPORT ---//");
+  return lines
+    .join("\n")
+    .replaceAll("\\u2514\\u2500", "\u2514\u2500")
+    .replaceAll("\\u251c\\u2500", "\u251c\u2500")
+    .replaceAll("\\u2502", "\u2502");
 }

@@ -29,6 +29,14 @@ interface InternalDirectoryHandle extends VirtualDirectoryHandle {
   _children: Map<string, VirtualFileHandle | VirtualDirectoryHandle>;
 }
 
+const YIELD_EVERY = 200;
+
+async function yieldToMainThread(): Promise<void> {
+  await new Promise<void>((resolve) => {
+    setTimeout(resolve, 0);
+  });
+}
+
 // ============================================================================
 // HANDLE CREATION
 // ============================================================================
@@ -111,6 +119,51 @@ export function buildFromFileList(files: FileList): VirtualDirectoryHandle | nul
   return root;
 }
 
+export async function buildFromFileListAsync(
+  files: FileList,
+): Promise<VirtualDirectoryHandle | null> {
+  console.log("[buildFromFileListAsync] Starting with", files.length, "files");
+
+  if (files.length === 0) return null;
+
+  const firstFile = files[0] as FileWithPath;
+  const firstPath = firstFile.webkitRelativePath || firstFile.name;
+  const rootName = firstPath.split("/")[0];
+  const root = createDirectoryHandle(rootName, new Map());
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i] as FileWithPath;
+    const relativePath = file.webkitRelativePath || file.name;
+    const parts = relativePath.split("/");
+
+    let current = root;
+    for (let j = 1; j < parts.length; j++) {
+      const part = parts[j];
+      const isFile = j === parts.length - 1;
+
+      if (isFile) {
+        current._children.set(part, createFileHandle(file));
+      } else {
+        if (!current._children.has(part)) {
+          current._children.set(part, createDirectoryHandle(part, new Map()));
+        }
+        current = current._children.get(part) as InternalDirectoryHandle;
+      }
+    }
+
+    if ((i + 1) % YIELD_EVERY === 0) {
+      await yieldToMainThread();
+    }
+  }
+
+  console.log(
+    "[buildFromFileListAsync] Built root with",
+    root._children.size,
+    "children",
+  );
+  return root;
+}
+
 // ============================================================================
 // BUILD FROM DRAG & DROP (webkitGetAsEntry)
 // ============================================================================
@@ -172,7 +225,8 @@ async function processDirectory(dirEntry: FSDirectoryEntry): Promise<InternalDir
   const children = new Map<string, VirtualFileHandle | VirtualDirectoryHandle>();
   const entries = await readAllEntries(dirEntry.createReader());
 
-  for (const entry of entries) {
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i];
     if (entry.isFile) {
       const file = await entryToFile(entry as FSFileEntry);
       if (file) {
@@ -181,6 +235,10 @@ async function processDirectory(dirEntry: FSDirectoryEntry): Promise<InternalDir
     } else if (entry.isDirectory) {
       const subDir = await processDirectory(entry as FSDirectoryEntry);
       children.set(entry.name, subDir);
+    }
+
+    if ((i + 1) % YIELD_EVERY === 0) {
+      await yieldToMainThread();
     }
   }
 
@@ -238,7 +296,7 @@ export function showFolderPicker(): Promise<VirtualDirectoryHandle | null> {
     input.style.left = "-10000px";
     document.body.appendChild(input);
 
-    input.addEventListener("change", () => {
+    input.addEventListener("change", async () => {
       console.log("[showFolderPicker] Change event fired");
       
       const files = input.files;
@@ -251,7 +309,7 @@ export function showFolderPicker(): Promise<VirtualDirectoryHandle | null> {
       }
 
       console.log(`[showFolderPicker] Got ${files.length} files`);
-      const handle = buildFromFileList(files);
+      const handle = await buildFromFileListAsync(files);
       console.log("[showFolderPicker] Built handle:", handle);
       resolve(handle);
     });

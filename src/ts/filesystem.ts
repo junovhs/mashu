@@ -36,6 +36,14 @@ const IGNORE_LIST = [
   ".cache",
 ];
 
+const YIELD_EVERY = 200;
+
+async function yieldToMainThread(): Promise<void> {
+  await new Promise<void>((resolve) => {
+    setTimeout(resolve, 0);
+  });
+}
+
 export async function scanDir(
   dirHandle: VirtualDirectoryHandle,
   currentPath: string,
@@ -60,6 +68,7 @@ export async function scanDir(
     entryHandle: dirData.entryHandle,
   });
 
+  let processedEntries = 0;
   for await (const entry of dirHandle.values()) {
     if (IGNORE_LIST.includes(entry.name)) continue;
     const entryPath = `${currentPath}/${entry.name}`;
@@ -79,7 +88,12 @@ export async function scanDir(
         localAggregator,
         depth,
         dirData,
-      );
+        );
+      }
+
+    processedEntries++;
+    if (processedEntries % YIELD_EVERY === 0) {
+      await yieldToMainThread();
     }
   }
 

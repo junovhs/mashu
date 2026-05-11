@@ -1,0 +1,978 @@
+[
+  {
+    "path": "README.md",
+    "layer": 0,
+    "file_kind": "production",
+    "description": "Project overview and usage guide.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
+    "path": "package.json",
+    "layer": 0,
+    "file_kind": "production",
+    "description": "Node.js package manifest.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
+    "path": "tsconfig.json",
+    "layer": 0,
+    "file_kind": "production",
+    "description": "Configuration for tsconfig.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
+    "path": "vite.config.ts",
+    "layer": 0,
+    "file_kind": "production",
+    "description": "Implements vite.config functionality.",
+    "exports": [
+      "default"
+    ],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
+    "path": "package-lock.json",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Implements package-lock functionality. data.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
+    "path": "public/data/filetypes.json",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Implements filetypes functionality. data.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
+    "path": "public/js/jszip.min.js",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Implements jszip.min functionality.",
+    "exports": [],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "sync-primitives"
+    ],
+    "quality_tags": [
+      "complex-flow",
+      "concurrency-heavy"
+    ],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 9.066667,
+    "semantic_summary": "synchronized side-effecting",
+    "analysis": {
+      "functions": {
+        "total": 95,
+        "public": 0,
+        "max_cognitive_complexity": 22,
+        "avg_cognitive_complexity": 2
+      },
+      "calls": {
+        "total_calls": 877,
+        "resolved_calls": 246,
+        "unresolved_calls": 631,
+        "resolution_rate": 0.28050172
+      },
+      "control_flow": {
+        "max_nesting_depth": 8,
+        "cognitive_complexity": 1160
+      },
+      "error_handling": {
+        "total_sites": 2,
+        "panics": 0,
+        "swallowed": 2,
+        "propagated": 0
+      },
+      "concurrency": {
+        "total_sites": 13,
+        "has_async": false,
+        "has_locks": true,
+        "has_spawn": true
+      },
+      "docs": {
+        "documented_symbols": 1,
+        "undocumented_public": 0
+      },
+      "activation": {
+        "total_sites": 76,
+        "kinds": [
+          "callback-surface",
+          "registration-site"
+        ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/app.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Implements app functionality.",
+    "exports": [],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-state",
+      "async",
+      "logs-and-continues"
+    ],
+    "surface_tags": [
+      "external-api"
+    ],
+    "quality_tags": [
+      "complex-flow",
+      "concurrency-heavy"
+    ],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 10.733334,
+    "semantic_summary": "async side-effecting stateful module with external API surface that logs and continues",
+    "analysis": {
+      "functions": {
+        "total": 14,
+        "public": 0,
+        "max_cognitive_complexity": 27,
+        "avg_cognitive_complexity": 3
+      },
+      "calls": {
+        "total_calls": 151,
+        "resolved_calls": 18,
+        "unresolved_calls": 133,
+        "resolution_rate": 0.119205296
+      },
+      "control_flow": {
+        "max_nesting_depth": 5,
+        "cognitive_complexity": 51
+      },
+      "error_handling": {
+        "total_sites": 1,
+        "panics": 0,
+        "swallowed": 0,
+        "propagated": 0
+      },
+      "concurrency": {
+        "total_sites": 21,
+        "has_async": true,
+        "has_locks": false,
+        "has_spawn": true
+      },
+      "activation": {
+        "total_sites": 42,
+        "kinds": [
+          "callback-surface",
+          "registration-site"
+        ]
+      },
+      "guards": {
+        "total_sites": 2
+      }
+    }
+  },
+  {
+    "path": "src/ts/features.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Implements export combined.",
+    "exports": [
+      "downloadZip",
+      "exportCombined"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "persists",
+      "async"
+    ],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 5.8,
+    "semantic_summary": "async side-effecting adapter",
+    "analysis": {
+      "functions": {
+        "total": 6,
+        "public": 2,
+        "max_cognitive_complexity": 4,
+        "avg_cognitive_complexity": 1
+      },
+      "calls": {
+        "total_calls": 41,
+        "resolved_calls": 5,
+        "unresolved_calls": 36,
+        "resolution_rate": 0.12195122
+      },
+      "control_flow": {
+        "max_nesting_depth": 2,
+        "cognitive_complexity": 10
+      },
+      "concurrency": {
+        "total_sites": 12,
+        "has_async": true,
+        "has_locks": false,
+        "has_spawn": false
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 2
+      },
+      "activation": {
+        "total_sites": 6,
+        "kinds": [
+          "callback-surface"
+        ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/filesystem.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Implements scan aggregator.",
+    "exports": [
+      "initTypeData",
+      "isLikelyText",
+      "sniffIsText",
+      "filterScanData"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-const-state",
+      "persists",
+      "async"
+    ],
+    "quality_tags": [
+      "undocumented"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 9.6,
+    "semantic_summary": "async side-effecting adapter",
+    "analysis": {
+      "functions": {
+        "total": 13,
+        "public": 3,
+        "max_cognitive_complexity": 8,
+        "avg_cognitive_complexity": 2
+      },
+      "types": {
+        "total": 1,
+        "public": 1
+      },
+      "calls": {
+        "total_calls": 123,
+        "resolved_calls": 18,
+        "unresolved_calls": 105,
+        "resolution_rate": 0.14634146
+      },
+      "control_flow": {
+        "max_nesting_depth": 2,
+        "cognitive_complexity": 24
+      },
+      "concurrency": {
+        "total_sites": 10,
+        "has_async": true,
+        "has_locks": false,
+        "has_spawn": false
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 4
+      },
+      "activation": {
+        "total_sites": 30,
+        "kinds": [
+          "callback-surface"
+        ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/global.d.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Implements global.d functionality.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {
+      "types": {
+        "total": 8,
+        "public": 0
+      },
+      "calls": {
+        "total_calls": 1,
+        "resolved_calls": 1,
+        "unresolved_calls": 0,
+        "resolution_rate": 1.0
+      }
+    }
+  },
+  {
+    "path": "src/ts/state.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Defines shared state for the ts subsystem.",
+    "exports": [
+      "appState",
+      "ICONS",
+      "elements"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-const-state"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 7.0,
+    "semantic_summary": "side-effecting constant-owning module",
+    "analysis": {
+      "calls": {
+        "total_calls": 2,
+        "resolved_calls": 0,
+        "unresolved_calls": 2,
+        "resolution_rate": 0.0
+      },
+      "docs": {
+        "documented_symbols": 3,
+        "undocumented_public": 0
+      }
+    }
+  },
+  {
+    "path": "src/ts/ui/layout.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Creates layout.",
+    "exports": [
+      "initLayout"
+    ],
+    "coupling": "pure",
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 3.6,
+    "semantic_summary": "pure computation",
+    "analysis": {
+      "functions": {
+        "total": 1,
+        "public": 1,
+        "max_cognitive_complexity": 3,
+        "avg_cognitive_complexity": 3
+      },
+      "calls": {
+        "total_calls": 6,
+        "resolved_calls": 0,
+        "unresolved_calls": 6,
+        "resolution_rate": 0.0
+      },
+      "control_flow": {
+        "max_nesting_depth": 0,
+        "cognitive_complexity": 3
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 1
+      },
+      "activation": {
+        "total_sites": 1,
+        "kinds": [
+          "callback-surface"
+        ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/ui/modals.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Creates sidebar resizer.",
+    "exports": [
+      "initSidebarResizer"
+    ],
+    "coupling": "pure",
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 3.8,
+    "semantic_summary": "pure computation",
+    "analysis": {
+      "functions": {
+        "total": 3,
+        "public": 1,
+        "max_cognitive_complexity": 4,
+        "avg_cognitive_complexity": 2
+      },
+      "calls": {
+        "total_calls": 20,
+        "resolved_calls": 4,
+        "unresolved_calls": 16,
+        "resolution_rate": 0.2
+      },
+      "control_flow": {
+        "max_nesting_depth": 1,
+        "cognitive_complexity": 4
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 1
+      },
+      "activation": {
+        "total_sites": 9,
+        "kinds": [
+          "callback-surface",
+          "registration-site"
+        ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/ui/stats.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Formats global stats for output.",
+    "exports": [
+      "displayGlobalStats",
+      "generateTextReport"
+    ],
+    "coupling": "pure",
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 4.2,
+    "semantic_summary": "pure computation",
+    "analysis": {
+      "functions": {
+        "total": 3,
+        "public": 2,
+        "max_cognitive_complexity": 6,
+        "avg_cognitive_complexity": 3
+      },
+      "types": {
+        "total": 1,
+        "public": 0
+      },
+      "calls": {
+        "total_calls": 23,
+        "resolved_calls": 3,
+        "unresolved_calls": 20,
+        "resolution_rate": 0.13043478
+      },
+      "control_flow": {
+        "max_nesting_depth": 1,
+        "cognitive_complexity": 9
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 2
+      },
+      "activation": {
+        "total_sites": 4,
+        "kinds": [
+          "callback-surface"
+        ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/ui/tree.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Formats tree for output.",
+    "exports": [
+      "setAllSelections",
+      "toggleAllFolders",
+      "renderTree"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "persists"
+    ],
+    "quality_tags": [
+      "undocumented"
+    ],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 4.6,
+    "semantic_summary": "side-effecting adapter",
+    "analysis": {
+      "functions": {
+        "total": 9,
+        "public": 3,
+        "max_cognitive_complexity": 8,
+        "avg_cognitive_complexity": 3
+      },
+      "calls": {
+        "total_calls": 153,
+        "resolved_calls": 12,
+        "unresolved_calls": 141,
+        "resolution_rate": 0.078431375
+      },
+      "control_flow": {
+        "max_nesting_depth": 2,
+        "cognitive_complexity": 32
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 3
+      },
+      "activation": {
+        "total_sites": 44,
+        "kinds": [
+          "callback-surface",
+          "registration-site"
+        ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/ui/viewer.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Updates viewer.",
+    "exports": [
+      "openFile",
+      "closeViewer",
+      "updateViewer"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "persists",
+      "async",
+      "logs-and-continues"
+    ],
+    "quality_tags": [
+      "undocumented",
+      "concurrency-heavy"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 13.933333,
+    "semantic_summary": "async side-effecting adapter that logs and continues",
+    "analysis": {
+      "functions": {
+        "total": 6,
+        "public": 3,
+        "max_cognitive_complexity": 8,
+        "avg_cognitive_complexity": 3
+      },
+      "types": {
+        "total": 1,
+        "public": 0
+      },
+      "calls": {
+        "total_calls": 40,
+        "resolved_calls": 4,
+        "unresolved_calls": 36,
+        "resolution_rate": 0.1
+      },
+      "control_flow": {
+        "max_nesting_depth": 2,
+        "cognitive_complexity": 23
+      },
+      "error_handling": {
+        "total_sites": 1,
+        "panics": 0,
+        "swallowed": 0,
+        "propagated": 0
+      },
+      "concurrency": {
+        "total_sites": 3,
+        "has_async": true,
+        "has_locks": false,
+        "has_spawn": true
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 3
+      },
+      "activation": {
+        "total_sites": 10,
+        "kinds": [
+          "callback-surface"
+        ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/utils/crossbrowser_fs.ts",
+    "layer": 2,
+    "file_kind": "production",
+    "description": "Cross-Browser File System Abstraction Provides a unified interface using standard web APIs that work in all browsers: - webkitGetAsEntry() for drag & drop - <input webkitdirectory> for folder selection No File System Access API required!.",
+    "exports": [
+      "buildFromDropItem",
+      "buildFromFileList",
+      "showFolderPicker",
+      "VirtualDirectoryHandle"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "persists",
+      "async"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 12.4,
+    "semantic_summary": "async side-effecting adapter",
+    "analysis": {
+      "functions": {
+        "total": 12,
+        "public": 4,
+        "max_cognitive_complexity": 12,
+        "avg_cognitive_complexity": 2
+      },
+      "types": {
+        "total": 9,
+        "public": 2
+      },
+      "calls": {
+        "total_calls": 99,
+        "resolved_calls": 29,
+        "unresolved_calls": 70,
+        "resolution_rate": 0.2929293
+      },
+      "control_flow": {
+        "max_nesting_depth": 3,
+        "cognitive_complexity": 25
+      },
+      "concurrency": {
+        "total_sites": 10,
+        "has_async": true,
+        "has_locks": false,
+        "has_spawn": false
+      },
+      "docs": {
+        "documented_symbols": 5,
+        "undocumented_public": 2
+      },
+      "activation": {
+        "total_sites": 18,
+        "kinds": [
+          "callback-surface",
+          "registration-site"
+        ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/utils/fs_utils.ts",
+    "layer": 2,
+    "file_kind": "production",
+    "description": "Formats bytes for output.",
+    "exports": [
+      "initTypeData",
+      "isLikelyText",
+      "sniffIsText",
+      "formatBytes"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-state",
+      "persists",
+      "async"
+    ],
+    "quality_tags": [
+      "undocumented"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 16.0,
+    "semantic_summary": "async side-effecting stateful adapter",
+    "analysis": {
+      "functions": {
+        "total": 5,
+        "public": 5,
+        "max_cognitive_complexity": 5,
+        "avg_cognitive_complexity": 2
+      },
+      "calls": {
+        "total_calls": 41,
+        "resolved_calls": 0,
+        "unresolved_calls": 41,
+        "resolution_rate": 0.0
+      },
+      "control_flow": {
+        "max_nesting_depth": 2,
+        "cognitive_complexity": 12
+      },
+      "concurrency": {
+        "total_sites": 3,
+        "has_async": true,
+        "has_locks": false,
+        "has_spawn": false
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 5
+      },
+      "activation": {
+        "total_sites": 9,
+        "kinds": [
+          "callback-surface"
+        ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/utils/result.ts",
+    "layer": 2,
+    "file_kind": "production",
+    "description": "Implements Err functionality.",
+    "exports": [
+      "toResult",
+      "None",
+      "Option",
+      "Some"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-const-state",
+      "async"
+    ],
+    "quality_tags": [
+      "undocumented"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 8.6,
+    "semantic_summary": "async side-effecting constant-owning module",
+    "analysis": {
+      "functions": {
+        "total": 5,
+        "public": 5,
+        "max_cognitive_complexity": 3,
+        "avg_cognitive_complexity": 0
+      },
+      "types": {
+        "total": 2,
+        "public": 2
+      },
+      "calls": {
+        "total_calls": 16,
+        "resolved_calls": 7,
+        "unresolved_calls": 9,
+        "resolution_rate": 0.4375
+      },
+      "control_flow": {
+        "max_nesting_depth": 2,
+        "cognitive_complexity": 3
+      },
+      "concurrency": {
+        "total_sites": 2,
+        "has_async": true,
+        "has_locks": false,
+        "has_spawn": false
+      },
+      "docs": {
+        "documented_symbols": 1,
+        "undocumented_public": 10
+      },
+      "activation": {
+        "total_sites": 2,
+        "kinds": [
+          "callback-surface"
+        ]
+      }
+    }
+  },
+  {
+    "path": "index.html",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "DirAnalyze Streamline v4.0",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
+    "path": "src/css/app.css",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Implements app functionality. styles.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 1.0,
+    "analysis": {}
+  },
+  {
+    "path": "src/css/components.css",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Implements components functionality. styles.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 1.0,
+    "analysis": {}
+  },
+  {
+    "path": "src/css/dropoverlay.css",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Implements dropoverlay functionality. styles.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 1.0,
+    "analysis": {}
+  },
+  {
+    "path": "src/css/modals.css",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Implements modals functionality. styles.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 1.0,
+    "analysis": {}
+  },
+  {
+    "path": "src/css/report.css",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Implements report functionality. styles.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 1.0,
+    "analysis": {}
+  },
+  {
+    "path": "src/css/stats.css",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Implements stats functionality. styles.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 1.0,
+    "analysis": {}
+  },
+  {
+    "path": "src/css/tree.css",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Implements tree functionality. styles.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 1.0,
+    "analysis": {}
+  },
+  {
+    "path": "src/css/viewer.css",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Implements viewer functionality. styles.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 1.0,
+    "analysis": {}
+  },
+  {
+    "path": "src/ts/types/index.ts",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Implements file type data.",
+    "exports": [
+      "FileTypeData",
+      "AppState",
+      "FolderInfo",
+      "ScanData"
+    ],
+    "quality_tags": [
+      "undocumented"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 20.0,
+    "analysis": {
+      "types": {
+        "total": 6,
+        "public": 6
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 6
+      }
+    }
+  },
+  {
+    "path": "src/ts/ui/index.ts",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Implements show notification.",
+    "exports": [
+      "resetUIForProcessing",
+      "refreshAllUI",
+      "disableUIControls",
+      "enableUIControls"
+    ],
+    "coupling": "mixed",
+    "quality_tags": [
+      "undocumented"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 7.6,
+    "semantic_summary": "side-effecting",
+    "analysis": {
+      "functions": {
+        "total": 12,
+        "public": 8,
+        "max_cognitive_complexity": 3,
+        "avg_cognitive_complexity": 1
+      },
+      "calls": {
+        "total_calls": 56,
+        "resolved_calls": 7,
+        "unresolved_calls": 49,
+        "resolution_rate": 0.125
+      },
+      "control_flow": {
+        "max_nesting_depth": 1,
+        "cognitive_complexity": 16
+      },
+      "concurrency": {
+        "total_sites": 2,
+        "has_async": false,
+        "has_locks": false,
+        "has_spawn": true
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 8
+      },
+      "activation": {
+        "total_sites": 10,
+        "kinds": [
+          "callback-surface",
+          "registration-site"
+        ]
+      }
+    }
+  }
+]

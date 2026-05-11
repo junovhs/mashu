@@ -1,8 +1,0 @@
-# Infrastructure
-.slopchop
-dist
-node_modules
-.git
-
-# Third-party libraries
-public/js/jszip.min.js

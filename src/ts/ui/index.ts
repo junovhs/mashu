@@ -1,6 +1,6 @@
 import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo } from "../types/index.js";
-import { displayGlobalStats, generateTextReport } from "./stats.js";
+import { displayGlobalStats, generateTextReportAsync } from "./stats.js";
 import { closeViewer } from "./viewer.js";
 
 // Export everything so app.ts can find them
@@ -9,6 +9,8 @@ export * from "./modals.js";
 export * from "./stats.js";
 export * from "./tree.js";
 export * from "./viewer.js";
+
+let reportRefreshToken = 0;
 
 export function populateElements(): void {
   const ids = [
@@ -123,7 +125,12 @@ export function refreshAllUI(): void {
 
   displayGlobalStats(data);
   if (elements.textOutput) {
-    elements.textOutput.textContent = generateTextReport(data);
+    const token = ++reportRefreshToken;
+    elements.textOutput.textContent = `// PREPARING REPORT FOR ${data.directoryData?.name || "PROJECT"} //`;
+    void generateTextReportAsync(data).then((report) => {
+      if (token !== reportRefreshToken || !elements.textOutput) return;
+      elements.textOutput.textContent = report;
+    });
   }
   updateFilter();
 }
@@ -142,7 +149,11 @@ export function enableUIControls(enable = true): void {
   ];
   controls.forEach((id) => {
     const btn = elements[id];
-    if (btn) (btn as HTMLButtonElement).disabled = !enable;
+    if (!btn) return;
+
+    const requiresCommittedSelection = id === "aiDebriefingAssistantBtn";
+    (btn as HTMLButtonElement).disabled =
+      !enable || (requiresCommittedSelection && !appState.selectionCommitted);
   });
 }
 

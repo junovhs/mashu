@@ -33,25 +33,16 @@ import type { VirtualDirectoryHandle } from "./utils/crossbrowser_fs.js";
 import { buildFromEntry, buildFromFileList, showFolderPicker } from "./utils/crossbrowser_fs.js";
 
 async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
+  appState.processingInProgress = true;
+  appState.committedScanData = null;
+  appState.selectionCommitted = false;
   resetUIForProcessing(`Processing '${handle.name}'...`);
+  disableUIControls();
 
-  const res = await scanDir(handle, handle.name, 0);
-  if (!res.ok) {
-    showFailedUI("Scan failed.");
-    console.error(res.error);
-    return;
-  }
-
-  await finishScan(handle, res.value);
+  await finishScan(handle);
 }
 
-async function finishScan(handle: VirtualDirectoryHandle, data: FolderInfo) {
-  appState.fullScanData = {
-    directoryData: data,
-    allFilesList: [],
-    allFoldersList: [],
-    maxDepth: 0,
-  };
+async function finishScan(handle: VirtualDirectoryHandle) {
   const agg: ScanAggregator = {
     allFilesList: [],
     allFoldersList: [],
@@ -60,9 +51,12 @@ async function finishScan(handle: VirtualDirectoryHandle, data: FolderInfo) {
   const scanRes = await scanDir(handle, handle.name, 0, agg);
   if (scanRes.ok) {
     appState.fullScanData = { directoryData: scanRes.value, ...agg };
-    appState.committedScanData = appState.fullScanData;
-    appState.selectionCommitted = true;
+    appState.committedScanData = null;
+    appState.selectionCommitted = false;
     updateUI(appState.fullScanData.directoryData as FolderInfo);
+  } else {
+    showFailedUI("Scan failed.");
+    console.error(scanRes.error);
   }
   appState.processingInProgress = false;
   const loader = elements.loader;
@@ -73,7 +67,10 @@ function updateUI(data: FolderInfo) {
   const container = elements.treeContainer;
   if (container) {
     container.innerHTML = "";
-    renderTree(data, container);
+    renderTree(data, container, true, {
+      initialCollapsed: true,
+      initialSelected: false,
+    });
     refreshAllUI();
     enableUIControls();
   }
@@ -90,16 +87,26 @@ function commitSelections(): void {
       if (path) selectedPaths.add(path);
     });
 
+  if (selectedPaths.size === 0) {
+    showNotification("Select at least one file or folder before commit.", 2500);
+    return;
+  }
+
   appState.committedScanData = filterScanData(
     appState.fullScanData,
     selectedPaths,
   );
   appState.selectionCommitted = true;
   refreshAllUI();
+  enableUIControls();
   showNotification("Selection committed.", 1500);
 }
 
 function clearProject(): void {
+  appState.fullScanData = null;
+  appState.committedScanData = null;
+  appState.selectionCommitted = false;
+  appState.processingInProgress = false;
   resetUIForProcessing();
   const loader = elements.loader;
   if (loader) loader.classList.remove("visible");
