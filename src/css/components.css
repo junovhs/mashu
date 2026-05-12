@@ -4,10 +4,18 @@
 #sidebarHeader {
 	display: flex;
 	align-items: center;
-	gap: 10px;
-	padding: 14px 16px 13px;
+	gap: 9px;
+	padding: 13px 16px 12px;
 	border-bottom: 1px solid var(--border);
 	flex-shrink: 0;
+	background: var(--surface);
+}
+
+.logo-icon {
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+	display: block;
 }
 
 .logo-dot {
@@ -20,7 +28,7 @@
 }
 
 .logo-name {
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: 600;
 	color: var(--text);
 	letter-spacing: -0.01em;
@@ -62,14 +70,17 @@
 	border-bottom: 1px solid var(--border);
 	flex-shrink: 0;
 	background: var(--surface);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 .panel-header h2 {
 	margin: 0;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-	color: var(--text3);
+	letter-spacing: 0;
+	text-transform: none;
+	color: var(--text2);
 }
 
 /* ── Buttons ── */
@@ -139,11 +150,11 @@
 #dropZone {
 	border: 1px dashed var(--border-strong);
 	border-radius: var(--border-radius-medium);
-	padding: 22px 16px;
+	padding: 20px 16px 18px;
 	text-align: center;
 	cursor: pointer;
 	transition: var(--transition-smooth);
-	background: rgba(255,255,255,0.02);
+	background: rgba(255,255,255,0.015);
 	margin: 12px 12px 0;
 }
 #dropZone:hover {
@@ -156,26 +167,26 @@
 	box-shadow: 0 0 0 3px rgba(246,130,31,0.15);
 }
 
-.drop-icon { font-size: 24px; margin-bottom: 8px; opacity: 0.5; }
+.drop-icon { font-size: 22px; margin-bottom: 7px; opacity: 0.45; }
 
 .drop-text {
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
 	color: var(--text2);
-	letter-spacing: 0.02em;
+	letter-spacing: -0.01em;
 }
 
 .drop-alternative {
 	font-size: 10px;
 	color: var(--text3);
-	margin: 5px 0;
+	margin: 4px 0;
 }
 
 .folder-select-btn {
-	margin-top: 10px;
+	margin-top: 8px;
 	width: auto;
 	display: inline-flex;
-	padding: 5px 14px;
+	padding: 4px 14px;
 	font-size: 11px;
 	background: var(--surface3);
 	border-color: var(--border-strong);
@@ -237,19 +248,61 @@
 /* ── Resizer ── */
 #sidebarResizer::after { display: none; }
 
-/* ── Notification ── */
+/* ── Notification (CF toast style) ── */
 .notification {
+	position: fixed;
+	bottom: 24px;
+	right: 24px;
 	font-family: var(--font-ui);
 	font-size: 12px;
+	font-weight: 500;
 	background: var(--surface2);
 	border: 1px solid var(--border-strong);
+	border-left: 3px solid var(--orange);
 	color: var(--text);
 	border-radius: var(--border-radius-medium);
+	padding: 10px 14px;
+	z-index: 99998;
+	box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+	animation: notif-in 0.18s ease-out;
+	max-width: 320px;
+}
+.notification.fade-out {
+	opacity: 0;
+	transform: translateY(4px);
+	transition: opacity 0.3s, transform 0.3s;
+}
+@keyframes notif-in {
+	from { opacity: 0; transform: translateY(8px); }
+	to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ── Controls area (inside sidebar) ── */
 #treeViewControls {
 	padding: 8px 12px 4px;
+}
+
+/* 2×2 grid for select/deselect + expand/collapse */
+.tree-ctrl-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 4px;
+	margin-bottom: 4px;
+}
+.tree-ctrl-grid .action-button {
+	margin-bottom: 0;
+	padding: 5px 8px;
+	font-size: 11px;
+}
+
+/* Side-by-side row for download + clear */
+.utility-action-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 4px;
+}
+.utility-action-row .action-button {
+	margin-bottom: 0;
 }
 
 #generalActions {

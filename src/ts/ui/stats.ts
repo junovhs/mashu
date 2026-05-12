@@ -105,15 +105,15 @@ function renderExtFilterPills(sortedTypes: [string, { count: number; size: numbe
 }
 
 export async function generateTextReportAsync(data: ScanData): Promise<string> {
-  if (!data.directoryData) return "// NO DATA FOR REPORT //";
+  if (!data.directoryData) return "// No data for report //";
 
   const root = data.directoryData;
   const lines = [
-    "//--- DIRANALYSE STREAMLINE REPORT ---//",
+    "//--- DirAnalyze Report ---//",
     `// Timestamp: ${new Date().toISOString()}`,
     `// Root: ${root.name}`,
     "",
-    "//--- DIRECTORY STRUCTURE ---",
+    "//--- Directory structure ---",
   ];
 
   const stack: TextTreeFrame[] = [
@@ -155,7 +155,7 @@ export async function generateTextReportAsync(data: ScanData): Promise<string> {
     }
   }
 
-  lines.push("", "//--- END OF REPORT ---//");
+  lines.push("", "//--- End of report ---//");
   return lines
     .join("\n")
     .replaceAll("\\u2514\\u2500", "\u2514\u2500")

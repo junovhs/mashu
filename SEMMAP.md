@@ -184,12 +184,12 @@ Exports: generateTextReportAsync, displayGlobalStats
 Semantic: async side-effecting stateful module
 
 `src/ts/ui/tree.ts`
-Formats tree for output. [COUPLING:mixed] [BEHAVIOR:owns-state,persists] [QUALITY:undocumented]
-Exports: initTreeState, setAllSelections, toggleAllFolders, renderTree
+Sets the selection by extension. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,persists] [QUALITY:undocumented]
+Exports: setSelectionByExtension, initTreeState, toggleAllFolders, setAllSelections
 Semantic: side-effecting stateful adapter
 
 `src/ts/ui/viewer.ts`
-Updates viewer. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
+Implements close viewer. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
 Exports: openFile, closeViewer, updateViewer
 Semantic: async side-effecting adapter that logs and continues
 
@@ -223,6 +223,9 @@ Implements components functionality. styles.
 
 `src/css/dropoverlay.css`
 Implements dropoverlay functionality. styles.
+
+`src/css/extensions.css`
+Implements extensions functionality. styles.
 
 `src/css/modals.css`
 Implements modals functionality. styles.
@@ -270,6 +273,9 @@ DependencyGraph:
   state.ts:
     Imports: [types/index.ts]
     ImportedBy: [app.ts, features.ts, modals.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
+  tree.ts:
+    Imports: [fs_utils.ts, state.ts, types/index.ts, viewer.ts]
+    ImportedBy: [app.ts, stats.ts, ui/index.ts]
   types/index.ts:
     Imports: [crossbrowser_fs.ts]
     ImportedBy: [app.ts, features.ts, filesystem.ts, state.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
@@ -285,7 +291,7 @@ DependencyGraph:
     ImportedBy: []
   # --- Layer 1 -- Domain (Engine) ---
   app.ts:
-    Imports: [app.css, components.css, crossbrowser_fs.ts, dropoverlay.css, features.ts, filesystem.ts, fs_utils.ts, layout.ts, modals.css, modals.ts, report.css, state.ts, stats.css, tree.css, tree.ts, types/index.ts, ui/index.ts, viewer.css, viewer.ts]
+    Imports: [app.css, components.css, crossbrowser_fs.ts, dropoverlay.css, extensions.css, features.ts, filesystem.ts, fs_utils.ts, layout.ts, modals.css, modals.ts, report.css, state.ts, stats.css, tree.css, tree.ts, types/index.ts, ui/index.ts, viewer.css, viewer.ts]
     ImportedBy: [index.html]
   features.ts:
     Imports: [filesystem.ts, fs_utils.ts, state.ts, types/index.ts, ui/index.ts]
@@ -300,17 +306,14 @@ DependencyGraph:
     Imports: [state.ts]
     ImportedBy: [app.ts, ui/index.ts]
   stats.ts:
-    Imports: [filesystem.ts, fs_utils.ts, state.ts, types/index.ts]
+    Imports: [filesystem.ts, fs_utils.ts, state.ts, tree.ts, types/index.ts]
     ImportedBy: [ui/index.ts]
-  tree.ts:
-    Imports: [fs_utils.ts, state.ts, types/index.ts, viewer.ts]
-    ImportedBy: [app.ts, ui/index.ts]
   # --- Layer 2 -- Adapters / Infra ---
   result.ts:
     Imports: []
     ImportedBy: [filesystem.ts, fs_utils.ts]
   # --- Layer 3 -- App / Entrypoints ---
-  app.css, components.css, dropoverlay.css, modals.css, report.css, stats.css, tree.css, viewer.css:
+  app.css, components.css, dropoverlay.css, extensions.css, modals.css, report.css, stats.css, tree.css, viewer.css:
     Imports: []
     ImportedBy: [app.ts]
 ```

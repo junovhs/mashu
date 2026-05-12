@@ -15,7 +15,11 @@ export function initLayout(): void {
   if (leftSidebar) {
     leftSidebar.innerHTML = `
             <header id="sidebarHeader">
-                <div class="logo-dot"></div>
+                <svg class="logo-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 5a2 2 0 012-2h3.586a1 1 0 01.707.293L10.707 5H15a2 2 0 012 2v1H3V5z" fill="#F6821F"/>
+                  <path d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" fill="#F6821F" opacity="0.7"/>
+                  <path d="M7 11h2M7 13.5h4" stroke="#111113" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
                 <span class="logo-name">DirAnalyze</span>
             </header>
 
@@ -25,10 +29,10 @@ export function initLayout(): void {
                         <div class="drop-icon">📁</div>
                         <div class="drop-text">Drop a folder to analyze</div>
                         <div class="drop-alternative">or</div>
-                        <button id="selectFolderBtn" class="action-button folder-select-btn">Browse</button>
+                        <button id="selectFolderBtn" class="action-button folder-select-btn">Browse files</button>
                     </div>
                 </div>
-                <div id="loader">Scanning...</div>
+                <div id="loader">Scanning…</div>
             </div>
 
             <div id="extFilterBar" style="display:none;">
@@ -36,11 +40,13 @@ export function initLayout(): void {
             </div>
 
             <div id="treeViewControls">
-                <button id="selectAllBtn" class="action-button utility-button" title="Select All" disabled>Select all</button>
-                <button id="deselectAllBtn" class="action-button utility-button" title="Deselect All" disabled>Deselect all</button>
-                <button id="commitSelectionsBtn" class="action-button utility-button" title="Commit selections" disabled>Commit</button>
-                <button id="expandAllBtn" class="action-button utility-button" title="Expand All" disabled>Expand all</button>
-                <button id="collapseAllBtn" class="action-button utility-button" title="Collapse All" disabled>Collapse all</button>
+                <div class="tree-ctrl-grid">
+                    <button id="selectAllBtn" class="action-button utility-button" title="Select All" disabled>Select all</button>
+                    <button id="deselectAllBtn" class="action-button utility-button" title="Deselect All" disabled>Deselect all</button>
+                    <button id="expandAllBtn" class="action-button utility-button" title="Expand All" disabled>Expand all</button>
+                    <button id="collapseAllBtn" class="action-button utility-button" title="Collapse All" disabled>Collapse all</button>
+                </div>
+                <button id="commitSelectionsBtn" class="action-button utility-button" title="Commit selections" disabled>Commit selection</button>
             </div>
 
             <div id="visualOutputContainer" style="flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;">
@@ -49,12 +55,14 @@ export function initLayout(): void {
 
             <div id="generalActions">
                 <button id="aiDebriefingAssistantBtn" class="action-button primary"
-                    title="Export the combined text of all committed files" disabled>🚀 EXPORT COMBINED TEXT</button>
+                    title="Export the combined text of all committed files" disabled>Export combined text</button>
                 <hr class="sidebar-hr" style="margin-top: 8px; margin-bottom: 8px;">
-                <button id="downloadProjectBtn" class="action-button utility-button" disabled
-                    title="Download project as ZIP">DOWNLOAD ZIP</button>
-                <button id="clearProjectBtn" class="action-button utility-button" disabled
-                    title="Clear all project data">CLEAR PROJECT</button>
+                <div class="utility-action-row">
+                    <button id="downloadProjectBtn" class="action-button utility-button" disabled
+                        title="Download project as ZIP">Download ZIP</button>
+                    <button id="clearProjectBtn" class="action-button utility-button" disabled
+                        title="Clear all project data">Clear project</button>
+                </div>
             </div>
         `;
   }
@@ -70,19 +78,18 @@ export function initLayout(): void {
                 <div id="textReportTab" class="tab-content-item active">
                     <div id="textOutputContainerOuter" class="content-panel">
                         <div class="panel-header">
-                            <h2>COMPREHENSIVE TEXT REPORT</h2>
+                            <h2>Text report</h2>
                         </div>
-                        <pre id="textOutput">// NO PROJECT LOADED //</pre>
-                        <div class="button-container"><button id="copyReportButton" class="action-button" disabled>COPY
-                                REPORT</button></div>
+                        <pre id="textOutput">// No project loaded //</pre>
+                        <div class="button-container"><button id="copyReportButton" class="action-button" disabled>Copy report</button></div>
                     </div>
                 </div>
             </div>
             <div id="fileViewer" style="display:none;">
                 <div class="viewer-header">
-                    <h3 id="viewerFileTitle">FILE VIEWER</h3>
+                    <h3 id="viewerFileTitle">File viewer</h3>
                     <div class="viewer-actions">
-                        <button id="closeViewerBtn" class="viewer-button">CLOSE</button>
+                        <button id="closeViewerBtn" class="viewer-button">Close</button>
                     </div>
                 </div>
                 <div class="viewer-container">

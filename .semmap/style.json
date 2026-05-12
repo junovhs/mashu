@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12T05:29:50Z",
+  "generated_at": "2026-05-12T13:52:30Z",
   "entries": [
     {
       "file": "public/js/jszip.min.js",
@@ -35,12 +35,12 @@
         "import \"../css/report.css\";",
         "import \"../css/stats.css\";",
         "import \"../css/dropoverlay.css\";",
+        "import \"../css/extensions.css\";",
         "",
         "import { downloadZip, exportCombined } from \"./features.js\";",
         "import type { ScanAggregator } from \"./filesystem.js\";",
         "import { filterScanData, initTypeData, scanDir, scanFileList } from \"./filesystem.js\";",
-        "import { appState, elements } from \"./state.js\";",
-        "import type { FolderInfo, ScanData } from \"./types/index.js\";"
+        "import { appState, elements } from \"./state.js\";"
       ]
     },
     {
@@ -139,6 +139,7 @@
         "import { formatBytes } from \"../filesystem.js\";",
         "import { appState, elements } from \"../state.js\";",
         "import type { FileInfo, FolderInfo, ScanData } from \"../types/index.js\";",
+        "import { setSelectionByExtension } from \"./tree.js\";",
         "",
         "const REPORT_YIELD_EVERY = 400;",
         "",
@@ -149,8 +150,7 @@
         "  prefix: string;",
         "}",
         "",
-        "async function yieldToMainThread(): Promise<void> {",
-        "  await new Promise<void>((resolve) => {"
+        "async function yieldToMainThread(): Promise<void> {"
       ]
     },
     {

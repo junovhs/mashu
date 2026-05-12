@@ -41,6 +41,11 @@
   },
   {
     "from": "src/ts/app.ts",
+    "to": "src/css/extensions.css",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/app.ts",
     "to": "src/ts/features.ts",
     "kind": "import"
   },
@@ -132,6 +137,11 @@
   {
     "from": "src/ts/ui/stats.ts",
     "to": "src/ts/types/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/stats.ts",
+    "to": "src/ts/ui/tree.ts",
     "kind": "import"
   },
   {
@@ -312,6 +322,11 @@
   {
     "from": "src/ts/ui/stats.ts",
     "to": "src/ts/utils/fs_utils.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/stats.ts",
+    "to": "src/ts/ui/tree.ts",
     "kind": "call"
   },
   {

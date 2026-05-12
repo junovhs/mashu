@@ -56,7 +56,7 @@
 
 /* Folder icon */
 .icon { display: flex; align-items: center; flex-shrink: 0; }
-.icon svg { width: 14px; height: 14px; fill: #f5a623; }
+.icon svg { width: 14px; height: 14px; fill: var(--orange); }
 
 /* Ext chip in tree — sized down for tree density */
 .item-prefix .ext-chip {

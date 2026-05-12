@@ -23,29 +23,40 @@
 .selection-summary strong { color: var(--orange); font-weight: 600; }
 
 /* Key/value stat rows */
-#globalStats { padding: 0; }
+#globalStats {
+	padding: 4px 0;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
 
 .stat-item {
 	display: flex;
-	justify-content: space-between;
-	align-items: baseline;
-	padding: 10px 16px;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 12px 16px;
 	border-bottom: 1px solid var(--border);
+	border-right: 1px solid var(--border);
+	gap: 3px;
 }
+.stat-item:nth-child(even) { border-right: none; }
+.stat-item:nth-last-child(-n+2) { border-bottom: none; }
 .stat-item:hover { background: rgba(255,255,255,0.02); }
 
 .stat-label {
-	font-size: 12px;
+	font-size: 10px;
+	letter-spacing: 0.07em;
+	text-transform: uppercase;
 	color: var(--text3);
-	font-weight: 500;
+	font-weight: 600;
 }
 
 .stat-value {
-	font-size: 18px;
-	font-weight: 600;
+	font-size: 22px;
+	font-weight: 700;
 	color: var(--text);
 	font-family: var(--font-ui);
-	letter-spacing: -0.02em;
+	letter-spacing: -0.03em;
+	line-height: 1.1;
 }
 
 .stat-value--name {
@@ -53,6 +64,7 @@
 	font-weight: 500;
 	color: var(--text2);
 	letter-spacing: 0;
+	line-height: 1.4;
 }
 
 /* Section label */

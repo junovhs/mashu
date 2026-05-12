@@ -170,18 +170,10 @@ function createFileLi(file: FileInfo): HTMLLIElement {
   prefix.appendChild(checkbox);
   prefix.appendChild(spacer);
 
-  if (ext) {
-    const chip = document.createElement("span");
-    chip.className = "ext-chip";
-    chip.dataset.ext = ext;
-    chip.textContent = ext;
-    prefix.appendChild(chip);
-  } else {
-    const icon = document.createElement("span");
-    icon.className = "icon";
-    icon.innerHTML = ICONS.file;
-    prefix.appendChild(icon);
-  }
+  const icon = document.createElement("span");
+  icon.className = "icon";
+  icon.innerHTML = ICONS.file;
+  prefix.appendChild(icon);
 
   const name = document.createElement("span");
   name.className = "name";

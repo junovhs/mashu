@@ -1617,102 +1617,102 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::processDirectory@37",
+    "stable_id": "fn::processDirectory@38",
     "name": "processDirectory",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 37,
-    "end_line": 46,
+    "start_line": 38,
+    "end_line": 47,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::setupFullPageDrop@192",
-      "fn::handleSelect@297"
+      "fn::setupFullPageDrop@193",
+      "fn::handleSelect@298"
     ],
     "callees": [
       "trait::VirtualDirectoryHandle@22",
       "fn::resetUIForProcessing@76",
       "fn::disableUIControls@164",
-      "fn::finishScan@78"
+      "fn::finishScan@79"
     ],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::processFileList@48",
+    "stable_id": "fn::processFileList@49",
     "name": "processFileList",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 48,
-    "end_line": 76,
+    "start_line": 49,
+    "end_line": 77,
     "visibility": "Private",
     "cognitive_complexity": 3,
     "callers": [
-      "fn::setupFullPageDrop@192",
-      "fn::setupHiddenInput@320"
+      "fn::setupFullPageDrop@193",
+      "fn::setupHiddenInput@321"
     ],
     "callees": [
       "fn::resetUIForProcessing@76",
       "fn::disableUIControls@164",
-      "fn::logPerfMeasure@371",
-      "fn::applyScanData@98",
+      "fn::logPerfMeasure@372",
+      "fn::applyScanData@99",
       "fn::showFailedUI@87"
     ],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::finishScan@78",
+    "stable_id": "fn::finishScan@79",
     "name": "finishScan",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 78,
-    "end_line": 96,
+    "start_line": 79,
+    "end_line": 97,
     "visibility": "Private",
     "cognitive_complexity": 3,
     "callers": [
-      "fn::processDirectory@37"
+      "fn::processDirectory@38"
     ],
     "callees": [
       "trait::VirtualDirectoryHandle@22",
-      "fn::logPerfMeasure@371",
-      "fn::applyScanData@98",
+      "fn::logPerfMeasure@372",
+      "fn::applyScanData@99",
       "fn::showFailedUI@87"
     ],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::applyScanData@98",
+    "stable_id": "fn::applyScanData@99",
     "name": "applyScanData",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 98,
-    "end_line": 103,
+    "start_line": 99,
+    "end_line": 104,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::processFileList@48",
-      "fn::finishScan@78"
+      "fn::processFileList@49",
+      "fn::finishScan@79"
     ],
     "callees": [
       "trait::ScanData@26",
-      "fn::updateUI@105"
+      "fn::updateUI@106"
     ],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::updateUI@105",
+    "stable_id": "fn::updateUI@106",
     "name": "updateUI",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 105,
-    "end_line": 130,
+    "start_line": 106,
+    "end_line": 131,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::applyScanData@98"
+      "fn::applyScanData@99"
     ],
     "callees": [
       "trait::FolderInfo@13",
@@ -1720,22 +1720,22 @@
       "fn::renderTree@34",
       "fn::refreshAllUI@127",
       "fn::enableUIControls@142",
-      "fn::logPerfMeasure@371"
+      "fn::logPerfMeasure@372"
     ],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::commitSelections@132",
+    "stable_id": "fn::commitSelections@133",
     "name": "commitSelections",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 132,
-    "end_line": 149,
+    "start_line": 133,
+    "end_line": 150,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::setupListeners@344"
+      "fn::setupListeners@345"
     ],
     "callees": [
       "fn::showNotification@65",
@@ -1747,16 +1747,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::clearProject@151",
+    "stable_id": "fn::clearProject@152",
     "name": "clearProject",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 151,
-    "end_line": 166,
+    "start_line": 152,
+    "end_line": 167,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::setupListeners@344"
+      "fn::setupListeners@345"
     ],
     "callees": [
       "fn::resetUIForProcessing@76",
@@ -1766,169 +1766,169 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::showDropOverlay@174",
+    "stable_id": "fn::showDropOverlay@175",
     "name": "showDropOverlay",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 174,
-    "end_line": 179,
+    "start_line": 175,
+    "end_line": 180,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::setupFullPageDrop@192"
+      "fn::setupFullPageDrop@193"
     ],
     "callees": [],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::hideDropOverlay@181",
+    "stable_id": "fn::hideDropOverlay@182",
     "name": "hideDropOverlay",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 181,
-    "end_line": 186,
+    "start_line": 182,
+    "end_line": 187,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::setupFullPageDrop@192"
+      "fn::setupFullPageDrop@193"
     ],
     "callees": [],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::isDraggingFiles@188",
+    "stable_id": "fn::isDraggingFiles@189",
     "name": "isDraggingFiles",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 188,
-    "end_line": 190,
+    "start_line": 189,
+    "end_line": 191,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::setupFullPageDrop@192"
+      "fn::setupFullPageDrop@193"
     ],
     "callees": [],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setupFullPageDrop@192",
+    "stable_id": "fn::setupFullPageDrop@193",
     "name": "setupFullPageDrop",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 192,
-    "end_line": 275,
+    "start_line": 193,
+    "end_line": 276,
     "visibility": "Private",
     "cognitive_complexity": 18,
     "callers": [
-      "fn::setupListeners@344"
+      "fn::setupListeners@345"
     ],
     "callees": [
-      "fn::isDraggingFiles@188",
-      "fn::showDropOverlay@174",
-      "fn::hideDropOverlay@181",
-      "fn::canScanDroppedFileList@277",
-      "fn::processFileList@48",
+      "fn::isDraggingFiles@189",
+      "fn::showDropOverlay@175",
+      "fn::hideDropOverlay@182",
+      "fn::canScanDroppedFileList@278",
+      "fn::processFileList@49",
       "fn::showNotification@65",
       "fn::buildFromEntry@269",
-      "fn::logPerfMeasure@371",
-      "fn::processDirectory@37"
+      "fn::logPerfMeasure@372",
+      "fn::processDirectory@38"
     ],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::canScanDroppedFileList@277",
+    "stable_id": "fn::canScanDroppedFileList@278",
     "name": "canScanDroppedFileList",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 277,
-    "end_line": 279,
+    "start_line": 278,
+    "end_line": 280,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::setupFullPageDrop@192"
+      "fn::setupFullPageDrop@193"
     ],
     "callees": [
-      "fn::getFileListRootName@281"
+      "fn::getFileListRootName@282"
     ],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getFileListRootName@281",
+    "stable_id": "fn::getFileListRootName@282",
     "name": "getFileListRootName",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 281,
-    "end_line": 291,
+    "start_line": 282,
+    "end_line": 292,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::canScanDroppedFileList@277"
+      "fn::canScanDroppedFileList@278"
     ],
     "callees": [],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::handleSelect@297",
+    "stable_id": "fn::handleSelect@298",
     "name": "handleSelect",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 297,
-    "end_line": 314,
+    "start_line": 298,
+    "end_line": 315,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [
-      "fn::setupListeners@344"
+      "fn::setupListeners@345"
     ],
     "callees": [
-      "fn::processDirectory@37"
+      "fn::processDirectory@38"
     ],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setupHiddenInput@320",
+    "stable_id": "fn::setupHiddenInput@321",
     "name": "setupHiddenInput",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 320,
-    "end_line": 342,
+    "start_line": 321,
+    "end_line": 343,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::init@385"
+      "fn::init@386"
     ],
     "callees": [
-      "fn::processFileList@48"
+      "fn::processFileList@49"
     ],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setupListeners@344",
+    "stable_id": "fn::setupListeners@345",
     "name": "setupListeners",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 344,
-    "end_line": 369,
+    "start_line": 345,
+    "end_line": 370,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::init@385"
+      "fn::init@386"
     ],
     "callees": [
-      "fn::setupFullPageDrop@192",
-      "fn::handleSelect@297",
-      "fn::commitSelections@132",
+      "fn::setupFullPageDrop@193",
+      "fn::handleSelect@298",
+      "fn::commitSelections@133",
       "fn::downloadZip@75",
-      "fn::clearProject@151",
-      "fn::setAllSelections@404",
-      "fn::toggleAllFolders@422",
+      "fn::clearProject@152",
+      "fn::setAllSelections@439",
+      "fn::toggleAllFolders@457",
       "fn::copyCurrentReport@168",
       "fn::closeViewer@121",
       "fn::exportCombined@13"
@@ -1937,31 +1937,31 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::logPerfMeasure@371",
+    "stable_id": "fn::logPerfMeasure@372",
     "name": "logPerfMeasure",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 371,
-    "end_line": 383,
+    "start_line": 372,
+    "end_line": 384,
     "visibility": "Private",
     "cognitive_complexity": 5,
     "callers": [
-      "fn::processFileList@48",
-      "fn::finishScan@78",
-      "fn::updateUI@105",
-      "fn::setupFullPageDrop@192"
+      "fn::processFileList@49",
+      "fn::finishScan@79",
+      "fn::updateUI@106",
+      "fn::setupFullPageDrop@193"
     ],
     "callees": [],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::init@385",
+    "stable_id": "fn::init@386",
     "name": "init",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 385,
-    "end_line": 405,
+    "start_line": 386,
+    "end_line": 406,
     "visibility": "Private",
     "cognitive_complexity": 3,
     "callers": [],
@@ -1970,21 +1970,21 @@
       "fn::populateElements@21",
       "fn::initTabs@94",
       "fn::initSidebarResizer@3",
-      "fn::setupHiddenInput@320",
+      "fn::setupHiddenInput@321",
       "fn::initTypeData@27",
-      "fn::setupListeners@344",
+      "fn::setupListeners@345",
       "fn::disableUIControls@164"
     ],
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "static::dragCounter@172",
+    "stable_id": "static::dragCounter@173",
     "name": "dragCounter",
     "kind": "Static",
     "file": "src/ts/app.ts",
-    "start_line": 172,
-    "end_line": 172,
+    "start_line": 173,
+    "end_line": 173,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -2002,7 +2002,7 @@
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::setupListeners@344"
+      "fn::setupListeners@345"
     ],
     "callees": [
       "fn::checkExportReady@28",
@@ -2089,7 +2089,7 @@
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
-      "fn::setupListeners@344"
+      "fn::setupListeners@345"
     ],
     "callees": [
       "fn::showNotification@65",
@@ -2313,7 +2313,7 @@
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::commitSelections@132"
+      "fn::commitSelections@133"
     ],
     "callees": [
       "trait::ScanData@26"
@@ -2684,11 +2684,11 @@
     "kind": "Function",
     "file": "src/ts/ui/layout.ts",
     "start_line": 1,
-    "end_line": 127,
+    "end_line": 115,
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
-      "fn::init@385"
+      "fn::init@386"
     ],
     "callees": [],
     "has_guard_coverage": false,
@@ -2704,7 +2704,7 @@
     "visibility": "Public",
     "cognitive_complexity": 4,
     "callers": [
-      "fn::init@385"
+      "fn::init@386"
     ],
     "callees": [
       "fn::handleMouseMove@20",
@@ -2749,28 +2749,28 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::yieldToMainThread@14",
+    "stable_id": "fn::yieldToMainThread@15",
     "name": "yieldToMainThread",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 14,
-    "end_line": 18,
+    "start_line": 15,
+    "end_line": 19,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::generateTextReportAsync@53"
+      "fn::generateTextReportAsync@107"
     ],
     "callees": [],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::displayGlobalStats@20",
+    "stable_id": "fn::displayGlobalStats@21",
     "name": "displayGlobalStats",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 20,
-    "end_line": 51,
+    "start_line": 21,
+    "end_line": 71,
     "visibility": "Public",
     "cognitive_complexity": 5,
     "callers": [
@@ -2778,18 +2778,37 @@
     ],
     "callees": [
       "trait::ScanData@26",
-      "fn::formatBytes@4"
+      "fn::formatBytes@4",
+      "fn::renderExtFilterPills@73"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::generateTextReportAsync@53",
+    "stable_id": "fn::renderExtFilterPills@73",
+    "name": "renderExtFilterPills",
+    "kind": "Function",
+    "file": "src/ts/ui/stats.ts",
+    "start_line": 73,
+    "end_line": 105,
+    "visibility": "Private",
+    "cognitive_complexity": 2,
+    "callers": [
+      "fn::displayGlobalStats@21"
+    ],
+    "callees": [
+      "fn::setSelectionByExtension@202"
+    ],
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::generateTextReportAsync@107",
     "name": "generateTextReportAsync",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 53,
-    "end_line": 110,
+    "start_line": 107,
+    "end_line": 164,
     "visibility": "Public",
     "cognitive_complexity": 10,
     "callers": [
@@ -2798,18 +2817,18 @@
     "callees": [
       "trait::ScanData@26",
       "fn::formatBytes@4",
-      "fn::yieldToMainThread@14"
+      "fn::yieldToMainThread@15"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "trait::TextTreeFrame@7",
+    "stable_id": "trait::TextTreeFrame@8",
     "name": "TextTreeFrame",
     "kind": "Trait",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 7,
-    "end_line": 12,
+    "start_line": 8,
+    "end_line": 13,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -2818,12 +2837,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::REPORT_YIELD_EVERY@5",
+    "stable_id": "const::REPORT_YIELD_EVERY@6",
     "name": "REPORT_YIELD_EVERY",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 5,
-    "end_line": 5,
+    "start_line": 6,
+    "end_line": 6,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -2841,13 +2860,13 @@
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::updateUI@105"
+      "fn::updateUI@106"
     ],
     "callees": [
       "trait::FolderInfo@13",
       "trait::TreeStateOptions@6",
-      "fn::buildTreeModel@248",
-      "fn::expandAllFoldersInState@361"
+      "fn::buildTreeModel@283",
+      "fn::expandAllFoldersInState@396"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
@@ -2862,16 +2881,16 @@
     "visibility": "Public",
     "cognitive_complexity": 10,
     "callers": [
-      "fn::updateUI@105",
-      "fn::rerenderVisibleTree@231"
+      "fn::updateUI@106",
+      "fn::rerenderVisibleTree@266"
     ],
     "callees": [
       "trait::FolderInfo@13",
       "trait::FileInfo@3",
-      "fn::bindTreeInteractions@186",
+      "fn::bindTreeInteractions@221",
       "fn::renderTreeNode@70",
-      "fn::createFileLi@140",
-      "fn::applyCommittedFilterToVisibleTree@369"
+      "fn::createFileLi@146",
+      "fn::applyCommittedFilterToVisibleTree@404"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
@@ -2891,7 +2910,7 @@
     "callees": [
       "trait::FolderInfo@13",
       "trait::FileInfo@3",
-      "fn::createFileLi@140"
+      "fn::createFileLi@146"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
@@ -2914,14 +2933,30 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::createFileLi@140",
-    "name": "createFileLi",
+    "stable_id": "fn::getFileExt@140",
+    "name": "getFileExt",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
     "start_line": 140,
-    "end_line": 184,
+    "end_line": 144,
     "visibility": "Private",
-    "cognitive_complexity": 0,
+    "cognitive_complexity": 1,
+    "callers": [
+      "fn::setSelectionByExtension@202"
+    ],
+    "callees": [],
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::createFileLi@146",
+    "name": "createFileLi",
+    "kind": "Function",
+    "file": "src/ts/ui/tree.ts",
+    "start_line": 146,
+    "end_line": 200,
+    "visibility": "Private",
+    "cognitive_complexity": 2,
     "callers": [
       "fn::renderTree@34",
       "fn::renderTreeNode@70"
@@ -2934,39 +2969,61 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::bindTreeInteractions@186",
+    "stable_id": "fn::setSelectionByExtension@202",
+    "name": "setSelectionByExtension",
+    "kind": "Function",
+    "file": "src/ts/ui/tree.ts",
+    "start_line": 202,
+    "end_line": 219,
+    "visibility": "Public",
+    "cognitive_complexity": 3,
+    "callers": [
+      "fn::renderExtFilterPills@73"
+    ],
+    "callees": [
+      "fn::getFileExt@140",
+      "fn::applySelectionToNode@341",
+      "fn::recomputeAncestorCounts@363",
+      "fn::rerenderVisibleTree@266"
+    ],
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::bindTreeInteractions@221",
     "name": "bindTreeInteractions",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 186,
-    "end_line": 229,
+    "start_line": 221,
+    "end_line": 264,
     "visibility": "Private",
     "cognitive_complexity": 11,
     "callers": [
       "fn::renderTree@34"
     ],
     "callees": [
-      "fn::setSelectionForSubtree@298",
-      "fn::rerenderVisibleTree@231",
-      "fn::toggleExpanded@240",
+      "fn::setSelectionForSubtree@333",
+      "fn::rerenderVisibleTree@266",
+      "fn::toggleExpanded@275",
       "fn::openFile@51"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::rerenderVisibleTree@231",
+    "stable_id": "fn::rerenderVisibleTree@266",
     "name": "rerenderVisibleTree",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 231,
-    "end_line": 238,
+    "start_line": 266,
+    "end_line": 273,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::bindTreeInteractions@186",
-      "fn::setAllSelections@404",
-      "fn::toggleAllFolders@422"
+      "fn::setSelectionByExtension@202",
+      "fn::bindTreeInteractions@221",
+      "fn::setAllSelections@439",
+      "fn::toggleAllFolders@457"
     ],
     "callees": [
       "fn::renderTree@34"
@@ -2975,28 +3032,28 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::toggleExpanded@240",
+    "stable_id": "fn::toggleExpanded@275",
     "name": "toggleExpanded",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 240,
-    "end_line": 246,
+    "start_line": 275,
+    "end_line": 281,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::bindTreeInteractions@186"
+      "fn::bindTreeInteractions@221"
     ],
     "callees": [],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::buildTreeModel@248",
+    "stable_id": "fn::buildTreeModel@283",
     "name": "buildTreeModel",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 248,
-    "end_line": 281,
+    "start_line": 283,
+    "end_line": 316,
     "visibility": "Private",
     "cognitive_complexity": 6,
     "callers": [
@@ -3009,12 +3066,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getSelectionState@283",
+    "stable_id": "fn::getSelectionState@318",
     "name": "getSelectionState",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 283,
-    "end_line": 296,
+    "start_line": 318,
+    "end_line": 331,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [],
@@ -3025,36 +3082,37 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setSelectionForSubtree@298",
+    "stable_id": "fn::setSelectionForSubtree@333",
     "name": "setSelectionForSubtree",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 298,
-    "end_line": 304,
+    "start_line": 333,
+    "end_line": 339,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::bindTreeInteractions@186"
+      "fn::bindTreeInteractions@221"
     ],
     "callees": [
-      "fn::applySelectionToNode@306",
-      "fn::recomputeAncestorCounts@328"
+      "fn::applySelectionToNode@341",
+      "fn::recomputeAncestorCounts@363"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::applySelectionToNode@306",
+    "stable_id": "fn::applySelectionToNode@341",
     "name": "applySelectionToNode",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 306,
-    "end_line": 326,
+    "start_line": 341,
+    "end_line": 361,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [
-      "fn::setSelectionForSubtree@298",
-      "fn::setAllSelections@404"
+      "fn::setSelectionByExtension@202",
+      "fn::setSelectionForSubtree@333",
+      "fn::setAllSelections@439"
     ],
     "callees": [
       "type::TreeNode@11"
@@ -3063,45 +3121,46 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::recomputeAncestorCounts@328",
+    "stable_id": "fn::recomputeAncestorCounts@363",
     "name": "recomputeAncestorCounts",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 328,
-    "end_line": 359,
+    "start_line": 363,
+    "end_line": 394,
     "visibility": "Private",
     "cognitive_complexity": 13,
     "callers": [
-      "fn::setSelectionForSubtree@298"
+      "fn::setSelectionByExtension@202",
+      "fn::setSelectionForSubtree@333"
     ],
     "callees": [],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::expandAllFoldersInState@361",
+    "stable_id": "fn::expandAllFoldersInState@396",
     "name": "expandAllFoldersInState",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 361,
-    "end_line": 367,
+    "start_line": 396,
+    "end_line": 402,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
       "fn::initTreeState@16",
-      "fn::toggleAllFolders@422"
+      "fn::toggleAllFolders@457"
     ],
     "callees": [],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::applyCommittedFilterToVisibleTree@369",
+    "stable_id": "fn::applyCommittedFilterToVisibleTree@404",
     "name": "applyCommittedFilterToVisibleTree",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 369,
-    "end_line": 402,
+    "start_line": 404,
+    "end_line": 437,
     "visibility": "Private",
     "cognitive_complexity": 12,
     "callers": [
@@ -3112,39 +3171,39 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setAllSelections@404",
+    "stable_id": "fn::setAllSelections@439",
     "name": "setAllSelections",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 404,
-    "end_line": 420,
+    "start_line": 439,
+    "end_line": 455,
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
-      "fn::setupListeners@344"
+      "fn::setupListeners@345"
     ],
     "callees": [
-      "fn::applySelectionToNode@306",
-      "fn::rerenderVisibleTree@231"
+      "fn::applySelectionToNode@341",
+      "fn::rerenderVisibleTree@266"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::toggleAllFolders@422",
+    "stable_id": "fn::toggleAllFolders@457",
     "name": "toggleAllFolders",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 422,
-    "end_line": 428,
+    "start_line": 457,
+    "end_line": 463,
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::setupListeners@344"
+      "fn::setupListeners@345"
     ],
     "callees": [
-      "fn::expandAllFoldersInState@361",
-      "fn::rerenderVisibleTree@231"
+      "fn::expandAllFoldersInState@396",
+      "fn::rerenderVisibleTree@266"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
@@ -3175,8 +3234,8 @@
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::buildTreeModel@248",
-      "fn::applySelectionToNode@306"
+      "fn::buildTreeModel@283",
+      "fn::applySelectionToNode@341"
     ],
     "callees": [],
     "has_guard_coverage": false,
@@ -3192,7 +3251,7 @@
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::getSelectionState@283"
+      "fn::getSelectionState@318"
     ],
     "callees": [],
     "has_guard_coverage": false,
@@ -3254,7 +3313,7 @@
     "visibility": "Public",
     "cognitive_complexity": 8,
     "callers": [
-      "fn::bindTreeInteractions@186"
+      "fn::bindTreeInteractions@221"
     ],
     "callees": [
       "trait::FileInfo@3",
@@ -3310,7 +3369,7 @@
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
-      "fn::setupListeners@344",
+      "fn::setupListeners@345",
       "fn::resetUIForProcessing@76"
     ],
     "callees": [],
@@ -3542,7 +3601,7 @@
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::setupFullPageDrop@192"
+      "fn::setupFullPageDrop@193"
     ],
     "callees": [
       "trait::FileSystemEntry@12",
@@ -3651,8 +3710,8 @@
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::processDirectory@37",
-      "fn::finishScan@78",
+      "fn::processDirectory@38",
+      "fn::finishScan@79",
       "fn::createVirtualDirectoryHandle@62",
       "fn::scanDir@72",
       "fn::emptyFolder@266",
@@ -3802,10 +3861,10 @@
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::displayGlobalStats@20",
-      "fn::generateTextReportAsync@53",
+      "fn::displayGlobalStats@21",
+      "fn::generateTextReportAsync@107",
       "fn::createFolderLi@90",
-      "fn::createFileLi@140",
+      "fn::createFileLi@146",
       "fn::updateViewer@28"
     ],
     "callees": [],
@@ -3836,7 +3895,7 @@
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::init@385"
+      "fn::init@386"
     ],
     "callees": [],
     "has_guard_coverage": false,
@@ -4105,7 +4164,7 @@
       "fn::walk@430",
       "fn::renderTree@34",
       "fn::renderTreeNode@70",
-      "fn::createFileLi@140",
+      "fn::createFileLi@146",
       "fn::openFile@51",
       "fn::initOrSet@95",
       "fn::walk@211"
@@ -4124,7 +4183,7 @@
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::updateUI@105",
+      "fn::updateUI@106",
       "fn::emptyFolder@266",
       "fn::handleFileEntry@285",
       "fn::handleDirEntry@313",
@@ -4155,10 +4214,10 @@
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::applyScanData@98",
+      "fn::applyScanData@99",
       "fn::filterScanData@343",
-      "fn::displayGlobalStats@20",
-      "fn::generateTextReportAsync@53",
+      "fn::displayGlobalStats@21",
+      "fn::generateTextReportAsync@107",
       "fn::getActiveScanData@220",
       "fn::getReportKey@226",
       "fn::queueReportWarmup@239",
@@ -4224,7 +4283,7 @@
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::init@385"
+      "fn::init@386"
     ],
     "callees": [],
     "has_guard_coverage": true,
@@ -4240,8 +4299,8 @@
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::commitSelections@132",
-      "fn::setupFullPageDrop@192",
+      "fn::commitSelections@133",
+      "fn::setupFullPageDrop@193",
       "fn::exportCombined@13",
       "fn::checkExportReady@28",
       "fn::downloadZip@75",
@@ -4262,9 +4321,9 @@
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
-      "fn::processDirectory@37",
-      "fn::processFileList@48",
-      "fn::clearProject@151"
+      "fn::processDirectory@38",
+      "fn::processFileList@49",
+      "fn::clearProject@152"
     ],
     "callees": [
       "fn::closeViewer@121"
@@ -4282,8 +4341,8 @@
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::processFileList@48",
-      "fn::finishScan@78"
+      "fn::processFileList@49",
+      "fn::finishScan@79"
     ],
     "callees": [],
     "has_guard_coverage": true,
@@ -4299,7 +4358,7 @@
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::init@385"
+      "fn::init@386"
     ],
     "callees": [
       "fn::setActiveTab@107"
@@ -4335,12 +4394,12 @@
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::updateUI@105",
-      "fn::commitSelections@132",
+      "fn::updateUI@106",
+      "fn::commitSelections@133",
       "fn::setActiveTab@107"
     ],
     "callees": [
-      "fn::displayGlobalStats@20",
+      "fn::displayGlobalStats@21",
       "fn::queueReportWarmup@239",
       "fn::updateFilter@187",
       "fn::measurePerformance@372"
@@ -4358,9 +4417,9 @@
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::updateUI@105",
-      "fn::commitSelections@132",
-      "fn::clearProject@151",
+      "fn::updateUI@106",
+      "fn::commitSelections@133",
+      "fn::clearProject@152",
       "fn::disableUIControls@164"
     ],
     "callees": [],
@@ -4377,9 +4436,9 @@
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::processDirectory@37",
-      "fn::processFileList@48",
-      "fn::init@385"
+      "fn::processDirectory@38",
+      "fn::processFileList@49",
+      "fn::init@386"
     ],
     "callees": [
       "fn::enableUIControls@142"
@@ -4397,7 +4456,7 @@
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::setupListeners@344"
+      "fn::setupListeners@345"
     ],
     "callees": [
       "fn::showNotification@65",
@@ -4550,7 +4609,7 @@
     ],
     "callees": [
       "trait::ScanData@26",
-      "fn::generateTextReportAsync@53",
+      "fn::generateTextReportAsync@107",
       "fn::measurePerformance@372"
     ],
     "has_guard_coverage": true,

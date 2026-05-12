@@ -113,8 +113,8 @@
   },
   {
     "file": "src/ts/ui/tree.ts",
-    "hotspot_score": 0.24833333,
-    "fan_in": 1,
+    "hotspot_score": 0.32333332,
+    "fan_in": 2,
     "cognitive_complexity_max": 13,
     "doc_coverage": 0.0
   },
@@ -169,6 +169,13 @@
   },
   {
     "file": "src/css/dropoverlay.css",
+    "hotspot_score": 0.075,
+    "fan_in": 1,
+    "cognitive_complexity_max": 0,
+    "doc_coverage": 1.0
+  },
+  {
+    "file": "src/css/extensions.css",
     "hotspot_score": 0.075,
     "fan_in": 1,
     "cognitive_complexity_max": 0,

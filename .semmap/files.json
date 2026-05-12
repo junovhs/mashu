@@ -483,24 +483,24 @@
     "semantic_summary": "async side-effecting stateful module",
     "analysis": {
       "functions": {
-        "total": 3,
+        "total": 4,
         "public": 2,
         "max_cognitive_complexity": 10,
-        "avg_cognitive_complexity": 5
+        "avg_cognitive_complexity": 4
       },
       "types": {
         "total": 1,
         "public": 0
       },
       "calls": {
-        "total_calls": 27,
-        "resolved_calls": 2,
-        "unresolved_calls": 25,
-        "resolution_rate": 0.074074075
+        "total_calls": 44,
+        "resolved_calls": 3,
+        "unresolved_calls": 41,
+        "resolution_rate": 0.06818182
       },
       "control_flow": {
         "max_nesting_depth": 2,
-        "cognitive_complexity": 15
+        "cognitive_complexity": 17
       },
       "concurrency": {
         "total_sites": 5,
@@ -513,9 +513,10 @@
         "undocumented_public": 2
       },
       "activation": {
-        "total_sites": 1,
+        "total_sites": 5,
         "kinds": [
-          "callback-surface"
+          "callback-surface",
+          "registration-site"
         ]
       }
     }
@@ -524,12 +525,12 @@
     "path": "src/ts/ui/tree.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Formats tree for output.",
+    "description": "Sets the selection by extension.",
     "exports": [
+      "setSelectionByExtension",
       "initTreeState",
-      "setAllSelections",
       "toggleAllFolders",
-      "renderTree"
+      "setAllSelections"
     ],
     "coupling": "mixed",
     "behavior_tags": [
@@ -539,14 +540,14 @@
     "quality_tags": [
       "undocumented"
     ],
-    "hotspot": false,
+    "hotspot": true,
     "fan_in": 0,
-    "risk_score": 5.6,
+    "risk_score": 8.6,
     "semantic_summary": "side-effecting stateful adapter",
     "analysis": {
       "functions": {
-        "total": 17,
-        "public": 4,
+        "total": 19,
+        "public": 5,
         "max_cognitive_complexity": 13,
         "avg_cognitive_complexity": 4
       },
@@ -555,21 +556,21 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 229,
-        "resolved_calls": 29,
-        "unresolved_calls": 200,
-        "resolution_rate": 0.12663755
+        "total_calls": 245,
+        "resolved_calls": 34,
+        "unresolved_calls": 211,
+        "resolution_rate": 0.13877551
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 77
+        "cognitive_complexity": 83
       },
       "docs": {
         "documented_symbols": 0,
-        "undocumented_public": 4
+        "undocumented_public": 5
       },
       "activation": {
-        "total_sites": 62,
+        "total_sites": 65,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -581,7 +582,7 @@
     "path": "src/ts/ui/viewer.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Updates viewer.",
+    "description": "Implements close viewer.",
     "exports": [
       "openFile",
       "closeViewer",
@@ -870,6 +871,17 @@
     "layer": 3,
     "file_kind": "production",
     "description": "Implements dropoverlay functionality. styles.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 1.0,
+    "analysis": {}
+  },
+  {
+    "path": "src/css/extensions.css",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Implements extensions functionality. styles.",
     "exports": [],
     "hotspot": false,
     "fan_in": 0,

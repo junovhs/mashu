@@ -80,7 +80,7 @@ export function resetUIForProcessing(message = "Processing..."): void {
   }
   if (elements.treeContainer) elements.treeContainer.innerHTML = "";
   if (elements.textOutput)
-    elements.textOutput.textContent = "// NO PROJECT LOADED //";
+    elements.textOutput.textContent = "// No project loaded //";
   closeViewer();
 }
 
@@ -282,8 +282,8 @@ function setReportPlaceholder(data: ScanData, isReady: boolean): void {
 
   const root = data.directoryData;
   const statusLine = isReady
-    ? "// REPORT READY. CLICK SHOW REPORT TO RENDER OR COPY REPORT TO COPY. //"
-    : "// REPORT CACHE WARMING IN BACKGROUND. //";
+    ? "// Report ready — click Copy report to copy or wait for render. //"
+    : "// Generating report in background… //";
 
   elements.textOutput.textContent = [
     `// PROJECT: ${root.name}`,

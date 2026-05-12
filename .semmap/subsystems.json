@@ -26,10 +26,11 @@
       "src/ts/state.ts",
       "src/ts/types/index.ts",
       "src/ts/ui/index.ts",
+      "src/ts/ui/tree.ts",
       "src/ts/ui/viewer.ts"
     ],
     "internal_edge_density": 0.5333333333333333,
-    "external_callers": 24
+    "external_callers": 30
   },
   {
     "name": "index-2",
@@ -56,7 +57,35 @@
       "src/ts/ui/index.ts"
     ],
     "internal_edge_density": 0.5,
-    "external_callers": 21
+    "external_callers": 25
+  },
+  {
+    "name": "index-3",
+    "purpose": "Dense dependency cluster with 5 files.",
+    "files": [
+      "src/ts/state.ts",
+      "src/ts/types/index.ts",
+      "src/ts/ui/index.ts",
+      "src/ts/ui/stats.ts",
+      "src/ts/ui/tree.ts"
+    ],
+    "interface_symbols": [
+      "AppState",
+      "FileTypeData",
+      "FolderInfo",
+      "ICONS",
+      "ScanData",
+      "appState",
+      "elements"
+    ],
+    "hotspot_files": [
+      "src/ts/state.ts",
+      "src/ts/types/index.ts",
+      "src/ts/ui/index.ts",
+      "src/ts/ui/tree.ts"
+    ],
+    "internal_edge_density": 0.5,
+    "external_callers": 26
   },
   {
     "name": "data",
@@ -110,7 +139,7 @@
       "src/ts/utils/crossbrowser_fs.ts"
     ],
     "internal_edge_density": 0.5,
-    "external_callers": 22
+    "external_callers": 25
   },
   {
     "name": "state",
@@ -132,32 +161,6 @@
     ],
     "internal_edge_density": 0.5,
     "external_callers": 11
-  },
-  {
-    "name": "index-3",
-    "purpose": "Dense dependency cluster with 4 files.",
-    "files": [
-      "src/ts/state.ts",
-      "src/ts/types/index.ts",
-      "src/ts/ui/index.ts",
-      "src/ts/ui/stats.ts"
-    ],
-    "interface_symbols": [
-      "AppState",
-      "FileTypeData",
-      "FolderInfo",
-      "ICONS",
-      "ScanData",
-      "appState",
-      "elements"
-    ],
-    "hotspot_files": [
-      "src/ts/state.ts",
-      "src/ts/types/index.ts",
-      "src/ts/ui/index.ts"
-    ],
-    "internal_edge_density": 0.5,
-    "external_callers": 20
   },
   {
     "name": "ts",

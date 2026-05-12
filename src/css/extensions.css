@@ -1,40 +1,6 @@
 /* --- EXTENSION COLOR SYSTEM ---
-   data-ext attribute → --ext-color CSS var → chip/pill styles below
+   Single neutral tone — no rainbow.
 */
-
-[data-ext=".rs"], [data-ext=".c"], [data-ext=".cpp"], [data-ext=".cc"],
-[data-ext=".h"], [data-ext=".hpp"], [data-ext=".cs"], [data-ext=".zig"],
-[data-ext=".swift"] { --ext-color: #f97316; } /* orange — systems */
-
-[data-ext=".ts"], [data-ext=".js"], [data-ext=".tsx"], [data-ext=".jsx"],
-[data-ext=".mjs"], [data-ext=".cjs"], [data-ext=".vue"],
-[data-ext=".svelte"] { --ext-color: #3b82f6; } /* blue — JS/TS */
-
-[data-ext=".py"], [data-ext=".pyi"],
-[data-ext=".ipynb"] { --ext-color: #22c55e; } /* green — Python */
-
-[data-ext=".go"] { --ext-color: #06b6d4; } /* cyan — Go */
-
-[data-ext=".rb"], [data-ext=".erb"] { --ext-color: #ef4444; } /* red — Ruby */
-
-[data-ext=".md"], [data-ext=".mdx"], [data-ext=".txt"],
-[data-ext=".rst"] { --ext-color: #14b8a6; } /* teal — docs */
-
-[data-ext=".json"], [data-ext=".toml"], [data-ext=".yaml"],
-[data-ext=".yml"], [data-ext=".lock"], [data-ext=".env"],
-[data-ext=".ini"] { --ext-color: #8b5cf6; } /* purple — config */
-
-[data-ext=".css"], [data-ext=".scss"], [data-ext=".sass"],
-[data-ext=".less"] { --ext-color: #ec4899; } /* pink — styles */
-
-[data-ext=".html"], [data-ext=".htm"], [data-ext=".xml"],
-[data-ext=".svg"] { --ext-color: #f59e0b; } /* amber — markup */
-
-[data-ext=".sh"], [data-ext=".bash"], [data-ext=".zsh"],
-[data-ext=".fish"] { --ext-color: #a3e635; } /* lime — shell */
-
-[data-ext=".java"], [data-ext=".kt"], [data-ext=".scala"],
-[data-ext=".gradle"] { --ext-color: #fb923c; } /* orange — JVM */
 
 /* ── Inline chip (tree + table) ── */
 .ext-chip {
@@ -43,15 +9,15 @@
 	font-weight: 500;
 	padding: 1px 6px 2px;
 	border-radius: 4px;
-	background: color-mix(in srgb, var(--ext-color, var(--text3)) 15%, transparent);
-	color: var(--ext-color, var(--text3));
+	background: var(--surface3);
+	color: var(--text3);
 	white-space: nowrap;
 	flex-shrink: 0;
 	display: inline-flex;
 	align-items: center;
 	user-select: none;
 	line-height: 1.5;
-	border: 1px solid color-mix(in srgb, var(--ext-color, var(--text3)) 30%, transparent);
+	border: 1px solid var(--border);
 }
 
 /* ── Filter bar ── */
@@ -76,30 +42,30 @@
 	display: inline-flex;
 	align-items: center;
 	gap: 5px;
-	background: color-mix(in srgb, var(--ext-color, var(--text3)) 12%, transparent);
-	color: var(--ext-color, var(--text3));
-	border: 1px solid color-mix(in srgb, var(--ext-color, var(--text3)) 25%, transparent);
-	transition: background 0.1s, box-shadow 0.1s;
+	background: var(--surface3);
+	color: var(--text3);
+	border: 1px solid var(--border);
+	transition: background 0.1s, border-color 0.1s, color 0.1s;
 	white-space: nowrap;
 	line-height: 1.5;
 }
 
 .ext-filter-pill:hover {
-	background: color-mix(in srgb, var(--ext-color, var(--text3)) 22%, transparent);
-	box-shadow: 0 0 0 1px color-mix(in srgb, var(--ext-color, var(--text3)) 40%, transparent);
+	background: var(--surface2);
+	border-color: var(--border-strong);
+	color: var(--text2);
 }
 
 .ext-filter-pill[data-active="true"] {
-	background: color-mix(in srgb, var(--ext-color, var(--text3)) 85%, #000);
-	color: #fff;
-	border-color: transparent;
-	box-shadow: 0 1px 4px color-mix(in srgb, var(--ext-color, var(--text3)) 40%, transparent);
+	background: var(--orange-dim);
+	color: var(--orange);
+	border-color: rgba(246, 130, 31, 0.3);
 }
 
 .pill-label { letter-spacing: 0.02em; }
 .pill-count {
 	font-size: 11px;
-	opacity: 0.8;
+	opacity: 0.7;
 	font-family: var(--font-ui);
 	font-weight: 600;
 }
