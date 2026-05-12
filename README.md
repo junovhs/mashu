@@ -1,8 +1,8 @@
-# DirAnalyze
+# Mashu
 
-![DirAnalyze Screenshot](screengrab.png)
+![Mashu Screenshot](screengrab.png)
 
-Browser tool for analyzing directory structures and exporting them as text.
+Browser tool for selecting files and combining them into a single text export.
 
 ## What it does
 

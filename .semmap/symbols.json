@@ -1927,8 +1927,8 @@
       "fn::commitSelections@133",
       "fn::downloadZip@75",
       "fn::clearProject@152",
-      "fn::setAllSelections@439",
-      "fn::toggleAllFolders@457",
+      "fn::setAllSelections@431",
+      "fn::toggleAllFolders@449",
       "fn::copyCurrentReport@168",
       "fn::closeViewer@121",
       "fn::exportCombined@13"
@@ -2684,7 +2684,7 @@
     "kind": "Function",
     "file": "src/ts/ui/layout.ts",
     "start_line": 1,
-    "end_line": 115,
+    "end_line": 122,
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
@@ -2797,7 +2797,7 @@
       "fn::displayGlobalStats@21"
     ],
     "callees": [
-      "fn::setSelectionByExtension@202"
+      "fn::setSelectionByExtension@194"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
@@ -2865,8 +2865,8 @@
     "callees": [
       "trait::FolderInfo@13",
       "trait::TreeStateOptions@6",
-      "fn::buildTreeModel@283",
-      "fn::expandAllFoldersInState@396"
+      "fn::buildTreeModel@275",
+      "fn::expandAllFoldersInState@388"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
@@ -2882,15 +2882,15 @@
     "cognitive_complexity": 10,
     "callers": [
       "fn::updateUI@106",
-      "fn::rerenderVisibleTree@266"
+      "fn::rerenderVisibleTree@258"
     ],
     "callees": [
       "trait::FolderInfo@13",
       "trait::FileInfo@3",
-      "fn::bindTreeInteractions@221",
+      "fn::bindTreeInteractions@213",
       "fn::renderTreeNode@70",
       "fn::createFileLi@146",
-      "fn::applyCommittedFilterToVisibleTree@404"
+      "fn::applyCommittedFilterToVisibleTree@396"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
@@ -2942,7 +2942,7 @@
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::setSelectionByExtension@202"
+      "fn::setSelectionByExtension@194"
     ],
     "callees": [],
     "has_guard_coverage": false,
@@ -2954,9 +2954,9 @@
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
     "start_line": 146,
-    "end_line": 200,
+    "end_line": 192,
     "visibility": "Private",
-    "cognitive_complexity": 2,
+    "cognitive_complexity": 0,
     "callers": [
       "fn::renderTree@34",
       "fn::renderTreeNode@70"
@@ -2969,12 +2969,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setSelectionByExtension@202",
+    "stable_id": "fn::setSelectionByExtension@194",
     "name": "setSelectionByExtension",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 202,
-    "end_line": 219,
+    "start_line": 194,
+    "end_line": 211,
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
@@ -2982,48 +2982,48 @@
     ],
     "callees": [
       "fn::getFileExt@140",
-      "fn::applySelectionToNode@341",
-      "fn::recomputeAncestorCounts@363",
-      "fn::rerenderVisibleTree@266"
+      "fn::applySelectionToNode@333",
+      "fn::recomputeAncestorCounts@355",
+      "fn::rerenderVisibleTree@258"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::bindTreeInteractions@221",
+    "stable_id": "fn::bindTreeInteractions@213",
     "name": "bindTreeInteractions",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 221,
-    "end_line": 264,
+    "start_line": 213,
+    "end_line": 256,
     "visibility": "Private",
     "cognitive_complexity": 11,
     "callers": [
       "fn::renderTree@34"
     ],
     "callees": [
-      "fn::setSelectionForSubtree@333",
-      "fn::rerenderVisibleTree@266",
-      "fn::toggleExpanded@275",
+      "fn::setSelectionForSubtree@325",
+      "fn::rerenderVisibleTree@258",
+      "fn::toggleExpanded@267",
       "fn::openFile@51"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::rerenderVisibleTree@266",
+    "stable_id": "fn::rerenderVisibleTree@258",
     "name": "rerenderVisibleTree",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 266,
-    "end_line": 273,
+    "start_line": 258,
+    "end_line": 265,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::setSelectionByExtension@202",
-      "fn::bindTreeInteractions@221",
-      "fn::setAllSelections@439",
-      "fn::toggleAllFolders@457"
+      "fn::setSelectionByExtension@194",
+      "fn::bindTreeInteractions@213",
+      "fn::setAllSelections@431",
+      "fn::toggleAllFolders@449"
     ],
     "callees": [
       "fn::renderTree@34"
@@ -3032,28 +3032,28 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::toggleExpanded@275",
+    "stable_id": "fn::toggleExpanded@267",
     "name": "toggleExpanded",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 275,
-    "end_line": 281,
+    "start_line": 267,
+    "end_line": 273,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::bindTreeInteractions@221"
+      "fn::bindTreeInteractions@213"
     ],
     "callees": [],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::buildTreeModel@283",
+    "stable_id": "fn::buildTreeModel@275",
     "name": "buildTreeModel",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 283,
-    "end_line": 316,
+    "start_line": 275,
+    "end_line": 308,
     "visibility": "Private",
     "cognitive_complexity": 6,
     "callers": [
@@ -3066,12 +3066,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getSelectionState@318",
+    "stable_id": "fn::getSelectionState@310",
     "name": "getSelectionState",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 318,
-    "end_line": 331,
+    "start_line": 310,
+    "end_line": 323,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [],
@@ -3082,37 +3082,37 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setSelectionForSubtree@333",
+    "stable_id": "fn::setSelectionForSubtree@325",
     "name": "setSelectionForSubtree",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 333,
-    "end_line": 339,
+    "start_line": 325,
+    "end_line": 331,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::bindTreeInteractions@221"
+      "fn::bindTreeInteractions@213"
     ],
     "callees": [
-      "fn::applySelectionToNode@341",
-      "fn::recomputeAncestorCounts@363"
+      "fn::applySelectionToNode@333",
+      "fn::recomputeAncestorCounts@355"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::applySelectionToNode@341",
+    "stable_id": "fn::applySelectionToNode@333",
     "name": "applySelectionToNode",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 341,
-    "end_line": 361,
+    "start_line": 333,
+    "end_line": 353,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [
-      "fn::setSelectionByExtension@202",
-      "fn::setSelectionForSubtree@333",
-      "fn::setAllSelections@439"
+      "fn::setSelectionByExtension@194",
+      "fn::setSelectionForSubtree@325",
+      "fn::setAllSelections@431"
     ],
     "callees": [
       "type::TreeNode@11"
@@ -3121,46 +3121,46 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::recomputeAncestorCounts@363",
+    "stable_id": "fn::recomputeAncestorCounts@355",
     "name": "recomputeAncestorCounts",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 363,
-    "end_line": 394,
+    "start_line": 355,
+    "end_line": 386,
     "visibility": "Private",
     "cognitive_complexity": 13,
     "callers": [
-      "fn::setSelectionByExtension@202",
-      "fn::setSelectionForSubtree@333"
+      "fn::setSelectionByExtension@194",
+      "fn::setSelectionForSubtree@325"
     ],
     "callees": [],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::expandAllFoldersInState@396",
+    "stable_id": "fn::expandAllFoldersInState@388",
     "name": "expandAllFoldersInState",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 396,
-    "end_line": 402,
+    "start_line": 388,
+    "end_line": 394,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
       "fn::initTreeState@16",
-      "fn::toggleAllFolders@457"
+      "fn::toggleAllFolders@449"
     ],
     "callees": [],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::applyCommittedFilterToVisibleTree@404",
+    "stable_id": "fn::applyCommittedFilterToVisibleTree@396",
     "name": "applyCommittedFilterToVisibleTree",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 404,
-    "end_line": 437,
+    "start_line": 396,
+    "end_line": 429,
     "visibility": "Private",
     "cognitive_complexity": 12,
     "callers": [
@@ -3171,39 +3171,39 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setAllSelections@439",
+    "stable_id": "fn::setAllSelections@431",
     "name": "setAllSelections",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 439,
-    "end_line": 455,
+    "start_line": 431,
+    "end_line": 447,
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
       "fn::setupListeners@345"
     ],
     "callees": [
-      "fn::applySelectionToNode@341",
-      "fn::rerenderVisibleTree@266"
+      "fn::applySelectionToNode@333",
+      "fn::rerenderVisibleTree@258"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::toggleAllFolders@457",
+    "stable_id": "fn::toggleAllFolders@449",
     "name": "toggleAllFolders",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 457,
-    "end_line": 463,
+    "start_line": 449,
+    "end_line": 455,
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
       "fn::setupListeners@345"
     ],
     "callees": [
-      "fn::expandAllFoldersInState@396",
-      "fn::rerenderVisibleTree@266"
+      "fn::expandAllFoldersInState@388",
+      "fn::rerenderVisibleTree@258"
     ],
     "has_guard_coverage": false,
     "panic_sites": 0
@@ -3234,8 +3234,8 @@
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::buildTreeModel@283",
-      "fn::applySelectionToNode@341"
+      "fn::buildTreeModel@275",
+      "fn::applySelectionToNode@333"
     ],
     "callees": [],
     "has_guard_coverage": false,
@@ -3251,7 +3251,7 @@
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::getSelectionState@318"
+      "fn::getSelectionState@310"
     ],
     "callees": [],
     "has_guard_coverage": false,
@@ -3313,7 +3313,7 @@
     "visibility": "Public",
     "cognitive_complexity": 8,
     "callers": [
-      "fn::bindTreeInteractions@221"
+      "fn::bindTreeInteractions@213"
     ],
     "callees": [
       "trait::FileInfo@3",

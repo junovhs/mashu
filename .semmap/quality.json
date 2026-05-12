@@ -28,6 +28,13 @@
     "doc_coverage": 1.0
   },
   {
+    "file": "ux04-scope.md",
+    "hotspot_score": 0.0,
+    "fan_in": 0,
+    "cognitive_complexity_max": 0,
+    "doc_coverage": 1.0
+  },
+  {
     "file": "vite.config.ts",
     "hotspot_score": 0.0,
     "fan_in": 0,

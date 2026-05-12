@@ -128,14 +128,14 @@ export function refreshAllUI(): void {
   const data = getActiveScanData();
   if (!data) return;
 
-  performance.mark("diranalyze:refresh-ui:start");
+  performance.mark("mashu:refresh-ui:start");
   displayGlobalStats(data);
   queueReportWarmup(data);
   updateFilter();
   measurePerformance(
     "refresh-ui",
-    "diranalyze:refresh-ui:start",
-    "diranalyze:refresh-ui:end",
+    "mashu:refresh-ui:start",
+    "mashu:refresh-ui:end",
   );
 }
 
@@ -282,8 +282,8 @@ function setReportPlaceholder(data: ScanData, isReady: boolean): void {
 
   const root = data.directoryData;
   const statusLine = isReady
-    ? "// Report ready — click Copy report to copy or wait for render. //"
-    : "// Generating report in background… //";
+    ? "// Report ready â€” click Copy report to copy or wait for render. //"
+    : "// Generating report in backgroundâ€¦ //";
 
   elements.textOutput.textContent = [
     `// PROJECT: ${root.name}`,
@@ -307,7 +307,7 @@ async function ensureReportText(
     return pendingReportPromise;
   }
 
-  performance.mark("diranalyze:report-generate:start");
+  performance.mark("mashu:report-generate:start");
   pendingReportKey = reportKey;
   pendingReportPromise = generateTextReportAsync(data)
     .then((report) => {
@@ -320,8 +320,8 @@ async function ensureReportText(
 
       measurePerformance(
         "report-generate",
-        "diranalyze:report-generate:start",
-        "diranalyze:report-generate:end",
+        "mashu:report-generate:start",
+        "mashu:report-generate:end",
       );
       return report;
     })
@@ -376,8 +376,8 @@ function measurePerformance(
 ): void {
   performance.mark(endMark);
   try {
-    performance.measure(`diranalyze:${name}`, startMark, endMark);
-    const entries = performance.getEntriesByName(`diranalyze:${name}`, "measure");
+    performance.measure(`mashu:${name}`, startMark, endMark);
+    const entries = performance.getEntriesByName(`mashu:${name}`, "measure");
     const latest = entries.at(-1);
     if (latest) {
       console.info(`[perf] ${name}: ${latest.duration.toFixed(1)}ms`);

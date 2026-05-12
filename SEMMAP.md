@@ -50,6 +50,8 @@
 
 `[BEHAVIOR:owns-state]` Maintains durable in-memory state for a subsystem.
 
+`[BEHAVIOR:owns-const-state]` Owns immutable module-level constants without implying mutable runtime state.
+
 `[BEHAVIOR:mutates]` Changes application or model state in response to work.
 
 `[BEHAVIOR:renders]` Produces rendered output, drawing commands, or visual layout.
@@ -130,6 +132,9 @@ Node.js package manifest.
 `tsconfig.json`
 Configuration for tsconfig.
 
+`ux04-scope.md`
+Support file for ux04-scope.
+
 `vite.config.ts`
 Implements vite.config functionality.
 Exports: default
@@ -151,22 +156,22 @@ Implements app functionality. [COUPLING:mixed] [BEHAVIOR:owns-state,async,logs-a
 Semantic: async side-effecting stateful module with external API surface that logs and continues
 
 `src/ts/features.ts`
-Implements export combined. [COUPLING:mixed] [BEHAVIOR:persists,async]
+Implements download zip. [COUPLING:mixed] [BEHAVIOR:persists,async]
 Exports: downloadZip, exportCombined
 Semantic: async side-effecting adapter
 
 `src/ts/filesystem.ts`
-Implements scan aggregator. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,persists,async] [QUALITY:undocumented,complex-flow,concurrency-heavy]
+Implements scan aggregator. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async] [QUALITY:undocumented,complex-flow,concurrency-heavy]
 Exports: initTypeData, isLikelyText, sniffIsText, filterScanData
-Semantic: async side-effecting stateful adapter
+Semantic: async side-effecting adapter
 
 `src/ts/global.d.ts`
 Implements global.d functionality.
 
 `src/ts/state.ts`
-Defines shared state for the ts subsystem. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state]
+Defines shared state for the ts subsystem. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state]
 Exports: appState, ICONS, elements
-Semantic: side-effecting stateful module
+Semantic: side-effecting constant-owning module
 
 `src/ts/ui/layout.ts`
 Creates layout. [COUPLING:pure]
@@ -179,26 +184,26 @@ Exports: initSidebarResizer
 Semantic: pure computation
 
 `src/ts/ui/stats.ts`
-Formats global stats for output. [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:concurrency-heavy]
+Formats global stats for output. [COUPLING:mixed] [BEHAVIOR:owns-const-state,async] [QUALITY:concurrency-heavy]
 Exports: generateTextReportAsync, displayGlobalStats
-Semantic: async side-effecting stateful module
+Semantic: async side-effecting constant-owning module
 
 `src/ts/ui/tree.ts`
-Sets the selection by extension. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,persists] [QUALITY:undocumented]
+Sets the selection by extension. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists] [QUALITY:undocumented]
 Exports: setSelectionByExtension, initTreeState, toggleAllFolders, setAllSelections
-Semantic: side-effecting stateful adapter
+Semantic: side-effecting adapter
 
 `src/ts/ui/viewer.ts`
-Implements close viewer. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
+Implements open file. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
 Exports: openFile, closeViewer, updateViewer
 Semantic: async side-effecting adapter that logs and continues
 
 ## Layer 2 -- Adapters / Infra
 
 `src/ts/utils/crossbrowser_fs.ts`
-Cross-Browser File System Abstraction Provides a unified interface using standard web APIs that work in all browsers: - webkitGetAsEntry() for drag & drop - <input webkitdirectory> for folder selection No File System Access API required!. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,persists,async] [QUALITY:undocumented,concurrency-heavy]
+Cross-Browser File System Abstraction Provides a unified interface using standard web APIs that work in all browsers: - webkitGetAsEntry() for drag & drop - <input webkitdirectory> for folder selection No File System Access API required!. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async] [QUALITY:undocumented,concurrency-heavy]
 Exports: buildFromFileListAsync, buildFromDropItem, showFolderPicker, VirtualDirectoryHandle
-Semantic: async side-effecting stateful adapter
+Semantic: async side-effecting adapter
 
 `src/ts/utils/fs_utils.ts`
 Formats bytes for output. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,persists,async] [QUALITY:undocumented]
@@ -206,14 +211,14 @@ Exports: initTypeData, isLikelyText, sniffIsText, formatBytes
 Semantic: async side-effecting stateful adapter
 
 `src/ts/utils/result.ts`
-Implements Err functionality. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented]
+Implements Err functionality. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,async] [QUALITY:undocumented]
 Exports: toResult, None, Option, Some
-Semantic: async side-effecting stateful module
+Semantic: async side-effecting constant-owning module
 
 ## Layer 3 -- App / Entrypoints
 
 `index.html`
-DirAnalyze Streamline v4.0
+Mashu
 
 `src/css/app.css`
 Implements app functionality. styles.
@@ -286,7 +291,7 @@ DependencyGraph:
     Imports: [filesystem.ts, fs_utils.ts, state.ts, types/index.ts, ui/index.ts]
     ImportedBy: [app.ts, tree.ts, ui/index.ts]
   # --- Layer 0 -- Config ---
-  README.md, SEMMAP.md, package.json, tsconfig.json, vite.config.ts:
+  README.md, SEMMAP.md, package.json, tsconfig.json, ux04-scope.md, vite.config.ts:
     Imports: []
     ImportedBy: []
   # --- Layer 1 -- Domain (Engine) ---

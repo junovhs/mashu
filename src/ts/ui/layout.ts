@@ -20,7 +20,7 @@ export function initLayout(): void {
                   <path d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" fill="#F6821F" opacity="0.7"/>
                   <path d="M7 11h2M7 13.5h4" stroke="#111113" stroke-width="1.2" stroke-linecap="round"/>
                 </svg>
-                <span class="logo-name">DirAnalyze</span>
+                <span class="logo-name">Mashu</span>
             </header>
 
             <div id="mainAction">

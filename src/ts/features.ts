@@ -46,7 +46,7 @@ async function getTextFiles(candidates: FileInfo[]) {
 }
 
 async function buildExport(files: FileInfo[]) {
-  let txt = `// DIRANALYZE COMBINED TEXT EXPORT //\n// Project: ${appState.fullScanData?.directoryData?.name}\n// Generated: ${new Date().toISOString()}\n\n`;
+  let txt = `// MASHU COMBINED TEXT EXPORT //\n// Project: ${appState.fullScanData?.directoryData?.name}\n// Generated: ${new Date().toISOString()}\n\n`;
   for (const file of files) {
     const res = await readFile(file.entryHandle);
     if (res.ok) {

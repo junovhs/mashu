@@ -36,7 +36,7 @@ import type { VirtualDirectoryHandle } from "./utils/crossbrowser_fs.js";
 import { buildFromEntry, showFolderPicker } from "./utils/crossbrowser_fs.js";
 
 async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
-  performance.mark("diranalyze:process-directory:start");
+  performance.mark("mashu:process-directory:start");
   appState.processingInProgress = true;
   appState.committedScanData = null;
   appState.selectionCommitted = false;
@@ -47,7 +47,7 @@ async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
 }
 
 async function processFileList(files: FileList): Promise<void> {
-  performance.mark("diranalyze:process-directory:start");
+  performance.mark("mashu:process-directory:start");
   appState.processingInProgress = true;
   appState.committedScanData = null;
   appState.selectionCommitted = false;
@@ -56,12 +56,12 @@ async function processFileList(files: FileList): Promise<void> {
   resetUIForProcessing(`Processing '${rootName}'...`);
   disableUIControls();
 
-  performance.mark("diranalyze:scan-file-list:start");
+  performance.mark("mashu:scan-file-list:start");
   const scanRes = await scanFileList(files);
   logPerfMeasure(
     "scan-file-list",
-    "diranalyze:scan-file-list:start",
-    "diranalyze:scan-file-list:end",
+    "mashu:scan-file-list:start",
+    "mashu:scan-file-list:end",
   );
 
   if (scanRes.ok) {
@@ -77,14 +77,14 @@ async function processFileList(files: FileList): Promise<void> {
 }
 
 async function finishScan(handle: VirtualDirectoryHandle) {
-  performance.mark("diranalyze:scan:start");
+  performance.mark("mashu:scan:start");
   const agg: ScanAggregator = {
     allFilesList: [],
     allFoldersList: [],
     maxDepth: 0,
   };
   const scanRes = await scanDir(handle, handle.name, 0, agg);
-  logPerfMeasure("scan", "diranalyze:scan:start", "diranalyze:scan:end");
+  logPerfMeasure("scan", "mashu:scan:start", "mashu:scan:end");
   if (scanRes.ok) {
     applyScanData({ directoryData: scanRes.value, ...agg });
   } else {
@@ -104,7 +104,7 @@ function applyScanData(data: ScanData): void {
 }
 
 function updateUI(data: FolderInfo) {
-  performance.mark("diranalyze:update-ui:start");
+  performance.mark("mashu:update-ui:start");
   const container = elements.treeContainer;
   if (container) {
     initTreeState(data, {
@@ -117,14 +117,14 @@ function updateUI(data: FolderInfo) {
     enableUIControls();
     logPerfMeasure(
       "update-ui",
-      "diranalyze:update-ui:start",
-      "diranalyze:update-ui:end",
+      "mashu:update-ui:start",
+      "mashu:update-ui:end",
     );
     requestAnimationFrame(() => {
       logPerfMeasure(
         "visible-load",
-        "diranalyze:process-directory:start",
-        "diranalyze:visible-load:end",
+        "mashu:process-directory:start",
+        "mashu:visible-load:end",
       );
     });
   }
@@ -259,12 +259,12 @@ function setupFullPageDrop(): void {
       return;
     }
 
-    performance.mark("diranalyze:build-handle:start");
+    performance.mark("mashu:build-handle:start");
     void buildFromEntry(entry).then((handle) => {
       logPerfMeasure(
         "build-handle",
-        "diranalyze:build-handle:start",
-        "diranalyze:build-handle:end",
+        "mashu:build-handle:start",
+        "mashu:build-handle:end",
       );
       if (handle) {
         return processDirectory(handle);
@@ -372,8 +372,8 @@ function setupListeners(): void {
 function logPerfMeasure(name: string, startMark: string, endMark: string): void {
   performance.mark(endMark);
   try {
-    performance.measure(`diranalyze:${name}`, startMark, endMark);
-    const entries = performance.getEntriesByName(`diranalyze:${name}`, "measure");
+    performance.measure(`mashu:${name}`, startMark, endMark);
+    const entries = performance.getEntriesByName(`mashu:${name}`, "measure");
     const latest = entries.at(-1);
     if (latest) {
       console.info(`[perf] ${name}: ${latest.duration.toFixed(1)}ms`);
@@ -402,7 +402,7 @@ async function init() {
   setupListeners();
   disableUIControls();
   elements.pageLoader?.classList.add("hidden");
-  console.log("DirAnalyze Streamline (Cross-Browser) Initialized.");
+  console.log("Mashu (Cross-Browser) Initialized.");
 }
 
 document.addEventListener("DOMContentLoaded", init);

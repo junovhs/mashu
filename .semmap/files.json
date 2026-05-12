@@ -44,6 +44,17 @@
     "analysis": {}
   },
   {
+    "path": "ux04-scope.md",
+    "layer": 0,
+    "file_kind": "production",
+    "description": "Support file for ux04-scope.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
     "path": "vite.config.ts",
     "layer": 0,
     "file_kind": "production",
@@ -205,7 +216,7 @@
     "path": "src/ts/features.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Implements export combined.",
+    "description": "Implements download zip.",
     "exports": [
       "downloadZip",
       "exportCombined"
@@ -267,7 +278,7 @@
     ],
     "coupling": "mixed",
     "behavior_tags": [
-      "owns-state",
+      "owns-const-state",
       "persists",
       "async"
     ],
@@ -279,7 +290,7 @@
     "hotspot": true,
     "fan_in": 0,
     "risk_score": 15.8,
-    "semantic_summary": "async side-effecting stateful adapter",
+    "semantic_summary": "async side-effecting adapter",
     "analysis": {
       "functions": {
         "total": 19,
@@ -356,12 +367,12 @@
     ],
     "coupling": "mixed",
     "behavior_tags": [
-      "owns-state"
+      "owns-const-state"
     ],
     "hotspot": true,
     "fan_in": 0,
     "risk_score": 7.0,
-    "semantic_summary": "side-effecting stateful module",
+    "semantic_summary": "side-effecting constant-owning module",
     "analysis": {
       "calls": {
         "total_calls": 8,
@@ -471,7 +482,7 @@
     ],
     "coupling": "mixed",
     "behavior_tags": [
-      "owns-state",
+      "owns-const-state",
       "async"
     ],
     "quality_tags": [
@@ -480,7 +491,7 @@
     "hotspot": false,
     "fan_in": 0,
     "risk_score": 9.0,
-    "semantic_summary": "async side-effecting stateful module",
+    "semantic_summary": "async side-effecting constant-owning module",
     "analysis": {
       "functions": {
         "total": 4,
@@ -534,7 +545,7 @@
     ],
     "coupling": "mixed",
     "behavior_tags": [
-      "owns-state",
+      "owns-const-state",
       "persists"
     ],
     "quality_tags": [
@@ -543,7 +554,7 @@
     "hotspot": true,
     "fan_in": 0,
     "risk_score": 8.6,
-    "semantic_summary": "side-effecting stateful adapter",
+    "semantic_summary": "side-effecting adapter",
     "analysis": {
       "functions": {
         "total": 19,
@@ -556,21 +567,21 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 245,
+        "total_calls": 242,
         "resolved_calls": 34,
-        "unresolved_calls": 211,
-        "resolution_rate": 0.13877551
+        "unresolved_calls": 208,
+        "resolution_rate": 0.14049587
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 83
+        "cognitive_complexity": 81
       },
       "docs": {
         "documented_symbols": 0,
         "undocumented_public": 5
       },
       "activation": {
-        "total_sites": 65,
+        "total_sites": 64,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -582,7 +593,7 @@
     "path": "src/ts/ui/viewer.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Implements close viewer.",
+    "description": "Implements open file.",
     "exports": [
       "openFile",
       "closeViewer",
@@ -660,7 +671,7 @@
     ],
     "coupling": "mixed",
     "behavior_tags": [
-      "owns-state",
+      "owns-const-state",
       "persists",
       "async"
     ],
@@ -671,7 +682,7 @@
     "hotspot": true,
     "fan_in": 0,
     "risk_score": 14.8,
-    "semantic_summary": "async side-effecting stateful adapter",
+    "semantic_summary": "async side-effecting adapter",
     "analysis": {
       "functions": {
         "total": 16,
@@ -784,7 +795,7 @@
     ],
     "coupling": "mixed",
     "behavior_tags": [
-      "owns-state",
+      "owns-const-state",
       "async"
     ],
     "quality_tags": [
@@ -793,7 +804,7 @@
     "hotspot": true,
     "fan_in": 0,
     "risk_score": 6.6,
-    "semantic_summary": "async side-effecting stateful module",
+    "semantic_summary": "async side-effecting constant-owning module",
     "analysis": {
       "functions": {
         "total": 5,
@@ -837,7 +848,7 @@
     "path": "index.html",
     "layer": 3,
     "file_kind": "production",
-    "description": "DirAnalyze Streamline v4.0",
+    "description": "Mashu",
     "exports": [],
     "hotspot": false,
     "fan_in": 0,
