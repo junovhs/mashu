@@ -1,6 +1,7 @@
 import { formatBytes } from "../filesystem.js";
 import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo, ScanData } from "../types/index.js";
+import { setSelectionByExtension } from "./tree.js";
 
 const REPORT_YIELD_EVERY = 400;
 
@@ -30,24 +31,77 @@ export function displayGlobalStats(data: ScanData): void {
 
   if (elements.globalStats) {
     elements.globalStats.innerHTML = `
-            <div class="stat-item"><strong>Root Folder:</strong> ${directoryData.name}</div>
-            <div class="stat-item"><strong>Files in View:</strong> ${allFilesList.length}</div>
-            <div class="stat-item"><strong>Folders in View:</strong> ${allFoldersList.length}</div>
-            <div class="stat-item"><strong>Total Size (View):</strong> ${formatBytes(directoryData.totalSize)}</div>
+            <div class="stat-item">
+              <span class="stat-label">Root Folder</span>
+              <span class="stat-value stat-value--name">${directoryData.name}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Files in View</span>
+              <span class="stat-value">${allFilesList.length}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Folders in View</span>
+              <span class="stat-value">${allFoldersList.length}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Total Size</span>
+              <span class="stat-value stat-value--name">${formatBytes(directoryData.totalSize)}</span>
+            </div>
         `;
   }
 
   const sortedTypes = Object.entries(directoryData.fileTypes).sort(
     ([, a], [, b]) => b.size - a.size,
   );
+
   if (elements.fileTypeTableBody) {
     elements.fileTypeTableBody.innerHTML = sortedTypes
       .map(
         ([ext, typeData]) =>
-          `<tr><td>${ext}</td><td>${typeData.count}</td><td>${formatBytes(typeData.size)}</td></tr>`,
+          `<tr data-ext="${ext}">
+            <td><span class="ext-chip" data-ext="${ext}">${ext}</span></td>
+            <td>${typeData.count}</td>
+            <td>${formatBytes(typeData.size)}</td>
+          </tr>`,
       )
       .join("");
   }
+
+  renderExtFilterPills(sortedTypes);
+}
+
+function renderExtFilterPills(sortedTypes: [string, { count: number; size: number }][]): void {
+  const bar = document.getElementById("extFilterBar");
+  const pills = document.getElementById("extPills");
+  if (!bar || !pills) return;
+
+  if (sortedTypes.length === 0) {
+    bar.style.display = "none";
+    return;
+  }
+
+  bar.style.display = "block";
+  const extState = new Map<string, boolean>();
+
+  pills.innerHTML = sortedTypes
+    .slice(0, 12)
+    .map(([ext, d]) => `
+      <button class="ext-filter-pill" data-ext="${ext}" data-active="false" title="Click to select all ${ext} files">
+        <span class="pill-label">${ext}</span>
+        <span class="pill-count">${d.count}</span>
+      </button>
+    `)
+    .join("");
+
+  pills.querySelectorAll<HTMLButtonElement>(".ext-filter-pill").forEach((btn) => {
+    extState.set(btn.dataset.ext!, false);
+    btn.addEventListener("click", () => {
+      const ext = btn.dataset.ext!;
+      const nowActive = btn.dataset.active !== "true";
+      btn.dataset.active = String(nowActive);
+      setSelectionByExtension(ext, nowActive);
+    });
+  });
 }
 
 export async function generateTextReportAsync(data: ScanData): Promise<string> {

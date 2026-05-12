@@ -1,81 +1,105 @@
-/* --- TREE VIEW STYLES --- */
+/* --- TREE VIEW --- */
 
 .tree {
-    padding: 10px;
-    overflow-y: auto;
-    flex-grow: 1;
-    font-size: 13px;
+	padding: 6px 0;
+	overflow-y: auto;
+	flex-grow: 1;
+	font-size: 12px;
+	font-family: var(--font-ui);
+	background: transparent;
 }
 
 .tree ul {
-    list-style: none;
-    padding-left: 18px;
-    margin: 0;
+	list-style: none;
+	padding-left: 14px;
+	margin: 0;
 }
 
-.tree li.collapsed > ul {
-    display: none;
-}
+.tree li.collapsed > ul { display: none; }
 
 .item-line {
-    display: flex;
-    align-items: center;
-    padding: 3px 6px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.1s;
-    gap: 8px;
+	display: flex;
+	align-items: center;
+	padding: 2px 4px;
+	border-radius: 2px;
+	cursor: pointer;
+	transition: background 0.08s;
+	gap: 5px;
+	user-select: none;
 }
 
-.item-line:hover {
-    background-color: var(--highlight-bg);
-}
+.item-line:hover { background: var(--hover-strong); }
 
 .item-prefix {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	flex-shrink: 0;
 }
 
 .selector {
-    margin: 0;
-    cursor: pointer;
+	margin: 0;
+	cursor: pointer;
+	accent-color: var(--ink);
+	flex-shrink: 0;
 }
 
 .folder-toggle {
-    width: 14px;
-    cursor: pointer;
-    user-select: none;
-    color: var(--dim-color);
+	width: 10px;
+	color: var(--ink4);
+	font-size: 8px;
+	user-select: none;
+	flex-shrink: 0;
+	text-align: center;
 }
+.item-line:hover .folder-toggle { color: var(--ink3); }
 
+/* Folder icon */
 .icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
 }
-
 .icon svg {
-    width: 16px;
-    height: 16px;
-    fill: var(--dim-color);
+	width: 14px;
+	height: 14px;
+	fill: var(--orange);
 }
 
-li.folder > .item-line > .item-prefix > .icon svg {
-    fill: #fbbc04;
+/* File ext chip — color comes from extensions.css */
+.item-prefix .ext-chip {
+	font-size: 9px;
+	padding: 1px 5px 1px;
+	line-height: 1.5;
 }
 
 .name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-grow: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	flex-grow: 1;
+	color: var(--ink2);
+	font-size: 11.5px;
 }
 
-.stats {
-    font-size: 11px;
-    color: var(--dim-color);
-    margin-left: auto;
-    padding-left: 10px;
+li.folder > .item-line > .name {
+	color: var(--ink);
+	font-weight: 500;
 }
+
+.item-line:hover .name { color: var(--ink); }
+
+.stats {
+	font-size: 10px;
+	color: var(--ink4);
+	margin-left: auto;
+	padding-left: 6px;
+	white-space: nowrap;
+	flex-shrink: 0;
+	font-family: var(--font-main);
+}
+.item-line:hover .stats { color: var(--ink3); }
+
+/* Dimmed items (uncommitted filter) */
+li.dimmed-uncommitted { opacity: 0.35; }

@@ -15,7 +15,8 @@ export function initLayout(): void {
   if (leftSidebar) {
     leftSidebar.innerHTML = `
             <header id="sidebarHeader">
-                <img src="/assets/logo.png" alt="DirAnalyze Logo" class="header-logo">
+                <div class="logo-dot"></div>
+                <span class="logo-name">DirAnalyze</span>
             </header>
 
             <div id="mainAction">
@@ -31,6 +32,11 @@ export function initLayout(): void {
             </div>
 
             <hr class="sidebar-hr">
+
+            <div id="extFilterBar" style="display:none;">
+                <div id="extPills" class="ext-pills"></div>
+                <hr class="sidebar-hr">
+            </div>
 
             <div id="treeViewControls">
                 <button id="selectAllBtn" class="action-button utility-button" title="Select All Items in Tree"
@@ -104,24 +110,20 @@ export function initLayout(): void {
   const rightStatsPanel = document.getElementById("rightStatsPanel");
   if (rightStatsPanel) {
     rightStatsPanel.innerHTML = `
-            <div class="panel-header">
-                <h2>STATISTICS</h2>
-            </div>
+            <p class="stats-panel-title">Statistics</p>
             <div id="selectionSummary" class="selection-summary" style="display:none;"></div>
             <div id="globalStats"></div>
-            <div class="file-type-stats">
-                <h3>FILE TYPE BREAKDOWN</h3>
-                <table id="fileTypeTable">
-                    <thead>
-                        <tr>
-                            <th>Extension</th>
-                            <th>Count</th>
-                            <th>Total Size</th>
-                        </tr>
-                    </thead>
-                    <tbody id="fileTypeTableBody"></tbody>
-                </table>
-            </div>
+            <p class="stats-section-label">File Type Breakdown</p>
+            <table id="fileTypeTable">
+                <thead>
+                    <tr>
+                        <th>Ext</th>
+                        <th>Count</th>
+                        <th>Size</th>
+                    </tr>
+                </thead>
+                <tbody id="fileTypeTableBody"></tbody>
+            </table>
         `;
   }
 }

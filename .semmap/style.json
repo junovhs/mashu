@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-11T23:33:24Z",
+  "generated_at": "2026-05-12T05:29:50Z",
   "entries": [
     {
       "file": "public/js/jszip.min.js",
@@ -38,9 +38,9 @@
         "",
         "import { downloadZip, exportCombined } from \"./features.js\";",
         "import type { ScanAggregator } from \"./filesystem.js\";",
-        "import { filterScanData, initTypeData, scanDir } from \"./filesystem.js\";",
+        "import { filterScanData, initTypeData, scanDir, scanFileList } from \"./filesystem.js\";",
         "import { appState, elements } from \"./state.js\";",
-        "import type { FolderInfo } from \"./types/index.js\";"
+        "import type { FolderInfo, ScanData } from \"./types/index.js\";"
       ]
     },
     {
@@ -68,12 +68,12 @@
     {
       "file": "src/ts/filesystem.ts",
       "language": "typescript",
-      "idiom_category": "concurrency-pattern",
+      "idiom_category": "state-management",
       "excerpts": [
         "import type { FileInfo, FolderInfo, ScanData } from \"./types/index.js\";",
         "import type { VirtualDirectoryHandle, VirtualFileHandle } from \"./utils/crossbrowser_fs.js\";",
         "import { getExt } from \"./utils/fs_utils.js\";",
-        "import { Err, Ok, type Result, toResult } from \"./utils/result.js\";",
+        "import { Err, Ok, type Result } from \"./utils/result.js\";",
         "",
         "export {",
         "  formatBytes,",
@@ -97,16 +97,16 @@
         "  const dropOverlay = document.createElement(\"div\");",
         "  dropOverlay.id = \"fullPageDropOverlay\";",
         "  dropOverlay.innerHTML = `",
-        "    <div class=\"drop-overlay-particles\">",
-        "      <div class=\"drop-particle\"></div>",
-        "      <div class=\"drop-particle\"></div>",
-        "      <div class=\"drop-particle\"></div>",
-        "      <div class=\"drop-particle\"></div>",
-        "      <div class=\"drop-particle\"></div>",
-        "      <div class=\"drop-particle\"></div>",
-        "      <div class=\"drop-particle\"></div>",
-        "      <div class=\"drop-particle\"></div>",
-        "      <div class=\"drop-particle\"></div>"
+        "    <div class=\"drop-overlay-content\">",
+        "      <div class=\"drop-overlay-icon\">📂</div>",
+        "      <h2 class=\"drop-overlay-title\">Drop your folder here</h2>",
+        "      <p class=\"drop-overlay-subtitle\">Release to analyze immediately</p>",
+        "    </div>",
+        "  `;",
+        "  document.body.appendChild(dropOverlay);",
+        "",
+        "  const leftSidebar = document.getElementById(\"leftSidebar\");",
+        "  if (leftSidebar) {"
       ]
     },
     {
@@ -134,44 +134,44 @@
     {
       "file": "src/ts/ui/stats.ts",
       "language": "typescript",
-      "idiom_category": "general-idioms",
+      "idiom_category": "state-management",
       "excerpts": [
         "import { formatBytes } from \"../filesystem.js\";",
         "import { appState, elements } from \"../state.js\";",
-        "import type { ScanData } from \"../types/index.js\";",
+        "import type { FileInfo, FolderInfo, ScanData } from \"../types/index.js\";",
         "",
-        "export function displayGlobalStats(data: ScanData): void {",
-        "  const { directoryData, allFilesList, allFoldersList } = data;",
-        "  if (!directoryData) return;",
+        "const REPORT_YIELD_EVERY = 400;",
         "",
-        "  const totalSize = allFilesList.reduce((sum, f) => sum + f.size, 0);",
+        "interface TextTreeFrame {",
+        "  isLastChild: boolean;",
+        "  isRoot: boolean;",
+        "  node: FileInfo | FolderInfo;",
+        "  prefix: string;",
+        "}",
         "",
-        "  if (appState.selectionCommitted && elements.selectionSummary) {",
-        "    elements.selectionSummary.innerHTML = `Displaying stats for <strong>${allFilesList.length} selected files</strong> and <strong>${allFoldersList.length} selected folders</strong>.`;",
-        "    elements.selectionSummary.style.display = \"block\";",
-        "  } else if (elements.selectionSummary) {",
-        "    elements.selectionSummary.style.display = \"none\";"
+        "async function yieldToMainThread(): Promise<void> {",
+        "  await new Promise<void>((resolve) => {"
       ]
     },
     {
       "file": "src/ts/ui/tree.ts",
       "language": "typescript",
-      "idiom_category": "general-idioms",
+      "idiom_category": "state-management",
       "excerpts": [
-        "import { elements, ICONS } from \"../state.js\";",
+        "import { appState, elements, ICONS } from \"../state.js\";",
         "import type { FileInfo, FolderInfo } from \"../types/index.js\";",
         "import { formatBytes } from \"../utils/fs_utils.js\";",
         "import { openFile } from \"./viewer.js\";",
         "",
-        "export function renderTree(",
-        "  node: FolderInfo | FileInfo,",
-        "  container: HTMLElement,",
-        "  isRoot = true,",
-        "): void {",
-        "  const ul = document.createElement(\"ul\");",
-        "  if (isRoot) {",
-        "    ul.style.paddingLeft = \"0\";",
-        "  }",
+        "interface TreeStateOptions {",
+        "  initialCollapsed?: boolean;",
+        "  initialSelected?: boolean;",
+        "}",
+        "",
+        "type TreeNode = FileInfo | FolderInfo;",
+        "type SelectionState = \"all\" | \"none\" | \"partial\";",
+        "",
+        "const boundTreeContainers = new WeakSet<HTMLElement>();",
         ""
       ]
     },
@@ -200,7 +200,7 @@
     {
       "file": "src/ts/utils/crossbrowser_fs.ts",
       "language": "typescript",
-      "idiom_category": "concurrency-pattern",
+      "idiom_category": "state-management",
       "excerpts": [
         "/**",
         " * Cross-Browser File System Abstraction",
@@ -244,7 +244,7 @@
     {
       "file": "src/ts/utils/result.ts",
       "language": "typescript",
-      "idiom_category": "concurrency-pattern",
+      "idiom_category": "state-management",
       "excerpts": [
         "export type Result<T, E = Error> =",
         "  | { ok: true; value: T }",
@@ -266,11 +266,11 @@
     {
       "file": "src/ts/ui/index.ts",
       "language": "typescript",
-      "idiom_category": "general-idioms",
+      "idiom_category": "state-management",
       "excerpts": [
         "import { appState, elements } from \"../state.js\";",
-        "import type { FileInfo, FolderInfo } from \"../types/index.js\";",
-        "import { displayGlobalStats, generateTextReport } from \"./stats.js\";",
+        "import type { FileInfo, FolderInfo, ScanData } from \"../types/index.js\";",
+        "import { displayGlobalStats, generateTextReportAsync } from \"./stats.js\";",
         "import { closeViewer } from \"./viewer.js\";",
         "",
         "// Export everything so app.ts can find them",
@@ -280,9 +280,9 @@
         "export * from \"./tree.js\";",
         "export * from \"./viewer.js\";",
         "",
-        "export function populateElements(): void {",
-        "  const ids = [",
-        "    \"selectFolderBtn\","
+        "let reportRefreshToken = 0;",
+        "let cachedReportKey: string | null = null;",
+        "let cachedReportText: string | null = null;"
       ]
     }
   ]

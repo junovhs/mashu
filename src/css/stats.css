@@ -1,30 +1,93 @@
-/* --- STATISTICS PANEL STYLES --- */
+/* --- STATISTICS PANEL --- */
+
+.stats-panel-title {
+	font-size: 10px;
+	letter-spacing: 1.8px;
+	text-transform: uppercase;
+	color: var(--ink3);
+	margin: 0 0 18px;
+	display: block;
+}
+
 .selection-summary {
-    font-size: 12px;
-    padding: 10px;
-    background-color: #fff8e1;
-    border: 1px solid #ffe082;
-    border-radius: 4px;
-    color: #795548;
+	font-size: 11px;
+	line-height: 1.65;
+	color: var(--ink2);
+	padding-bottom: 14px;
+	border-bottom: 1px solid var(--rule);
+	margin-bottom: 14px;
 }
+.selection-summary strong { color: var(--ink); font-weight: 500; }
+
+/* Stat rows — key with small label, value as serif italic number */
+#globalStats { margin-bottom: 4px; }
+
 .stat-item {
-    font-size: 13px;
-    margin-bottom: 5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	padding: 6px 0;
+	border-bottom: 1px solid var(--rule);
 }
+
+.stat-label {
+	font-size: 11px;
+	color: var(--ink3);
+}
+
+.stat-value {
+	font-family: var(--font-serif);
+	font-style: italic;
+	font-size: 22px;
+	color: var(--ink2);
+	line-height: 1;
+}
+
+.stat-value--name {
+	font-size: 14px;
+}
+
+/* Section label above table */
+.stats-section-label {
+	font-size: 10px;
+	letter-spacing: 1.8px;
+	text-transform: uppercase;
+	color: var(--ink3);
+	margin: 0 0 8px;
+	padding-top: 20px;
+	display: block;
+}
+
+/* File type table */
 #fileTypeTable {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 11px;
 }
-#fileTypeTable th,
-#fileTypeTable td {
-    text-align: left;
-    padding: 8px 5px;
-    border-bottom: 1px solid var(--border-color);
-}
+
 #fileTypeTable th {
-    font-weight: 600;
-    color: var(--dim-color);
-    text-transform: uppercase;
-    font-size: 10px;
+	text-align: left;
+	padding: 0 0 7px;
+	font-size: 10px;
+	letter-spacing: 1.2px;
+	text-transform: uppercase;
+	color: var(--ink4);
+	font-weight: 500;
+	border-bottom: 1px solid var(--rule);
 }
+
+#fileTypeTable td {
+	padding: 6px 0;
+	border-bottom: 1px solid var(--rule);
+	vertical-align: middle;
+}
+
+/* Ext chip in table */
+#fileTypeTable td:first-child { width: 1%; white-space: nowrap; }
+#fileTypeTable td:not(:first-child) {
+	text-align: right;
+	color: var(--ink3);
+	font-family: var(--font-main);
+}
+
+#fileTypeTable tr:hover td:not(:first-child) { color: var(--ink2); }

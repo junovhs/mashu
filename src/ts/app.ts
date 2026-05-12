@@ -7,6 +7,7 @@ import "../css/modals.css";
 import "../css/report.css";
 import "../css/stats.css";
 import "../css/dropoverlay.css";
+import "../css/extensions.css";
 
 import { downloadZip, exportCombined } from "./features.js";
 import type { ScanAggregator } from "./filesystem.js";

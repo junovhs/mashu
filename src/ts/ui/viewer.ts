@@ -100,7 +100,7 @@ function initOrSet(file: FileInfo, content: string) {
       value: content,
       mode,
       lineNumbers: true,
-      theme: "material-darker",
+      theme: "default",
       readOnly: true,
       lineWrapping: true,
     });

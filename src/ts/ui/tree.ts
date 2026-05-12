@@ -137,10 +137,18 @@ function createFolderLi(folder: FolderInfo): HTMLLIElement {
   return li;
 }
 
+function getFileExt(filename: string): string {
+  const dotIdx = filename.lastIndexOf(".");
+  if (dotIdx < 1) return "";
+  return filename.slice(dotIdx).toLowerCase();
+}
+
 function createFileLi(file: FileInfo): HTMLLIElement {
+  const ext = getFileExt(file.name);
   const li = document.createElement("li");
   li.className = "file";
   li.dataset.path = file.path;
+  li.dataset.ext = ext;
   li.dataset.selected = String(appState.selectedPaths.has(file.path));
 
   const itemLine = document.createElement("div");
@@ -159,13 +167,21 @@ function createFileLi(file: FileInfo): HTMLLIElement {
   spacer.style.visibility = "hidden";
   spacer.textContent = "\u25bc";
 
-  const icon = document.createElement("span");
-  icon.className = "icon";
-  icon.innerHTML = ICONS.file;
-
   prefix.appendChild(checkbox);
   prefix.appendChild(spacer);
-  prefix.appendChild(icon);
+
+  if (ext) {
+    const chip = document.createElement("span");
+    chip.className = "ext-chip";
+    chip.dataset.ext = ext;
+    chip.textContent = ext;
+    prefix.appendChild(chip);
+  } else {
+    const icon = document.createElement("span");
+    icon.className = "icon";
+    icon.innerHTML = ICONS.file;
+    prefix.appendChild(icon);
+  }
 
   const name = document.createElement("span");
   name.className = "name";
@@ -181,6 +197,25 @@ function createFileLi(file: FileInfo): HTMLLIElement {
 
   li.appendChild(itemLine);
   return li;
+}
+
+export function setSelectionByExtension(ext: string, selected: boolean): void {
+  const root = appState.fullScanData?.directoryData;
+  if (!root) return;
+
+  appState.treeNodesByPath.forEach((node) => {
+    if (node.type === "file" && getFileExt(node.name) === ext) {
+      applySelectionToNode(node, selected);
+    }
+  });
+
+  appState.treeNodesByPath.forEach((node) => {
+    if (node.type === "folder") {
+      recomputeAncestorCounts(node.path);
+    }
+  });
+
+  rerenderVisibleTree();
 }
 
 function bindTreeInteractions(container: HTMLElement): void {

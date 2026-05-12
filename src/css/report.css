@@ -1,38 +1,54 @@
-/* --- REPORT VIEW STYLES --- */
+/* --- REPORT VIEW --- */
+
 #tabContentArea {
-    flex-grow: 1;
-    overflow: hidden;
-    display: flex;
+	flex-grow: 1;
+	overflow: hidden;
+	display: flex;
 }
+
 #textReportTab {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 }
+
 #textOutputContainerOuter {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border: 1px solid var(--rule);
+	border-radius: 2px;
 }
+
+.panel-header h2 { /* "COMPREHENSIVE TEXT REPORT" */
+	/* already styled by components.css */
+}
+
 #textOutput {
-    margin: 0;
-    padding: 15px;
-    font-family: var(--font-main);
-    font-size: 13px;
-    white-space: pre;
-    overflow-y: auto;
-    background-color: #fafafa;
-    flex-grow: 1;
+	margin: 0;
+	padding: 14px 16px;
+	font-family: var(--font-main);
+	font-size: 11.5px;
+	line-height: 1.75;
+	white-space: pre;
+	overflow-y: auto;
+	background: var(--panel);
+	flex-grow: 1;
+	color: var(--ink2);
 }
+
 .button-container {
-    padding: 10px;
-    border-top: 1px solid var(--border-color);
-    display: flex;
-    justify-content: center;
-    flex-shrink: 0;
+	padding: 8px 12px;
+	border-top: 1px solid var(--rule);
+	display: flex;
+	justify-content: center;
+	flex-shrink: 0;
+	background: var(--panel);
 }
+
 .button-container .action-button {
-    width: auto;
+	width: auto;
+	justify-content: center;
 }

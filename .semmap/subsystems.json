@@ -97,7 +97,7 @@
       "ScanData",
       "VirtualDirectoryHandle",
       "buildFromDropItem",
-      "buildFromFileList",
+      "buildFromFileListAsync",
       "filterScanData",
       "initTypeData",
       "isLikelyText",

@@ -11,6 +11,17 @@
     "analysis": {}
   },
   {
+    "path": "SEMMAP.md",
+    "layer": 0,
+    "file_kind": "production",
+    "description": "Generated semantic map.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
     "path": "package.json",
     "layer": 0,
     "file_kind": "production",
@@ -143,29 +154,28 @@
       "external-api"
     ],
     "quality_tags": [
-      "complex-flow",
-      "concurrency-heavy"
+      "complex-flow"
     ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 10.733334,
+    "risk_score": 6.9333334,
     "semantic_summary": "async side-effecting stateful module with external API surface that logs and continues",
     "analysis": {
       "functions": {
-        "total": 14,
+        "total": 18,
         "public": 0,
-        "max_cognitive_complexity": 27,
-        "avg_cognitive_complexity": 3
+        "max_cognitive_complexity": 18,
+        "avg_cognitive_complexity": 2
       },
       "calls": {
-        "total_calls": 151,
-        "resolved_calls": 18,
-        "unresolved_calls": 133,
-        "resolution_rate": 0.119205296
+        "total_calls": 179,
+        "resolved_calls": 28,
+        "unresolved_calls": 151,
+        "resolution_rate": 0.15642458
       },
       "control_flow": {
-        "max_nesting_depth": 5,
-        "cognitive_complexity": 51
+        "max_nesting_depth": 3,
+        "cognitive_complexity": 46
       },
       "error_handling": {
         "total_sites": 1,
@@ -174,10 +184,10 @@
         "propagated": 0
       },
       "concurrency": {
-        "total_sites": 21,
+        "total_sites": 15,
         "has_async": true,
         "has_locks": false,
-        "has_spawn": true
+        "has_spawn": false
       },
       "activation": {
         "total_sites": 42,
@@ -257,53 +267,58 @@
     ],
     "coupling": "mixed",
     "behavior_tags": [
-      "owns-const-state",
+      "owns-state",
       "persists",
       "async"
     ],
     "quality_tags": [
-      "undocumented"
+      "undocumented",
+      "complex-flow",
+      "concurrency-heavy"
     ],
     "hotspot": true,
     "fan_in": 0,
-    "risk_score": 9.6,
-    "semantic_summary": "async side-effecting adapter",
+    "risk_score": 15.8,
+    "semantic_summary": "async side-effecting stateful adapter",
     "analysis": {
       "functions": {
-        "total": 13,
-        "public": 3,
-        "max_cognitive_complexity": 8,
+        "total": 19,
+        "public": 4,
+        "max_cognitive_complexity": 29,
         "avg_cognitive_complexity": 2
       },
       "types": {
-        "total": 1,
+        "total": 2,
         "public": 1
       },
       "calls": {
-        "total_calls": 123,
-        "resolved_calls": 18,
-        "unresolved_calls": 105,
-        "resolution_rate": 0.14634146
+        "total_calls": 187,
+        "resolved_calls": 23,
+        "unresolved_calls": 164,
+        "resolution_rate": 0.122994654
       },
       "control_flow": {
-        "max_nesting_depth": 2,
-        "cognitive_complexity": 24
+        "max_nesting_depth": 3,
+        "cognitive_complexity": 54
       },
       "concurrency": {
-        "total_sites": 10,
+        "total_sites": 17,
         "has_async": true,
         "has_locks": false,
-        "has_spawn": false
+        "has_spawn": true
       },
       "docs": {
         "documented_symbols": 0,
-        "undocumented_public": 4
+        "undocumented_public": 5
       },
       "activation": {
-        "total_sites": 30,
+        "total_sites": 44,
         "kinds": [
           "callback-surface"
         ]
+      },
+      "guards": {
+        "total_sites": 1
       }
     }
   },
@@ -341,17 +356,17 @@
     ],
     "coupling": "mixed",
     "behavior_tags": [
-      "owns-const-state"
+      "owns-state"
     ],
     "hotspot": true,
     "fan_in": 0,
     "risk_score": 7.0,
-    "semantic_summary": "side-effecting constant-owning module",
+    "semantic_summary": "side-effecting stateful module",
     "analysis": {
       "calls": {
-        "total_calls": 2,
+        "total_calls": 8,
         "resolved_calls": 0,
-        "unresolved_calls": 2,
+        "unresolved_calls": 8,
         "resolution_rate": 0.0
       },
       "docs": {
@@ -451,41 +466,54 @@
     "file_kind": "production",
     "description": "Formats global stats for output.",
     "exports": [
-      "displayGlobalStats",
-      "generateTextReport"
+      "generateTextReportAsync",
+      "displayGlobalStats"
     ],
-    "coupling": "pure",
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-state",
+      "async"
+    ],
+    "quality_tags": [
+      "concurrency-heavy"
+    ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 4.2,
-    "semantic_summary": "pure computation",
+    "risk_score": 9.0,
+    "semantic_summary": "async side-effecting stateful module",
     "analysis": {
       "functions": {
         "total": 3,
         "public": 2,
-        "max_cognitive_complexity": 6,
-        "avg_cognitive_complexity": 3
+        "max_cognitive_complexity": 10,
+        "avg_cognitive_complexity": 5
       },
       "types": {
         "total": 1,
         "public": 0
       },
       "calls": {
-        "total_calls": 23,
-        "resolved_calls": 3,
-        "unresolved_calls": 20,
-        "resolution_rate": 0.13043478
+        "total_calls": 27,
+        "resolved_calls": 2,
+        "unresolved_calls": 25,
+        "resolution_rate": 0.074074075
       },
       "control_flow": {
-        "max_nesting_depth": 1,
-        "cognitive_complexity": 9
+        "max_nesting_depth": 2,
+        "cognitive_complexity": 15
+      },
+      "concurrency": {
+        "total_sites": 5,
+        "has_async": true,
+        "has_locks": false,
+        "has_spawn": true
       },
       "docs": {
         "documented_symbols": 0,
         "undocumented_public": 2
       },
       "activation": {
-        "total_sites": 4,
+        "total_sites": 1,
         "kinds": [
           "callback-surface"
         ]
@@ -498,12 +526,14 @@
     "file_kind": "production",
     "description": "Formats tree for output.",
     "exports": [
+      "initTreeState",
       "setAllSelections",
       "toggleAllFolders",
       "renderTree"
     ],
     "coupling": "mixed",
     "behavior_tags": [
+      "owns-state",
       "persists"
     ],
     "quality_tags": [
@@ -511,31 +541,35 @@
     ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 4.6,
-    "semantic_summary": "side-effecting adapter",
+    "risk_score": 5.6,
+    "semantic_summary": "side-effecting stateful adapter",
     "analysis": {
       "functions": {
-        "total": 9,
-        "public": 3,
-        "max_cognitive_complexity": 8,
-        "avg_cognitive_complexity": 3
+        "total": 17,
+        "public": 4,
+        "max_cognitive_complexity": 13,
+        "avg_cognitive_complexity": 4
+      },
+      "types": {
+        "total": 3,
+        "public": 0
       },
       "calls": {
-        "total_calls": 153,
-        "resolved_calls": 12,
-        "unresolved_calls": 141,
-        "resolution_rate": 0.078431375
+        "total_calls": 229,
+        "resolved_calls": 29,
+        "unresolved_calls": 200,
+        "resolution_rate": 0.12663755
       },
       "control_flow": {
-        "max_nesting_depth": 2,
-        "cognitive_complexity": 32
+        "max_nesting_depth": 3,
+        "cognitive_complexity": 77
       },
       "docs": {
         "documented_symbols": 0,
-        "undocumented_public": 3
+        "undocumented_public": 4
       },
       "activation": {
-        "total_sites": 44,
+        "total_sites": 62,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -618,53 +652,58 @@
     "file_kind": "production",
     "description": "Cross-Browser File System Abstraction Provides a unified interface using standard web APIs that work in all browsers: - webkitGetAsEntry() for drag & drop - <input webkitdirectory> for folder selection No File System Access API required!.",
     "exports": [
+      "buildFromFileListAsync",
       "buildFromDropItem",
-      "buildFromFileList",
       "showFolderPicker",
       "VirtualDirectoryHandle"
     ],
     "coupling": "mixed",
     "behavior_tags": [
+      "owns-state",
       "persists",
       "async"
     ],
+    "quality_tags": [
+      "undocumented",
+      "concurrency-heavy"
+    ],
     "hotspot": true,
     "fan_in": 0,
-    "risk_score": 12.4,
-    "semantic_summary": "async side-effecting adapter",
+    "risk_score": 14.8,
+    "semantic_summary": "async side-effecting stateful adapter",
     "analysis": {
       "functions": {
-        "total": 12,
-        "public": 4,
-        "max_cognitive_complexity": 12,
-        "avg_cognitive_complexity": 2
+        "total": 16,
+        "public": 5,
+        "max_cognitive_complexity": 14,
+        "avg_cognitive_complexity": 3
       },
       "types": {
         "total": 9,
         "public": 2
       },
       "calls": {
-        "total_calls": 99,
-        "resolved_calls": 29,
-        "unresolved_calls": 70,
-        "resolution_rate": 0.2929293
+        "total_calls": 135,
+        "resolved_calls": 40,
+        "unresolved_calls": 95,
+        "resolution_rate": 0.2962963
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 25
+        "cognitive_complexity": 43
       },
       "concurrency": {
-        "total_sites": 10,
+        "total_sites": 23,
         "has_async": true,
         "has_locks": false,
-        "has_spawn": false
+        "has_spawn": true
       },
       "docs": {
         "documented_symbols": 5,
-        "undocumented_public": 2
+        "undocumented_public": 3
       },
       "activation": {
-        "total_sites": 18,
+        "total_sites": 22,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -744,7 +783,7 @@
     ],
     "coupling": "mixed",
     "behavior_tags": [
-      "owns-const-state",
+      "owns-state",
       "async"
     ],
     "quality_tags": [
@@ -752,8 +791,8 @@
     ],
     "hotspot": true,
     "fan_in": 0,
-    "risk_score": 8.6,
-    "semantic_summary": "async side-effecting constant-owning module",
+    "risk_score": 6.6,
+    "semantic_summary": "async side-effecting stateful module",
     "analysis": {
       "functions": {
         "total": 5,
@@ -927,51 +966,59 @@
     "description": "Implements show notification.",
     "exports": [
       "resetUIForProcessing",
+      "copyCurrentReport",
       "refreshAllUI",
-      "disableUIControls",
-      "enableUIControls"
+      "disableUIControls"
     ],
     "coupling": "mixed",
+    "behavior_tags": [
+      "owns-state",
+      "async"
+    ],
     "quality_tags": [
-      "undocumented"
+      "undocumented",
+      "concurrency-heavy"
     ],
     "hotspot": true,
     "fan_in": 0,
-    "risk_score": 7.6,
-    "semantic_summary": "side-effecting",
+    "risk_score": 10.0,
+    "semantic_summary": "async side-effecting stateful module",
     "analysis": {
       "functions": {
-        "total": 12,
-        "public": 8,
-        "max_cognitive_complexity": 3,
+        "total": 22,
+        "public": 9,
+        "max_cognitive_complexity": 5,
         "avg_cognitive_complexity": 1
       },
       "calls": {
-        "total_calls": 56,
-        "resolved_calls": 7,
-        "unresolved_calls": 49,
-        "resolution_rate": 0.125
+        "total_calls": 138,
+        "resolved_calls": 33,
+        "unresolved_calls": 105,
+        "resolution_rate": 0.23913044
       },
       "control_flow": {
         "max_nesting_depth": 1,
-        "cognitive_complexity": 16
+        "cognitive_complexity": 36
       },
       "concurrency": {
-        "total_sites": 2,
-        "has_async": false,
+        "total_sites": 12,
+        "has_async": true,
         "has_locks": false,
         "has_spawn": true
       },
       "docs": {
         "documented_symbols": 0,
-        "undocumented_public": 8
+        "undocumented_public": 9
       },
       "activation": {
-        "total_sites": 10,
+        "total_sites": 30,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
+      },
+      "guards": {
+        "total_sites": 1
       }
     }
   }
