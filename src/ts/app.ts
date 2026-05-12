@@ -15,8 +15,10 @@ import { appState, elements } from "./state.js";
 import type { FolderInfo } from "./types/index.js";
 import {
   closeViewer,
+  copyCurrentReport,
   disableUIControls,
   enableUIControls,
+  initTreeState,
   initLayout,
   initSidebarResizer,
   initTabs,
@@ -33,6 +35,7 @@ import type { VirtualDirectoryHandle } from "./utils/crossbrowser_fs.js";
 import { buildFromEntry, buildFromFileList, showFolderPicker } from "./utils/crossbrowser_fs.js";
 
 async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
+  performance.mark("diranalyze:process-directory:start");
   appState.processingInProgress = true;
   appState.committedScanData = null;
   appState.selectionCommitted = false;
@@ -43,12 +46,14 @@ async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
 }
 
 async function finishScan(handle: VirtualDirectoryHandle) {
+  performance.mark("diranalyze:scan:start");
   const agg: ScanAggregator = {
     allFilesList: [],
     allFoldersList: [],
     maxDepth: 0,
   };
   const scanRes = await scanDir(handle, handle.name, 0, agg);
+  logPerfMeasure("scan", "diranalyze:scan:start", "diranalyze:scan:end");
   if (scanRes.ok) {
     appState.fullScanData = { directoryData: scanRes.value, ...agg };
     appState.committedScanData = null;
@@ -64,28 +69,35 @@ async function finishScan(handle: VirtualDirectoryHandle) {
 }
 
 function updateUI(data: FolderInfo) {
+  performance.mark("diranalyze:update-ui:start");
   const container = elements.treeContainer;
   if (container) {
-    container.innerHTML = "";
-    renderTree(data, container, true, {
+    initTreeState(data, {
       initialCollapsed: true,
       initialSelected: false,
     });
+    container.innerHTML = "";
+    renderTree(data, container);
     refreshAllUI();
     enableUIControls();
+    logPerfMeasure(
+      "update-ui",
+      "diranalyze:update-ui:start",
+      "diranalyze:update-ui:end",
+    );
+    requestAnimationFrame(() => {
+      logPerfMeasure(
+        "visible-load",
+        "diranalyze:process-directory:start",
+        "diranalyze:visible-load:end",
+      );
+    });
   }
 }
 
 function commitSelections(): void {
   if (!appState.fullScanData) return;
-  const selectedPaths = new Set<string>();
-  elements.treeContainer
-    ?.querySelectorAll('li[data-selected="true"]')
-    .forEach((el: Element) => {
-      const li = el as HTMLElement;
-      const path = li.dataset.path;
-      if (path) selectedPaths.add(path);
-    });
+  const selectedPaths = new Set(appState.selectedPaths);
 
   if (selectedPaths.size === 0) {
     showNotification("Select at least one file or folder before commit.", 2500);
@@ -105,6 +117,12 @@ function commitSelections(): void {
 function clearProject(): void {
   appState.fullScanData = null;
   appState.committedScanData = null;
+  appState.expandedFolderPaths.clear();
+  appState.selectedPaths.clear();
+  appState.treeNodesByPath.clear();
+  appState.treeParentPaths.clear();
+  appState.subtreeNodeCounts.clear();
+  appState.selectedSubtreeCounts.clear();
   appState.selectionCommitted = false;
   appState.processingInProgress = false;
   resetUIForProcessing();
@@ -122,7 +140,7 @@ let dragCounter = 0; // Track nested drag events
 function showDropOverlay(): void {
   const overlay = document.getElementById("fullPageDropOverlay");
   if (overlay && !appState.processingInProgress) {
-    overlay.classList.add("visible");
+    overlay.classList.add("visible", "drag-over");
   }
 }
 
@@ -133,28 +151,8 @@ function hideDropOverlay(): void {
   }
 }
 
-function setOverlayActive(active: boolean): void {
-  const overlay = document.getElementById("fullPageDropOverlay");
-  if (overlay) {
-    if (active) {
-      overlay.classList.add("drag-over");
-    } else {
-      overlay.classList.remove("drag-over");
-    }
-  }
-}
-
-function createRipple(x: number, y: number): void {
-  const overlay = document.getElementById("fullPageDropOverlay");
-  if (!overlay) return;
-  
-  const ripple = document.createElement("div");
-  ripple.className = "drop-ripple active";
-  ripple.style.left = `${x}px`;
-  ripple.style.top = `${y}px`;
-  overlay.appendChild(ripple);
-  
-  setTimeout(() => ripple.remove(), 600);
+function isDraggingFiles(event: DragEvent): boolean {
+  return event.dataTransfer?.types.includes("Files") ?? false;
 }
 
 function setupFullPageDrop(): void {
@@ -163,6 +161,9 @@ function setupFullPageDrop(): void {
     e.preventDefault();
     if (e.dataTransfer) {
       e.dataTransfer.dropEffect = "copy";
+    }
+    if (isDraggingFiles(e)) {
+      showDropOverlay();
     }
   });
 
@@ -187,71 +188,43 @@ function setupFullPageDrop(): void {
 
   document.addEventListener("drop", (e: DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+
+    let entry: FileSystemEntry | null = null;
+    if (e.dataTransfer && !appState.processingInProgress) {
+      const items = Array.from(e.dataTransfer.items);
+      for (const item of items) {
+        if (item.kind !== "file") continue;
+        entry = item.webkitGetAsEntry();
+        if (entry?.isDirectory) break;
+        entry = null;
+      }
+    }
+
     dragCounter = 0;
     hideDropOverlay();
-  });
 
-  // Setup the overlay itself for visual feedback
-  const overlay = document.getElementById("fullPageDropOverlay");
-  if (overlay) {
-    overlay.addEventListener("dragover", (e: DragEvent) => {
-      e.preventDefault();
-      setOverlayActive(true);
-    });
+    if (!entry) {
+      if (!appState.processingInProgress) {
+        showNotification("Please drop a folder, not a file.", 4000);
+      }
+      return;
+    }
 
-    overlay.addEventListener("dragleave", (e: DragEvent) => {
-      // Only deactivate if leaving to outside the overlay content
-      const rect = overlay.getBoundingClientRect();
-      const x = e.clientX;
-      const y = e.clientY;
-      
-      if (x <= rect.left || x >= rect.right || y <= rect.top || y >= rect.bottom) {
-        setOverlayActive(false);
-      }
-    });
-
-    overlay.addEventListener("drop", async (e: DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // IMPORTANT: Get the entry synchronously before any async operations
-      // DataTransferItem becomes invalid after the event handler yields
-      let entry: FileSystemEntry | null = null;
-      if (e.dataTransfer && !appState.processingInProgress) {
-        const items = Array.from(e.dataTransfer.items);
-        for (const item of items) {
-          if (item.kind === "file") {
-            entry = item.webkitGetAsEntry();
-            if (entry?.isDirectory) break;
-            entry = null;
-          }
-        }
-      }
-      
-      createRipple(e.clientX, e.clientY);
-      
-      // Small delay for visual feedback
-      await new Promise(resolve => setTimeout(resolve, 150));
-      
-      dragCounter = 0;
-      hideDropOverlay();
-      
-      if (!entry) {
-        if (!appState.processingInProgress) {
-          showNotification("Please drop a folder, not a file.", 4000);
-        }
-        return;
-      }
-      
-      // Now process the entry (this can be async)
-      const handle = await buildFromEntry(entry);
+    performance.mark("diranalyze:build-handle:start");
+    void buildFromEntry(entry).then((handle) => {
+      logPerfMeasure(
+        "build-handle",
+        "diranalyze:build-handle:start",
+        "diranalyze:build-handle:end",
+      );
       if (handle) {
         return processDirectory(handle);
       }
-      
+
       showNotification("Could not read folder.", 4000);
     });
-  }
+  });
 }
 
 // ============================================================================
@@ -323,13 +296,24 @@ function setupListeners(): void {
     toggleAllFolders(true),
   );
   elements.copyReportButton?.addEventListener("click", () => {
-    const text = elements.textOutput?.textContent || "";
-    navigator.clipboard
-      .writeText(text)
-      .then(() => showNotification("Report copied!", 2000));
+    void copyCurrentReport();
   });
   elements.closeViewerBtn?.addEventListener("click", closeViewer);
   elements.aiDebriefingAssistantBtn?.addEventListener("click", exportCombined);
+}
+
+function logPerfMeasure(name: string, startMark: string, endMark: string): void {
+  performance.mark(endMark);
+  try {
+    performance.measure(`diranalyze:${name}`, startMark, endMark);
+    const entries = performance.getEntriesByName(`diranalyze:${name}`, "measure");
+    const latest = entries.at(-1);
+    if (latest) {
+      console.info(`[perf] ${name}: ${latest.duration.toFixed(1)}ms`);
+    }
+  } catch {
+    // Ignore measurement failures when the browser drops a mark.
+  }
 }
 
 async function init() {

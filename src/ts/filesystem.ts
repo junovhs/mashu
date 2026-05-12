@@ -1,7 +1,7 @@
 import type { FileInfo, FolderInfo, ScanData } from "./types/index.js";
 import type { VirtualDirectoryHandle, VirtualFileHandle } from "./utils/crossbrowser_fs.js";
 import { getExt } from "./utils/fs_utils.js";
-import { Err, Ok, type Result, toResult } from "./utils/result.js";
+import { Err, Ok, type Result } from "./utils/result.js";
 
 export {
   formatBytes,
@@ -74,7 +74,7 @@ export async function scanDir(
     const entryPath = `${currentPath}/${entry.name}`;
 
     if (entry.kind === "file") {
-      await handleFileEntry(
+      handleFileEntry(
         entry as VirtualFileHandle,
         entryPath,
         depth,
@@ -119,22 +119,18 @@ function emptyFolder(
   };
 }
 
-async function handleFileEntry(
+function handleFileEntry(
   entry: VirtualFileHandle,
   path: string,
   depth: number,
   parent: FolderInfo,
   agg: ScanAggregator,
 ) {
-  const fileResult = await toResult(entry.getFile());
-  if (!fileResult.ok) return;
-
-  const file = fileResult.value;
-  const ext = getExt(file.name);
+  const ext = getExt(entry.name);
   const fileInfo: FileInfo = {
-    name: file.name,
+    name: entry.name,
     type: "file",
-    size: file.size,
+    size: entry.size,
     path,
     extension: ext,
     depth: depth + 1,
@@ -143,12 +139,12 @@ async function handleFileEntry(
 
   parent.children.push(fileInfo);
   parent.fileCount++;
-  parent.totalSize += file.size;
+  parent.totalSize += entry.size;
   agg.allFilesList.push(fileInfo);
 
   if (!parent.fileTypes[ext]) parent.fileTypes[ext] = { count: 0, size: 0 };
   parent.fileTypes[ext].count++;
-  parent.fileTypes[ext].size += file.size;
+  parent.fileTypes[ext].size += entry.size;
 }
 
 async function handleDirEntry(

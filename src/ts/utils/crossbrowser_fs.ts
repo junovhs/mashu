@@ -15,6 +15,7 @@
 export interface VirtualFileHandle {
   readonly kind: "file";
   readonly name: string;
+  readonly size: number;
   getFile(): Promise<File>;
 }
 
@@ -45,6 +46,7 @@ function createFileHandle(file: File): VirtualFileHandle {
   return {
     kind: "file",
     name: file.name,
+    size: file.size,
     async getFile() {
       return file;
     },
@@ -62,6 +64,58 @@ function createDirectoryHandle(
     async *values() {
       for (const value of this._children.values()) {
         yield value;
+      }
+    },
+  };
+}
+
+function createEntryDirectoryHandle(
+  dirEntry: FSDirectoryEntry,
+): VirtualDirectoryHandle {
+  let cachedChildrenPromise:
+    | Promise<Array<VirtualFileHandle | VirtualDirectoryHandle>>
+    | null = null;
+
+  const loadChildren = async (): Promise<
+    Array<VirtualFileHandle | VirtualDirectoryHandle>
+  > => {
+    if (cachedChildrenPromise) {
+      return cachedChildrenPromise;
+    }
+
+    cachedChildrenPromise = (async () => {
+      const children: Array<VirtualFileHandle | VirtualDirectoryHandle> = [];
+      const entries = await readAllEntries(dirEntry.createReader());
+
+      for (let i = 0; i < entries.length; i++) {
+        const entry = entries[i];
+        if (entry.isFile) {
+          const file = await entryToFile(entry as FSFileEntry);
+          if (file) {
+            children.push(createFileHandle(file));
+          }
+        } else if (entry.isDirectory) {
+          children.push(createEntryDirectoryHandle(entry as FSDirectoryEntry));
+        }
+
+        if ((i + 1) % YIELD_EVERY === 0) {
+          await yieldToMainThread();
+        }
+      }
+
+      return children;
+    })();
+
+    return cachedChildrenPromise;
+  };
+
+  return {
+    kind: "directory",
+    name: dirEntry.name,
+    async *values() {
+      const children = await loadChildren();
+      for (const child of children) {
+        yield child;
       }
     },
   };
@@ -205,7 +259,7 @@ export async function buildFromDropItem(
   if (!entry || !entry.isDirectory) {
     return null;
   }
-  return processDirectory(entry as FSDirectoryEntry);
+  return createEntryDirectoryHandle(entry as FSDirectoryEntry);
 }
 
 /**
@@ -218,31 +272,7 @@ export async function buildFromEntry(
   if (!entry || !entry.isDirectory) {
     return null;
   }
-  return processDirectory(entry as unknown as FSDirectoryEntry);
-}
-
-async function processDirectory(dirEntry: FSDirectoryEntry): Promise<InternalDirectoryHandle> {
-  const children = new Map<string, VirtualFileHandle | VirtualDirectoryHandle>();
-  const entries = await readAllEntries(dirEntry.createReader());
-
-  for (let i = 0; i < entries.length; i++) {
-    const entry = entries[i];
-    if (entry.isFile) {
-      const file = await entryToFile(entry as FSFileEntry);
-      if (file) {
-        children.set(entry.name, createFileHandle(file));
-      }
-    } else if (entry.isDirectory) {
-      const subDir = await processDirectory(entry as FSDirectoryEntry);
-      children.set(entry.name, subDir);
-    }
-
-    if ((i + 1) % YIELD_EVERY === 0) {
-      await yieldToMainThread();
-    }
-  }
-
-  return createDirectoryHandle(dirEntry.name, children);
+  return createEntryDirectoryHandle(entry as unknown as FSDirectoryEntry);
 }
 
 function readAllEntries(reader: FSDirectoryReader): Promise<FSEntry[]> {

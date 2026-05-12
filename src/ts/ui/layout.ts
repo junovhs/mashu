@@ -3,25 +3,10 @@ export function initLayout(): void {
   const dropOverlay = document.createElement("div");
   dropOverlay.id = "fullPageDropOverlay";
   dropOverlay.innerHTML = `
-    <div class="drop-overlay-particles">
-      <div class="drop-particle"></div>
-      <div class="drop-particle"></div>
-      <div class="drop-particle"></div>
-      <div class="drop-particle"></div>
-      <div class="drop-particle"></div>
-      <div class="drop-particle"></div>
-      <div class="drop-particle"></div>
-      <div class="drop-particle"></div>
-      <div class="drop-particle"></div>
-    </div>
-    <div class="drop-overlay-corners">
-      <div class="drop-overlay-corner-bl"></div>
-      <div class="drop-overlay-corner-br"></div>
-    </div>
     <div class="drop-overlay-content">
       <div class="drop-overlay-icon">📂</div>
       <h2 class="drop-overlay-title">Drop your folder here</h2>
-      <p class="drop-overlay-subtitle">Release to analyze directory structure</p>
+      <p class="drop-overlay-subtitle">Release to analyze immediately</p>
     </div>
   `;
   document.body.appendChild(dropOverlay);

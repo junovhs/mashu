@@ -21,8 +21,6 @@ export function displayGlobalStats(data: ScanData): void {
   const { directoryData, allFilesList, allFoldersList } = data;
   if (!directoryData) return;
 
-  const totalSize = allFilesList.reduce((sum, f) => sum + f.size, 0);
-
   if (appState.selectionCommitted && elements.selectionSummary) {
     elements.selectionSummary.innerHTML = `Displaying stats for <strong>${allFilesList.length} selected files</strong> and <strong>${allFoldersList.length} selected folders</strong>.`;
     elements.selectionSummary.style.display = "block";
@@ -35,29 +33,20 @@ export function displayGlobalStats(data: ScanData): void {
             <div class="stat-item"><strong>Root Folder:</strong> ${directoryData.name}</div>
             <div class="stat-item"><strong>Files in View:</strong> ${allFilesList.length}</div>
             <div class="stat-item"><strong>Folders in View:</strong> ${allFoldersList.length}</div>
-            <div class="stat-item"><strong>Total Size (View):</strong> ${formatBytes(totalSize)}</div>
+            <div class="stat-item"><strong>Total Size (View):</strong> ${formatBytes(directoryData.totalSize)}</div>
         `;
   }
 
-  const fileTypes: Record<string, { count: number; size: number }> = {};
-  allFilesList.forEach((file) => {
-    if (!fileTypes[file.extension])
-      fileTypes[file.extension] = { count: 0, size: 0 };
-    fileTypes[file.extension].count++;
-    fileTypes[file.extension].size += file.size;
-  });
-
-  const sortedTypes = Object.entries(fileTypes).sort(
+  const sortedTypes = Object.entries(directoryData.fileTypes).sort(
     ([, a], [, b]) => b.size - a.size,
   );
   if (elements.fileTypeTableBody) {
-    elements.fileTypeTableBody.innerHTML = "";
-    sortedTypes.forEach(([ext, typeData]) => {
-      const row = (
-        elements.fileTypeTableBody as HTMLTableSectionElement
-      ).insertRow();
-      row.innerHTML = `<td>${ext}</td><td>${typeData.count}</td><td>${formatBytes(typeData.size)}</td>`;
-    });
+    elements.fileTypeTableBody.innerHTML = sortedTypes
+      .map(
+        ([ext, typeData]) =>
+          `<tr><td>${ext}</td><td>${typeData.count}</td><td>${formatBytes(typeData.size)}</td></tr>`,
+      )
+      .join("");
   }
 }
 
