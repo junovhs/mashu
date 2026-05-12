@@ -10,9 +10,9 @@ import "../css/dropoverlay.css";
 
 import { downloadZip, exportCombined } from "./features.js";
 import type { ScanAggregator } from "./filesystem.js";
-import { filterScanData, initTypeData, scanDir } from "./filesystem.js";
+import { filterScanData, initTypeData, scanDir, scanFileList } from "./filesystem.js";
 import { appState, elements } from "./state.js";
-import type { FolderInfo } from "./types/index.js";
+import type { FolderInfo, ScanData } from "./types/index.js";
 import {
   closeViewer,
   copyCurrentReport,
@@ -32,7 +32,7 @@ import {
   toggleAllFolders,
 } from "./ui/index.js";
 import type { VirtualDirectoryHandle } from "./utils/crossbrowser_fs.js";
-import { buildFromEntry, buildFromFileList, showFolderPicker } from "./utils/crossbrowser_fs.js";
+import { buildFromEntry, showFolderPicker } from "./utils/crossbrowser_fs.js";
 
 async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
   performance.mark("diranalyze:process-directory:start");
@@ -45,6 +45,36 @@ async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
   await finishScan(handle);
 }
 
+async function processFileList(files: FileList): Promise<void> {
+  performance.mark("diranalyze:process-directory:start");
+  appState.processingInProgress = true;
+  appState.committedScanData = null;
+  appState.selectionCommitted = false;
+
+  const rootName = getFileListRootName(files) || "PROJECT";
+  resetUIForProcessing(`Processing '${rootName}'...`);
+  disableUIControls();
+
+  performance.mark("diranalyze:scan-file-list:start");
+  const scanRes = await scanFileList(files);
+  logPerfMeasure(
+    "scan-file-list",
+    "diranalyze:scan-file-list:start",
+    "diranalyze:scan-file-list:end",
+  );
+
+  if (scanRes.ok) {
+    applyScanData(scanRes.value);
+  } else {
+    showFailedUI("Scan failed.");
+    console.error(scanRes.error);
+  }
+
+  appState.processingInProgress = false;
+  const loader = elements.loader;
+  if (loader) loader.classList.remove("visible");
+}
+
 async function finishScan(handle: VirtualDirectoryHandle) {
   performance.mark("diranalyze:scan:start");
   const agg: ScanAggregator = {
@@ -55,10 +85,7 @@ async function finishScan(handle: VirtualDirectoryHandle) {
   const scanRes = await scanDir(handle, handle.name, 0, agg);
   logPerfMeasure("scan", "diranalyze:scan:start", "diranalyze:scan:end");
   if (scanRes.ok) {
-    appState.fullScanData = { directoryData: scanRes.value, ...agg };
-    appState.committedScanData = null;
-    appState.selectionCommitted = false;
-    updateUI(appState.fullScanData.directoryData as FolderInfo);
+    applyScanData({ directoryData: scanRes.value, ...agg });
   } else {
     showFailedUI("Scan failed.");
     console.error(scanRes.error);
@@ -66,6 +93,13 @@ async function finishScan(handle: VirtualDirectoryHandle) {
   appState.processingInProgress = false;
   const loader = elements.loader;
   if (loader) loader.classList.remove("visible");
+}
+
+function applyScanData(data: ScanData): void {
+  appState.fullScanData = data;
+  appState.committedScanData = null;
+  appState.selectionCommitted = false;
+  updateUI(appState.fullScanData.directoryData as FolderInfo);
 }
 
 function updateUI(data: FolderInfo) {
@@ -190,6 +224,19 @@ function setupFullPageDrop(): void {
     e.preventDefault();
     e.stopPropagation();
 
+    const droppedFiles = e.dataTransfer?.files;
+    if (
+      droppedFiles &&
+      droppedFiles.length > 0 &&
+      canScanDroppedFileList(droppedFiles) &&
+      !appState.processingInProgress
+    ) {
+      dragCounter = 0;
+      hideDropOverlay();
+      void processFileList(droppedFiles);
+      return;
+    }
+
     let entry: FileSystemEntry | null = null;
     if (e.dataTransfer && !appState.processingInProgress) {
       const items = Array.from(e.dataTransfer.items);
@@ -227,6 +274,22 @@ function setupFullPageDrop(): void {
   });
 }
 
+function canScanDroppedFileList(files: FileList): boolean {
+  return getFileListRootName(files) !== null;
+}
+
+function getFileListRootName(files: FileList): string | null {
+  if (files.length === 0) return null;
+
+  const firstFile = files[0] as File & { webkitRelativePath?: string };
+  const relativePath = firstFile.webkitRelativePath || "";
+  if (!relativePath.includes("/")) {
+    return null;
+  }
+
+  return relativePath.split("/")[0] || null;
+}
+
 // ============================================================================
 // FOLDER SELECT BUTTON (uses <input webkitdirectory> - works in all browsers)
 // ============================================================================
@@ -234,7 +297,13 @@ function setupFullPageDrop(): void {
 async function handleSelect(): Promise<void> {
   console.log("[handleSelect] Called, processingInProgress:", appState.processingInProgress);
   if (appState.processingInProgress) return;
-  
+
+  const hiddenInput = document.getElementById("hiddenFolderInput") as HTMLInputElement | null;
+  if (hiddenInput) {
+    hiddenInput.click();
+    return;
+  }
+
   const handle = await showFolderPicker();
   console.log("[handleSelect] Got handle:", handle);
   if (handle) {
@@ -265,10 +334,7 @@ function setupHiddenInput(): void {
   hiddenInput.addEventListener("change", async () => {
     const files = hiddenInput!.files;
     if (files && files.length > 0) {
-      const handle = buildFromFileList(files);
-      if (handle) {
-        await processDirectory(handle);
-      }
+      await processFileList(files);
     }
     // Reset for next use
     hiddenInput!.value = "";

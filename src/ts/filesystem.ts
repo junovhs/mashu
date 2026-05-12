@@ -38,10 +38,35 @@ const IGNORE_LIST = [
 
 const YIELD_EVERY = 200;
 
+interface FileWithPath extends File {
+  readonly webkitRelativePath: string;
+}
+
 async function yieldToMainThread(): Promise<void> {
   await new Promise<void>((resolve) => {
     setTimeout(resolve, 0);
   });
+}
+
+function createVirtualFileHandle(file: File): VirtualFileHandle {
+  return {
+    kind: "file",
+    name: file.name,
+    size: file.size,
+    async getFile() {
+      return file;
+    },
+  };
+}
+
+function createVirtualDirectoryHandle(name: string): VirtualDirectoryHandle {
+  return {
+    kind: "directory",
+    name,
+    async *values() {
+      return;
+    },
+  };
 }
 
 export async function scanDir(
@@ -98,6 +123,144 @@ export async function scanDir(
   }
 
   return Ok(dirData);
+}
+
+export async function scanFileList(
+  files: FileList,
+): Promise<Result<ScanData>> {
+  if (files.length === 0) {
+    return Err(new Error("No files supplied for scan."));
+  }
+
+  const firstFile = files[0] as FileWithPath;
+  const firstPath = firstFile.webkitRelativePath || firstFile.name;
+  const rootName = firstPath.split("/")[0];
+  const root: FolderInfo = {
+    name: rootName,
+    path: rootName,
+    type: "folder",
+    depth: 0,
+    children: [],
+    fileCount: 0,
+    dirCount: 0,
+    totalSize: 0,
+    fileTypes: {},
+    entryHandle: createVirtualDirectoryHandle(rootName),
+  };
+
+  const foldersByPath = new Map<string, FolderInfo>([[root.path, root]]);
+  const childFolderPaths = new Map<string, Set<string>>([[root.path, new Set()]]);
+  const allFilesList: FileInfo[] = [];
+  const allFoldersList: Array<{
+    name: string;
+    path: string;
+    entryHandle: VirtualDirectoryHandle;
+  }> = [{ name: root.name, path: root.path, entryHandle: root.entryHandle }];
+  let maxDepth = 0;
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i] as FileWithPath;
+    const rawPath = file.webkitRelativePath || `${rootName}/${file.name}`;
+    const parts = rawPath.split("/").filter(Boolean);
+    if (parts.length === 0) continue;
+
+    let currentFolder = root;
+    let currentPath = root.path;
+
+    for (let j = 1; j < parts.length - 1; j++) {
+      const folderName = parts[j];
+      currentPath = `${currentPath}/${folderName}`;
+      let folder = foldersByPath.get(currentPath);
+
+      if (!folder) {
+        folder = {
+          name: folderName,
+          path: currentPath,
+          type: "folder",
+          depth: j,
+          children: [],
+          fileCount: 0,
+          dirCount: 0,
+          totalSize: 0,
+          fileTypes: {},
+          entryHandle: createVirtualDirectoryHandle(folderName),
+        };
+        foldersByPath.set(currentPath, folder);
+        childFolderPaths.set(currentPath, new Set());
+        allFoldersList.push({
+          name: folder.name,
+          path: folder.path,
+          entryHandle: folder.entryHandle,
+        });
+
+        const knownChildren = childFolderPaths.get(currentFolder.path);
+        if (knownChildren && !knownChildren.has(folder.path)) {
+          currentFolder.children.push(folder);
+          knownChildren.add(folder.path);
+        }
+
+        let ancestor: FolderInfo | undefined = currentFolder;
+        while (ancestor) {
+          ancestor.dirCount++;
+          const parentPath: string | null =
+            ancestor.path.includes("/") ?
+              ancestor.path.slice(0, ancestor.path.lastIndexOf("/"))
+            : null;
+          ancestor = parentPath ? foldersByPath.get(parentPath) : undefined;
+        }
+      }
+
+      currentFolder = folder;
+      if (folder.depth > maxDepth) {
+        maxDepth = folder.depth;
+      }
+    }
+
+    const fileName = parts[parts.length - 1];
+    const fileInfo: FileInfo = {
+      name: fileName,
+      type: "file",
+      size: file.size,
+      path: rawPath,
+      extension: getExt(fileName),
+      depth: parts.length - 1,
+      entryHandle: createVirtualFileHandle(file),
+    };
+
+    currentFolder.children.push(fileInfo);
+    allFilesList.push(fileInfo);
+    if (fileInfo.depth > maxDepth) {
+      maxDepth = fileInfo.depth;
+    }
+
+    let ancestor: FolderInfo | undefined = currentFolder;
+    while (ancestor) {
+      ancestor.fileCount++;
+      ancestor.totalSize += fileInfo.size;
+      if (!ancestor.fileTypes[fileInfo.extension]) {
+        ancestor.fileTypes[fileInfo.extension] = { count: 0, size: 0 };
+      }
+      ancestor.fileTypes[fileInfo.extension].count++;
+      ancestor.fileTypes[fileInfo.extension].size += fileInfo.size;
+
+      const parentPath: string | null =
+        ancestor.path.includes("/") ?
+          ancestor.path.slice(0, ancestor.path.lastIndexOf("/"))
+        : null;
+      ancestor = parentPath ? foldersByPath.get(parentPath) : undefined;
+    }
+
+    if ((i + 1) % YIELD_EVERY === 0) {
+      await yieldToMainThread();
+    }
+  }
+
+  return Ok({
+    directoryData: root,
+    allFilesList,
+    allFoldersList,
+    maxDepth,
+  });
 }
 
 function emptyFolder(
