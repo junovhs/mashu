@@ -1,4 +1,4 @@
-/* --- REPORT VIEW --- */
+/* --- REPORT VIEW (Cloudflare style) --- */
 
 #tabContentArea {
 	flex-grow: 1;
@@ -18,37 +18,38 @@
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	border: 1px solid var(--rule);
-	border-radius: 2px;
-}
-
-.panel-header h2 { /* "COMPREHENSIVE TEXT REPORT" */
-	/* already styled by components.css */
+	border: 1px solid var(--border);
+	border-radius: var(--border-radius-medium);
+	background: var(--surface);
 }
 
 #textOutput {
 	margin: 0;
-	padding: 14px 16px;
+	padding: 16px 18px;
 	font-family: var(--font-main);
-	font-size: 11.5px;
+	font-size: 12px;
 	line-height: 1.75;
 	white-space: pre;
 	overflow-y: auto;
-	background: var(--panel);
+	background: transparent;
 	flex-grow: 1;
-	color: var(--ink2);
+	color: var(--text2);
 }
 
 .button-container {
-	padding: 8px 12px;
-	border-top: 1px solid var(--rule);
+	padding: 10px 14px;
+	border-top: 1px solid var(--border);
 	display: flex;
 	justify-content: center;
 	flex-shrink: 0;
-	background: var(--panel);
+	background: var(--surface);
 }
 
 .button-container .action-button {
 	width: auto;
-	justify-content: center;
+	padding: 7px 24px;
+	background: var(--surface2);
+}
+.button-container .action-button:hover:not(:disabled) {
+	background: var(--surface3);
 }

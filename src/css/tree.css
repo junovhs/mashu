@@ -1,7 +1,7 @@
-/* --- TREE VIEW --- */
+/* --- TREE VIEW (Cloudflare style) --- */
 
 .tree {
-	padding: 6px 0;
+	padding: 4px 0;
 	overflow-y: auto;
 	flex-grow: 1;
 	font-size: 12px;
@@ -11,7 +11,7 @@
 
 .tree ul {
 	list-style: none;
-	padding-left: 14px;
+	padding-left: 12px;
 	margin: 0;
 }
 
@@ -20,15 +20,15 @@
 .item-line {
 	display: flex;
 	align-items: center;
-	padding: 2px 4px;
-	border-radius: 2px;
+	padding: 3px 12px;
 	cursor: pointer;
-	transition: background 0.08s;
+	transition: background 0.1s;
 	gap: 5px;
 	user-select: none;
+	border-radius: 0;
 }
 
-.item-line:hover { background: var(--hover-strong); }
+.item-line:hover { background: rgba(255,255,255,0.04); }
 
 .item-prefix {
 	display: flex;
@@ -40,38 +40,29 @@
 .selector {
 	margin: 0;
 	cursor: pointer;
-	accent-color: var(--ink);
+	accent-color: var(--orange);
 	flex-shrink: 0;
 }
 
 .folder-toggle {
 	width: 10px;
-	color: var(--ink4);
+	color: var(--text3);
 	font-size: 8px;
 	user-select: none;
 	flex-shrink: 0;
 	text-align: center;
 }
-.item-line:hover .folder-toggle { color: var(--ink3); }
+.item-line:hover .folder-toggle { color: var(--text2); }
 
 /* Folder icon */
-.icon {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-shrink: 0;
-}
-.icon svg {
-	width: 14px;
-	height: 14px;
-	fill: var(--orange);
-}
+.icon { display: flex; align-items: center; flex-shrink: 0; }
+.icon svg { width: 14px; height: 14px; fill: #f5a623; }
 
-/* File ext chip — color comes from extensions.css */
+/* Ext chip in tree — sized down for tree density */
 .item-prefix .ext-chip {
 	font-size: 9px;
-	padding: 1px 5px 1px;
-	line-height: 1.5;
+	padding: 0 5px 1px;
+	line-height: 1.6;
 }
 
 .name {
@@ -79,27 +70,27 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	flex-grow: 1;
-	color: var(--ink2);
-	font-size: 11.5px;
+	color: var(--text2);
+	font-size: 12px;
 }
 
 li.folder > .item-line > .name {
-	color: var(--ink);
+	color: var(--text);
 	font-weight: 500;
 }
 
-.item-line:hover .name { color: var(--ink); }
+.item-line:hover .name { color: var(--text); }
 
 .stats {
 	font-size: 10px;
-	color: var(--ink4);
+	color: var(--text3);
 	margin-left: auto;
 	padding-left: 6px;
 	white-space: nowrap;
 	flex-shrink: 0;
 	font-family: var(--font-main);
 }
-.item-line:hover .stats { color: var(--ink3); }
 
-/* Dimmed items (uncommitted filter) */
-li.dimmed-uncommitted { opacity: 0.35; }
+.item-line:hover .stats { color: var(--text2); }
+
+li.dimmed-uncommitted { opacity: 0.3; }

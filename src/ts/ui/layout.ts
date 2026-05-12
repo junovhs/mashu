@@ -23,43 +23,29 @@ export function initLayout(): void {
                 <div id="dropZone">
                     <div class="drop-content">
                         <div class="drop-icon">📁</div>
-                        <div class="drop-text">DRAG FOLDER ANYWHERE</div>
-                        <div class="drop-alternative">- OR -</div>
-                        <button id="selectFolderBtn" class="folder-select-btn">SELECT FOLDER</button>
+                        <div class="drop-text">Drop a folder to analyze</div>
+                        <div class="drop-alternative">or</div>
+                        <button id="selectFolderBtn" class="action-button folder-select-btn">Browse</button>
                     </div>
                 </div>
-                <div id="loader">ANALYSING...</div>
+                <div id="loader">Scanning...</div>
             </div>
-
-            <hr class="sidebar-hr">
 
             <div id="extFilterBar" style="display:none;">
                 <div id="extPills" class="ext-pills"></div>
-                <hr class="sidebar-hr">
             </div>
 
             <div id="treeViewControls">
-                <button id="selectAllBtn" class="action-button utility-button" title="Select All Items in Tree"
-                    disabled>SELECT ALL</button>
-                <button id="deselectAllBtn" class="action-button utility-button" title="Deselect All Items in Tree"
-                    disabled>DESELECT ALL</button>
-                <button id="commitSelectionsBtn" class="action-button utility-button"
-                    title="Commit current selections for report" disabled>COMMIT</button>
-                <hr class="sidebar-hr">
-                <button id="expandAllBtn" class="action-button utility-button" title="Expand All Folders"
-                    disabled>EXPAND ALL</button>
-                <button id="collapseAllBtn" class="action-button utility-button" title="Collapse All Folders"
-                    disabled>COLLAPSE ALL</button>
+                <button id="selectAllBtn" class="action-button utility-button" title="Select All" disabled>Select all</button>
+                <button id="deselectAllBtn" class="action-button utility-button" title="Deselect All" disabled>Deselect all</button>
+                <button id="commitSelectionsBtn" class="action-button utility-button" title="Commit selections" disabled>Commit</button>
+                <button id="expandAllBtn" class="action-button utility-button" title="Expand All" disabled>Expand all</button>
+                <button id="collapseAllBtn" class="action-button utility-button" title="Collapse All" disabled>Collapse all</button>
             </div>
-            <hr class="sidebar-hr">
 
-            <div id="visualOutputContainer" class="content-panel tab-content-item">
-                <div class="panel-header">
-                    <h2>DIRECTORY TREE</h2>
-                </div>
+            <div id="visualOutputContainer" style="flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;">
                 <div id="treeContainer" class="tree"></div>
             </div>
-            <hr class="sidebar-hr">
 
             <div id="generalActions">
                 <button id="aiDebriefingAssistantBtn" class="action-button primary"
