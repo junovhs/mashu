@@ -26,7 +26,7 @@ export function initLayout(): void {
             <section class="product-intro">
                 <p class="product-intro-eyebrow">Local project reader</p>
                 <p class="product-intro-copy">Mashu scans a folder in your browser, lets you narrow it to the files that matter, and turns that view into plain text you can read, copy, or hand to an LLM.</p>
-                <p class="product-intro-note">Load a folder, review the tree, then commit a smaller working set when you want stats and export actions to focus only on that subset.</p>
+                <p class="product-intro-note">Load a folder, review the tree, and selections instantly focus the stats, report, and text export on just that subset.</p>
             </section>
 
             <div id="mainAction">
@@ -52,14 +52,13 @@ export function initLayout(): void {
             </div>
 
             <div id="treeViewControls">
-                <p class="control-help">Selections define your working set. Commit the current selection when you want the report, stats, and export actions to use only that subset.</p>
+                <p class="control-help">Selections define your working set. As soon as you select files or folders, the report, stats, and export actions focus on that subset.</p>
                 <div class="tree-ctrl-grid">
                     <button id="selectAllBtn" class="action-button utility-button" title="Select every visible file and folder in the tree" disabled>Select all</button>
                     <button id="deselectAllBtn" class="action-button utility-button" title="Clear the current working set" disabled>Deselect all</button>
                     <button id="expandAllBtn" class="action-button utility-button" title="Open every folder in the tree" disabled>Expand all</button>
                     <button id="collapseAllBtn" class="action-button utility-button" title="Close every folder in the tree" disabled>Collapse all</button>
                 </div>
-                <button id="commitSelectionsBtn" class="action-button utility-button" title="Use the current selection as the focused subset for stats and export" disabled>Commit selection</button>
             </div>
 
             <div id="visualOutputContainer" style="flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;">
@@ -67,9 +66,9 @@ export function initLayout(): void {
             </div>
 
             <div id="generalActions">
-                <p class="control-help control-help--compact">Export combined text after you commit a focused subset, or download the full scanned folder as a ZIP at any time.</p>
+                <p class="control-help control-help--compact">Export combined text from the current view, or download the full scanned folder as a ZIP at any time.</p>
                 <button id="aiDebriefingAssistantBtn" class="action-button primary"
-                    title="Download one text file containing every committed text file" disabled>Export combined text</button>
+                    title="Download one text file containing every text file in the current view" disabled>Export combined text</button>
                 <hr class="sidebar-hr" style="margin-top: 8px; margin-bottom: 8px;">
                 <div class="utility-action-row">
                     <button id="downloadProjectBtn" class="action-button utility-button" disabled
@@ -95,13 +94,13 @@ export function initLayout(): void {
                             <h2>Text report</h2>
                         </div>
                         <div class="panel-copy">
-                            <p>This panel turns the current view into a plain-text outline. Before commit it reflects the whole folder; after commit it reflects only the focused subset you selected.</p>
+                            <p>This panel renders the current view as a readable project map. Copy report still gives you the plain-text version for prompts, notes, or tickets.</p>
                         </div>
-                        <pre id="textOutput">// Load a folder to start. //
+                        <div id="textOutput" class="report-placeholder">// Load a folder to start. //
 // Mashu scans locally in your browser and shows a tree, stats, and a plain-text report. //
-// Commit a selection when you want copy/export actions to focus on a smaller subset. //</pre>
+// Select files or folders to instantly focus copy/export actions on a smaller subset. //</div>
                         <div class="button-container">
-                            <p class="panel-help">Copy this report when you want a portable snapshot for notes, tickets, or AI prompts.</p>
+                            <p class="panel-help">Click the report to copy the ASCII version, or use Copy report when you want a portable snapshot for notes, tickets, or AI prompts.</p>
                             <button id="copyReportButton" class="action-button" title="Copy the current text report to the clipboard" disabled>Copy report</button>
                         </div>
                     </div>
@@ -126,7 +125,7 @@ export function initLayout(): void {
   if (rightStatsPanel) {
     rightStatsPanel.innerHTML = `
             <p class="stats-panel-title">Statistics</p>
-            <p class="stats-panel-intro">Counts always reflect the current view. After you commit a selection, this panel narrows to that focused subset.</p>
+            <p class="stats-panel-intro">Counts always reflect the current view. Select a subset and this panel narrows immediately.</p>
             <div id="selectionSummary" class="selection-summary" style="display:none;"></div>
             <div id="globalStats"></div>
             <p class="stats-section-label">File Type Breakdown</p>

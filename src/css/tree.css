@@ -7,6 +7,7 @@
 	font-size: 12px;
 	font-family: var(--font-ui);
 	background: transparent;
+	line-height: 1;
 }
 
 .tree ul {
@@ -22,13 +23,18 @@
 	align-items: center;
 	padding: 3px 12px;
 	cursor: pointer;
-	transition: background 0.1s;
+	transition: background 0.1s, box-shadow 0.1s;
 	gap: 5px;
 	user-select: none;
 	border-radius: 0;
+	min-height: 22px;
+	line-height: 1.2;
 }
 
-.item-line:hover { background: rgba(255,255,255,0.04); }
+.item-line:hover {
+	background: rgba(255,255,255,0.06);
+	box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+}
 
 .item-prefix {
 	display: flex;
@@ -42,6 +48,8 @@
 	cursor: pointer;
 	accent-color: var(--orange);
 	flex-shrink: 0;
+	inline-size: 14px;
+	block-size: 14px;
 }
 
 .folder-toggle {
@@ -52,13 +60,36 @@
 	flex-shrink: 0;
 	text-align: center;
 }
+
 .item-line:hover .folder-toggle { color: var(--text2); }
 
-/* Folder icon */
-.icon { display: flex; align-items: center; flex-shrink: 0; }
-.icon svg { width: 14px; height: 14px; fill: var(--orange); }
+.icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	inline-size: 14px;
+	block-size: 14px;
+}
 
-/* Ext chip in tree — sized down for tree density */
+.icon svg {
+	width: 14px;
+	height: 14px;
+	fill: currentColor;
+}
+
+.icon--folder { color: var(--orange); }
+.icon--archive { color: #f1c46a; }
+.icon--binary { color: #8bb3ff; }
+.icon--code { color: #69b7ff; }
+.icon--config { color: #b7c0d6; }
+.icon--data { color: #62d7b3; }
+.icon--doc { color: #d7dce8; }
+.icon--image { color: #ff9db2; }
+.icon--media { color: #c099ff; }
+.icon--shell { color: #7fd08f; }
+
+/* Ext chip in tree, sized down for density */
 .item-prefix .ext-chip {
 	font-size: 9px;
 	padding: 0 5px 1px;
@@ -72,11 +103,12 @@
 	flex-grow: 1;
 	color: var(--text2);
 	font-size: 12px;
+	line-height: 1.2;
 }
 
 li.folder > .item-line > .name {
 	color: var(--text);
-	font-weight: 500;
+	font-weight: 600;
 }
 
 .item-line:hover .name { color: var(--text); }
@@ -89,8 +121,9 @@ li.folder > .item-line > .name {
 	white-space: nowrap;
 	flex-shrink: 0;
 	font-family: var(--font-main);
+	line-height: 1.2;
 }
 
 .item-line:hover .stats { color: var(--text2); }
 
-li.dimmed-uncommitted { opacity: 0.3; }
+li.dimmed-uncommitted { opacity: 0.42; }

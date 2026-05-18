@@ -4,6 +4,11 @@ import type { FileInfo, FolderInfo, ScanData } from "../types/index.js";
 import { setSelectionByExtension } from "./tree.js";
 
 const REPORT_YIELD_EVERY = 400;
+const TREE_BRANCH = {
+  elbow: "└──  ",
+  tee: "├──  ",
+  pipe: "│   ",
+};
 
 interface TextTreeFrame {
   isLastChild: boolean;
@@ -22,8 +27,8 @@ export function displayGlobalStats(data: ScanData): void {
   const { directoryData, allFilesList, allFoldersList } = data;
   if (!directoryData) return;
 
-  if (appState.selectionCommitted && elements.selectionSummary) {
-    elements.selectionSummary.innerHTML = `Focused view active: stats and reports now use <strong>${allFilesList.length} selected files</strong> and <strong>${allFoldersList.length} selected folders</strong>.`;
+  if (appState.selectedPaths.size > 0 && elements.selectionSummary) {
+    elements.selectionSummary.innerHTML = `Focused view active: stats, report, and export now use <strong>${allFilesList.length} selected files</strong> and <strong>${allFoldersList.length} selected folders</strong>.`;
     elements.selectionSummary.style.display = "block";
   } else if (elements.selectionSummary) {
     elements.selectionSummary.style.display = "none";
@@ -50,7 +55,9 @@ export function displayGlobalStats(data: ScanData): void {
         `;
   }
 
-  const sortedTypes = Object.entries(directoryData.fileTypes).sort(
+  const filterSource =
+    appState.fullScanData?.directoryData?.fileTypes || directoryData.fileTypes;
+  const sortedTypes = Object.entries(filterSource).sort(
     ([, a], [, b]) => b.size - a.size,
   );
 
@@ -81,12 +88,11 @@ function renderExtFilterPills(sortedTypes: [string, { count: number; size: numbe
   }
 
   bar.style.display = "block";
-  const extState = new Map<string, boolean>();
 
   pills.innerHTML = sortedTypes
       .slice(0, 12)
       .map(([ext, d]) => `
-      <button class="ext-filter-pill" data-ext="${ext}" data-active="false" title="Toggle selection for every ${ext || "[no extension]"} file in the tree">
+      <button class="ext-filter-pill" data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}" title="Toggle selection for every ${ext || "[no extension]"} file in the tree">
         <span class="pill-label">${ext || "[none]"}</span>
         <span class="pill-count">${d.count}</span>
       </button>
@@ -94,7 +100,6 @@ function renderExtFilterPills(sortedTypes: [string, { count: number; size: numbe
     .join("");
 
   pills.querySelectorAll<HTMLButtonElement>(".ext-filter-pill").forEach((btn) => {
-    extState.set(btn.dataset.ext!, false);
     btn.addEventListener("click", () => {
       const ext = btn.dataset.ext!;
       const nowActive = btn.dataset.active !== "true";
@@ -102,6 +107,16 @@ function renderExtFilterPills(sortedTypes: [string, { count: number; size: numbe
       setSelectionByExtension(ext, nowActive);
     });
   });
+}
+
+function isExtensionFullySelected(ext: string): boolean {
+  const fullData = appState.fullScanData;
+  if (!fullData) return false;
+
+  const matchingFiles = fullData.allFilesList.filter((file) => file.extension === ext);
+  if (matchingFiles.length === 0) return false;
+
+  return matchingFiles.every((file) => appState.selectedPaths.has(file.path));
 }
 
 export async function generateTextReportAsync(data: ScanData): Promise<string> {
@@ -129,13 +144,15 @@ export async function generateTextReportAsync(data: ScanData): Promise<string> {
   while (stack.length > 0) {
     const frame = stack.pop() as TextTreeFrame;
     const { node, prefix, isRoot, isLastChild } = frame;
-    const branch = isRoot ? "" : `${prefix}${isLastChild ? "\\u2514\\u2500 " : "\\u251c\\u2500 "}`;
+    const branch = isRoot
+      ? ""
+      : `${prefix}${isLastChild ? TREE_BRANCH.elbow : TREE_BRANCH.tee}`;
 
     if (node.type === "folder") {
       lines.push(`${branch}${node.name}/`);
       const nextPrefix = isRoot
         ? ""
-        : `${prefix}${isLastChild ? "    " : "\\u2502   "}`;
+        : `${prefix}${isLastChild ? "    " : TREE_BRANCH.pipe}`;
 
       for (let i = node.children.length - 1; i >= 0; i--) {
         stack.push({
@@ -156,9 +173,5 @@ export async function generateTextReportAsync(data: ScanData): Promise<string> {
   }
 
   lines.push("", "//--- End of report ---//");
-  return lines
-    .join("\n")
-    .replaceAll("\\u2514\\u2500", "\u2514\u2500")
-    .replaceAll("\\u251c\\u2500", "\u251c\u2500")
-    .replaceAll("\\u2502", "\u2502");
+  return lines.join("\n");
 }

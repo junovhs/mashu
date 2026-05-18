@@ -1,5 +1,6 @@
 import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo, ScanData } from "../types/index.js";
+import { filterScanData, formatBytes } from "../filesystem.js";
 import { displayGlobalStats, generateTextReportAsync } from "./stats.js";
 import { closeViewer } from "./viewer.js";
 
@@ -16,7 +17,6 @@ let cachedReportText: string | null = null;
 let pendingReportKey: string | null = null;
 let pendingReportPromise: Promise<string> | null = null;
 let scheduledReportWarmupId: number | null = null;
-let renderedReportKey: string | null = null;
 
 export function populateElements(): void {
   const ids = [
@@ -24,7 +24,6 @@ export function populateElements(): void {
     "dropZone",
     "loader",
     "treeContainer",
-    "commitSelectionsBtn",
     "textOutput",
     "copyReportButton",
     "selectAllBtn",
@@ -77,7 +76,7 @@ function getIdleReportMessage(): string {
   return [
     "// Load a folder to start. //",
     "// Mashu scans locally in your browser and shows a tree, stats, and a plain-text report. //",
-    "// Commit a selection when you want copy/export actions to focus on a smaller subset. //",
+    "// Select files or folders to instantly focus the report, stats, and export actions. //",
   ].join("\n");
 }
 
@@ -87,7 +86,10 @@ export function resetUIForProcessing(message = "Processing..."): void {
     elements.loader.classList.add("visible");
   }
   if (elements.treeContainer) elements.treeContainer.innerHTML = "";
-  if (elements.textOutput) elements.textOutput.textContent = getIdleReportMessage();
+  if (elements.textOutput) {
+    elements.textOutput.className = "report-placeholder";
+    elements.textOutput.textContent = getIdleReportMessage();
+  }
   closeViewer();
 }
 
@@ -137,8 +139,8 @@ export function refreshAllUI(): void {
 
   performance.mark("mashu:refresh-ui:start");
   displayGlobalStats(data);
+  renderVisualReport(data);
   queueReportWarmup(data);
-  updateFilter();
   measurePerformance(
     "refresh-ui",
     "mashu:refresh-ui:start",
@@ -148,7 +150,6 @@ export function refreshAllUI(): void {
 
 export function enableUIControls(enable = true): void {
   const controls = [
-    "commitSelectionsBtn",
     "selectAllBtn",
     "deselectAllBtn",
     "expandAllBtn",
@@ -161,10 +162,7 @@ export function enableUIControls(enable = true): void {
   controls.forEach((id) => {
     const btn = elements[id];
     if (!btn) return;
-
-    const requiresCommittedSelection = id === "aiDebriefingAssistantBtn";
-    (btn as HTMLButtonElement).disabled =
-      !enable || (requiresCommittedSelection && !appState.selectionCommitted);
+    (btn as HTMLButtonElement).disabled = !enable;
   });
 }
 
@@ -180,54 +178,13 @@ export async function copyCurrentReport(): Promise<void> {
   const report = await ensureReportText(data, reportKey);
   await navigator.clipboard.writeText(report);
   showNotification("Report copied!", 2000);
-
-  const currentData = getActiveScanData();
-  if (
-    currentData &&
-    getReportKey(currentData) === reportKey &&
-    renderedReportKey !== reportKey
-  ) {
-    setReportPlaceholder(currentData, true);
-  }
-}
-
-function updateFilter(): void {
-  if (!appState.fullScanData || !elements.treeContainer) return;
-  const committedPaths = getCommits();
-
-  elements.treeContainer.querySelectorAll("li").forEach((el: Element) => {
-    const li = el as HTMLElement;
-    const path = li.dataset.path || "";
-    li.classList.remove("dimmed-uncommitted");
-    if (
-      appState.selectionCommitted &&
-      committedPaths.size > 0 &&
-      !committedPaths.has(path)
-    ) {
-      li.classList.add("dimmed-uncommitted");
-    }
-  });
-}
-
-function getCommits(): Set<string> {
-  const paths = new Set<string>();
-  if (
-    appState.selectionCommitted &&
-    appState.committedScanData?.directoryData
-  ) {
-    const walk = (node: FolderInfo | FileInfo) => {
-      paths.add(node.path);
-      if (node.type === "folder") node.children.forEach(walk);
-    };
-    walk(appState.committedScanData.directoryData);
-  }
-  return paths;
 }
 
 function getActiveScanData(): ScanData | null {
-  return appState.selectionCommitted
-    ? appState.committedScanData
-    : appState.fullScanData;
+  if (!appState.fullScanData) return null;
+  if (appState.selectedPaths.size === 0) return appState.fullScanData;
+
+  return filterScanData(appState.fullScanData, new Set(appState.selectedPaths));
 }
 
 function getReportKey(data: ScanData): string {
@@ -235,7 +192,7 @@ function getReportKey(data: ScanData): string {
   if (!root) return "empty";
 
   return [
-    appState.selectionCommitted ? "committed" : "full",
+    appState.selectedPaths.size > 0 ? "selected" : "full",
     root.path,
     data.allFilesList.length,
     data.allFoldersList.length,
@@ -244,10 +201,7 @@ function getReportKey(data: ScanData): string {
 }
 
 function queueReportWarmup(data: ScanData): void {
-  if (!elements.textOutput) return;
-
   const reportKey = getReportKey(data);
-  renderedReportKey = null;
 
   if (scheduledReportWarmupId !== null) {
     window.clearTimeout(scheduledReportWarmupId);
@@ -255,13 +209,14 @@ function queueReportWarmup(data: ScanData): void {
   }
 
   if (cachedReportKey === reportKey && cachedReportText !== null) {
-    setReportPlaceholder(data, true);
     return;
   }
 
-  setReportPlaceholder(data, false);
-  const token = ++reportRefreshToken;
+  if (pendingReportKey === reportKey && pendingReportPromise) {
+    return;
+  }
 
+  const token = ++reportRefreshToken;
   scheduledReportWarmupId = window.setTimeout(() => {
     scheduledReportWarmupId = null;
     void ensureReportText(data, reportKey).then(() => {
@@ -273,35 +228,50 @@ function queueReportWarmup(data: ScanData): void {
       ) {
         return;
       }
-
-      if (renderedReportKey === reportKey) {
-        setReportPlaceholder(currentData, true);
-        return;
-      }
-
-      void scheduleRenderedReport(currentData, reportKey);
     });
   }, 250);
 }
 
-function setReportPlaceholder(data: ScanData, isReady: boolean): void {
+function renderVisualReport(data: ScanData): void {
   if (!elements.textOutput || !data.directoryData) return;
 
+  const host = elements.textOutput as HTMLElement;
   const root = data.directoryData;
-  const statusLine = isReady
-    ? "// Report ready. Use Copy report for a portable snapshot. //"
-    : "// Generating the full text report in the background... //";
+  host.className = "report-visual-host";
+  host.replaceChildren();
+  host.title = "Click to copy the ASCII report";
 
-  elements.textOutput.textContent = [
-    `// PROJECT: ${root.name}`,
-    `// FILES IN VIEW: ${data.allFilesList.length}`,
-    `// FOLDERS IN VIEW: ${data.allFoldersList.length}`,
-    `// TOTAL SIZE: ${root.totalSize} BYTES`,
-    "",
-    "// This report mirrors the current view. Commit a selection to focus it on a smaller subset. //",
-    "",
-    statusLine,
-  ].join("\n");
+  const visual = document.createElement("div");
+  visual.className = "report-visual";
+
+  const metaGrid = document.createElement("div");
+  metaGrid.className = "report-meta-grid";
+  metaGrid.appendChild(
+    createReportMetaItem("Root", root.name),
+  );
+  metaGrid.appendChild(
+    createReportMetaItem("Files in view", String(data.allFilesList.length)),
+  );
+  metaGrid.appendChild(
+    createReportMetaItem("Folders in view", String(data.allFoldersList.length)),
+  );
+  metaGrid.appendChild(
+    createReportMetaItem("Total size", formatBytes(root.totalSize)),
+  );
+
+  const copyHint = document.createElement("p");
+  copyHint.className = "report-copy-hint";
+  copyHint.textContent =
+    "Rendered view for reading. Click anywhere here to copy the plain-text report.";
+
+  const tree = document.createElement("ul");
+  tree.className = "report-tree";
+  appendVisualTreeNode(root, tree, [], true, true);
+
+  visual.appendChild(metaGrid);
+  visual.appendChild(copyHint);
+  visual.appendChild(tree);
+  host.appendChild(visual);
 }
 
 async function ensureReportText(
@@ -345,37 +315,89 @@ async function ensureReportText(
   return pendingReportPromise;
 }
 
-async function scheduleRenderedReport(
-  data: ScanData,
-  reportKey: string,
-): Promise<void> {
-  await waitForNextFrame();
+function createReportMetaItem(label: string, value: string): HTMLDivElement {
+  const item = document.createElement("div");
+  item.className = "report-meta-item";
 
-  const currentData = getActiveScanData();
-  if (!currentData || getReportKey(currentData) !== reportKey) {
-    return;
-  }
+  const itemLabel = document.createElement("span");
+  itemLabel.className = "report-meta-label";
+  itemLabel.textContent = label;
 
-  const report = await ensureReportText(data, reportKey);
-  const latestData = getActiveScanData();
-  if (!latestData || getReportKey(latestData) !== reportKey) {
-    return;
-  }
+  const itemValue = document.createElement("span");
+  itemValue.className = "report-meta-value";
+  itemValue.textContent = value;
 
-  applyRenderedReport(reportKey, report);
+  item.appendChild(itemLabel);
+  item.appendChild(itemValue);
+  return item;
 }
 
-function applyRenderedReport(reportKey: string, report: string): void {
-  if (!elements.textOutput) return;
+function appendVisualTreeNode(
+  node: FolderInfo | FileInfo,
+  parent: HTMLUListElement,
+  trail: boolean[],
+  isLast: boolean,
+  isRoot = false,
+): void {
+  const item = document.createElement("li");
+  item.className = `report-tree-node report-tree-node--${node.type}${isRoot ? " report-tree-node--root" : ""}`;
 
-  renderedReportKey = reportKey;
-  elements.textOutput.textContent = report;
-}
+  const row = document.createElement("div");
+  row.className = "report-tree-row";
 
-async function waitForNextFrame(): Promise<void> {
-  await new Promise<void>((resolve) => {
-    requestAnimationFrame(() => resolve());
-  });
+  const branch = document.createElement("span");
+  branch.className = "report-tree-branch";
+
+  if (!isRoot) {
+    for (const ancestorIsLast of trail) {
+      const segment = document.createElement("span");
+      segment.className = `report-tree-segment ${ancestorIsLast ? "report-tree-segment--spacer" : "report-tree-segment--pass"}`;
+      branch.appendChild(segment);
+    }
+
+    const connector = document.createElement("span");
+    connector.className = `report-tree-segment ${isLast ? "report-tree-segment--elbow" : "report-tree-segment--tee"}`;
+    branch.appendChild(connector);
+  }
+
+  const content = document.createElement("div");
+  content.className = "report-tree-content";
+
+  const name = document.createElement("span");
+  name.className = "report-tree-name";
+  name.textContent = node.type === "folder" ? `${node.name}/` : node.name;
+
+  const meta = document.createElement("span");
+  meta.className = "report-tree-meta";
+  meta.textContent =
+    node.type === "folder"
+      ? `${node.fileCount} files, ${formatBytes(node.totalSize)}`
+      : formatBytes(node.size);
+
+  content.appendChild(name);
+  content.appendChild(meta);
+  row.appendChild(branch);
+  row.appendChild(content);
+  item.appendChild(row);
+
+  if (node.type === "folder" && node.children.length > 0) {
+    const children = document.createElement("ul");
+    children.className = "report-tree-children";
+    const nextTrail = isRoot ? [] : [...trail, isLast];
+
+    node.children.forEach((child, index) => {
+      appendVisualTreeNode(
+        child,
+        children,
+        nextTrail,
+        index === node.children.length - 1,
+      );
+    });
+
+    item.appendChild(children);
+  }
+
+  parent.appendChild(item);
 }
 
 function measurePerformance(

@@ -40,6 +40,13 @@ interface FileSystemDirectoryReader {
 
 // CodeMirror types
 declare namespace CodeMirror {
+  interface ModeInfo {
+    ext?: string[];
+    mime?: string;
+    mode: string;
+    name: string;
+  }
+
   interface Editor {
     refresh(): void;
     setValue(content: string): void;
@@ -47,9 +54,23 @@ declare namespace CodeMirror {
     getOption(name: string): unknown;
     clearHistory(): void;
   }
+
+  let modeURL: string;
+
+  function autoLoadMode(editor: Editor, mode: string): void;
+
   function findModeByExtension(
     ext: string,
-  ): { mode: string; name: string } | undefined;
+  ): ModeInfo | undefined;
+
+  function findModeByFileName(filename: string): ModeInfo | undefined;
+
+  function findModeByMIME(mime: string): ModeInfo | undefined;
+
+  function requireMode(
+    mode: string,
+    callback: () => void,
+  ): void;
 }
 
 declare function CodeMirror(

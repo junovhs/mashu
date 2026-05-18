@@ -1,4 +1,4 @@
-import { isLikelyText, readFile, sniffIsText } from "./filesystem.js";
+import { filterScanData, isLikelyText, readFile, sniffIsText } from "./filesystem.js";
 import { appState } from "./state.js";
 import type { FileInfo } from "./types/index.js";
 import { showNotification } from "./ui/index.js";
@@ -11,9 +11,13 @@ declare const JSZip: {
 };
 
 export async function exportCombined() {
-  if (!checkExportReady()) return;
+  const activeData = getExportData();
+  if (!activeData) {
+    showNotification("Load a project first.", 3000);
+    return;
+  }
 
-  const candidates = appState.committedScanData?.allFilesList || [];
+  const candidates = activeData.allFilesList;
   const files = await getTextFiles(candidates);
   if (files.length === 0) return showNotification("No text files to export.", 3000);
 
@@ -25,16 +29,11 @@ export async function exportCombined() {
   );
 }
 
-function checkExportReady() {
-  if (
-    !appState.selectionCommitted ||
-    !appState.committedScanData ||
-    !appState.fullScanData?.directoryData
-  ) {
-    showNotification("Commit a selection first so Mashu knows which files to export.", 3200);
-    return false;
-  }
-  return true;
+function getExportData() {
+  if (!appState.fullScanData?.directoryData) return null;
+  if (appState.selectedPaths.size === 0) return appState.fullScanData;
+
+  return filterScanData(appState.fullScanData, new Set(appState.selectedPaths));
 }
 
 async function getTextFiles(candidates: FileInfo[]) {

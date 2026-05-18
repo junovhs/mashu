@@ -6,14 +6,12 @@ import type { AppState } from "./types/index.js";
 export const appState: AppState = {
   activeTabId: "textReportTab",
   fullScanData: null,
-  committedScanData: null,
   expandedFolderPaths: new Set(),
   selectedPaths: new Set(),
   treeNodesByPath: new Map(),
   treeParentPaths: new Map(),
   subtreeNodeCounts: new Map(),
   selectedSubtreeCounts: new Map(),
-  selectionCommitted: false,
   processingInProgress: false,
   currentViewingFile: null,
   viewerInstance: null,
@@ -31,6 +29,6 @@ export const elements: Record<string, any> = {};
  * A shared object for UI constants like icons.
  */
 export const ICONS = {
-  folder: `<svg viewBox="0 0 24 24"><path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>`,
-  file: `<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>`,
+  folder: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5a2 2 0 0 1 2-2h3.586a1 1 0 0 1 .707.293L10.707 5H15a2 2 0 0 1 2 2v1H3V5Z"/><path fill="currentColor" d="M3 8h14v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z" opacity=".7"/></svg>`,
+  file: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9Zm0 1.5L17.5 9H14Z"/><path fill="currentColor" d="M9 12h6v1.5H9Zm0 3h6v1.5H9Z" opacity=".9"/></svg>`,
 };

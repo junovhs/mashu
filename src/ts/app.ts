@@ -11,7 +11,7 @@ import "../css/extensions.css";
 
 import { downloadZip, exportCombined } from "./features.js";
 import type { ScanAggregator } from "./filesystem.js";
-import { filterScanData, initTypeData, scanDir, scanFileList } from "./filesystem.js";
+import { initTypeData, scanDir, scanFileList } from "./filesystem.js";
 import { appState, elements } from "./state.js";
 import type { FolderInfo, ScanData } from "./types/index.js";
 import {
@@ -38,8 +38,6 @@ import { buildFromEntry, showFolderPicker } from "./utils/crossbrowser_fs.js";
 async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
   performance.mark("mashu:process-directory:start");
   appState.processingInProgress = true;
-  appState.committedScanData = null;
-  appState.selectionCommitted = false;
   resetUIForProcessing(`Processing '${handle.name}'...`);
   disableUIControls();
 
@@ -49,8 +47,6 @@ async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
 async function processFileList(files: FileList): Promise<void> {
   performance.mark("mashu:process-directory:start");
   appState.processingInProgress = true;
-  appState.committedScanData = null;
-  appState.selectionCommitted = false;
 
   const rootName = getFileListRootName(files) || "PROJECT";
   resetUIForProcessing(`Processing '${rootName}'...`);
@@ -98,8 +94,6 @@ async function finishScan(handle: VirtualDirectoryHandle) {
 
 function applyScanData(data: ScanData): void {
   appState.fullScanData = data;
-  appState.committedScanData = null;
-  appState.selectionCommitted = false;
   updateUI(appState.fullScanData.directoryData as FolderInfo);
 }
 
@@ -110,6 +104,7 @@ function updateUI(data: FolderInfo) {
     initTreeState(data, {
       initialCollapsed: true,
       initialSelected: false,
+      expandRootOnly: true,
     });
     container.innerHTML = "";
     renderTree(data, container);
@@ -130,35 +125,14 @@ function updateUI(data: FolderInfo) {
   }
 }
 
-function commitSelections(): void {
-  if (!appState.fullScanData) return;
-  const selectedPaths = new Set(appState.selectedPaths);
-
-  if (selectedPaths.size === 0) {
-    showNotification("Select at least one file or folder before commit.", 2500);
-    return;
-  }
-
-  appState.committedScanData = filterScanData(
-    appState.fullScanData,
-    selectedPaths,
-  );
-  appState.selectionCommitted = true;
-  refreshAllUI();
-  enableUIControls();
-  showNotification("Selection committed. Stats and export now follow that subset.", 2200);
-}
-
 function clearProject(): void {
   appState.fullScanData = null;
-  appState.committedScanData = null;
   appState.expandedFolderPaths.clear();
   appState.selectedPaths.clear();
   appState.treeNodesByPath.clear();
   appState.treeParentPaths.clear();
   appState.subtreeNodeCounts.clear();
   appState.selectedSubtreeCounts.clear();
-  appState.selectionCommitted = false;
   appState.processingInProgress = false;
   resetUIForProcessing();
   const loader = elements.loader;
@@ -346,6 +320,24 @@ function setupListeners(): void {
   // Full-page drop is handled separately
   setupFullPageDrop();
 
+  document.addEventListener("click", (event: MouseEvent) => {
+    if (!appState.isViewerActive) return;
+
+    const target = event.target;
+    const viewer = elements.fileViewer as HTMLElement | undefined;
+    const leftSidebar = elements.leftSidebar as HTMLElement | undefined;
+    if (!(target instanceof HTMLElement) || !viewer) return;
+    if (viewer.contains(target)) return;
+    if (leftSidebar?.contains(target)) return;
+
+    closeViewer();
+  });
+
+  window.addEventListener("mashu:selection-changed", () => {
+    refreshAllUI();
+    enableUIControls();
+  });
+
   elements.dropZone?.addEventListener("click", (event: Event) => {
     const target = event.target;
     if (target instanceof HTMLElement && target.closest("#selectFolderBtn")) {
@@ -354,7 +346,6 @@ function setupListeners(): void {
     void handleSelect();
   });
   elements.selectFolderBtn?.addEventListener("click", handleSelect);
-  elements.commitSelectionsBtn?.addEventListener("click", commitSelections);
   elements.downloadProjectBtn?.addEventListener("click", downloadZip);
   elements.clearProjectBtn?.addEventListener("click", clearProject);
   elements.selectAllBtn?.addEventListener("click", () =>
@@ -370,6 +361,10 @@ function setupListeners(): void {
     toggleAllFolders(true),
   );
   elements.copyReportButton?.addEventListener("click", () => {
+    void copyCurrentReport();
+  });
+  elements.textOutput?.addEventListener("click", () => {
+    if (!appState.fullScanData || appState.processingInProgress) return;
     void copyCurrentReport();
   });
   elements.closeViewerBtn?.addEventListener("click", closeViewer);

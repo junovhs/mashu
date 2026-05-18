@@ -37,14 +37,12 @@ export interface ScanData {
 export interface AppState {
   activeTabId: string;
   fullScanData: ScanData | null;
-  committedScanData: ScanData | null;
   expandedFolderPaths: Set<string>;
   selectedPaths: Set<string>;
   treeNodesByPath: Map<string, FileInfo | FolderInfo>;
   treeParentPaths: Map<string, string | null>;
   subtreeNodeCounts: Map<string, number>;
   selectedSubtreeCounts: Map<string, number>;
-  selectionCommitted: boolean;
   processingInProgress: boolean;
   currentViewingFile: FileInfo | null;
   viewerInstance: CodeMirror.Editor | null;

@@ -1,46 +1,74 @@
-import { readFile } from "../filesystem.js";
 import { appState, elements } from "../state.js";
 import type { FileInfo } from "../types/index.js";
 import { formatBytes, getExt } from "../utils/fs_utils.js";
 import { showNotification } from "./index.js";
 
-declare const CodeMirror: {
-  (host: HTMLElement, options?: unknown): CodeMirror.Editor;
-  findModeByExtension(ext: string): { mode: string; name: string } | undefined;
+type ModeSpec = {
+  label: string;
+  mode: string;
+  option: string;
 };
 
-declare namespace CodeMirror {
-  interface Editor {
-    refresh(): void;
-    setValue(content: string): void;
-    setOption(name: string, value: unknown): void;
-    getOption(name: string): unknown;
-    clearHistory(): void;
-  }
+const MODE_CDN_BASE =
+  "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/%N/%N.min.js";
+
+function getFallbackModeSpec(): ModeSpec {
+  return {
+    label: "Plain Text",
+    mode: "null",
+    option: "text/plain",
+  };
 }
 
-function getMode(filePath: string): string {
-  const ext = getExt(filePath).substring(1);
-  const info = CodeMirror.findModeByExtension(ext);
-  return info ? info.mode || "text/plain" : "text/plain";
+function resolveModeSpec(fileName: string, mimeType?: string): ModeSpec {
+  const byFileName = CodeMirror.findModeByFileName(fileName);
+  if (byFileName) {
+    return {
+      label: byFileName.name,
+      mode: byFileName.mode,
+      option: byFileName.mime || byFileName.mode,
+    };
+  }
+
+  const ext = getExt(fileName).replace(/^\./, "");
+  const byExtension = ext ? CodeMirror.findModeByExtension(ext) : undefined;
+  if (byExtension) {
+    return {
+      label: byExtension.name,
+      mode: byExtension.mode,
+      option: byExtension.mime || byExtension.mode,
+    };
+  }
+
+  const byMime = mimeType ? CodeMirror.findModeByMIME(mimeType) : undefined;
+  if (byMime) {
+    return {
+      label: byMime.name,
+      mode: byMime.mode,
+      option: byMime.mime || byMime.mode,
+    };
+  }
+
+  return getFallbackModeSpec();
 }
 
-export function updateViewer(filePath: string, content: string): void {
-  let modeName = "N/A";
-  const viewer = appState.viewerInstance;
-  if (viewer) {
-    const mode = viewer.getOption("mode");
-    if (typeof mode === "string") {
-      modeName = mode;
-    } else if (mode && typeof mode === "object" && "name" in mode) {
-      modeName = (mode as { name: string }).name;
-    } else {
-      modeName = "unknown";
-    }
-  }
+async function ensureModeLoaded(mode: string): Promise<void> {
+  if (!mode || mode === "null") return;
+
+  CodeMirror.modeURL = MODE_CDN_BASE;
+  await new Promise<void>((resolve) => {
+    CodeMirror.requireMode(mode, () => resolve());
+  });
+}
+
+export function updateViewer(
+  filePath: string,
+  content: string,
+  modeLabel: string,
+): void {
   const info = elements.viewerInfo;
   if (info) {
-    info.textContent = `Size: ${formatBytes(content.length)} | Mode: ${modeName}`;
+    info.textContent = `Size: ${formatBytes(content.length)} | Syntax: ${modeLabel}`;
   }
   const title = elements.viewerFileTitle;
   if (title) {
@@ -52,10 +80,10 @@ export async function openFile(file: FileInfo): Promise<void> {
   if (
     appState.isViewerActive &&
     appState.currentViewingFile?.path === file.path
-  )
+  ) {
     return;
+  }
 
-  // Debug: verify the handle exists
   if (!file.entryHandle) {
     showNotification("Error: File handle is missing", 4000);
     console.error("openFile: file.entryHandle is undefined", file);
@@ -69,17 +97,15 @@ export async function openFile(file: FileInfo): Promise<void> {
   }
 
   try {
-    const res = await readFile(file.entryHandle);
-    if (!res.ok) {
-      showNotification(`Error reading file: ${res.error.message}`, 4000);
-      console.error("openFile: readFile failed", res.error);
-      return;
-    }
+    const browserFile = await file.entryHandle.getFile();
+    const content = await browserFile.text();
+    const modeSpec = resolveModeSpec(file.name, browserFile.type);
+    await ensureModeLoaded(modeSpec.mode);
 
-    const content = res.value;
     appState.currentViewingFile = file;
 
-    initOrSet(file, content);
+    initOrSet(content, modeSpec);
+    updateViewer(file.path, content, modeSpec.label);
     showUI();
     appState.isViewerActive = true;
     setTimeout(() => {
@@ -92,13 +118,12 @@ export async function openFile(file: FileInfo): Promise<void> {
   }
 }
 
-function initOrSet(file: FileInfo, content: string) {
-  const mode = getMode(file.path);
+function initOrSet(content: string, modeSpec: ModeSpec): void {
   const container = elements.viewerContent;
   if (!appState.viewerInstance && container) {
     appState.viewerInstance = CodeMirror(container, {
       value: content,
-      mode,
+      mode: modeSpec.option,
       lineNumbers: true,
       theme: "material-darker",
       readOnly: true,
@@ -106,10 +131,9 @@ function initOrSet(file: FileInfo, content: string) {
     });
   } else if (appState.viewerInstance) {
     appState.viewerInstance.setValue(content);
-    appState.viewerInstance.setOption("mode", mode);
+    appState.viewerInstance.setOption("mode", modeSpec.option);
     appState.viewerInstance.clearHistory();
   }
-  updateViewer(file.path, content);
 }
 
 function showUI() {

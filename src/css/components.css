@@ -127,31 +127,47 @@
 	margin-bottom: 4px;
 	border: 1px solid var(--border);
 	border-radius: var(--border-radius-small);
-	background: transparent;
-	color: var(--text2);
+	background: var(--surface2);
+	color: var(--text);
 	font-family: var(--font-ui);
 	font-size: 12px;
 	font-weight: 500;
 	cursor: pointer;
-	transition: var(--transition-smooth);
+	transition: var(--transition-smooth), transform 0.12s ease;
 	white-space: nowrap;
 	gap: 7px;
 	width: 100%;
 	letter-spacing: 0.01em;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .action-button:hover:not(:disabled) {
-	background: var(--surface3);
+	background: #434a57;
 	border-color: var(--border-strong);
 	color: var(--text);
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.06),
+		0 4px 12px rgba(0, 0, 0, 0.16);
 }
 
 .action-button:active:not(:disabled) {
-	background: var(--surface3);
+	background: #4a5160;
 	transform: scale(0.99);
 }
 
-.action-button:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
+.action-button:focus-visible {
+	outline: 2px solid rgba(246, 130, 31, 0.75);
+	outline-offset: 2px;
+}
+
+.action-button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	background: rgba(255, 255, 255, 0.03);
+	color: rgba(208, 213, 223, 0.6);
+	border-color: rgba(255, 255, 255, 0.1);
+	box-shadow: none;
+}
 
 .action-button.primary {
 	background: var(--orange);
@@ -170,17 +186,18 @@
 
 .utility-button {
 	font-size: 11px;
-	color: var(--text3);
-	justify-content: flex-start;
-	padding: 6px 10px;
-	border-color: transparent;
-	background: transparent;
+	color: var(--text2);
+	justify-content: center;
+	padding: 8px 10px;
+	border-color: rgba(255, 255, 255, 0.1);
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+	text-align: center;
 }
 
 .utility-button:hover:not(:disabled) {
-	background: var(--surface2);
-	border-color: var(--border);
-	color: var(--text2);
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
+	border-color: var(--border-strong);
+	color: var(--text);
 }
 
 /* Drop zone */
@@ -237,9 +254,9 @@
 	margin-top: 8px;
 	width: auto;
 	display: inline-flex;
-	padding: 4px 14px;
+	padding: 7px 14px;
 	font-size: 11px;
-	background: var(--surface3);
+	background: #3f4552;
 	border-color: var(--border-strong);
 	color: var(--text);
 }
@@ -304,9 +321,6 @@
 	color: var(--text);
 	border-bottom-color: var(--orange);
 }
-
-/* Resizer */
-#sidebarResizer::after { display: none; }
 
 /* Notification */
 .notification {
@@ -386,8 +400,9 @@
 
 .tree-ctrl-grid .action-button {
 	margin-bottom: 0;
-	padding: 5px 8px;
+	padding: 9px 10px;
 	font-size: 11px;
+	font-weight: 600;
 }
 
 /* Side-by-side row for download + clear */

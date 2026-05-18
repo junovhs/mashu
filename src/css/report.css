@@ -39,14 +39,170 @@
 #textOutput {
 	margin: 0;
 	padding: 16px 18px;
-	font-family: var(--font-main);
-	font-size: 12px;
-	line-height: 1.75;
-	white-space: pre;
+	white-space: normal;
 	overflow-y: auto;
 	background: transparent;
 	flex-grow: 1;
 	color: var(--text2);
+}
+
+#textOutput.report-placeholder {
+	font-family: var(--font-main);
+	font-size: 12px;
+	line-height: 1.45;
+	white-space: pre-wrap;
+}
+
+#textOutput.report-visual-host {
+	cursor: copy;
+}
+
+.report-visual {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	min-width: max-content;
+}
+
+.report-meta-grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(140px, 1fr));
+	gap: 10px;
+}
+
+.report-meta-item {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 10px 12px;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.025);
+}
+
+.report-meta-label {
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text3);
+}
+
+.report-meta-value {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--text);
+}
+
+.report-copy-hint {
+	margin: 0;
+	font-size: 11px;
+	line-height: 1.5;
+	color: var(--text3);
+}
+
+.report-tree,
+.report-tree-children {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.report-tree-node {
+	margin: 0;
+}
+
+.report-tree-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 26px;
+}
+
+.report-tree-branch {
+	display: inline-flex;
+	align-items: stretch;
+	flex-shrink: 0;
+}
+
+.report-tree-segment {
+	position: relative;
+	inline-size: 18px;
+	block-size: 26px;
+	flex: 0 0 18px;
+}
+
+.report-tree-segment::before,
+.report-tree-segment::after {
+	content: "";
+	position: absolute;
+	background: rgba(173, 184, 204, 0.52);
+}
+
+.report-tree-segment--pass::before {
+	left: 8px;
+	top: 0;
+	width: 1px;
+	height: 100%;
+}
+
+.report-tree-segment--tee::before {
+	left: 8px;
+	top: 0;
+	width: 1px;
+	height: 100%;
+}
+
+.report-tree-segment--tee::after {
+	left: 8px;
+	top: 13px;
+	width: 10px;
+	height: 1px;
+}
+
+.report-tree-segment--elbow::before {
+	left: 8px;
+	top: 0;
+	width: 1px;
+	height: 14px;
+}
+
+.report-tree-segment--elbow::after {
+	left: 8px;
+	top: 13px;
+	width: 10px;
+	height: 1px;
+}
+
+.report-tree-content {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 10px;
+	min-width: 0;
+}
+
+.report-tree-name {
+	font-family: var(--font-main);
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--text);
+	white-space: nowrap;
+}
+
+.report-tree-node--file .report-tree-name {
+	font-weight: 500;
+	color: var(--text2);
+}
+
+.report-tree-meta {
+	font-family: var(--font-main);
+	font-size: 11px;
+	color: var(--text3);
+	white-space: nowrap;
+}
+
+.report-tree-children {
+	margin-left: 0;
 }
 
 .button-container {
