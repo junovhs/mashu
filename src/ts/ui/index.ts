@@ -266,7 +266,7 @@ function renderVisualReport(data: ScanData): void {
 
   const tree = document.createElement("ul");
   tree.className = "report-tree";
-  appendVisualTreeNode(root, tree, [], true, true);
+  appendVisualTreeNode(root, tree, true);
 
   visual.appendChild(metaGrid);
   visual.appendChild(copyHint);
@@ -335,30 +335,13 @@ function createReportMetaItem(label: string, value: string): HTMLDivElement {
 function appendVisualTreeNode(
   node: FolderInfo | FileInfo,
   parent: HTMLUListElement,
-  trail: boolean[],
-  isLast: boolean,
   isRoot = false,
 ): void {
   const item = document.createElement("li");
   item.className = `report-tree-node report-tree-node--${node.type}${isRoot ? " report-tree-node--root" : ""}`;
 
   const row = document.createElement("div");
-  row.className = "report-tree-row";
-
-  const branch = document.createElement("span");
-  branch.className = "report-tree-branch";
-
-  if (!isRoot) {
-    for (const ancestorIsLast of trail) {
-      const segment = document.createElement("span");
-      segment.className = `report-tree-segment ${ancestorIsLast ? "report-tree-segment--spacer" : "report-tree-segment--pass"}`;
-      branch.appendChild(segment);
-    }
-
-    const connector = document.createElement("span");
-    connector.className = `report-tree-segment ${isLast ? "report-tree-segment--elbow" : "report-tree-segment--tee"}`;
-    branch.appendChild(connector);
-  }
+  row.className = `report-tree-row${isRoot ? " report-tree-row--root" : ""}`;
 
   const content = document.createElement("div");
   content.className = "report-tree-content";
@@ -376,21 +359,17 @@ function appendVisualTreeNode(
 
   content.appendChild(name);
   content.appendChild(meta);
-  row.appendChild(branch);
   row.appendChild(content);
   item.appendChild(row);
 
   if (node.type === "folder" && node.children.length > 0) {
     const children = document.createElement("ul");
     children.className = "report-tree-children";
-    const nextTrail = isRoot ? [] : [...trail, isLast];
 
-    node.children.forEach((child, index) => {
+    node.children.forEach((child) => {
       appendVisualTreeNode(
         child,
         children,
-        nextTrail,
-        index === node.children.length - 1,
       );
     });
 

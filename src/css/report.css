@@ -101,6 +101,10 @@
 	color: var(--text3);
 }
 
+.report-visual-host {
+	--report-tree-line: #6f7a8c;
+}
+
 .report-tree,
 .report-tree-children {
 	list-style: none;
@@ -110,68 +114,38 @@
 
 .report-tree-node {
 	margin: 0;
+	position: relative;
 }
 
 .report-tree-row {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 0;
 	min-height: 26px;
-}
-
-.report-tree-branch {
-	display: inline-flex;
-	align-items: stretch;
-	flex-shrink: 0;
-}
-
-.report-tree-segment {
 	position: relative;
-	inline-size: 18px;
-	block-size: 26px;
-	flex: 0 0 18px;
 }
 
-.report-tree-segment::before,
-.report-tree-segment::after {
+.report-tree-row--root {
+	padding-left: 0;
+}
+
+.report-tree-node:not(.report-tree-node--root) > .report-tree-row::before {
 	content: "";
 	position: absolute;
-	background: rgba(173, 184, 204, 0.52);
-}
-
-.report-tree-segment--pass::before {
-	left: 8px;
-	top: 0;
-	width: 1px;
-	height: 100%;
-}
-
-.report-tree-segment--tee::before {
-	left: 8px;
-	top: 0;
-	width: 1px;
-	height: 100%;
-}
-
-.report-tree-segment--tee::after {
-	left: 8px;
+	left: -18px;
 	top: 13px;
-	width: 10px;
-	height: 1px;
+	width: 18px;
+	border-top: 1px solid var(--report-tree-line);
 }
 
-.report-tree-segment--elbow::before {
-	left: 8px;
-	top: 0;
-	width: 1px;
-	height: 14px;
-}
-
-.report-tree-segment--elbow::after {
-	left: 8px;
-	top: 13px;
-	width: 10px;
-	height: 1px;
+.report-tree-node:last-child::after {
+	content: "";
+	position: absolute;
+	left: -17px;
+	top: 14px;
+	bottom: 0;
+	width: 3px;
+	background: var(--surface);
 }
 
 .report-tree-content {
@@ -202,7 +176,9 @@
 }
 
 .report-tree-children {
-	margin-left: 0;
+	margin-left: 12px;
+	padding-left: 18px;
+	border-left: 1px solid var(--report-tree-line);
 }
 
 .button-container {
