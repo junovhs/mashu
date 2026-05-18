@@ -31,7 +31,7 @@ function checkExportReady() {
     !appState.committedScanData ||
     !appState.fullScanData?.directoryData
   ) {
-    showNotification("Commit selection first.", 3000);
+    showNotification("Commit a selection first so Mashu knows which files to export.", 3200);
     return false;
   }
   return true;

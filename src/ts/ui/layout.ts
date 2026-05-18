@@ -4,7 +4,7 @@ export function initLayout(): void {
   dropOverlay.id = "fullPageDropOverlay";
   dropOverlay.innerHTML = `
     <div class="drop-overlay-content">
-      <div class="drop-overlay-icon">📂</div>
+      <div class="drop-overlay-icon">DIR</div>
       <h2 class="drop-overlay-title">Drop your folder here</h2>
       <p class="drop-overlay-subtitle">Release to analyze immediately</p>
     </div>
@@ -23,30 +23,43 @@ export function initLayout(): void {
                 <span class="logo-name">Mashu</span>
             </header>
 
+            <section class="product-intro">
+                <p class="product-intro-eyebrow">Local project reader</p>
+                <p class="product-intro-copy">Mashu scans a folder in your browser, lets you narrow it to the files that matter, and turns that view into plain text you can read, copy, or hand to an LLM.</p>
+                <p class="product-intro-note">Load a folder, review the tree, then commit a smaller working set when you want stats and export actions to focus only on that subset.</p>
+            </section>
+
             <div id="mainAction">
                 <div id="dropZone">
                     <div class="drop-content">
-                        <div class="drop-icon">📁</div>
-                        <div class="drop-text">Drop a folder to analyze</div>
+                        <div class="drop-icon">DIR</div>
+                        <div class="drop-text">Drop a folder to map the project</div>
+                        <div class="drop-subtext">Mashu builds a local tree, live stats, and a plain-text report.</div>
                         <div class="drop-alternative">or</div>
-                        <button id="selectFolderBtn" class="action-button folder-select-btn">Browse files</button>
+                        <button id="selectFolderBtn" class="action-button folder-select-btn" title="Browse for a folder and analyze it locally">Browse for folder</button>
+                        <p class="drop-help">Everything stays local to your browser. There is no upload step.</p>
                     </div>
                 </div>
-                <div id="loader">Scanning…</div>
+                <div id="loader">Scanning...</div>
             </div>
 
             <div id="extFilterBar" style="display:none;">
+                <div class="inline-help">
+                    <span class="inline-help-label">Quick select</span>
+                    <span class="inline-help-copy">Toggle a file type to select every matching file in the tree.</span>
+                </div>
                 <div id="extPills" class="ext-pills"></div>
             </div>
 
             <div id="treeViewControls">
+                <p class="control-help">Selections define your working set. Commit the current selection when you want the report, stats, and export actions to use only that subset.</p>
                 <div class="tree-ctrl-grid">
-                    <button id="selectAllBtn" class="action-button utility-button" title="Select All" disabled>Select all</button>
-                    <button id="deselectAllBtn" class="action-button utility-button" title="Deselect All" disabled>Deselect all</button>
-                    <button id="expandAllBtn" class="action-button utility-button" title="Expand All" disabled>Expand all</button>
-                    <button id="collapseAllBtn" class="action-button utility-button" title="Collapse All" disabled>Collapse all</button>
+                    <button id="selectAllBtn" class="action-button utility-button" title="Select every visible file and folder in the tree" disabled>Select all</button>
+                    <button id="deselectAllBtn" class="action-button utility-button" title="Clear the current working set" disabled>Deselect all</button>
+                    <button id="expandAllBtn" class="action-button utility-button" title="Open every folder in the tree" disabled>Expand all</button>
+                    <button id="collapseAllBtn" class="action-button utility-button" title="Close every folder in the tree" disabled>Collapse all</button>
                 </div>
-                <button id="commitSelectionsBtn" class="action-button utility-button" title="Commit selections" disabled>Commit selection</button>
+                <button id="commitSelectionsBtn" class="action-button utility-button" title="Use the current selection as the focused subset for stats and export" disabled>Commit selection</button>
             </div>
 
             <div id="visualOutputContainer" style="flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;">
@@ -54,14 +67,15 @@ export function initLayout(): void {
             </div>
 
             <div id="generalActions">
+                <p class="control-help control-help--compact">Export combined text after you commit a focused subset, or download the full scanned folder as a ZIP at any time.</p>
                 <button id="aiDebriefingAssistantBtn" class="action-button primary"
-                    title="Export the combined text of all committed files" disabled>Export combined text</button>
+                    title="Download one text file containing every committed text file" disabled>Export combined text</button>
                 <hr class="sidebar-hr" style="margin-top: 8px; margin-bottom: 8px;">
                 <div class="utility-action-row">
                     <button id="downloadProjectBtn" class="action-button utility-button" disabled
-                        title="Download project as ZIP">Download ZIP</button>
+                        title="Download the full scanned project as a ZIP">Download ZIP</button>
                     <button id="clearProjectBtn" class="action-button utility-button" disabled
-                        title="Clear all project data">Clear project</button>
+                        title="Remove the current scan and start over">Clear project</button>
                 </div>
             </div>
         `;
@@ -71,7 +85,7 @@ export function initLayout(): void {
   if (mainView) {
     mainView.innerHTML = `
             <nav id="mainViewTabs">
-                <button class="tab-button active" data-tab="textReportTab" title="View Comprehensive Text Report">Text
+                <button class="tab-button active" data-tab="textReportTab" title="View the current folder or selection as plain text">Text
                     Report</button>
             </nav>
             <div id="tabContentArea">
@@ -80,8 +94,16 @@ export function initLayout(): void {
                         <div class="panel-header">
                             <h2>Text report</h2>
                         </div>
-                        <pre id="textOutput">// No project loaded //</pre>
-                        <div class="button-container"><button id="copyReportButton" class="action-button" disabled>Copy report</button></div>
+                        <div class="panel-copy">
+                            <p>This panel turns the current view into a plain-text outline. Before commit it reflects the whole folder; after commit it reflects only the focused subset you selected.</p>
+                        </div>
+                        <pre id="textOutput">// Load a folder to start. //
+// Mashu scans locally in your browser and shows a tree, stats, and a plain-text report. //
+// Commit a selection when you want copy/export actions to focus on a smaller subset. //</pre>
+                        <div class="button-container">
+                            <p class="panel-help">Copy this report when you want a portable snapshot for notes, tickets, or AI prompts.</p>
+                            <button id="copyReportButton" class="action-button" title="Copy the current text report to the clipboard" disabled>Copy report</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,6 +126,7 @@ export function initLayout(): void {
   if (rightStatsPanel) {
     rightStatsPanel.innerHTML = `
             <p class="stats-panel-title">Statistics</p>
+            <p class="stats-panel-intro">Counts always reflect the current view. After you commit a selection, this panel narrows to that focused subset.</p>
             <div id="selectionSummary" class="selection-summary" style="display:none;"></div>
             <div id="globalStats"></div>
             <p class="stats-section-label">File Type Breakdown</p>

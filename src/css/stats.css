@@ -12,6 +12,16 @@
 	display: block;
 }
 
+.stats-panel-intro {
+	margin: 0;
+	padding: 12px 16px;
+	font-size: 11px;
+	line-height: 1.6;
+	color: var(--text2);
+	border-bottom: 1px solid var(--border);
+	background: rgba(255, 255, 255, 0.015);
+}
+
 .selection-summary {
 	font-size: 12px;
 	line-height: 1.6;
@@ -20,6 +30,7 @@
 	border-bottom: 1px solid var(--border);
 	background: var(--orange-dim);
 }
+
 .selection-summary strong { color: var(--orange); font-weight: 600; }
 
 /* Key/value stat rows */
@@ -38,6 +49,7 @@
 	border-right: 1px solid var(--border);
 	gap: 3px;
 }
+
 .stat-item:nth-child(even) { border-right: none; }
 .stat-item:nth-last-child(-n+2) { border-bottom: none; }
 .stat-item:hover { background: rgba(255,255,255,0.02); }
@@ -105,6 +117,7 @@
 }
 
 #fileTypeTable td:first-child { width: 1%; white-space: nowrap; }
+
 #fileTypeTable td:not(:first-child) {
 	text-align: right;
 	color: var(--text3);

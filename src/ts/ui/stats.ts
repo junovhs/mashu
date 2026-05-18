@@ -23,7 +23,7 @@ export function displayGlobalStats(data: ScanData): void {
   if (!directoryData) return;
 
   if (appState.selectionCommitted && elements.selectionSummary) {
-    elements.selectionSummary.innerHTML = `Displaying stats for <strong>${allFilesList.length} selected files</strong> and <strong>${allFoldersList.length} selected folders</strong>.`;
+    elements.selectionSummary.innerHTML = `Focused view active: stats and reports now use <strong>${allFilesList.length} selected files</strong> and <strong>${allFoldersList.length} selected folders</strong>.`;
     elements.selectionSummary.style.display = "block";
   } else if (elements.selectionSummary) {
     elements.selectionSummary.style.display = "none";
@@ -84,10 +84,10 @@ function renderExtFilterPills(sortedTypes: [string, { count: number; size: numbe
   const extState = new Map<string, boolean>();
 
   pills.innerHTML = sortedTypes
-    .slice(0, 12)
-    .map(([ext, d]) => `
-      <button class="ext-filter-pill" data-ext="${ext}" data-active="false" title="Click to select all ${ext} files">
-        <span class="pill-label">${ext}</span>
+      .slice(0, 12)
+      .map(([ext, d]) => `
+      <button class="ext-filter-pill" data-ext="${ext}" data-active="false" title="Toggle selection for every ${ext || "[no extension]"} file in the tree">
+        <span class="pill-label">${ext || "[none]"}</span>
         <span class="pill-count">${d.count}</span>
       </button>
     `)

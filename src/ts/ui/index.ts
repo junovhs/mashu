@@ -73,14 +73,21 @@ export function showNotification(message: string, duration = 3000): void {
   }, duration);
 }
 
+function getIdleReportMessage(): string {
+  return [
+    "// Load a folder to start. //",
+    "// Mashu scans locally in your browser and shows a tree, stats, and a plain-text report. //",
+    "// Commit a selection when you want copy/export actions to focus on a smaller subset. //",
+  ].join("\n");
+}
+
 export function resetUIForProcessing(message = "Processing..."): void {
   if (elements.loader) {
     elements.loader.textContent = message;
     elements.loader.classList.add("visible");
   }
   if (elements.treeContainer) elements.treeContainer.innerHTML = "";
-  if (elements.textOutput)
-    elements.textOutput.textContent = "// No project loaded //";
+  if (elements.textOutput) elements.textOutput.textContent = getIdleReportMessage();
   closeViewer();
 }
 
@@ -282,14 +289,16 @@ function setReportPlaceholder(data: ScanData, isReady: boolean): void {
 
   const root = data.directoryData;
   const statusLine = isReady
-    ? "// Report ready â€” click Copy report to copy or wait for render. //"
-    : "// Generating report in backgroundâ€¦ //";
+    ? "// Report ready. Use Copy report for a portable snapshot. //"
+    : "// Generating the full text report in the background... //";
 
   elements.textOutput.textContent = [
     `// PROJECT: ${root.name}`,
     `// FILES IN VIEW: ${data.allFilesList.length}`,
     `// FOLDERS IN VIEW: ${data.allFoldersList.length}`,
     `// TOTAL SIZE: ${root.totalSize} BYTES`,
+    "",
+    "// This report mirrors the current view. Commit a selection to focus it on a smaller subset. //",
     "",
     statusLine,
   ].join("\n");

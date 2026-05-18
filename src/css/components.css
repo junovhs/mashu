@@ -1,6 +1,6 @@
 /* --- COMPONENTS (Cloudflare style) --- */
 
-/* ── App header / logo ── */
+/* App header / logo */
 #sidebarHeader {
 	display: flex;
 	align-items: center;
@@ -36,7 +36,41 @@
 
 .header-logo { display: none; }
 
-/* ── Sidebar scrollable body ── */
+.product-intro {
+	padding: 14px 16px 12px;
+	border-bottom: 1px solid var(--border);
+	background:
+		linear-gradient(180deg, rgba(246, 130, 31, 0.08), rgba(246, 130, 31, 0) 70%),
+		var(--surface);
+}
+
+.product-intro p {
+	margin: 0;
+}
+
+.product-intro-eyebrow {
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--orange);
+	margin-bottom: 7px;
+}
+
+.product-intro-copy {
+	font-size: 12px;
+	line-height: 1.65;
+	color: var(--text);
+}
+
+.product-intro-note {
+	margin-top: 8px;
+	font-size: 11px;
+	line-height: 1.6;
+	color: var(--text2);
+}
+
+/* Sidebar scrollable body */
 .sidebar-body {
 	padding: 12px;
 	flex-grow: 1;
@@ -46,7 +80,7 @@
 	gap: 0;
 }
 
-/* ── Section labels ── */
+/* Section labels */
 .sidebar-section-label {
 	font-size: 10px;
 	font-weight: 600;
@@ -57,14 +91,14 @@
 	display: block;
 }
 
-/* ── Dividers ── */
+/* Dividers */
 .sidebar-hr {
 	border: 0;
 	border-top: 1px solid var(--border);
 	margin: 8px 0;
 }
 
-/* ── Panel header ── */
+/* Panel header */
 .panel-header {
 	padding: 10px 16px;
 	border-bottom: 1px solid var(--border);
@@ -74,6 +108,7 @@
 	align-items: center;
 	justify-content: space-between;
 }
+
 .panel-header h2 {
 	margin: 0;
 	font-size: 12px;
@@ -83,7 +118,7 @@
 	color: var(--text2);
 }
 
-/* ── Buttons ── */
+/* Buttons */
 .action-button {
 	display: flex;
 	align-items: center;
@@ -125,6 +160,7 @@
 	font-weight: 600;
 	box-shadow: 0 1px 3px rgba(246, 130, 31, 0.3);
 }
+
 .action-button.primary:hover:not(:disabled) {
 	background: #e8751a;
 	border-color: transparent;
@@ -140,13 +176,14 @@
 	border-color: transparent;
 	background: transparent;
 }
+
 .utility-button:hover:not(:disabled) {
 	background: var(--surface2);
 	border-color: var(--border);
 	color: var(--text2);
 }
 
-/* ── Drop zone ── */
+/* Drop zone */
 #dropZone {
 	border: 1px dashed var(--border-strong);
 	border-radius: var(--border-radius-medium);
@@ -157,23 +194,37 @@
 	background: rgba(255,255,255,0.015);
 	margin: 12px 12px 0;
 }
+
 #dropZone:hover {
 	border-color: var(--orange);
 	background: var(--orange-dim);
 }
+
 #dropZone.dragover {
 	border-color: var(--orange);
 	background: var(--orange-hover);
 	box-shadow: 0 0 0 3px rgba(246,130,31,0.15);
 }
 
-.drop-icon { font-size: 22px; margin-bottom: 7px; opacity: 0.45; }
+.drop-icon {
+	font-size: 18px;
+	margin-bottom: 7px;
+	opacity: 0.45;
+	font-family: var(--font-main);
+}
 
 .drop-text {
 	font-size: 12px;
 	font-weight: 600;
 	color: var(--text2);
 	letter-spacing: -0.01em;
+}
+
+.drop-subtext {
+	margin-top: 6px;
+	font-size: 11px;
+	line-height: 1.5;
+	color: var(--text3);
 }
 
 .drop-alternative {
@@ -193,7 +244,14 @@
 	color: var(--text);
 }
 
-/* ── Loader ── */
+.drop-help {
+	margin: 10px 0 0;
+	font-size: 10px;
+	line-height: 1.5;
+	color: var(--text3);
+}
+
+/* Loader */
 #loader {
 	display: none;
 	text-align: center;
@@ -204,7 +262,7 @@
 	color: var(--orange);
 }
 
-/* ── Content panels ── */
+/* Content panels */
 .content-panel {
 	display: flex;
 	flex-direction: column;
@@ -215,7 +273,7 @@
 	height: 100%;
 }
 
-/* ── Tabs ── */
+/* Tabs */
 #mainViewTabs {
 	display: flex;
 	gap: 0;
@@ -239,16 +297,18 @@
 	letter-spacing: 0.01em;
 	margin-bottom: -1px;
 }
+
 .tab-button:hover { color: var(--text2); }
+
 .tab-button.active {
 	color: var(--text);
 	border-bottom-color: var(--orange);
 }
 
-/* ── Resizer ── */
+/* Resizer */
 #sidebarResizer::after { display: none; }
 
-/* ── Notification (CF toast style) ── */
+/* Notification */
 .notification {
 	position: fixed;
 	bottom: 24px;
@@ -267,28 +327,63 @@
 	animation: notif-in 0.18s ease-out;
 	max-width: 320px;
 }
+
 .notification.fade-out {
 	opacity: 0;
 	transform: translateY(4px);
 	transition: opacity 0.3s, transform 0.3s;
 }
+
 @keyframes notif-in {
 	from { opacity: 0; transform: translateY(8px); }
 	to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Controls area (inside sidebar) ── */
+/* Controls area */
 #treeViewControls {
 	padding: 8px 12px 4px;
 }
 
-/* 2×2 grid for select/deselect + expand/collapse */
+.control-help {
+	margin: 0 0 8px;
+	font-size: 10px;
+	line-height: 1.55;
+	color: var(--text3);
+}
+
+.control-help--compact {
+	margin-bottom: 10px;
+}
+
+.inline-help {
+	padding: 10px 12px 6px;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.inline-help-label {
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text3);
+}
+
+.inline-help-copy {
+	font-size: 10px;
+	line-height: 1.5;
+	color: var(--text2);
+}
+
+/* 2x2 grid for select/deselect + expand/collapse */
 .tree-ctrl-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 4px;
 	margin-bottom: 4px;
 }
+
 .tree-ctrl-grid .action-button {
 	margin-bottom: 0;
 	padding: 5px 8px;
@@ -301,6 +396,7 @@
 	grid-template-columns: 1fr 1fr;
 	gap: 4px;
 }
+
 .utility-action-row .action-button {
 	margin-bottom: 0;
 }

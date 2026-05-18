@@ -146,7 +146,7 @@ function commitSelections(): void {
   appState.selectionCommitted = true;
   refreshAllUI();
   enableUIControls();
-  showNotification("Selection committed.", 1500);
+  showNotification("Selection committed. Stats and export now follow that subset.", 2200);
 }
 
 function clearProject(): void {
@@ -346,6 +346,13 @@ function setupListeners(): void {
   // Full-page drop is handled separately
   setupFullPageDrop();
 
+  elements.dropZone?.addEventListener("click", (event: Event) => {
+    const target = event.target;
+    if (target instanceof HTMLElement && target.closest("#selectFolderBtn")) {
+      return;
+    }
+    void handleSelect();
+  });
   elements.selectFolderBtn?.addEventListener("click", handleSelect);
   elements.commitSelectionsBtn?.addEventListener("click", commitSelections);
   elements.downloadProjectBtn?.addEventListener("click", downloadZip);
