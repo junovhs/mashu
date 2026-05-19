@@ -27,6 +27,7 @@ import {
   refreshAllUI,
   renderTree,
   resetUIForProcessing,
+  saveCurrentReport,
   setAllSelections,
   showFailedUI,
   showNotification,
@@ -365,9 +366,8 @@ function setupListeners(): void {
   elements.copyReportButton?.addEventListener("click", () => {
     void copyCurrentReport();
   });
-  elements.textOutput?.addEventListener("click", () => {
-    if (!appState.fullScanData || appState.processingInProgress) return;
-    void copyCurrentReport();
+  elements.saveReportButton?.addEventListener("click", () => {
+    void saveCurrentReport();
   });
   elements.closeViewerBtn?.addEventListener("click", closeViewer);
   elements.aiDebriefingAssistantBtn?.addEventListener("click", exportCombined);
@@ -405,7 +405,6 @@ async function init() {
 
   setupListeners();
   disableUIControls();
-  elements.pageLoader?.classList.add("hidden");
   console.log("Mashu (Cross-Browser) Initialized.");
 }
 

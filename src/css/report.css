@@ -56,10 +56,6 @@
 	white-space: pre-wrap;
 }
 
-#textOutput.report-visual-host {
-	cursor: copy;
-}
-
 .report-visual {
 	display: flex;
 	flex-direction: column;
@@ -108,11 +104,11 @@
 	--report-tree-line: rgb(111, 122, 140);
 	--report-tree-line-opacity: 0.46;
 	--report-tree-line-color: rgb(111 122 140);
-	--report-tree-indent: 18px;
+	--report-tree-indent: 32px;
 	--report-tree-line-thickness: 2px;
-	--report-tree-line-x: 8px;
+	--report-tree-line-x: 10px;
 	--report-tree-row-mid: 15px;
-	--report-tree-branch-length: 6px;
+	--report-tree-branch-length: 9px;
 }
 
 .report-tree,
@@ -221,6 +217,15 @@
 	background: var(--surface2);
 }
 
+.report-action-row {
+	width: 100%;
+	max-width: 360px;
+}
+
+.report-action-row .action-button {
+	width: 100%;
+}
+
 .button-container .action-button:hover:not(:disabled) {
 	background: var(--surface3);
 }
@@ -261,10 +266,10 @@
 	}
 
 	.report-visual-host {
-		--report-tree-indent: 14px;
-		--report-tree-line-x: 6px;
+		--report-tree-indent: 24px;
+		--report-tree-line-x: 8px;
 		--report-tree-row-mid: 14px;
-		--report-tree-branch-length: 4px;
+		--report-tree-branch-length: 6px;
 	}
 
 	.report-tree-children {

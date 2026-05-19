@@ -26,13 +26,13 @@ export function populateElements(): void {
     "treeContainer",
     "textOutput",
     "copyReportButton",
+    "saveReportButton",
     "selectAllBtn",
     "deselectAllBtn",
     "expandAllBtn",
     "collapseAllBtn",
     "downloadProjectBtn",
     "clearProjectBtn",
-    "pageLoader",
     "viewerContent",
     "viewerInfo",
     "viewerFileTitle",
@@ -157,6 +157,7 @@ export function enableUIControls(enable = true): void {
     "downloadProjectBtn",
     "clearProjectBtn",
     "copyReportButton",
+    "saveReportButton",
     "aiDebriefingAssistantBtn",
   ];
   controls.forEach((id) => {
@@ -178,6 +179,25 @@ export async function copyCurrentReport(): Promise<void> {
   const report = await ensureReportText(data, reportKey);
   await navigator.clipboard.writeText(report);
   showNotification("Report copied!", 2000);
+}
+
+export async function saveCurrentReport(): Promise<void> {
+  const data = getActiveScanData();
+  if (!data?.directoryData) return;
+
+  const reportKey = getReportKey(data);
+  const report = await ensureReportText(data, reportKey);
+  const selectionSuffix =
+    appState.selectedPaths.size > 0 ? "-selection" : "";
+  const filename = `${data.directoryData.name}${selectionSuffix}-report.txt`;
+
+  const blob = new Blob([report], { type: "text/plain;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(link.href);
+  showNotification("Report saved!", 2000);
 }
 
 function getActiveScanData(): ScanData | null {
@@ -239,15 +259,14 @@ function renderVisualReport(data: ScanData): void {
   const root = data.directoryData;
   host.className = "report-visual-host";
   host.replaceChildren();
-  host.title = "Click to copy the ASCII report";
+  host.removeAttribute("title");
 
   const visual = document.createElement("div");
   visual.className = "report-visual";
 
   const copyHint = document.createElement("p");
   copyHint.className = "report-copy-hint";
-  copyHint.textContent =
-    "Rendered view for reading. Click anywhere here to copy the plain-text report.";
+  copyHint.textContent = "Rendered view for reading.";
 
   const tree = document.createElement("ul");
   tree.className = "report-tree";
@@ -377,7 +396,7 @@ function createReportTreeConnector(
     svg.classList.add("report-tree-connector--continuation");
   }
 
-  svg.setAttribute("viewBox", "0 0 18 26");
+  svg.setAttribute("viewBox", "0 0 28 26");
   svg.setAttribute("preserveAspectRatio", "none");
   svg.setAttribute("aria-hidden", "true");
 
@@ -385,14 +404,17 @@ function createReportTreeConnector(
   shape.setAttribute("class", "report-tree-connector-shape");
 
   if (kind === "continuation") {
-    shape.setAttribute("d", "M9 -1 V27");
+    if (!continues) {
+      return svg;
+    }
+    shape.setAttribute("d", "M10 -1 V27");
     svg.appendChild(shape);
     return svg;
   }
 
   shape.setAttribute(
     "d",
-    continues ? "M9 -1 V27 M9 14 H15" : "M9 -1 V14 H15",
+    continues ? "M10 -1 V27 M10 14 H22" : "M10 -1 V14 H22",
   );
   svg.appendChild(shape);
 

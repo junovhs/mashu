@@ -25,8 +25,8 @@ export function initLayout(): void {
 
             <section class="product-intro">
                 <p class="product-intro-eyebrow">Local project reader</p>
-                <p class="product-intro-copy">Mashu scans a folder in your browser, lets you narrow it to the files that matter, and turns that view into plain text you can read, copy, or hand to an LLM.</p>
-                <p class="product-intro-note">Load a folder, review the tree, and selections instantly focus the stats, report, and text export on just that subset.</p>
+                <p class="product-intro-copy">Mashu scans a folder in your browser and turns the files you care about into clean, usable plain text.</p>
+                <p class="product-intro-note">Load a folder, review the tree, and narrow the view as you go.</p>
             </section>
 
             <div id="mainAction">
@@ -94,14 +94,17 @@ export function initLayout(): void {
                             <h2>Text report</h2>
                         </div>
                         <div class="panel-copy">
-                            <p>This panel renders the current view as a readable project map. Copy report still gives you the plain-text version for prompts, notes, or tickets.</p>
+                            <p>A readable project map for the current view.</p>
                         </div>
                         <div id="textOutput" class="report-placeholder">// Load a folder to start. //
 // Mashu scans locally in your browser and shows a tree, stats, and a plain-text report. //
 // Select files or folders to instantly focus copy/export actions on a smaller subset. //</div>
                         <div class="button-container">
-                            <p class="panel-help">Click the report to copy the ASCII version, or use Copy report when you want a portable snapshot for notes, tickets, or AI prompts.</p>
-                            <button id="copyReportButton" class="action-button" title="Copy the current text report to the clipboard" disabled>Copy report</button>
+                            <p class="panel-help">Copy the current plain-text report or save it as a .txt file.</p>
+                            <div class="utility-action-row report-action-row">
+                                <button id="copyReportButton" class="action-button" title="Copy the current text report to the clipboard" disabled>Copy to clipboard</button>
+                                <button id="saveReportButton" class="action-button utility-button" title="Save the current text report as a text file" disabled>Save as .txt</button>
+                            </div>
                         </div>
                     </div>
                 </div>
