@@ -64,6 +64,7 @@
 	--initial-left-sidebar-width: 260px;
 	--right-stats-panel-width:    280px;
 	--resizer-width: 14px;
+	--app-shell-gap: clamp(15px, calc(1vw + 5px), 19px);
 	--terminal-shadow: none;
 }
 
@@ -76,10 +77,11 @@ html, body {
 	font-family: var(--font-ui);
 }
 body {
-	background: var(--bg);
+	background: var(--surface);
 	color: var(--text);
 	display: flex;
 	flex-direction: column;
+	padding: 0 var(--app-shell-gap);
 	font-size: 13px;
 	line-height: 1.5;
 	-webkit-font-smoothing: antialiased;
@@ -114,9 +116,10 @@ body {
 #appContainer {
 	display: flex;
 	flex-direction: row;
-	flex-grow: 1;
-	height: 100vh;
+	flex: 1 1 auto;
+	min-height: 0;
 	overflow: hidden;
+	background: var(--surface);
 }
 
 #leftSidebar {
@@ -125,20 +128,20 @@ body {
 	max-width: 55%;
 	flex-shrink: 0;
 	background: var(--surface);
+	margin-block: var(--app-shell-gap);
 	padding: 0;
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	height: 100%;
-	border-right: 1px solid var(--border);
+	border-right: none;
 }
 
 /* Sidebar inner sections */
 #mainAction { flex-shrink: 0; }
-#extFilterBar { flex-shrink: 0; border-top: 1px solid var(--border); }
-#treeViewControls { flex-shrink: 0; padding: 6px 12px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+#extFilterBar { flex-shrink: 0; }
+#treeViewControls { flex-shrink: 0; padding: 10px 12px 6px; border-top: none; border-bottom: none; }
 #treeViewControls .action-button { margin-bottom: 2px; }
-#generalActions { flex-shrink: 0; padding: 10px 12px 12px; border-top: 1px solid var(--border); }
+#generalActions { flex-shrink: 0; padding: 10px 12px 12px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
 
 #sidebarResizer {
 	width: var(--resizer-width);
@@ -227,9 +230,8 @@ body.sidebar-is-resizing {
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	height: 100%;
+	padding: 0 24px;
 	background: var(--bg);
-	padding: 16px 20px;
 	gap: 0;
 }
 
@@ -242,6 +244,5 @@ body.sidebar-is-resizing {
 	display: flex;
 	flex-direction: column;
 	overflow-y: auto;
-	border-left: 1px solid var(--border);
-	height: 100%;
+	border-left: 1px solid rgba(255, 255, 255, 0.05);
 }

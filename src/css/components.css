@@ -6,7 +6,7 @@
 	align-items: center;
 	gap: 9px;
 	padding: 13px 16px 12px;
-	border-bottom: 1px solid var(--border);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 	flex-shrink: 0;
 	background: var(--surface);
 }
@@ -37,8 +37,7 @@
 .header-logo { display: none; }
 
 .product-intro {
-	padding: 14px 16px 12px;
-	border-bottom: 1px solid var(--border);
+	padding: 14px 16px 18px;
 	background:
 		linear-gradient(180deg, rgba(246, 130, 31, 0.08), rgba(246, 130, 31, 0) 70%),
 		var(--surface);
@@ -94,16 +93,15 @@
 /* Dividers */
 .sidebar-hr {
 	border: 0;
-	border-top: 1px solid var(--border);
-	margin: 8px 0;
+	border-top: 1px solid rgba(255, 255, 255, 0.05);
+	margin: 6px 0;
 }
 
 /* Panel header */
 .panel-header {
-	padding: 10px 16px;
-	border-bottom: 1px solid var(--border);
+	padding: 4px 0 8px;
 	flex-shrink: 0;
-	background: var(--surface);
+	background: transparent;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -115,7 +113,7 @@
 	font-weight: 600;
 	letter-spacing: 0;
 	text-transform: none;
-	color: var(--text2);
+	color: var(--text);
 }
 
 /* Buttons */
@@ -283,9 +281,9 @@
 .content-panel {
 	display: flex;
 	flex-direction: column;
-	background: var(--surface);
-	border: 1px solid var(--border);
-	border-radius: var(--border-radius-medium);
+	background: transparent;
+	border: none;
+	border-radius: 0;
 	overflow: hidden;
 	height: 100%;
 }
@@ -294,9 +292,9 @@
 #mainViewTabs {
 	display: flex;
 	gap: 0;
-	border-bottom: 1px solid var(--border);
-	padding: 0;
-	margin-bottom: 16px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	padding: var(--app-shell-gap) 0 0;
+	margin-bottom: 12px;
 	flex-shrink: 0;
 }
 
