@@ -94,6 +94,7 @@ async function finishScan(handle: VirtualDirectoryHandle) {
 
 function applyScanData(data: ScanData): void {
   appState.fullScanData = data;
+  document.body.classList.add("project-loaded");
   updateUI(appState.fullScanData.directoryData as FolderInfo);
 }
 
@@ -127,6 +128,7 @@ function updateUI(data: FolderInfo) {
 
 function clearProject(): void {
   appState.fullScanData = null;
+  document.body.classList.remove("project-loaded");
   appState.expandedFolderPaths.clear();
   appState.selectedPaths.clear();
   appState.treeNodesByPath.clear();

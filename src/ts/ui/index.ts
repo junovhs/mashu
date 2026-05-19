@@ -244,21 +244,6 @@ function renderVisualReport(data: ScanData): void {
   const visual = document.createElement("div");
   visual.className = "report-visual";
 
-  const metaGrid = document.createElement("div");
-  metaGrid.className = "report-meta-grid";
-  metaGrid.appendChild(
-    createReportMetaItem("Root", root.name),
-  );
-  metaGrid.appendChild(
-    createReportMetaItem("Files in view", String(data.allFilesList.length)),
-  );
-  metaGrid.appendChild(
-    createReportMetaItem("Folders in view", String(data.allFoldersList.length)),
-  );
-  metaGrid.appendChild(
-    createReportMetaItem("Total size", formatBytes(root.totalSize)),
-  );
-
   const copyHint = document.createElement("p");
   copyHint.className = "report-copy-hint";
   copyHint.textContent =
@@ -266,9 +251,8 @@ function renderVisualReport(data: ScanData): void {
 
   const tree = document.createElement("ul");
   tree.className = "report-tree";
-  appendVisualTreeNode(root, tree, true);
+  appendVisualTreeNode(root, tree, true, [], true);
 
-  visual.appendChild(metaGrid);
   visual.appendChild(copyHint);
   visual.appendChild(tree);
   host.appendChild(visual);
@@ -315,33 +299,33 @@ async function ensureReportText(
   return pendingReportPromise;
 }
 
-function createReportMetaItem(label: string, value: string): HTMLDivElement {
-  const item = document.createElement("div");
-  item.className = "report-meta-item";
-
-  const itemLabel = document.createElement("span");
-  itemLabel.className = "report-meta-label";
-  itemLabel.textContent = label;
-
-  const itemValue = document.createElement("span");
-  itemValue.className = "report-meta-value";
-  itemValue.textContent = value;
-
-  item.appendChild(itemLabel);
-  item.appendChild(itemValue);
-  return item;
-}
-
 function appendVisualTreeNode(
   node: FolderInfo | FileInfo,
   parent: HTMLUListElement,
   isRoot = false,
+  ancestorContinuations: boolean[] = [],
+  isLast = true,
 ): void {
   const item = document.createElement("li");
   item.className = `report-tree-node report-tree-node--${node.type}${isRoot ? " report-tree-node--root" : ""}`;
 
   const row = document.createElement("div");
   row.className = `report-tree-row${isRoot ? " report-tree-row--root" : ""}`;
+
+  if (!isRoot) {
+    const gutter = document.createElement("div");
+    gutter.className = "report-tree-gutter";
+
+    ancestorContinuations.forEach((continues) => {
+      const connector = createReportTreeConnector("continuation", continues);
+      gutter.appendChild(connector);
+    });
+
+    const elbow = createReportTreeConnector("elbow", !isLast);
+    gutter.appendChild(elbow);
+
+    row.appendChild(gutter);
+  }
 
   const content = document.createElement("div");
   content.className = "report-tree-content";
@@ -366,10 +350,13 @@ function appendVisualTreeNode(
     const children = document.createElement("ul");
     children.className = "report-tree-children";
 
-    node.children.forEach((child) => {
+    node.children.forEach((child, index) => {
       appendVisualTreeNode(
         child,
         children,
+        false,
+        [...ancestorContinuations, !isLast],
+        index === node.children.length - 1,
       );
     });
 
@@ -377,6 +364,39 @@ function appendVisualTreeNode(
   }
 
   parent.appendChild(item);
+}
+
+function createReportTreeConnector(
+  kind: "continuation" | "elbow",
+  continues: boolean,
+): SVGSVGElement {
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.classList.add("report-tree-connector", `report-tree-connector--${kind}`);
+  if (continues) {
+    svg.classList.add("report-tree-connector--continuation");
+  }
+
+  svg.setAttribute("viewBox", "0 0 18 26");
+  svg.setAttribute("preserveAspectRatio", "none");
+  svg.setAttribute("aria-hidden", "true");
+
+  const shape = document.createElementNS(ns, "path");
+  shape.setAttribute("class", "report-tree-connector-shape");
+
+  if (kind === "continuation") {
+    shape.setAttribute("d", "M9 -1 V27");
+    svg.appendChild(shape);
+    return svg;
+  }
+
+  shape.setAttribute(
+    "d",
+    continues ? "M9 -1 V27 M9 14 H15" : "M9 -1 V14 H15",
+  );
+  svg.appendChild(shape);
+
+  return svg;
 }
 
 function measurePerformance(

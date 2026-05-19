@@ -2,25 +2,83 @@ import { appState, elements } from "../state.js";
 
 const MIN_SIDEBAR_WIDTH = 220;
 const MAX_SIDEBAR_WIDTH_RATIO = 0.55;
+const VISIBLE_STATS_DEFAULT_RATIO = 0.375;
+const HIDDEN_STATS_DEFAULT_RATIO = 0.4;
+const SIDEBAR_RATIO_STORAGE_KEY = "sidebarRatio";
+
+function isStatsPanelVisible(): boolean {
+  const rightStatsPanel = document.getElementById("rightStatsPanel");
+  if (!rightStatsPanel) return false;
+  return document.defaultView?.getComputedStyle(rightStatsPanel).display !== "none";
+}
+
+function getAvailableContentWidth(): number {
+  const appContainer = document.getElementById("appContainer");
+  const sidebarResizer = elements.sidebarResizer as HTMLElement | undefined;
+  const rightStatsPanel = document.getElementById("rightStatsPanel");
+
+  const containerWidth = appContainer?.clientWidth ?? window.innerWidth;
+  const resizerWidth = sidebarResizer?.offsetWidth ?? 0;
+  const rightWidth =
+    isStatsPanelVisible() && rightStatsPanel
+      ? rightStatsPanel.getBoundingClientRect().width
+      : 0;
+
+  return Math.max(containerWidth - resizerWidth - rightWidth, MIN_SIDEBAR_WIDTH * 2);
+}
+
+function clampSidebarRatio(ratio: number): number {
+  const availableWidth = getAvailableContentWidth();
+  const minRatio = MIN_SIDEBAR_WIDTH / availableWidth;
+  return Math.min(Math.max(ratio, minRatio), MAX_SIDEBAR_WIDTH_RATIO);
+}
+
+function getDefaultSidebarRatio(): number {
+  return isStatsPanelVisible()
+    ? VISIBLE_STATS_DEFAULT_RATIO
+    : HIDDEN_STATS_DEFAULT_RATIO;
+}
+
+function readSavedSidebarRatio(): number | null {
+  const savedRatio = localStorage.getItem(SIDEBAR_RATIO_STORAGE_KEY);
+  if (!savedRatio) return null;
+
+  const parsed = Number.parseFloat(savedRatio);
+  if (!Number.isFinite(parsed)) return null;
+
+  return clampSidebarRatio(parsed);
+}
 
 export function initSidebarResizer(): void {
   const leftSidebar = elements.leftSidebar;
   const sidebarResizer = elements.sidebarResizer;
   if (!leftSidebar || !sidebarResizer) return;
 
-  const savedWidth = localStorage.getItem("sidebarWidth");
-  if (savedWidth) leftSidebar.style.width = savedWidth;
-
   const clampSidebarWidth = (width: number): number => {
-    const maxWidth = Math.floor(window.innerWidth * MAX_SIDEBAR_WIDTH_RATIO);
+    const maxWidth = Math.floor(getAvailableContentWidth() * MAX_SIDEBAR_WIDTH_RATIO);
     return Math.min(Math.max(width, MIN_SIDEBAR_WIDTH), maxWidth);
   };
 
-  const persistSidebarWidth = (width: number): void => {
-    leftSidebar.style.width = `${clampSidebarWidth(width)}px`;
-    localStorage.setItem("sidebarWidth", leftSidebar.style.width);
+  const applySidebarRatio = (ratio: number, persist = false): void => {
+    const availableWidth = getAvailableContentWidth();
+    const clampedRatio = clampSidebarRatio(ratio);
+    const nextWidth = clampSidebarWidth(Math.round(availableWidth * clampedRatio));
+    leftSidebar.style.width = `${nextWidth}px`;
+    leftSidebar.style.flexBasis = `${nextWidth}px`;
+
+    if (persist) {
+      localStorage.setItem(SIDEBAR_RATIO_STORAGE_KEY, String(clampedRatio));
+    }
+
     window.dispatchEvent(new CustomEvent("sidebarResized"));
   };
+
+  const applyPreferredSidebarRatio = (): void => {
+    const preferredRatio = readSavedSidebarRatio() ?? getDefaultSidebarRatio();
+    applySidebarRatio(preferredRatio, false);
+  };
+
+  applyPreferredSidebarRatio();
 
   sidebarResizer.addEventListener("pointerdown", (event: PointerEvent) => {
     event.preventDefault();
@@ -37,13 +95,17 @@ export function initSidebarResizer(): void {
 
     const handlePointerMove = (moveEvent: PointerEvent) => {
       const nextWidth = startWidth + moveEvent.clientX - startX;
-      leftSidebar.style.width = `${clampSidebarWidth(nextWidth)}px`;
+      const clampedWidth = clampSidebarWidth(nextWidth);
+      leftSidebar.style.width = `${clampedWidth}px`;
+      leftSidebar.style.flexBasis = `${clampedWidth}px`;
     };
 
     const stopResizing = () => {
       sidebarResizer.classList.remove("resizing");
       document.body.classList.remove("sidebar-is-resizing");
-      persistSidebarWidth(parseInt(leftSidebar.style.width || `${startWidth}`, 10));
+      const finalWidth = parseInt(leftSidebar.style.width || `${startWidth}`, 10);
+      const finalRatio = finalWidth / getAvailableContentWidth();
+      applySidebarRatio(finalRatio, true);
       sidebarResizer.removeEventListener("pointermove", handlePointerMove);
       sidebarResizer.removeEventListener("pointerup", handlePointerUp);
       sidebarResizer.removeEventListener("pointercancel", handlePointerCancel);
@@ -63,11 +125,7 @@ export function initSidebarResizer(): void {
   });
 
   window.addEventListener("resize", () => {
-    const currentWidth = parseInt(
-      document.defaultView?.getComputedStyle(leftSidebar).width || "0",
-      10,
-    );
-    persistSidebarWidth(currentWidth);
+    applyPreferredSidebarRatio();
   });
 
   window.addEventListener("sidebarResized", () => {

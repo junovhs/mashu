@@ -311,6 +311,7 @@
 	transition: color 0.15s, border-color 0.15s;
 	letter-spacing: 0.01em;
 	margin-bottom: -1px;
+	flex-shrink: 0;
 }
 
 .tab-button:hover { color: var(--text2); }
@@ -418,4 +419,118 @@
 	padding: 8px 12px 12px;
 	border-top: 1px solid var(--border);
 	flex-shrink: 0;
+}
+
+@media (max-width: 1450px), (max-height: 900px) {
+	.product-intro-note,
+	.inline-help-copy,
+	.control-help--compact {
+		display: none;
+	}
+
+	.product-intro {
+		padding-bottom: 12px;
+	}
+}
+
+@media (max-width: 1400px), (max-height: 820px) {
+	body.project-loaded .product-intro {
+		display: none;
+	}
+
+	body.project-loaded #mainAction {
+		display: none;
+	}
+
+	.control-help {
+		font-size: 9px;
+		line-height: 1.4;
+		margin-bottom: 6px;
+	}
+
+	#treeViewControls {
+		padding-top: 8px;
+	}
+}
+
+@media (max-width: 1180px), (max-height: 780px) {
+	.product-intro-copy {
+		font-size: 11px;
+		line-height: 1.55;
+	}
+
+	#dropZone {
+		margin: 8px 8px 0;
+		padding: 16px 12px 14px;
+	}
+
+	#treeViewControls,
+	#generalActions {
+		padding-inline: 10px;
+	}
+
+	.tree-ctrl-grid,
+	.utility-action-row {
+		gap: 3px;
+	}
+
+	.action-button {
+		min-height: 36px;
+		padding-block: 6px;
+	}
+}
+
+@media (max-width: 980px), (max-height: 620px) {
+	#sidebarHeader {
+		padding: 10px 12px;
+	}
+
+	.product-intro {
+		display: none;
+	}
+
+	#extFilterBar {
+		display: none !important;
+	}
+
+	.control-help {
+		font-size: 9px;
+		line-height: 1.4;
+		margin-bottom: 6px;
+	}
+
+	#treeViewControls {
+		padding: 8px 10px 4px;
+	}
+
+	.tree-ctrl-grid .action-button,
+	.utility-action-row .action-button {
+		padding: 7px 8px;
+		font-size: 10px;
+	}
+
+	#generalActions {
+		padding: 8px 10px 10px;
+	}
+
+	body.project-loaded #mainAction {
+		display: none;
+	}
+
+	body:not(.project-loaded) #dropZone {
+		margin: 6px 8px 0;
+		padding: 10px 10px 8px;
+	}
+
+	body:not(.project-loaded) .drop-icon,
+	body:not(.project-loaded) .drop-subtext,
+	body:not(.project-loaded) .drop-help,
+	body:not(.project-loaded) .drop-alternative {
+		display: none;
+	}
+
+	body:not(.project-loaded) .folder-select-btn {
+		margin-top: 6px;
+		padding: 6px 10px;
+	}
 }

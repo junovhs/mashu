@@ -77,3 +77,24 @@
 	font-family: var(--font-ui);
 	font-weight: 700;
 }
+
+@media (max-width: 1400px), (max-height: 820px) {
+	#extFilterBar {
+		padding-inline: 10px;
+	}
+
+	.ext-pills {
+		gap: 4px;
+		padding-bottom: 6px;
+	}
+
+	.ext-filter-pill {
+		font-size: 10px;
+		padding: 4px 8px 5px;
+		gap: 5px;
+	}
+
+	.pill-count {
+		font-size: 10px;
+	}
+}

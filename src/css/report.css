@@ -4,6 +4,7 @@
 	flex-grow: 1;
 	overflow: hidden;
 	display: flex;
+	min-height: 0;
 }
 
 #textReportTab {
@@ -11,6 +12,7 @@
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
+	min-height: 0;
 }
 
 #textOutputContainerOuter {
@@ -21,6 +23,7 @@
 	border: none;
 	border-radius: 0;
 	background: transparent;
+	min-height: 0;
 }
 
 .panel-copy {
@@ -61,12 +64,12 @@
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-	min-width: max-content;
+	min-width: 0;
 }
 
 .report-meta-grid {
 	display: grid;
-	grid-template-columns: repeat(4, minmax(140px, 1fr));
+	grid-template-columns: repeat(4, minmax(0, 1fr));
 	gap: 10px;
 }
 
@@ -102,7 +105,14 @@
 }
 
 .report-visual-host {
-	--report-tree-line: #6f7a8c;
+	--report-tree-line: rgb(111, 122, 140);
+	--report-tree-line-opacity: 0.46;
+	--report-tree-line-color: rgb(111 122 140);
+	--report-tree-indent: 18px;
+	--report-tree-line-thickness: 2px;
+	--report-tree-line-x: 8px;
+	--report-tree-row-mid: 15px;
+	--report-tree-branch-length: 6px;
 }
 
 .report-tree,
@@ -114,7 +124,6 @@
 
 .report-tree-node {
 	margin: 0;
-	position: relative;
 }
 
 .report-tree-row {
@@ -122,35 +131,41 @@
 	align-items: center;
 	gap: 0;
 	min-height: 26px;
-	position: relative;
 }
 
 .report-tree-row--root {
 	padding-left: 0;
 }
 
-.report-tree-node:not(.report-tree-node--root) > .report-tree-row::before {
-	content: "";
-	position: absolute;
-	left: -18px;
-	top: 13px;
-	width: 18px;
-	border-top: 1px solid var(--report-tree-line);
+.report-tree-gutter {
+	display: flex;
+	flex: 0 0 auto;
+	align-self: stretch;
 }
 
-.report-tree-node:last-child::after {
-	content: "";
-	position: absolute;
-	left: -17px;
-	top: 14px;
-	bottom: 0;
-	width: 3px;
-	background: var(--surface);
+.report-tree-connector {
+	display: block;
+	width: var(--report-tree-indent);
+	min-width: var(--report-tree-indent);
+	height: 100%;
+	opacity: var(--report-tree-line-opacity);
+	shape-rendering: crispEdges;
+}
+
+.report-tree-connector-shape {
+	fill: none;
+	stroke: var(--report-tree-line-color);
+	stroke-width: var(--report-tree-line-thickness);
+	stroke-linecap: square;
+	stroke-linejoin: miter;
+	vector-effect: non-scaling-stroke;
+	shape-rendering: crispEdges;
 }
 
 .report-tree-content {
 	display: inline-flex;
 	align-items: baseline;
+	flex-wrap: wrap;
 	gap: 10px;
 	min-width: 0;
 }
@@ -160,7 +175,8 @@
 	font-size: 12px;
 	font-weight: 600;
 	color: var(--text);
-	white-space: nowrap;
+	white-space: normal;
+	overflow-wrap: anywhere;
 }
 
 .report-tree-node--file .report-tree-name {
@@ -172,13 +188,12 @@
 	font-family: var(--font-main);
 	font-size: 11px;
 	color: var(--text3);
-	white-space: nowrap;
+	white-space: normal;
 }
 
 .report-tree-children {
-	margin-left: 12px;
-	padding-left: 18px;
-	border-left: 1px solid var(--report-tree-line);
+	margin-left: 0;
+	padding-left: 0;
 }
 
 .button-container {
@@ -208,4 +223,52 @@
 
 .button-container .action-button:hover:not(:disabled) {
 	background: var(--surface3);
+}
+
+@media (max-width: 1400px), (max-height: 900px) {
+	.report-meta-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.panel-copy,
+	.panel-help,
+	.report-copy-hint {
+		display: none;
+	}
+}
+
+@media (max-width: 1400px), (max-height: 820px) {
+	.report-meta-item {
+		padding: 8px 10px;
+	}
+
+	.report-meta-value {
+		font-size: 12px;
+	}
+
+	.button-container {
+		padding-top: 10px;
+	}
+}
+
+@media (max-width: 1180px), (max-height: 780px) {
+	#textOutput {
+		padding-block: 12px 14px;
+	}
+
+	.report-meta-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.report-visual-host {
+		--report-tree-indent: 14px;
+		--report-tree-line-x: 6px;
+		--report-tree-row-mid: 14px;
+		--report-tree-branch-length: 4px;
+	}
+
+	.report-tree-children {
+		margin-left: 0;
+		padding-left: 0;
+	}
 }
