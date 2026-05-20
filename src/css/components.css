@@ -34,6 +34,12 @@
 	letter-spacing: -0.01em;
 }
 
+.pretext-flow {
+	min-width: 0;
+	max-width: 100%;
+	overflow-wrap: anywhere;
+}
+
 .header-logo { display: none; }
 
 .product-intro {
@@ -132,11 +138,12 @@
 	font-weight: 500;
 	cursor: pointer;
 	transition: var(--transition-smooth), transform 0.12s ease;
-	white-space: nowrap;
+	white-space: pre-wrap;
 	gap: 7px;
 	width: 100%;
 	letter-spacing: 0.01em;
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+	text-align: center;
 }
 
 .action-button:hover:not(:disabled) {
@@ -312,6 +319,8 @@
 	letter-spacing: 0.01em;
 	margin-bottom: -1px;
 	flex-shrink: 0;
+	white-space: pre-wrap;
+	text-align: center;
 }
 
 .tab-button:hover { color: var(--text2); }

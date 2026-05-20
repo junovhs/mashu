@@ -2,6 +2,7 @@ import { appState, elements } from "../state.js";
 import type { FileInfo } from "../types/index.js";
 import { formatBytes, getExt } from "../utils/fs_utils.js";
 import { showNotification } from "./index.js";
+import { setPretextText } from "./pretext.js";
 
 type ModeSpec = {
   label: string;
@@ -68,11 +69,14 @@ export function updateViewer(
 ): void {
   const info = elements.viewerInfo;
   if (info) {
-    info.textContent = `Size: ${formatBytes(content.length)} | Syntax: ${modeLabel}`;
+    setPretextText(
+      info,
+      `Size: ${formatBytes(content.length)} | Syntax: ${modeLabel}`,
+    );
   }
   const title = elements.viewerFileTitle;
   if (title) {
-    title.textContent = `VIEWING: ${filePath}`;
+    setPretextText(title, `VIEWING: ${filePath}`);
   }
 }
 

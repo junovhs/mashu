@@ -69,6 +69,8 @@
 	cursor: pointer;
 	color: var(--text2);
 	transition: var(--transition-smooth);
+	white-space: pre-wrap;
+	text-align: center;
 }
 .viewer-button:hover {
 	background: var(--surface3);

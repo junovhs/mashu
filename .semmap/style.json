@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12T23:36:03Z",
+  "generated_at": "2026-05-20T18:16:30Z",
   "entries": [
     {
       "file": "public/js/jszip.min.js",
@@ -39,7 +39,7 @@
         "",
         "import { downloadZip, exportCombined } from \"./features.js\";",
         "import type { ScanAggregator } from \"./filesystem.js\";",
-        "import { filterScanData, initTypeData, scanDir, scanFileList } from \"./filesystem.js\";",
+        "import { initTypeData, scanDir, scanFileList } from \"./filesystem.js\";",
         "import { appState, elements } from \"./state.js\";"
       ]
     },
@@ -48,7 +48,7 @@
       "language": "typescript",
       "idiom_category": "concurrency-pattern",
       "excerpts": [
-        "import { isLikelyText, readFile, sniffIsText } from \"./filesystem.js\";",
+        "import { filterScanData, isLikelyText, readFile, sniffIsText } from \"./filesystem.js\";",
         "import { appState } from \"./state.js\";",
         "import type { FileInfo } from \"./types/index.js\";",
         "import { showNotification } from \"./ui/index.js\";",
@@ -61,8 +61,8 @@
         "};",
         "",
         "export async function exportCombined() {",
-        "  if (!checkExportReady()) return;",
-        ""
+        "  const activeData = getExportData();",
+        "  if (!activeData) {"
       ]
     },
     {
@@ -98,7 +98,7 @@
         "  dropOverlay.id = \"fullPageDropOverlay\";",
         "  dropOverlay.innerHTML = `",
         "    <div class=\"drop-overlay-content\">",
-        "      <div class=\"drop-overlay-icon\">📂</div>",
+        "      <div class=\"drop-overlay-icon\">DIR</div>",
         "      <h2 class=\"drop-overlay-title\">Drop your folder here</h2>",
         "      <p class=\"drop-overlay-subtitle\">Release to analyze immediately</p>",
         "    </div>",
@@ -116,19 +116,19 @@
       "excerpts": [
         "import { appState, elements } from \"../state.js\";",
         "",
-        "export function initSidebarResizer(): void {",
-        "  const leftSidebar = elements.leftSidebar;",
-        "  const sidebarResizer = elements.sidebarResizer;",
-        "  if (!leftSidebar || !sidebarResizer) return;",
+        "const MIN_SIDEBAR_WIDTH = 220;",
+        "const MAX_SIDEBAR_WIDTH_RATIO = 0.55;",
+        "const VISIBLE_STATS_DEFAULT_RATIO = 0.375;",
+        "const HIDDEN_STATS_DEFAULT_RATIO = 0.4;",
+        "const SIDEBAR_RATIO_STORAGE_KEY = \"sidebarRatio\";",
         "",
-        "  let isResizing = false;",
-        "  const savedWidth = localStorage.getItem(\"sidebarWidth\");",
-        "  if (savedWidth) leftSidebar.style.width = savedWidth;",
+        "function isStatsPanelVisible(): boolean {",
+        "  const rightStatsPanel = document.getElementById(\"rightStatsPanel\");",
+        "  if (!rightStatsPanel) return false;",
+        "  return document.defaultView?.getComputedStyle(rightStatsPanel).display !== \"none\";",
+        "}",
         "",
-        "  sidebarResizer.addEventListener(\"mousedown\", (e: MouseEvent) => {",
-        "    isResizing = true;",
-        "    const startX = e.clientX;",
-        "    const startWidth = parseInt("
+        "function getAvailableContentWidth(): number {"
       ]
     },
     {
@@ -142,15 +142,15 @@
         "import { setSelectionByExtension } from \"./tree.js\";",
         "",
         "const REPORT_YIELD_EVERY = 400;",
+        "const TREE_BRANCH = {",
+        "  elbow: \"└──  \",",
+        "  tee: \"├──  \",",
+        "  pipe: \"│   \",",
+        "};",
         "",
         "interface TextTreeFrame {",
         "  isLastChild: boolean;",
-        "  isRoot: boolean;",
-        "  node: FileInfo | FolderInfo;",
-        "  prefix: string;",
-        "}",
-        "",
-        "async function yieldToMainThread(): Promise<void> {"
+        "  isRoot: boolean;"
       ]
     },
     {
@@ -166,13 +166,13 @@
         "interface TreeStateOptions {",
         "  initialCollapsed?: boolean;",
         "  initialSelected?: boolean;",
+        "  expandRootOnly?: boolean;",
         "}",
         "",
         "type TreeNode = FileInfo | FolderInfo;",
         "type SelectionState = \"all\" | \"none\" | \"partial\";",
-        "",
-        "const boundTreeContainers = new WeakSet<HTMLElement>();",
-        ""
+        "type FileIconKind =",
+        "  | \"archive\""
       ]
     },
     {
@@ -180,21 +180,21 @@
       "language": "typescript",
       "idiom_category": "concurrency-pattern",
       "excerpts": [
-        "import { readFile } from \"../filesystem.js\";",
         "import { appState, elements } from \"../state.js\";",
         "import type { FileInfo } from \"../types/index.js\";",
         "import { formatBytes, getExt } from \"../utils/fs_utils.js\";",
         "import { showNotification } from \"./index.js\";",
         "",
-        "declare const CodeMirror: {",
-        "  (host: HTMLElement, options?: unknown): CodeMirror.Editor;",
-        "  findModeByExtension(ext: string): { mode: string; name: string } | undefined;",
+        "type ModeSpec = {",
+        "  label: string;",
+        "  mode: string;",
+        "  option: string;",
         "};",
         "",
-        "declare namespace CodeMirror {",
-        "  interface Editor {",
-        "    refresh(): void;",
-        "    setValue(content: string): void;"
+        "const MODE_CDN_BASE =",
+        "  \"https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/%N/%N.min.js\";",
+        "",
+        "function getFallbackModeSpec(): ModeSpec {"
       ]
     },
     {
@@ -270,6 +270,7 @@
       "excerpts": [
         "import { appState, elements } from \"../state.js\";",
         "import type { FileInfo, FolderInfo, ScanData } from \"../types/index.js\";",
+        "import { filterScanData, formatBytes } from \"../filesystem.js\";",
         "import { displayGlobalStats, generateTextReportAsync } from \"./stats.js\";",
         "import { closeViewer } from \"./viewer.js\";",
         "",
@@ -281,8 +282,7 @@
         "export * from \"./viewer.js\";",
         "",
         "let reportRefreshToken = 0;",
-        "let cachedReportKey: string | null = null;",
-        "let cachedReportText: string | null = null;"
+        "let cachedReportKey: string | null = null;"
       ]
     }
   ]

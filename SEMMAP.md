@@ -1,4 +1,4 @@
-# project -- Semantic Map
+# mashu -- Semantic Map
 
 **Purpose:** Desktop/web app for selecting files from a codebase, browsing the tree, and collapsing the chosen project contents into a single text export that can be uploaded to chat AI tools that cannot access the local filesystem.
 
@@ -132,9 +132,6 @@ Node.js package manifest.
 `tsconfig.json`
 Configuration for tsconfig.
 
-`ux04-scope.md`
-Support file for ux04-scope.
-
 `vite.config.ts`
 Implements vite.config functionality.
 Exports: default
@@ -169,9 +166,9 @@ Semantic: async side-effecting adapter
 Implements global.d functionality.
 
 `src/ts/state.ts`
-Defines shared state for the ts subsystem. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state]
+Defines shared state for the ts subsystem. [HOTSPOT] [BEHAVIOR:owns-const-state]
 Exports: appState, ICONS, elements
-Semantic: side-effecting constant-owning module
+Semantic: constant-owning module
 
 `src/ts/ui/layout.ts`
 Creates layout. [COUPLING:pure]
@@ -179,9 +176,9 @@ Exports: initLayout
 Semantic: pure computation
 
 `src/ts/ui/modals.ts`
-Creates sidebar resizer. [COUPLING:pure]
-Exports: initSidebarResizer
-Semantic: pure computation
+Implements apply preferred sidebar ratio. [COUPLING:pure] [BEHAVIOR:owns-const-state] [QUALITY:undocumented]
+Exports: applyPreferredSidebarRatio, clampSidebarWidth, initSidebarResizer, applySidebarRatio
+Semantic: pure computation constant-owning module
 
 `src/ts/ui/stats.ts`
 Formats global stats for output. [COUPLING:mixed] [BEHAVIOR:owns-const-state,async] [QUALITY:concurrency-heavy]
@@ -194,7 +191,7 @@ Exports: setSelectionByExtension, initTreeState, toggleAllFolders, setAllSelecti
 Semantic: side-effecting adapter
 
 `src/ts/ui/viewer.ts`
-Implements open file. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
+Updates viewer. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
 Exports: openFile, closeViewer, updateViewer
 Semantic: async side-effecting adapter that logs and continues
 
@@ -211,9 +208,9 @@ Exports: initTypeData, isLikelyText, sniffIsText, formatBytes
 Semantic: async side-effecting stateful adapter
 
 `src/ts/utils/result.ts`
-Implements Err functionality. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,async] [QUALITY:undocumented]
+Implements to result. [HOTSPOT] [COUPLING:pure] [BEHAVIOR:async] [QUALITY:undocumented]
 Exports: toResult, None, Option, Some
-Semantic: async side-effecting constant-owning module
+Semantic: async pure computation
 
 ## Layer 3 -- App / Entrypoints
 
@@ -253,7 +250,7 @@ Exports: FileTypeData, AppState, FolderInfo, ScanData
 
 `src/ts/ui/index.ts`
 Implements show notification. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,concurrency-heavy]
-Exports: resetUIForProcessing, copyCurrentReport, refreshAllUI, disableUIControls
+Exports: resetUIForProcessing, copyCurrentReport, saveCurrentReport, refreshAllUI
 Semantic: async side-effecting stateful module
 
 
@@ -271,10 +268,10 @@ DependencyGraph:
     ImportedBy: [app.ts, filesystem.ts, fs_utils.ts, types/index.ts]
   filesystem.ts:
     Imports: [crossbrowser_fs.ts, fs_utils.ts, result.ts, types/index.ts]
-    ImportedBy: [app.ts, features.ts, stats.ts, viewer.ts]
+    ImportedBy: [app.ts, features.ts, stats.ts, ui/index.ts]
   fs_utils.ts:
     Imports: [crossbrowser_fs.ts, result.ts]
-    ImportedBy: [app.ts, features.ts, filesystem.ts, stats.ts, tree.ts, viewer.ts]
+    ImportedBy: [app.ts, features.ts, filesystem.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
   state.ts:
     Imports: [types/index.ts]
     ImportedBy: [app.ts, features.ts, modals.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
@@ -285,13 +282,13 @@ DependencyGraph:
     Imports: [crossbrowser_fs.ts]
     ImportedBy: [app.ts, features.ts, filesystem.ts, state.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
   ui/index.ts:
-    Imports: [layout.ts, modals.ts, state.ts, stats.ts, tree.ts, types/index.ts, viewer.ts]
+    Imports: [filesystem.ts, fs_utils.ts, layout.ts, modals.ts, state.ts, stats.ts, tree.ts, types/index.ts, viewer.ts]
     ImportedBy: [app.ts, features.ts, viewer.ts]
   viewer.ts:
-    Imports: [filesystem.ts, fs_utils.ts, state.ts, types/index.ts, ui/index.ts]
+    Imports: [fs_utils.ts, state.ts, types/index.ts, ui/index.ts]
     ImportedBy: [app.ts, tree.ts, ui/index.ts]
   # --- Layer 0 -- Config ---
-  README.md, SEMMAP.md, package.json, tsconfig.json, ux04-scope.md, vite.config.ts:
+  README.md, SEMMAP.md, package.json, tsconfig.json, vite.config.ts:
     Imports: []
     ImportedBy: []
   # --- Layer 1 -- Domain (Engine) ---

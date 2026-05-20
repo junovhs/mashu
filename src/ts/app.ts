@@ -21,6 +21,7 @@ import {
   enableUIControls,
   initTreeState,
   initLayout,
+  initPretextText,
   initSidebarResizer,
   initTabs,
   populateElements,
@@ -392,6 +393,7 @@ async function init() {
   populateElements();
   initTabs();
   initSidebarResizer();
+  initPretextText();
   setupHiddenInput();
 
   // Load filetype data

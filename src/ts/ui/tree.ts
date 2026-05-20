@@ -1,6 +1,7 @@
 import { appState, elements, ICONS } from "../state.js";
 import type { FileInfo, FolderInfo } from "../types/index.js";
 import { formatBytes } from "../utils/fs_utils.js";
+import { setPretextText } from "./pretext.js";
 import { openFile } from "./viewer.js";
 
 interface TreeStateOptions {
@@ -318,12 +319,14 @@ function createFolderLi(folder: FolderInfo): HTMLLIElement {
   prefix.appendChild(icon);
 
   const name = document.createElement("span");
-  name.className = "name";
-  name.textContent = folder.name;
+  name.className = "name pretext-flow";
+  name.dataset.pretext = "";
+  setPretextText(name, folder.name);
 
   const stats = document.createElement("span");
-  stats.className = "stats";
-  stats.textContent = `${folder.fileCount} files, ${formatBytes(folder.totalSize)}`;
+  stats.className = "stats pretext-flow";
+  stats.dataset.pretext = "";
+  setPretextText(stats, `${folder.fileCount} files, ${formatBytes(folder.totalSize)}`);
 
   itemLine.appendChild(prefix);
   itemLine.appendChild(name);
@@ -391,12 +394,14 @@ function createFileLi(file: FileInfo): HTMLLIElement {
   prefix.appendChild(icon);
 
   const name = document.createElement("span");
-  name.className = "name";
-  name.textContent = file.name;
+  name.className = "name pretext-flow";
+  name.dataset.pretext = "";
+  setPretextText(name, file.name);
 
   const stats = document.createElement("span");
-  stats.className = "stats";
-  stats.textContent = formatBytes(file.size);
+  stats.className = "stats pretext-flow";
+  stats.dataset.pretext = "";
+  setPretextText(stats, formatBytes(file.size));
 
   itemLine.appendChild(prefix);
   itemLine.appendChild(name);

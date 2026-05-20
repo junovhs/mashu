@@ -28,13 +28,6 @@
     "doc_coverage": 1.0
   },
   {
-    "file": "ux04-scope.md",
-    "hotspot_score": 0.0,
-    "fan_in": 0,
-    "cognitive_complexity_max": 0,
-    "doc_coverage": 1.0
-  },
-  {
     "file": "vite.config.ts",
     "hotspot_score": 0.0,
     "fan_in": 0,
@@ -106,9 +99,9 @@
   },
   {
     "file": "src/ts/ui/modals.ts",
-    "hotspot_score": 0.12833335,
+    "hotspot_score": 0.101666674,
     "fan_in": 1,
-    "cognitive_complexity_max": 4,
+    "cognitive_complexity_max": 2,
     "doc_coverage": 0.0
   },
   {
@@ -120,16 +113,16 @@
   },
   {
     "file": "src/ts/ui/tree.ts",
-    "hotspot_score": 0.32333332,
+    "hotspot_score": 0.33666667,
     "fan_in": 2,
-    "cognitive_complexity_max": 13,
+    "cognitive_complexity_max": 14,
     "doc_coverage": 0.0
   },
   {
     "file": "src/ts/ui/viewer.ts",
-    "hotspot_score": 0.2566667,
+    "hotspot_score": 0.23000002,
     "fan_in": 2,
-    "cognitive_complexity_max": 8,
+    "cognitive_complexity_max": 6,
     "doc_coverage": 0.0
   },
   {
@@ -151,7 +144,7 @@
     "hotspot_score": 0.19000001,
     "fan_in": 2,
     "cognitive_complexity_max": 3,
-    "doc_coverage": 0.090909064
+    "doc_coverage": 0.14285713
   },
   {
     "file": "index.html",

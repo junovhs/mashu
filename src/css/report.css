@@ -43,7 +43,7 @@
 	margin: 0;
 	padding: 16px 0 18px;
 	white-space: normal;
-	overflow-y: auto;
+	overflow: auto;
 	background: transparent;
 	flex-grow: 1;
 	color: var(--text2);
@@ -53,44 +53,17 @@
 	font-family: var(--font-main);
 	font-size: 12px;
 	line-height: 1.45;
-	white-space: pre-wrap;
+}
+
+.report-placeholder-copy {
+	max-width: 100%;
 }
 
 .report-visual {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-	min-width: 0;
-}
-
-.report-meta-grid {
-	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: 10px;
-}
-
-.report-meta-item {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	padding: 10px 12px;
-	border: 1px solid var(--border);
-	border-radius: 8px;
-	background: rgba(255, 255, 255, 0.025);
-}
-
-.report-meta-label {
-	font-size: 10px;
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: var(--text3);
-}
-
-.report-meta-value {
-	font-size: 13px;
-	font-weight: 600;
-	color: var(--text);
+	min-width: max-content;
 }
 
 .report-copy-hint {
@@ -126,7 +99,7 @@
 	display: flex;
 	align-items: center;
 	gap: 0;
-	min-height: 26px;
+	min-height: 20px;
 }
 
 .report-tree-row--root {
@@ -161,9 +134,9 @@
 .report-tree-content {
 	display: inline-flex;
 	align-items: baseline;
-	flex-wrap: wrap;
-	gap: 10px;
-	min-width: 0;
+	flex-wrap: nowrap;
+	gap: 8px;
+	min-width: max-content;
 }
 
 .report-tree-name {
@@ -171,8 +144,8 @@
 	font-size: 12px;
 	font-weight: 600;
 	color: var(--text);
-	white-space: normal;
-	overflow-wrap: anywhere;
+	white-space: nowrap;
+	line-height: 1.15;
 }
 
 .report-tree-node--file .report-tree-name {
@@ -184,7 +157,8 @@
 	font-family: var(--font-main);
 	font-size: 11px;
 	color: var(--text3);
-	white-space: normal;
+	white-space: nowrap;
+	line-height: 1.15;
 }
 
 .report-tree-children {
@@ -231,10 +205,6 @@
 }
 
 @media (max-width: 1400px), (max-height: 900px) {
-	.report-meta-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-
 	.panel-copy,
 	.panel-help,
 	.report-copy-hint {
@@ -243,14 +213,6 @@
 }
 
 @media (max-width: 1400px), (max-height: 820px) {
-	.report-meta-item {
-		padding: 8px 10px;
-	}
-
-	.report-meta-value {
-		font-size: 12px;
-	}
-
 	.button-container {
 		padding-top: 10px;
 	}
@@ -261,19 +223,10 @@
 		padding-block: 12px 14px;
 	}
 
-	.report-meta-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-
 	.report-visual-host {
 		--report-tree-indent: 24px;
 		--report-tree-line-x: 8px;
 		--report-tree-row-mid: 14px;
 		--report-tree-branch-length: 6px;
-	}
-
-	.report-tree-children {
-		margin-left: 0;
-		padding-left: 0;
 	}
 }

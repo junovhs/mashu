@@ -1,6 +1,7 @@
 import { formatBytes } from "../filesystem.js";
 import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo, ScanData } from "../types/index.js";
+import { setPretextText, syncPretextTree } from "./pretext.js";
 import { setSelectionByExtension } from "./tree.js";
 
 const REPORT_YIELD_EVERY = 400;
@@ -28,7 +29,12 @@ export function displayGlobalStats(data: ScanData): void {
   if (!directoryData) return;
 
   if (appState.selectedPaths.size > 0 && elements.selectionSummary) {
-    elements.selectionSummary.innerHTML = `Focused view active: stats, report, and export now use <strong>${allFilesList.length} selected files</strong> and <strong>${allFoldersList.length} selected folders</strong>.`;
+    elements.selectionSummary.dataset.pretext = "";
+    elements.selectionSummary.classList.add("pretext-flow");
+    setPretextText(
+      elements.selectionSummary,
+      `Focused view active: stats, report, and export now use ${allFilesList.length} selected files and ${allFoldersList.length} selected folders.`,
+    );
     elements.selectionSummary.style.display = "block";
   } else if (elements.selectionSummary) {
     elements.selectionSummary.style.display = "none";
@@ -37,20 +43,20 @@ export function displayGlobalStats(data: ScanData): void {
   if (elements.globalStats) {
     elements.globalStats.innerHTML = `
             <div class="stat-item">
-              <span class="stat-label">Root Folder</span>
-              <span class="stat-value stat-value--name">${directoryData.name}</span>
+              <span class="stat-label pretext-flow" data-pretext>Root Folder</span>
+              <span class="stat-value stat-value--name pretext-flow" data-pretext>${directoryData.name}</span>
             </div>
             <div class="stat-item">
-              <span class="stat-label">Files in View</span>
-              <span class="stat-value">${allFilesList.length}</span>
+              <span class="stat-label pretext-flow" data-pretext>Files in View</span>
+              <span class="stat-value pretext-flow" data-pretext>${allFilesList.length}</span>
             </div>
             <div class="stat-item">
-              <span class="stat-label">Folders in View</span>
-              <span class="stat-value">${allFoldersList.length}</span>
+              <span class="stat-label pretext-flow" data-pretext>Folders in View</span>
+              <span class="stat-value pretext-flow" data-pretext>${allFoldersList.length}</span>
             </div>
             <div class="stat-item">
-              <span class="stat-label">Total Size</span>
-              <span class="stat-value stat-value--name">${formatBytes(directoryData.totalSize)}</span>
+              <span class="stat-label pretext-flow" data-pretext>Total Size</span>
+              <span class="stat-value stat-value--name pretext-flow" data-pretext>${formatBytes(directoryData.totalSize)}</span>
             </div>
         `;
   }
@@ -67,14 +73,15 @@ export function displayGlobalStats(data: ScanData): void {
         ([ext, typeData]) =>
           `<tr data-ext="${ext}">
             <td><span class="ext-chip" data-ext="${ext}">${ext}</span></td>
-            <td>${typeData.count}</td>
-            <td>${formatBytes(typeData.size)}</td>
+            <td><span class="table-cell-text pretext-flow" data-pretext>${typeData.count}</span></td>
+            <td><span class="table-cell-text pretext-flow" data-pretext>${formatBytes(typeData.size)}</span></td>
           </tr>`,
       )
       .join("");
   }
 
   renderExtFilterPills(sortedTypes);
+  syncPretextTree(document.getElementById("rightStatsPanel") ?? document);
 }
 
 function renderExtFilterPills(sortedTypes: [string, { count: number; size: number }][]): void {
@@ -93,8 +100,8 @@ function renderExtFilterPills(sortedTypes: [string, { count: number; size: numbe
       .slice(0, 12)
       .map(([ext, d]) => `
       <button class="ext-filter-pill" data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}" title="Toggle selection for every ${ext || "[no extension]"} file in the tree">
-        <span class="pill-label">${ext || "[none]"}</span>
-        <span class="pill-count">${d.count}</span>
+        <span class="pill-label pretext-flow" data-pretext>${ext || "[none]"}</span>
+        <span class="pill-count pretext-flow" data-pretext>${d.count}</span>
       </button>
     `)
     .join("");

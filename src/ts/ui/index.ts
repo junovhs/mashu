@@ -2,21 +2,21 @@ import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo, ScanData } from "../types/index.js";
 import { filterScanData, formatBytes } from "../filesystem.js";
 import { displayGlobalStats, generateTextReportAsync } from "./stats.js";
+import { setPretextText, syncPretextTree } from "./pretext.js";
 import { closeViewer } from "./viewer.js";
 
 // Export everything so app.ts can find them
 export * from "./layout.js";
 export * from "./modals.js";
+export * from "./pretext.js";
 export * from "./stats.js";
 export * from "./tree.js";
 export * from "./viewer.js";
 
-let reportRefreshToken = 0;
 let cachedReportKey: string | null = null;
 let cachedReportText: string | null = null;
 let pendingReportKey: string | null = null;
 let pendingReportPromise: Promise<string> | null = null;
-let scheduledReportWarmupId: number | null = null;
 
 export function populateElements(): void {
   const ids = [
@@ -63,9 +63,10 @@ export function populateElements(): void {
 
 export function showNotification(message: string, duration = 3000): void {
   const note = document.createElement("div");
-  note.className = "notification";
-  note.textContent = message;
+  note.className = "notification pretext-flow";
+  note.dataset.pretext = "";
   document.body.appendChild(note);
+  setPretextText(note, message);
   setTimeout(() => {
     note.classList.add("fade-out");
     setTimeout(() => note.remove(), 500);
@@ -82,20 +83,19 @@ function getIdleReportMessage(): string {
 
 export function resetUIForProcessing(message = "Processing..."): void {
   if (elements.loader) {
-    elements.loader.textContent = message;
+    setPretextText(elements.loader as HTMLElement, message);
     elements.loader.classList.add("visible");
   }
   if (elements.treeContainer) elements.treeContainer.innerHTML = "";
   if (elements.textOutput) {
-    elements.textOutput.className = "report-placeholder";
-    elements.textOutput.textContent = getIdleReportMessage();
+    renderReportPlaceholder(getIdleReportMessage());
   }
   closeViewer();
 }
 
 export function showFailedUI(message: string): void {
   if (elements.loader) {
-    elements.loader.textContent = message;
+    setPretextText(elements.loader as HTMLElement, message);
     elements.loader.classList.add("error");
   }
 }
@@ -140,7 +140,6 @@ export function refreshAllUI(): void {
   performance.mark("mashu:refresh-ui:start");
   displayGlobalStats(data);
   renderVisualReport(data);
-  queueReportWarmup(data);
   measurePerformance(
     "refresh-ui",
     "mashu:refresh-ui:start",
@@ -220,38 +219,6 @@ function getReportKey(data: ScanData): string {
   ].join("|");
 }
 
-function queueReportWarmup(data: ScanData): void {
-  const reportKey = getReportKey(data);
-
-  if (scheduledReportWarmupId !== null) {
-    window.clearTimeout(scheduledReportWarmupId);
-    scheduledReportWarmupId = null;
-  }
-
-  if (cachedReportKey === reportKey && cachedReportText !== null) {
-    return;
-  }
-
-  if (pendingReportKey === reportKey && pendingReportPromise) {
-    return;
-  }
-
-  const token = ++reportRefreshToken;
-  scheduledReportWarmupId = window.setTimeout(() => {
-    scheduledReportWarmupId = null;
-    void ensureReportText(data, reportKey).then(() => {
-      const currentData = getActiveScanData();
-      if (
-        token !== reportRefreshToken ||
-        !currentData ||
-        getReportKey(currentData) !== reportKey
-      ) {
-        return;
-      }
-    });
-  }, 250);
-}
-
 function renderVisualReport(data: ScanData): void {
   if (!elements.textOutput || !data.directoryData) return;
 
@@ -265,8 +232,9 @@ function renderVisualReport(data: ScanData): void {
   visual.className = "report-visual";
 
   const copyHint = document.createElement("p");
-  copyHint.className = "report-copy-hint";
-  copyHint.textContent = "Rendered view for reading.";
+  copyHint.className = "report-copy-hint pretext-flow";
+  copyHint.dataset.pretext = "";
+  setPretextText(copyHint, "Rendered view for reading.");
 
   const tree = document.createElement("ul");
   tree.className = "report-tree";
@@ -275,6 +243,7 @@ function renderVisualReport(data: ScanData): void {
   visual.appendChild(copyHint);
   visual.appendChild(tree);
   host.appendChild(visual);
+  syncPretextTree(host);
 }
 
 async function ensureReportText(
@@ -316,6 +285,22 @@ async function ensureReportText(
     });
 
   return pendingReportPromise;
+}
+
+function renderReportPlaceholder(text: string): void {
+  if (!elements.textOutput) return;
+
+  const host = elements.textOutput as HTMLElement;
+  host.className = "report-placeholder";
+  host.replaceChildren();
+
+  const copy = document.createElement("div");
+  copy.className = "report-placeholder-copy pretext-flow";
+  copy.dataset.pretext = "";
+  copy.dataset.pretextWhiteSpace = "pre-wrap";
+  host.appendChild(copy);
+
+  setPretextText(copy, text);
 }
 
 function appendVisualTreeNode(

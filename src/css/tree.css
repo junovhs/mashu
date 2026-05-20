@@ -20,7 +20,7 @@
 
 .item-line {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	padding: 3px 12px;
 	cursor: pointer;
 	transition: background 0.1s, box-shadow 0.1s;
@@ -97,13 +97,14 @@
 }
 
 .name {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	flex-grow: 1;
+	white-space: pre-wrap;
+	overflow: visible;
+	text-overflow: clip;
+	flex: 1 1 160px;
 	color: var(--text2);
 	font-size: 12px;
 	line-height: 1.2;
+	min-width: 0;
 }
 
 li.folder > .item-line > .name {
@@ -118,10 +119,12 @@ li.folder > .item-line > .name {
 	color: var(--text3);
 	margin-left: auto;
 	padding-left: 6px;
-	white-space: nowrap;
-	flex-shrink: 0;
+	white-space: pre-wrap;
+	flex: 0 1 120px;
 	font-family: var(--font-main);
 	line-height: 1.2;
+	text-align: right;
+	min-width: 0;
 }
 
 .item-line:hover .stats { color: var(--text2); }
