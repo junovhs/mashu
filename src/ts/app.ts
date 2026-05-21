@@ -13,7 +13,7 @@ import { downloadZip, exportCombined } from "./features.js";
 import type { ScanAggregator } from "./filesystem.js";
 import { formatBytes, initTypeData, scanDir, scanFileList } from "./filesystem.js";
 import { appState, elements } from "./state.js";
-import type { FolderInfo, ScanData } from "./types/index.js";
+import type { FolderInfo, ScanData, WorkerOutboundMessage } from "./types/index.js";
 import {
   closeViewer,
   copyCurrentReport,
@@ -578,6 +578,30 @@ function logPerfMeasure(name: string, startMark: string, endMark: string): void 
   }
 }
 
+let scanWorker: Worker | null = null;
+
+function initWorker(): void {
+  try {
+    scanWorker = new Worker(
+      new URL("./workers/scan.worker.ts", import.meta.url),
+      { type: "module" },
+    );
+    scanWorker.addEventListener("message", (event: MessageEvent<WorkerOutboundMessage>) => {
+      const msg = event.data;
+      if (msg.type === "pong") {
+        console.info("[worker] ready");
+      } else if (msg.type === "scan-result") {
+        console.info(`[worker] scan-result batchId=${msg.batchId} ok=${msg.ok}`);
+      }
+    });
+    scanWorker.addEventListener("error", (e) => {
+      console.warn("[worker] error:", e.message);
+    });
+  } catch (e) {
+    console.warn("[worker] could not start, running without worker:", e);
+  }
+}
+
 async function init() {
   initLayout();
   populateElements();
@@ -585,6 +609,7 @@ async function init() {
   initSidebarResizer();
   initPretextText();
   setupHiddenInput();
+  initWorker();
 
   // Load filetype data
   try {
