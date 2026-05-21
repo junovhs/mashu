@@ -31,3 +31,7 @@ Desktop.ini
 **/.ishoo/*.local.toml
 **/.ishoo/cache/
 **/.ishoo/worktrees/
+
+# Rust build artifacts
+rust-core/target/
+rust-core/pkg/
