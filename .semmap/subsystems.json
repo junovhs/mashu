@@ -52,10 +52,10 @@
       "src/ts/utils/fs_utils.ts"
     ],
     "internal_edge_density": 0.55,
-    "external_callers": 17
+    "external_callers": 18
   },
   {
-    "name": "index-state",
+    "name": "index-viewer",
     "purpose": "Dense dependency cluster with 6 files.",
     "files": [
       "src/ts/app.ts",
@@ -66,11 +66,11 @@
       "src/ts/ui/viewer.ts"
     ],
     "interface_symbols": [
-      "AppState",
       "FileTypeData",
-      "FolderInfo",
       "ICONS",
-      "ScanData",
+      "SerializableFolderEntry",
+      "WorkerInboundMessage",
+      "WorkerOutboundMessage",
       "appState",
       "closeViewer",
       "elements",
@@ -85,7 +85,7 @@
       "src/ts/ui/viewer.ts"
     ],
     "internal_edge_density": 0.5333333333333333,
-    "external_callers": 29
+    "external_callers": 26
   },
   {
     "name": "data-filesystem",
@@ -102,6 +102,7 @@
       "formatBytes",
       "initTypeData",
       "isLikelyText",
+      "scanFileList",
       "sniffIsText"
     ],
     "hotspot_files": [
@@ -110,10 +111,10 @@
       "src/ts/utils/fs_utils.ts"
     ],
     "internal_edge_density": 0.5,
-    "external_callers": 18
+    "external_callers": 20
   },
   {
-    "name": "index-state-2",
+    "name": "index-state",
     "purpose": "Dense dependency cluster with 5 files.",
     "files": [
       "src/ts/state.ts",
@@ -123,11 +124,11 @@
       "src/ts/ui/tree.ts"
     ],
     "interface_symbols": [
-      "AppState",
       "FileTypeData",
-      "FolderInfo",
       "ICONS",
-      "ScanData",
+      "SerializableFolderEntry",
+      "WorkerInboundMessage",
+      "WorkerOutboundMessage",
       "appState",
       "elements"
     ],
@@ -138,10 +139,10 @@
       "src/ts/ui/tree.ts"
     ],
     "internal_edge_density": 0.5,
-    "external_callers": 26
+    "external_callers": 23
   },
   {
-    "name": "data-build",
+    "name": "data-file",
     "purpose": "Dense dependency cluster with 4 files.",
     "files": [
       "src/ts/app.ts",
@@ -150,18 +151,18 @@
       "src/ts/utils/crossbrowser_fs.ts"
     ],
     "interface_symbols": [
-      "AppState",
       "FileTypeData",
-      "FolderInfo",
-      "ScanData",
+      "SerializableFolderEntry",
       "VirtualDirectoryHandle",
+      "WorkerInboundMessage",
+      "WorkerOutboundMessage",
       "buildFromDropItem",
       "buildFromFileListAsync",
       "filterScanData",
       "initTypeData",
       "isLikelyText",
-      "showFolderPicker",
-      "sniffIsText"
+      "scanFileList",
+      "showFolderPicker"
     ],
     "hotspot_files": [
       "src/ts/filesystem.ts",
@@ -169,7 +170,7 @@
       "src/ts/utils/crossbrowser_fs.ts"
     ],
     "internal_edge_density": 0.5,
-    "external_callers": 25
+    "external_callers": 23
   },
   {
     "name": "state-index",
@@ -191,6 +192,21 @@
     ],
     "internal_edge_density": 0.5,
     "external_callers": 10
+  },
+  {
+    "name": "bg-core",
+    "purpose": "Dense dependency cluster with 3 files.",
+    "files": [
+      "rust-core/pkg/rust_core.js",
+      "rust-core/pkg/rust_core_bg.wasm.d.ts",
+      "src/ts/workers/scan.worker.ts"
+    ],
+    "interface_symbols": [],
+    "hotspot_files": [
+      "rust-core/pkg/rust_core_bg.wasm.d.ts"
+    ],
+    "internal_edge_density": 0.5,
+    "external_callers": 1
   },
   {
     "name": "index",
@@ -220,6 +236,7 @@
       "formatBytes",
       "initTypeData",
       "isLikelyText",
+      "scanFileList",
       "sniffIsText"
     ],
     "hotspot_files": [
@@ -228,6 +245,6 @@
       "src/ts/utils/result.ts"
     ],
     "internal_edge_density": 0.5,
-    "external_callers": 14
+    "external_callers": 16
   }
 ]

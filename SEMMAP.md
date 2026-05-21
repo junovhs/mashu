@@ -135,6 +135,9 @@ Generated semantic map.
 `package.json`
 Node.js package manifest.
 
+`rust-core/pkg/package.json`
+Node.js package manifest.
+
 `tsconfig.json`
 Configuration for tsconfig.
 
@@ -154,18 +157,37 @@ Implements filetypes functionality. data.
 Implements jszip.min functionality. [COUPLING:mixed] [BEHAVIOR:sync-primitives] [QUALITY:complex-flow,concurrency-heavy]
 Semantic: synchronized side-effecting
 
+`rust-core/pkg/rust_core.d.ts`
+Build a pure tree from a JSON array of SerializableEntry.
+Exports: SyncInitInput, InitOutput, __wbg_init, InitInput
+
+`rust-core/pkg/rust_core.js`
+Build a pure tree from a JSON array of SerializableEntry. [COUPLING:mixed] [BEHAVIOR:owns-state,async] [SURFACE:external-api] [QUALITY:complex-flow]
+Exports: build_tree_from_entries, compute_selection_state, init_tree_index, engine_version
+Semantic: async side-effecting stateful module with external API surface
+
+`rust-core/pkg/rust_core_bg.js`
+Returns the engine version string. [COUPLING:mixed] [BEHAVIOR:owns-state]
+Exports: __wbindgen_init_externref_table, __wbg_set_wasm, engine_version
+Semantic: side-effecting stateful module
+
+`rust-core/pkg/rust_core_bg.wasm.d.ts`
+Implements wbindgen externrefs. [HOTSPOT] [BEHAVIOR:owns-const-state] [QUALITY:undocumented]
+Exports: build_tree_from_entries, compute_selection_state, init_tree_index, engine_version
+Semantic: constant-owning module
+
 `src/ts/app.ts`
-Implements app functionality. [COUPLING:mixed] [BEHAVIOR:owns-state,async,logs-and-continues] [SURFACE:external-api] [QUALITY:complex-flow]
+Implements app functionality. [COUPLING:mixed] [BEHAVIOR:owns-state,async,logs-and-continues] [SURFACE:external-api] [QUALITY:complex-flow,concurrency-heavy]
 Semantic: async side-effecting stateful module with external API surface that logs and continues
 
 `src/ts/features.ts`
-Implements export combined. [COUPLING:mixed] [BEHAVIOR:persists,async]
+Implements download zip. [COUPLING:mixed] [BEHAVIOR:persists,async]
 Exports: downloadZip, exportCombined
 Semantic: async side-effecting adapter
 
 `src/ts/filesystem.ts`
 Implements scan aggregator. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async] [QUALITY:undocumented,complex-flow,concurrency-heavy]
-Exports: initTypeData, isLikelyText, sniffIsText, filterScanData
+Exports: isLikelyText, initTypeData, filterScanData, scanFileList
 Semantic: async side-effecting adapter
 
 `src/ts/global.d.ts`
@@ -197,12 +219,12 @@ Exports: generateTextReportAsync, displayGlobalStats
 Semantic: async side-effecting constant-owning module
 
 `src/ts/ui/tree.ts`
-Sets the selection by extension. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists] [QUALITY:undocumented]
-Exports: setSelectionByExtension, initTreeState, toggleAllFolders, setAllSelections
-Semantic: side-effecting adapter
+Sets the selection by extension. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,persists] [QUALITY:undocumented]
+Exports: applyRustSelectionState, setSelectionByExtension, toggleAllFolders, initTreeState
+Semantic: side-effecting stateful adapter
 
 `src/ts/ui/viewer.ts`
-Updates viewer. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
+Implements open file. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
 Exports: openFile, closeViewer, updateViewer
 Semantic: async side-effecting adapter that logs and continues
 
@@ -219,9 +241,13 @@ Exports: initTypeData, isLikelyText, sniffIsText, formatBytes
 Semantic: async side-effecting stateful adapter
 
 `src/ts/utils/result.ts`
-Implements Err functionality. [HOTSPOT] [COUPLING:pure] [BEHAVIOR:async] [QUALITY:undocumented]
+Implements to result. [HOTSPOT] [COUPLING:pure] [BEHAVIOR:async] [QUALITY:undocumented]
 Exports: toResult, None, Option, Some
 Semantic: async pure computation
+
+`src/ts/workers/scan.worker.ts`
+Implements scan.worker functionality. [COUPLING:mixed] [BEHAVIOR:owns-state,async,logs-and-continues] [QUALITY:complex-flow]
+Semantic: async side-effecting stateful module that logs and continues
 
 ## Layer 3 -- App / Entrypoints
 
@@ -256,8 +282,8 @@ Implements tree functionality. styles.
 Implements viewer functionality. styles.
 
 `src/ts/types/index.ts`
-Implements file type data. [HOTSPOT] [QUALITY:undocumented]
-Exports: FileTypeData, AppState, FolderInfo, ScanData
+Implements serializable folder entry. [HOTSPOT] [QUALITY:undocumented]
+Exports: WorkerInboundMessage, WorkerOutboundMessage, FileTypeData, SerializableFolderEntry
 
 `src/ts/ui/index.ts`
 Implements show notification. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,concurrency-heavy]
@@ -294,7 +320,7 @@ DependencyGraph:
     ImportedBy: [app.ts, stats.ts, ui/index.ts]
   types/index.ts:
     Imports: [crossbrowser_fs.ts]
-    ImportedBy: [app.ts, features.ts, filesystem.ts, state.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
+    ImportedBy: [app.ts, features.ts, filesystem.ts, scan.worker.ts, state.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
   ui/index.ts:
     Imports: [filesystem.ts, fs_utils.ts, layout.ts, modals.ts, pretext.ts, state.ts, stats.ts, tree.ts, types/index.ts, viewer.ts]
     ImportedBy: [app.ts, features.ts, viewer.ts]
@@ -328,8 +354,24 @@ DependencyGraph:
   result.ts:
     Imports: []
     ImportedBy: [filesystem.ts, fs_utils.ts]
+  scan.worker.ts:
+    Imports: [rust_core.js, rust_core_bg.wasm.d.ts, types/index.ts]
+    ImportedBy: []
   # --- Layer 3 -- App / Entrypoints ---
   app.css, components.css, dropoverlay.css, extensions.css, modals.css, report.css, stats.css, tree.css, viewer.css:
     Imports: []
     ImportedBy: [app.ts]
+  # --- Subproject -- rust-core/pkg ---
+  rust-core/pkg/package.json, rust_core.d.ts:
+    Imports: []
+    ImportedBy: []
+  rust_core.js:
+    Imports: [rust_core_bg.wasm.d.ts]
+    ImportedBy: [scan.worker.ts]
+  rust_core_bg.js:
+    Imports: [rust_core_bg.wasm.d.ts]
+    ImportedBy: []
+  rust_core_bg.wasm.d.ts:
+    Imports: []
+    ImportedBy: [rust_core.js, rust_core_bg.js, scan.worker.ts]
 ```

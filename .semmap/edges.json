@@ -81,6 +81,11 @@
   },
   {
     "from": "src/ts/features.ts",
+    "to": "src/ts/utils/fs_utils.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/features.ts",
     "to": "src/ts/state.ts",
     "kind": "import"
   },
@@ -210,6 +215,16 @@
     "kind": "import"
   },
   {
+    "from": "src/ts/workers/scan.worker.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/workers/scan.worker.ts",
+    "to": "rust-core/pkg/rust_core.js",
+    "kind": "import"
+  },
+  {
     "from": "src/ts/types/index.ts",
     "to": "src/ts/utils/crossbrowser_fs.ts",
     "kind": "import"
@@ -260,6 +275,16 @@
     "kind": "import"
   },
   {
+    "from": "rust-core/pkg/rust_core.js",
+    "to": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "kind": "call"
+  },
+  {
+    "from": "rust-core/pkg/rust_core_bg.js",
+    "to": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "kind": "call"
+  },
+  {
     "from": "src/ts/app.ts",
     "to": "src/ts/utils/crossbrowser_fs.ts",
     "kind": "call"
@@ -271,7 +296,7 @@
   },
   {
     "from": "src/ts/app.ts",
-    "to": "src/ts/types/index.ts",
+    "to": "src/ts/filesystem.ts",
     "kind": "call"
   },
   {
@@ -292,6 +317,11 @@
   {
     "from": "src/ts/app.ts",
     "to": "src/ts/utils/fs_utils.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/app.ts",
+    "to": "src/ts/types/index.ts",
     "kind": "call"
   },
   {
@@ -325,21 +355,6 @@
     "kind": "call"
   },
   {
-    "from": "src/ts/filesystem.ts",
-    "to": "src/ts/types/index.ts",
-    "kind": "call"
-  },
-  {
-    "from": "src/ts/state.ts",
-    "to": "src/ts/types/index.ts",
-    "kind": "call"
-  },
-  {
-    "from": "src/ts/ui/stats.ts",
-    "to": "src/ts/types/index.ts",
-    "kind": "call"
-  },
-  {
     "from": "src/ts/ui/stats.ts",
     "to": "src/ts/ui/pretext.ts",
     "kind": "call"
@@ -352,11 +367,6 @@
   {
     "from": "src/ts/ui/stats.ts",
     "to": "src/ts/ui/tree.ts",
-    "kind": "call"
-  },
-  {
-    "from": "src/ts/ui/tree.ts",
-    "to": "src/ts/types/index.ts",
     "kind": "call"
   },
   {
@@ -390,6 +400,16 @@
     "kind": "call"
   },
   {
+    "from": "src/ts/workers/scan.worker.ts",
+    "to": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/workers/scan.worker.ts",
+    "to": "src/ts/types/index.ts",
+    "kind": "call"
+  },
+  {
     "from": "src/ts/ui/index.ts",
     "to": "src/ts/ui/pretext.ts",
     "kind": "call"
@@ -402,11 +422,6 @@
   {
     "from": "src/ts/ui/index.ts",
     "to": "src/ts/ui/stats.ts",
-    "kind": "call"
-  },
-  {
-    "from": "src/ts/ui/index.ts",
-    "to": "src/ts/types/index.ts",
     "kind": "call"
   },
   {
