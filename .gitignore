@@ -32,6 +32,9 @@ Desktop.ini
 **/.ishoo/cache/
 **/.ishoo/worktrees/
 
+# Private files
+marketing.md
+
 # Rust build artifacts
 rust-core/target/
 rust-core/pkg/
