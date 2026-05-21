@@ -48,6 +48,8 @@ export interface AppState {
   currentViewingFile: FileInfo | null;
   viewerInstance: CodeMirror.Editor | null;
   isViewerActive: boolean;
+  scanWorker: Worker | null;
+  rustIndexReady: boolean;
 }
 
 export interface FileTypeData {
@@ -87,7 +89,8 @@ export type SerializableEntry = SerializableFileEntry | SerializableFolderEntry;
 
 export type WorkerInboundMessage =
   | { type: "ping" }
-  | { type: "scan-batch"; batchId: string; entries: SerializableEntry[] };
+  | { type: "scan-batch"; batchId: string; entries: SerializableEntry[] }
+  | { type: "compute-selection-state"; selectedFilePaths: string[] };
 
 // Pure tree nodes (no browser handles) — built by worker, verified on main thread
 export interface PureFileInfo {
@@ -114,4 +117,5 @@ export interface PureFolderInfo {
 export type WorkerOutboundMessage =
   | { type: "pong" }
   | { type: "scan-result"; batchId: string; ok: boolean }
-  | { type: "stats-ready"; batchId: string; tree: PureFolderInfo };
+  | { type: "stats-ready"; batchId: string; tree: PureFolderInfo; rustIndexReady: boolean }
+  | { type: "selection-state-ready"; selectedSubtreeCounts: Record<string, number>; selectedFolderPaths: string[] };

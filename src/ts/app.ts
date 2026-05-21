@@ -15,6 +15,7 @@ import { formatBytes, initTypeData, scanDir, scanFileList } from "./filesystem.j
 import { appState, elements } from "./state.js";
 import type { FolderInfo, ScanData, SerializableEntry, SerializableFileEntry, SerializableFolderEntry, WorkerOutboundMessage } from "./types/index.js";
 import {
+  applyRustSelectionState,
   closeViewer,
   copyCurrentReport,
   disableUIControls,
@@ -630,19 +631,24 @@ function initWorker(): void {
       } else if (msg.type === "scan-result") {
         console.info(`[worker] scan-result batchId=${msg.batchId} ok=${msg.ok}`);
       } else if (msg.type === "stats-ready") {
+        appState.rustIndexReady = msg.rustIndexReady;
         const main = appState.fullScanData?.directoryData;
         const fileMatch = main ? msg.tree.fileCount === main.fileCount : null;
         const sizeMatch = main ? msg.tree.totalSize === main.totalSize : null;
         console.info(
           `[worker] stats-ready batchId=${msg.batchId}` +
           ` files=${msg.tree.fileCount}(parity=${fileMatch})` +
-          ` bytes=${msg.tree.totalSize}(parity=${sizeMatch})`,
+          ` bytes=${msg.tree.totalSize}(parity=${sizeMatch})` +
+          ` rustIndex=${msg.rustIndexReady}`,
         );
+      } else if (msg.type === "selection-state-ready") {
+        applyRustSelectionState(msg.selectedSubtreeCounts, msg.selectedFolderPaths);
       }
     });
     scanWorker.addEventListener("error", (e) => {
       console.warn("[worker] error:", e.message);
     });
+    appState.scanWorker = scanWorker;
   } catch (e) {
     console.warn("[worker] could not start, running without worker:", e);
   }

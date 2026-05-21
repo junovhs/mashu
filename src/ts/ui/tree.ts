@@ -484,8 +484,6 @@ function bindTreeInteractions(container: HTMLElement): void {
     if (!path) return;
 
     setSelectionForSubtree(path, target.checked);
-    refreshVisibleSelectionState();
-    notifySelectionChanged();
   });
 
   container.addEventListener("click", (event) => {
@@ -602,18 +600,25 @@ export function setSelectionByExtension(ext: string, selected: boolean): void {
 
   appState.treeNodesByPath.forEach((node) => {
     if (node.type === "file" && getFileExt(node.name) === ext) {
-      applySelectionToNode(node, selected);
+      if (selected) appState.selectedPaths.add(node.path);
+      else appState.selectedPaths.delete(node.path);
     }
   });
 
-  appState.treeNodesByPath.forEach((node) => {
-    if (node.type === "folder") {
-      recomputeAncestorCounts(node.path);
-    }
-  });
-
-  refreshVisibleSelectionState();
-  notifySelectionChanged();
+  if (appState.scanWorker && appState.rustIndexReady) {
+    postSelectionUpdate();
+  } else {
+    appState.treeNodesByPath.forEach((node) => {
+      if (node.type === "file" && getFileExt(node.name) === ext) {
+        appState.selectedSubtreeCounts.set(node.path, selected ? 1 : 0);
+      }
+    });
+    appState.treeNodesByPath.forEach((node) => {
+      if (node.type === "folder") recomputeAncestorCounts(node.path);
+    });
+    refreshVisibleSelectionState();
+    notifySelectionChanged();
+  }
 }
 
 function toggleExpanded(path: string): void {
@@ -697,8 +702,16 @@ function getSelectionState(path: string): SelectionState {
 function setSelectionForSubtree(path: string, selected: boolean): void {
   const node = appState.treeNodesByPath.get(path);
   if (!node) return;
-  applySelectionToNode(node, selected);
-  recomputeAncestorCounts(path);
+
+  if (appState.scanWorker && appState.rustIndexReady) {
+    applyFileSelectionInSubtree(node, selected);
+    postSelectionUpdate();
+  } else {
+    applySelectionToNode(node, selected);
+    recomputeAncestorCounts(path);
+    refreshVisibleSelectionState();
+    notifySelectionChanged();
+  }
 }
 
 function applySelectionToNode(node: TreeNode, selected: boolean): void {
@@ -721,6 +734,45 @@ function applySelectionToNode(node: TreeNode, selected: boolean): void {
     node.path,
     selected ? appState.subtreeNodeCounts.get(node.path) || 0 : 0,
   );
+}
+
+function applyFileSelectionInSubtree(node: TreeNode, selected: boolean): void {
+  if (node.type === "file") {
+    if (selected) appState.selectedPaths.add(node.path);
+    else appState.selectedPaths.delete(node.path);
+    return;
+  }
+  for (const child of node.children) {
+    applyFileSelectionInSubtree(child, selected);
+  }
+}
+
+function postSelectionUpdate(): void {
+  const worker = appState.scanWorker;
+  if (!worker) return;
+  const filePaths: string[] = [];
+  appState.selectedPaths.forEach((p) => {
+    if (appState.treeNodesByPath.get(p)?.type === "file") filePaths.push(p);
+  });
+  worker.postMessage({ type: "compute-selection-state", selectedFilePaths: filePaths });
+}
+
+export function applyRustSelectionState(
+  selectedSubtreeCounts: Record<string, number>,
+  selectedFolderPaths: string[],
+): void {
+  appState.selectedSubtreeCounts.clear();
+  for (const [path, count] of Object.entries(selectedSubtreeCounts)) {
+    appState.selectedSubtreeCounts.set(path, count);
+  }
+  appState.treeNodesByPath.forEach((node, path) => {
+    if (node.type === "folder") appState.selectedPaths.delete(path);
+  });
+  for (const path of selectedFolderPaths) {
+    appState.selectedPaths.add(path);
+  }
+  refreshVisibleSelectionState();
+  notifySelectionChanged();
 }
 
 function recomputeAncestorCounts(path: string): void {
@@ -771,16 +823,27 @@ export function setAllSelections(selected: boolean): void {
   appState.selectedPaths.clear();
   appState.selectedSubtreeCounts.clear();
 
-  if (selected) {
-    applySelectionToNode(root, true);
+  if (appState.scanWorker && appState.rustIndexReady) {
+    if (selected) {
+      appState.treeNodesByPath.forEach((node) => {
+        if (node.type === "file") appState.selectedPaths.add(node.path);
+      });
+      postSelectionUpdate();
+    } else {
+      refreshVisibleSelectionState();
+      notifySelectionChanged();
+    }
   } else {
-    appState.treeNodesByPath.forEach((node) => {
-      appState.selectedSubtreeCounts.set(node.path, 0);
-    });
+    if (selected) {
+      applySelectionToNode(root, true);
+    } else {
+      appState.treeNodesByPath.forEach((node) => {
+        appState.selectedSubtreeCounts.set(node.path, 0);
+      });
+    }
+    refreshVisibleSelectionState();
+    notifySelectionChanged();
   }
-
-  refreshVisibleSelectionState();
-  notifySelectionChanged();
 }
 
 export function toggleAllFolders(collapse: boolean): void {
