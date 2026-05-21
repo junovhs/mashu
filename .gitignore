@@ -32,7 +32,7 @@ Desktop.ini
 **/.ishoo/cache/
 **/.ishoo/worktrees/
 
-# Private files
+# Private files (local only)
 marketing.md
 
 # Rust build artifacts
