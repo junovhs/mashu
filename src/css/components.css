@@ -434,23 +434,28 @@
 /* --- MAIN PANEL HEADER --- */
 .panel-header {
   flex-shrink: 0;
-  padding: 0 0 10px;
+  padding: 2px 0 12px;
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
 }
 .panel-header h1 {
   margin: 0;
   font-family: var(--font-disp);
-  font-size: 24px;
+  font-size: 25px;
   font-weight: 600;
   letter-spacing: -0.018em;
   color: var(--ink);
+  flex: 0 0 auto;
 }
 .panel-sub {
   margin: 0;
   font-size: 12px;
   color: var(--ink-3);
+  text-align: right;
+  max-width: 430px;
+  line-height: 1.55;
 }
 
 /* --- TABS --- */

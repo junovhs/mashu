@@ -127,7 +127,7 @@ export function initLayout(): void {
             <div id="textOutputContainerOuter" class="content-panel">
               <div class="panel-header">
                 <h1 id="reportTitle" class="pretext-flow" data-pretext>Project map</h1>
-                <p class="panel-sub pretext-flow" data-pretext>Plain-text map of the current view — ready to copy or save.</p>
+                <p id="reportDescription" class="panel-sub pretext-flow" data-pretext>Plain-text map of everything in scope. Ready to copy or save.</p>
               </div>
               <div id="textOutput" class="report-placeholder">
                 <div class="report-placeholder-copy pretext-flow" data-pretext data-pretext-white-space="pre-wrap">// Load a folder to start.

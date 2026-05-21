@@ -150,7 +150,15 @@ export function displayGlobalStats(data: ScanData): void {
   // Update tabs/title to reflect scope
   const reportTitle = document.getElementById("reportTitle");
   if (reportTitle) {
-    reportTitle.textContent = isSelection ? `${directoryData.name} — selection` : directoryData.name;
+    setPretextText(reportTitle, directoryData.name);
+  }
+
+  const reportDescription = document.getElementById("reportDescription");
+  if (reportDescription) {
+    setPretextText(
+      reportDescription,
+      "Plain-text map of everything in scope. Ready to copy or save.",
+    );
   }
 
   syncPretextTree(document.getElementById("rightStatsPanel") ?? document);

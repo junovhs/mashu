@@ -229,6 +229,7 @@ function renderVisualReport(data: ScanData): void {
 
   const host = elements.textOutput as HTMLElement;
   const root = data.directoryData;
+  const isSelection = appState.selectedPaths.size > 0;
   host.className = "report-visual-host";
   host.replaceChildren();
   host.removeAttribute("title");
@@ -236,16 +237,34 @@ function renderVisualReport(data: ScanData): void {
   const visual = document.createElement("div");
   visual.className = "report-visual";
 
-  const copyHint = document.createElement("p");
-  copyHint.className = "report-copy-hint pretext-flow";
-  copyHint.dataset.pretext = "";
-  setPretextText(copyHint, "Rendered view for reading.");
+  const summaryRow = document.createElement("div");
+  summaryRow.className = "report-summary-row";
+
+  const projectMeta = document.createElement("div");
+  projectMeta.className = "report-summary-meta pretext-flow";
+  projectMeta.dataset.pretext = "";
+  setPretextText(
+    projectMeta,
+    `project ${root.name}    files ${data.allFilesList.length}    size ${formatBytes(root.totalSize)}`,
+  );
+
+  const scopeMeta = document.createElement("div");
+  scopeMeta.className = "report-summary-scope pretext-flow";
+  scopeMeta.dataset.pretext = "";
+  setPretextText(scopeMeta, `scope ${isSelection ? "SELECTION" : "FULL"}`);
+
+  const divider = document.createElement("div");
+  divider.className = "report-summary-divider";
+
+  summaryRow.appendChild(projectMeta);
+  summaryRow.appendChild(scopeMeta);
 
   const tree = document.createElement("ul");
   tree.className = "report-tree";
   appendVisualTreeNode(root, tree, true, [], true);
 
-  visual.appendChild(copyHint);
+  visual.appendChild(summaryRow);
+  visual.appendChild(divider);
   visual.appendChild(tree);
   host.appendChild(visual);
   syncPretextTree(host);
