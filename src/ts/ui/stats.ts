@@ -145,7 +145,7 @@ export function displayGlobalStats(data: ScanData): void {
   renderExtFilterPills(sortedTypes);
 
   // Side-head selected counter + bottom bar info
-  updateAncillaryUI(allFilesList.length, allFoldersList.length, directoryData.totalSize, isSelection);
+  updateAncillaryUI(allFilesList.length, directoryData.totalSize, isSelection);
 
   // Update tabs/title to reflect scope
   const reportTitle = document.getElementById("reportTitle");
@@ -207,7 +207,6 @@ function renderCompositionBar(
 
 function updateAncillaryUI(
   fileCount: number,
-  folderCount: number,
   size: number,
   isSelection: boolean,
 ): void {
@@ -286,7 +285,6 @@ function renderExtFilterPills(
   pills.innerHTML = sortedTypes
     .slice(0, 12)
     .map(([ext, d]) => {
-      const kind = extToKind(ext);
       return `
         <button class="ext-filter-pill" data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}" title="Toggle selection for every ${ext || "[no extension]"} file in the tree">
           <span class="pill-label pretext-flow" data-pretext>${ext || "[none]"}</span>
