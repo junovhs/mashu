@@ -1,4 +1,5 @@
-import { filterScanData, isLikelyText, readFile, sniffIsText } from "./filesystem.js";
+import { filterScanData, isLikelyText, readFile } from "./filesystem.js";
+import { sniffIsText } from "./utils/fs_utils.js";
 import { appState } from "./state.js";
 import type { FileInfo } from "./types/index.js";
 import { showNotification } from "./ui/index.js";
@@ -17,16 +18,14 @@ export async function exportCombined() {
     return;
   }
 
-  const candidates = activeData.allFilesList;
-  const files = await getTextFiles(candidates);
-  if (files.length === 0) return showNotification("No text files to export.", 3000);
+  const manifest = await buildManifest(activeData.allFilesList);
+  if (manifest.length === 0) return showNotification("No text files to export.", 3000);
 
-  showNotification("Preparing file...", 2000);
-  const content = await buildExport(files);
-  downloadBlob(
-    content,
-    `${appState.fullScanData?.directoryData?.name}_export.txt`,
-  );
+  const label = manifest.length === 1 ? "1 file" : `${manifest.length} files`;
+  showNotification(`Exporting ${label}…`, 4000);
+  const blob = await assembleExportBlob(manifest);
+  downloadBlob(blob, `${appState.fullScanData?.directoryData?.name}_export.txt`);
+  showNotification("Export ready.", 2500);
 }
 
 function getExportData() {
@@ -36,7 +35,7 @@ function getExportData() {
   return filterScanData(appState.fullScanData, new Set(appState.selectedPaths));
 }
 
-async function getTextFiles(candidates: FileInfo[]) {
+async function buildManifest(candidates: FileInfo[]): Promise<FileInfo[]> {
   const tests = candidates.map(
     async (f) => isLikelyText(f.path) || (await sniffIsText(f.entryHandle)),
   );
@@ -44,19 +43,28 @@ async function getTextFiles(candidates: FileInfo[]) {
   return candidates.filter((_, i) => results[i]);
 }
 
-async function buildExport(files: FileInfo[]) {
-  let txt = `// MASHU COMBINED TEXT EXPORT //\n// Project: ${appState.fullScanData?.directoryData?.name}\n// Generated: ${new Date().toISOString()}\n\n`;
-  for (const file of files) {
+async function assembleExportBlob(manifest: FileInfo[]): Promise<Blob> {
+  const parts: BlobPart[] = [
+    `// MASHU COMBINED TEXT EXPORT //\n// Project: ${appState.fullScanData?.directoryData?.name}\n// Generated: ${new Date().toISOString()}\n\n`,
+  ];
+
+  for (let i = 0; i < manifest.length; i++) {
+    const file = manifest[i];
     const res = await readFile(file.entryHandle);
     if (res.ok) {
-      txt += `// ===== START OF FILE: ${file.path} ===== //\n`;
-      txt += res.value + (res.value.endsWith("\n") ? "" : "\n");
-      txt += `// ===== END OF FILE: ${file.path} ===== //\n\n\n`;
+      parts.push(`// ===== START OF FILE: ${file.path} ===== //\n`);
+      parts.push(res.value.endsWith("\n") ? res.value : res.value + "\n");
+      parts.push(`// ===== END OF FILE: ${file.path} ===== //\n\n\n`);
     } else {
-      txt += `// ERROR READING: ${file.path}: ${res.error.message} //\n\n`;
+      parts.push(`// ERROR READING: ${file.path}: ${res.error.message} //\n\n`);
+    }
+
+    if ((i + 1) % 50 === 0 && i + 1 < manifest.length) {
+      showNotification(`Exporting… (${i + 1}/${manifest.length})`, 2000);
     }
   }
-  return txt;
+
+  return new Blob(parts, { type: "text/plain;charset=utf-8" });
 }
 
 function downloadBlob(content: string | Blob, filename: string) {

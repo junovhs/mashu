@@ -1,4 +1,4 @@
-import { appState, elements, ICONS } from "../state.js";
+import { appState, ICONS } from "../state.js";
 import type { FileInfo, FolderInfo } from "../types/index.js";
 import { formatBytes } from "../utils/fs_utils.js";
 import { setPretextText } from "./pretext.js";
@@ -203,7 +203,67 @@ const SPECIAL_FILE_KINDS = new Map<string, FileIconKind>([
   ["vite.config.ts", "code"],
 ]);
 
-const boundTreeContainers = new WeakSet<HTMLElement>();
+// ---------------------------------------------------------------------------
+// Virtual scroll state
+// ---------------------------------------------------------------------------
+
+interface FlatRow {
+  node: FileInfo | FolderInfo;
+  depth: number;
+}
+
+const ROW_HEIGHT = 32;
+const OVERSCAN = 8;
+
+let flatRows: FlatRow[] = [];
+let vScrollContainer: HTMLElement | null = null;
+let vTopSpacer: HTMLDivElement | null = null;
+let vRowWindow: HTMLDivElement | null = null;
+let vBottomSpacer: HTMLDivElement | null = null;
+
+function onTreeScroll(): void {
+  if (vScrollContainer) {
+    renderVisibleWindow(vScrollContainer.scrollTop);
+  }
+}
+
+function flattenVisible(
+  node: FileInfo | FolderInfo,
+  query: string,
+  depth: number,
+  out: FlatRow[],
+): void {
+  if (query && !treeMatchesQuery(node, query)) return;
+  out.push({ node, depth });
+  if (node.type === "folder" && shouldRenderChildren(node, query)) {
+    for (const child of node.children) {
+      flattenVisible(child, query, depth + 1, out);
+    }
+  }
+}
+
+function renderVisibleWindow(scrollTop: number): void {
+  if (!vRowWindow || !vTopSpacer || !vBottomSpacer || !vScrollContainer) return;
+
+  const viewHeight = vScrollContainer.clientHeight || 600;
+  const totalRows = flatRows.length;
+
+  const firstVisible = Math.floor(scrollTop / ROW_HEIGHT);
+  const start = Math.max(0, firstVisible - OVERSCAN);
+  const end = Math.min(totalRows, firstVisible + Math.ceil(viewHeight / ROW_HEIGHT) + OVERSCAN);
+
+  vTopSpacer.style.height = `${start * ROW_HEIGHT}px`;
+  vBottomSpacer.style.height = `${Math.max(0, totalRows - end) * ROW_HEIGHT}px`;
+
+  vRowWindow.innerHTML = "";
+  for (let i = start; i < end; i++) {
+    vRowWindow.appendChild(createRowElement(flatRows[i]));
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Public tree API
+// ---------------------------------------------------------------------------
 
 export function initTreeState(
   root: FolderInfo,
@@ -225,102 +285,79 @@ export function initTreeState(
   }
 }
 
-export function renderTree(
-  node: FolderInfo | FileInfo,
-  container: HTMLElement,
-  isRoot = true,
-): void {
-  const searchQuery = appState.treeSearchQuery.trim().toLowerCase();
-  if (isRoot) {
-    bindTreeInteractions(container);
-  }
+const boundTreeContainers = new WeakSet<HTMLElement>();
 
-  const ul = document.createElement("ul");
-  if (isRoot) {
-    ul.style.paddingLeft = "0";
-  }
+export function renderTree(root: FolderInfo, container: HTMLElement): void {
+  const query = appState.treeSearchQuery.trim().toLowerCase();
+
+  vScrollContainer = container;
+  container.removeEventListener("scroll", onTreeScroll);
+
+  const topSpacer = document.createElement("div");
+  const rowWindow = document.createElement("div");
+  const bottomSpacer = document.createElement("div");
+
+  vTopSpacer = topSpacer;
+  vRowWindow = rowWindow;
+  vBottomSpacer = bottomSpacer;
+
+  container.innerHTML = "";
+  container.appendChild(topSpacer);
+  container.appendChild(rowWindow);
+  container.appendChild(bottomSpacer);
+
+  flatRows = [];
+  flattenVisible(root, query, 0, flatRows);
+  renderVisibleWindow(container.scrollTop);
+
+  bindTreeInteractions(container);
+  container.addEventListener("scroll", onTreeScroll, { passive: true });
+}
+
+// ---------------------------------------------------------------------------
+// Row construction
+// ---------------------------------------------------------------------------
+
+function createRowElement(row: FlatRow): HTMLDivElement {
+  const { node, depth } = row;
+  const div = document.createElement("div");
+  div.style.paddingLeft = `${depth * 14}px`;
+  div.dataset.path = node.path;
 
   if (node.type === "folder") {
-    const li = createFolderLi(node);
-    ul.appendChild(li);
-
-    if (shouldRenderChildren(node, searchQuery)) {
-      const childUl = document.createElement("ul");
-      for (const child of node.children) {
-        renderTreeNode(child, childUl, searchQuery);
-      }
-      li.appendChild(childUl);
+    const selectionState = getSelectionState(node.path);
+    div.className = "tree-row tree-row--folder";
+    div.dataset.selected = String(selectionState !== "none");
+    if (!appState.expandedFolderPaths.has(node.path)) {
+      div.classList.add("collapsed");
     }
+    div.appendChild(createFolderItemLine(node, selectionState));
   } else {
-    ul.appendChild(createFileLi(node));
+    const ext = getFileExt(node.name);
+    div.className = "tree-row tree-row--file";
+    div.dataset.ext = ext;
+    div.dataset.selected = String(appState.selectedPaths.has(node.path));
+    div.appendChild(createFileItemLine(node));
   }
 
-  container.appendChild(ul);
-
-  if (isRoot) {
-    applyActiveSelectionFilterToVisibleTree();
-  }
-}
-
-function renderTreeNode(
-  node: FolderInfo | FileInfo,
-  parentUl: HTMLElement,
-  searchQuery = "",
-): void {
-  if (searchQuery && !treeMatchesQuery(node, searchQuery)) {
-    return;
-  }
-
-  if (node.type === "folder") {
-    const li = createFolderLi(node);
-    parentUl.appendChild(li);
-
-    if (shouldRenderChildren(node, searchQuery)) {
-      const childUl = document.createElement("ul");
-      for (const child of node.children) {
-        renderTreeNode(child, childUl, searchQuery);
-      }
-      li.appendChild(childUl);
+  const selectedPaths = appState.selectedPaths;
+  if (selectedPaths.size > 0) {
+    const inSelection =
+      node.type === "folder"
+        ? (appState.selectedSubtreeCounts.get(node.path) || 0) > 0
+        : selectedPaths.has(node.path);
+    if (!inSelection) {
+      div.classList.add("dimmed-uncommitted");
     }
-  } else {
-    parentUl.appendChild(createFileLi(node));
   }
+
+  return div;
 }
 
-function shouldRenderChildren(folder: FolderInfo, searchQuery: string): boolean {
-  if (searchQuery) {
-    return folder.children.some((child) => treeMatchesQuery(child, searchQuery));
-  }
-
-  return appState.expandedFolderPaths.has(folder.path);
-}
-
-function treeMatchesQuery(node: FolderInfo | FileInfo, searchQuery: string): boolean {
-  if (!searchQuery) return true;
-
-  const haystack = `${node.name} ${node.path}`.toLowerCase();
-  if (haystack.includes(searchQuery)) {
-    return true;
-  }
-
-  if (node.type === "folder") {
-    return node.children.some((child) => treeMatchesQuery(child, searchQuery));
-  }
-
-  return false;
-}
-
-function createFolderLi(folder: FolderInfo): HTMLLIElement {
-  const selectionState = getSelectionState(folder.path);
-  const li = document.createElement("li");
-  li.className = "folder";
-  li.dataset.path = folder.path;
-  li.dataset.selected = String(selectionState !== "none");
-  li.classList.toggle(
-    "collapsed",
-    !appState.expandedFolderPaths.has(folder.path),
-  );
-
+function createFolderItemLine(
+  folder: FolderInfo,
+  selectionState: SelectionState,
+): HTMLDivElement {
   const itemLine = document.createElement("div");
   itemLine.className = "item-line";
 
@@ -336,8 +373,8 @@ function createFolderLi(folder: FolderInfo): HTMLLIElement {
   const toggle = document.createElement("span");
   toggle.className = "folder-toggle";
   toggle.textContent = appState.expandedFolderPaths.has(folder.path)
-    ? "\u25bc"
-    : "\u25b6";
+    ? "▼"
+    : "▶";
 
   const icon = document.createElement("span");
   icon.className = "icon icon--folder";
@@ -362,9 +399,172 @@ function createFolderLi(folder: FolderInfo): HTMLLIElement {
   itemLine.appendChild(createSizeBar(folder.totalSize));
   itemLine.appendChild(stats);
 
-  li.appendChild(itemLine);
-  return li;
+  return itemLine;
 }
+
+function createFileItemLine(file: FileInfo): HTMLDivElement {
+  const iconKind = getFileIconKind(file);
+
+  const itemLine = document.createElement("div");
+  itemLine.className = "item-line";
+
+  const prefix = document.createElement("span");
+  prefix.className = "item-prefix";
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.className = "selector";
+  checkbox.checked = appState.selectedPaths.has(file.path);
+
+  const spacer = document.createElement("span");
+  spacer.className = "folder-toggle";
+  spacer.style.visibility = "hidden";
+  spacer.textContent = "▼";
+
+  const icon = document.createElement("span");
+  icon.className = `icon icon--file icon--${iconKind}`;
+  icon.innerHTML = FILE_ICON_MARKUP[iconKind];
+
+  prefix.appendChild(checkbox);
+  prefix.appendChild(spacer);
+  prefix.appendChild(icon);
+
+  const name = document.createElement("span");
+  name.className = "name pretext-flow";
+  name.dataset.pretext = "";
+  setPretextText(name, file.name);
+
+  const stats = document.createElement("span");
+  stats.className = "stats pretext-flow";
+  stats.dataset.pretext = "";
+  setPretextText(stats, formatBytes(file.size));
+
+  itemLine.appendChild(prefix);
+  itemLine.appendChild(name);
+  itemLine.appendChild(createSizeBar(file.size));
+  itemLine.appendChild(stats);
+
+  return itemLine;
+}
+
+function createSizeBar(size: number): HTMLSpanElement {
+  const root = appState.fullScanData?.directoryData;
+  const denom = root?.totalSize ?? 0;
+  let ratio = 0;
+  if (denom > 0 && size > 0) {
+    // Square-root scaling keeps tiny files visible while letting big folders fill the bar.
+    ratio = Math.sqrt(size / denom);
+  }
+  ratio = Math.max(0.04, Math.min(1, ratio));
+  const bar = document.createElement("span");
+  bar.className = "sizebar";
+  const fill = document.createElement("i");
+  fill.style.width = `${(ratio * 100).toFixed(1)}%`;
+  bar.appendChild(fill);
+  return bar;
+}
+
+// ---------------------------------------------------------------------------
+// Interaction binding
+// ---------------------------------------------------------------------------
+
+function bindTreeInteractions(container: HTMLElement): void {
+  if (boundTreeContainers.has(container)) return;
+  boundTreeContainers.add(container);
+
+  container.addEventListener("change", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement)) return;
+    if (!target.classList.contains("selector")) return;
+
+    const row = target.closest(".tree-row");
+    if (!(row instanceof HTMLElement)) return;
+
+    const path = row.dataset.path;
+    if (!path) return;
+
+    setSelectionForSubtree(path, target.checked);
+  });
+
+  container.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (target.closest(".selector")) return;
+
+    const row = target.closest(".tree-row");
+    if (!(row instanceof HTMLElement)) return;
+
+    const path = row.dataset.path;
+    if (!path) return;
+
+    if (row.classList.contains("tree-row--folder")) {
+      if (event.altKey) {
+        setExpandedForSubtree(path, !appState.expandedFolderPaths.has(path));
+      } else {
+        toggleExpanded(path);
+      }
+      rerenderVisibleTree();
+      return;
+    }
+
+    const node = appState.treeNodesByPath.get(path);
+    if (node?.type === "file") {
+      console.log("[tree] Click on file:", node.path);
+      void openFile(node);
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Rerender helpers
+// ---------------------------------------------------------------------------
+
+function rerenderVisibleTree(): void {
+  const root = appState.fullScanData?.directoryData;
+  if (!root || !vScrollContainer || !vRowWindow || !vTopSpacer || !vBottomSpacer) return;
+
+  const query = appState.treeSearchQuery.trim().toLowerCase();
+  flatRows = [];
+  flattenVisible(root, query, 0, flatRows);
+  renderVisibleWindow(vScrollContainer.scrollTop);
+}
+
+function refreshVisibleSelectionState(): void {
+  if (!vScrollContainer) return;
+  renderVisibleWindow(vScrollContainer.scrollTop);
+}
+
+function notifySelectionChanged(): void {
+  window.dispatchEvent(new CustomEvent("mashu:selection-changed"));
+}
+
+// ---------------------------------------------------------------------------
+// Tree query helpers
+// ---------------------------------------------------------------------------
+
+function shouldRenderChildren(folder: FolderInfo, searchQuery: string): boolean {
+  if (searchQuery) {
+    return folder.children.some((child) => treeMatchesQuery(child, searchQuery));
+  }
+  return appState.expandedFolderPaths.has(folder.path);
+}
+
+function treeMatchesQuery(
+  node: FolderInfo | FileInfo,
+  searchQuery: string,
+): boolean {
+  if (!searchQuery) return true;
+  const haystack = `${node.name} ${node.path}`.toLowerCase();
+  if (haystack.includes(searchQuery)) return true;
+  if (node.type === "folder") {
+    return node.children.some((child) => treeMatchesQuery(child, searchQuery));
+  }
+  return false;
+}
+
+// ---------------------------------------------------------------------------
+// Icon helpers
+// ---------------------------------------------------------------------------
 
 function getFileExt(filename: string): string {
   const dotIdx = filename.lastIndexOf(".");
@@ -390,74 +590,9 @@ function getFileIconKind(file: FileInfo): FileIconKind {
   return "doc";
 }
 
-function createFileLi(file: FileInfo): HTMLLIElement {
-  const ext = getFileExt(file.name);
-  const iconKind = getFileIconKind(file);
-  const li = document.createElement("li");
-  li.className = "file";
-  li.dataset.path = file.path;
-  li.dataset.ext = ext;
-  li.dataset.selected = String(appState.selectedPaths.has(file.path));
-
-  const itemLine = document.createElement("div");
-  itemLine.className = "item-line";
-
-  const prefix = document.createElement("span");
-  prefix.className = "item-prefix";
-
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.className = "selector";
-  checkbox.checked = appState.selectedPaths.has(file.path);
-
-  const spacer = document.createElement("span");
-  spacer.className = "folder-toggle";
-  spacer.style.visibility = "hidden";
-  spacer.textContent = "\u25bc";
-
-  prefix.appendChild(checkbox);
-  prefix.appendChild(spacer);
-
-  const icon = document.createElement("span");
-  icon.className = `icon icon--file icon--${iconKind}`;
-  icon.innerHTML = FILE_ICON_MARKUP[iconKind];
-  prefix.appendChild(icon);
-
-  const name = document.createElement("span");
-  name.className = "name pretext-flow";
-  name.dataset.pretext = "";
-  setPretextText(name, file.name);
-
-  const stats = document.createElement("span");
-  stats.className = "stats pretext-flow";
-  stats.dataset.pretext = "";
-  setPretextText(stats, formatBytes(file.size));
-
-  itemLine.appendChild(prefix);
-  itemLine.appendChild(name);
-  itemLine.appendChild(createSizeBar(file.size));
-  itemLine.appendChild(stats);
-
-  li.appendChild(itemLine);
-  return li;
-}
-
-function createSizeBar(size: number): HTMLSpanElement {
-  const root = appState.fullScanData?.directoryData;
-  const denom = root?.totalSize ?? 0;
-  // Square-root scaling keeps tiny files visible while letting big folders fill the bar.
-  let ratio = 0;
-  if (denom > 0 && size > 0) {
-    ratio = Math.sqrt(size / denom);
-  }
-  ratio = Math.max(0.04, Math.min(1, ratio));
-  const bar = document.createElement("span");
-  bar.className = "sizebar";
-  const fill = document.createElement("i");
-  fill.style.width = `${(ratio * 100).toFixed(1)}%`;
-  bar.appendChild(fill);
-  return bar;
-}
+// ---------------------------------------------------------------------------
+// Selection helpers
+// ---------------------------------------------------------------------------
 
 export function setSelectionByExtension(ext: string, selected: boolean): void {
   const root = appState.fullScanData?.directoryData;
@@ -465,108 +600,25 @@ export function setSelectionByExtension(ext: string, selected: boolean): void {
 
   appState.treeNodesByPath.forEach((node) => {
     if (node.type === "file" && getFileExt(node.name) === ext) {
-      applySelectionToNode(node, selected);
+      if (selected) appState.selectedPaths.add(node.path);
+      else appState.selectedPaths.delete(node.path);
     }
   });
 
-  appState.treeNodesByPath.forEach((node) => {
-    if (node.type === "folder") {
-      recomputeAncestorCounts(node.path);
-    }
-  });
-
-  refreshVisibleSelectionState();
-  notifySelectionChanged();
-}
-
-function bindTreeInteractions(container: HTMLElement): void {
-  if (boundTreeContainers.has(container)) return;
-
-  container.addEventListener("change", (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLInputElement)) return;
-    if (!target.classList.contains("selector")) return;
-
-    const li = target.closest("li");
-    if (!(li instanceof HTMLLIElement)) return;
-
-    const path = li.dataset.path;
-    if (!path) return;
-
-    setSelectionForSubtree(path, target.checked);
+  if (appState.scanWorker && appState.rustIndexReady) {
+    postSelectionUpdate();
+  } else {
+    appState.treeNodesByPath.forEach((node) => {
+      if (node.type === "file" && getFileExt(node.name) === ext) {
+        appState.selectedSubtreeCounts.set(node.path, selected ? 1 : 0);
+      }
+    });
+    appState.treeNodesByPath.forEach((node) => {
+      if (node.type === "folder") recomputeAncestorCounts(node.path);
+    });
     refreshVisibleSelectionState();
     notifySelectionChanged();
-  });
-
-  container.addEventListener("click", (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLElement)) return;
-    if (target.closest(".selector")) return;
-
-    const li = target.closest("li");
-    if (!(li instanceof HTMLLIElement)) return;
-
-    const path = li.dataset.path;
-    if (!path) return;
-
-    if (li.classList.contains("folder")) {
-      if (event.altKey) {
-        setExpandedForSubtree(path, !appState.expandedFolderPaths.has(path));
-      } else {
-        toggleExpanded(path);
-      }
-      rerenderVisibleTree();
-      return;
-    }
-
-    const node = appState.treeNodesByPath.get(path);
-    if (node?.type === "file") {
-      console.log("[tree] Click on file:", node.path);
-      void openFile(node);
-    }
-  });
-
-  boundTreeContainers.add(container);
-}
-
-function rerenderVisibleTree(): void {
-  const root = appState.fullScanData?.directoryData;
-  const container = elements.treeContainer as HTMLElement | undefined;
-  if (!root || !container) return;
-
-  container.innerHTML = "";
-  renderTree(root, container);
-}
-
-function refreshVisibleSelectionState(): void {
-  const container = elements.treeContainer as HTMLElement | undefined;
-  if (!container) return;
-
-  container.querySelectorAll("li").forEach((el: Element) => {
-    const li = el as HTMLLIElement;
-    const path = li.dataset.path;
-    if (!path) return;
-
-    const selectionState = getSelectionState(path);
-    li.dataset.selected = String(selectionState !== "none");
-
-    const itemLine = li.firstElementChild;
-    const checkbox =
-      itemLine instanceof HTMLElement
-        ? itemLine.querySelector(".selector")
-        : null;
-
-    if (checkbox instanceof HTMLInputElement) {
-      checkbox.checked = selectionState === "all";
-      checkbox.indeterminate = selectionState === "partial";
-    }
-  });
-
-  applyActiveSelectionFilterToVisibleTree();
-}
-
-function notifySelectionChanged(): void {
-  window.dispatchEvent(new CustomEvent("mashu:selection-changed"));
+  }
 }
 
 function toggleExpanded(path: string): void {
@@ -589,7 +641,6 @@ function setExpandedForSubtree(path: string, expanded: boolean): void {
     } else {
       appState.expandedFolderPaths.delete(current.path);
     }
-
     for (const child of current.children) {
       if (child.type === "folder") {
         stack.push(child);
@@ -652,8 +703,15 @@ function setSelectionForSubtree(path: string, selected: boolean): void {
   const node = appState.treeNodesByPath.get(path);
   if (!node) return;
 
-  applySelectionToNode(node, selected);
-  recomputeAncestorCounts(path);
+  if (appState.scanWorker && appState.rustIndexReady) {
+    applyFileSelectionInSubtree(node, selected);
+    postSelectionUpdate();
+  } else {
+    applySelectionToNode(node, selected);
+    recomputeAncestorCounts(path);
+    refreshVisibleSelectionState();
+    notifySelectionChanged();
+  }
 }
 
 function applySelectionToNode(node: TreeNode, selected: boolean): void {
@@ -676,6 +734,45 @@ function applySelectionToNode(node: TreeNode, selected: boolean): void {
     node.path,
     selected ? appState.subtreeNodeCounts.get(node.path) || 0 : 0,
   );
+}
+
+function applyFileSelectionInSubtree(node: TreeNode, selected: boolean): void {
+  if (node.type === "file") {
+    if (selected) appState.selectedPaths.add(node.path);
+    else appState.selectedPaths.delete(node.path);
+    return;
+  }
+  for (const child of node.children) {
+    applyFileSelectionInSubtree(child, selected);
+  }
+}
+
+function postSelectionUpdate(): void {
+  const worker = appState.scanWorker;
+  if (!worker) return;
+  const filePaths: string[] = [];
+  appState.selectedPaths.forEach((p) => {
+    if (appState.treeNodesByPath.get(p)?.type === "file") filePaths.push(p);
+  });
+  worker.postMessage({ type: "compute-selection-state", selectedFilePaths: filePaths });
+}
+
+export function applyRustSelectionState(
+  selectedSubtreeCounts: Record<string, number>,
+  selectedFolderPaths: string[],
+): void {
+  appState.selectedSubtreeCounts.clear();
+  for (const [path, count] of Object.entries(selectedSubtreeCounts)) {
+    appState.selectedSubtreeCounts.set(path, count);
+  }
+  appState.treeNodesByPath.forEach((node, path) => {
+    if (node.type === "folder") appState.selectedPaths.delete(path);
+  });
+  for (const path of selectedFolderPaths) {
+    appState.selectedPaths.add(path);
+  }
+  refreshVisibleSelectionState();
+  notifySelectionChanged();
 }
 
 function recomputeAncestorCounts(path: string): void {
@@ -719,33 +816,6 @@ function expandAllFoldersInState(): void {
   });
 }
 
-function applyActiveSelectionFilterToVisibleTree(): void {
-  const container = elements.treeContainer as HTMLElement | undefined;
-  if (!container) return;
-
-  const selectedPaths = appState.selectedPaths;
-  if (selectedPaths.size === 0) {
-    container.querySelectorAll("li").forEach((el: Element) => {
-      (el as HTMLElement).classList.remove("dimmed-uncommitted");
-    });
-    return;
-  }
-
-  container.querySelectorAll("li").forEach((el: Element) => {
-    const li = el as HTMLElement;
-    const path = li.dataset.path || "";
-    const node = appState.treeNodesByPath.get(path);
-    const isInActiveSelection =
-      node?.type === "folder"
-        ? (appState.selectedSubtreeCounts.get(path) || 0) > 0
-        : selectedPaths.has(path);
-    li.classList.remove("dimmed-uncommitted");
-    if (!isInActiveSelection) {
-      li.classList.add("dimmed-uncommitted");
-    }
-  });
-}
-
 export function setAllSelections(selected: boolean): void {
   const root = appState.fullScanData?.directoryData;
   if (!root) return;
@@ -753,16 +823,27 @@ export function setAllSelections(selected: boolean): void {
   appState.selectedPaths.clear();
   appState.selectedSubtreeCounts.clear();
 
-  if (selected) {
-    applySelectionToNode(root, true);
+  if (appState.scanWorker && appState.rustIndexReady) {
+    if (selected) {
+      appState.treeNodesByPath.forEach((node) => {
+        if (node.type === "file") appState.selectedPaths.add(node.path);
+      });
+      postSelectionUpdate();
+    } else {
+      refreshVisibleSelectionState();
+      notifySelectionChanged();
+    }
   } else {
-    appState.treeNodesByPath.forEach((node) => {
-      appState.selectedSubtreeCounts.set(node.path, 0);
-    });
+    if (selected) {
+      applySelectionToNode(root, true);
+    } else {
+      appState.treeNodesByPath.forEach((node) => {
+        appState.selectedSubtreeCounts.set(node.path, 0);
+      });
+    }
+    refreshVisibleSelectionState();
+    notifySelectionChanged();
   }
-
-  refreshVisibleSelectionState();
-  notifySelectionChanged();
 }
 
 export function toggleAllFolders(collapse: boolean): void {

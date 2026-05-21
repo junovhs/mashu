@@ -1,9 +1,31 @@
 [
   {
+    "path": "APP-PIVOT.md",
+    "layer": 0,
+    "file_kind": "generated",
+    "description": "Support file for APP-PIVOT.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
     "path": "README.md",
     "layer": 0,
     "file_kind": "generated",
     "description": "Project overview and usage guide.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
+    "path": "REDESIGN_README.md",
+    "layer": 0,
+    "file_kind": "generated",
+    "description": "Support file for REDESIGN_README.",
     "exports": [],
     "hotspot": false,
     "fan_in": 0,
@@ -23,6 +45,17 @@
   },
   {
     "path": "package.json",
+    "layer": 0,
+    "file_kind": "script",
+    "description": "Node.js package manifest.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
+    "path": "rust-core/pkg/package.json",
     "layer": 0,
     "file_kind": "script",
     "description": "Node.js package manifest.",
@@ -139,6 +172,171 @@
     }
   },
   {
+    "path": "rust-core/pkg/rust_core.d.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Build a pure tree from a JSON array of SerializableEntry.",
+    "exports": [
+      "SyncInitInput",
+      "InitOutput",
+      "__wbg_init",
+      "InitInput"
+    ],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {
+      "types": {
+        "total": 3,
+        "public": 3
+      },
+      "docs": {
+        "documented_symbols": 5,
+        "undocumented_public": 2
+      }
+    }
+  },
+  {
+    "path": "rust-core/pkg/rust_core.js",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Build a pure tree from a JSON array of SerializableEntry.",
+    "exports": [
+      "build_tree_from_entries",
+      "compute_selection_state",
+      "init_tree_index",
+      "engine_version"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-state",
+      "async"
+    ],
+    "surface_tags": [
+      "external-api"
+    ],
+    "quality_tags": [
+      "complex-flow"
+    ],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 7.2,
+    "semantic_summary": "async side-effecting stateful module with external API surface",
+    "analysis": {
+      "functions": {
+        "total": 14,
+        "public": 4,
+        "max_cognitive_complexity": 21,
+        "avg_cognitive_complexity": 3
+      },
+      "calls": {
+        "total_calls": 113,
+        "resolved_calls": 17,
+        "unresolved_calls": 96,
+        "resolution_rate": 0.15044248
+      },
+      "control_flow": {
+        "max_nesting_depth": 5,
+        "cognitive_complexity": 47
+      },
+      "concurrency": {
+        "total_sites": 8,
+        "has_async": true,
+        "has_locks": false,
+        "has_spawn": false
+      },
+      "docs": {
+        "documented_symbols": 4,
+        "undocumented_public": 0
+      },
+      "activation": {
+        "total_sites": 33,
+        "kinds": [
+          "callback-surface",
+          "string-dispatch"
+        ]
+      },
+      "guards": {
+        "total_sites": 5
+      }
+    }
+  },
+  {
+    "path": "rust-core/pkg/rust_core_bg.js",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Returns the engine version string.",
+    "exports": [
+      "__wbindgen_init_externref_table",
+      "__wbg_set_wasm",
+      "engine_version"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-state"
+    ],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.2,
+    "semantic_summary": "side-effecting stateful module",
+    "analysis": {
+      "functions": {
+        "total": 6,
+        "public": 3,
+        "max_cognitive_complexity": 1,
+        "avg_cognitive_complexity": 0
+      },
+      "calls": {
+        "total_calls": 21,
+        "resolved_calls": 3,
+        "unresolved_calls": 18,
+        "resolution_rate": 0.14285715
+      },
+      "control_flow": {
+        "max_nesting_depth": 1,
+        "cognitive_complexity": 3
+      },
+      "docs": {
+        "documented_symbols": 1,
+        "undocumented_public": 2
+      },
+      "activation": {
+        "total_sites": 3,
+        "kinds": [
+          "callback-surface"
+        ]
+      }
+    }
+  },
+  {
+    "path": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Implements wbindgen externrefs.",
+    "exports": [
+      "build_tree_from_entries",
+      "compute_selection_state",
+      "init_tree_index",
+      "engine_version"
+    ],
+    "behavior_tags": [
+      "owns-const-state"
+    ],
+    "quality_tags": [
+      "undocumented"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 6.0,
+    "semantic_summary": "constant-owning module",
+    "analysis": {
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 10
+      }
+    }
+  },
+  {
     "path": "src/ts/app.ts",
     "layer": 1,
     "file_kind": "production",
@@ -154,43 +352,48 @@
       "external-api"
     ],
     "quality_tags": [
-      "complex-flow"
+      "complex-flow",
+      "concurrency-heavy"
     ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 6.9333334,
+    "risk_score": 8.266666,
     "semantic_summary": "async side-effecting stateful module with external API surface that logs and continues",
     "analysis": {
       "functions": {
-        "total": 17,
+        "total": 28,
         "public": 0,
         "max_cognitive_complexity": 18,
-        "avg_cognitive_complexity": 2
+        "avg_cognitive_complexity": 3
+      },
+      "types": {
+        "total": 1,
+        "public": 0
       },
       "calls": {
-        "total_calls": 189,
-        "resolved_calls": 28,
-        "unresolved_calls": 161,
-        "resolution_rate": 0.14814815
+        "total_calls": 303,
+        "resolved_calls": 49,
+        "unresolved_calls": 254,
+        "resolution_rate": 0.16171618
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 49
+        "cognitive_complexity": 89
       },
       "error_handling": {
-        "total_sites": 1,
+        "total_sites": 2,
         "panics": 0,
         "swallowed": 0,
         "propagated": 0
       },
       "concurrency": {
-        "total_sites": 15,
+        "total_sites": 21,
         "has_async": true,
         "has_locks": false,
-        "has_spawn": false
+        "has_spawn": true
       },
       "activation": {
-        "total_sites": 45,
+        "total_sites": 65,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -260,10 +463,10 @@
     "file_kind": "production",
     "description": "Implements scan aggregator.",
     "exports": [
-      "initTypeData",
       "isLikelyText",
-      "sniffIsText",
-      "filterScanData"
+      "initTypeData",
+      "filterScanData",
+      "scanFileList"
     ],
     "coupling": "mixed",
     "behavior_tags": [
@@ -278,7 +481,7 @@
     ],
     "hotspot": true,
     "fan_in": 0,
-    "risk_score": 17.8,
+    "risk_score": 19.8,
     "semantic_summary": "async side-effecting adapter",
     "analysis": {
       "functions": {
@@ -385,34 +588,38 @@
     "coupling": "pure",
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 3.6,
+    "risk_score": 3.8,
     "semantic_summary": "pure computation",
     "analysis": {
       "functions": {
         "total": 1,
         "public": 1,
-        "max_cognitive_complexity": 3,
-        "avg_cognitive_complexity": 3
+        "max_cognitive_complexity": 4,
+        "avg_cognitive_complexity": 4
       },
       "calls": {
-        "total_calls": 6,
+        "total_calls": 19,
         "resolved_calls": 0,
-        "unresolved_calls": 6,
+        "unresolved_calls": 19,
         "resolution_rate": 0.0
       },
       "control_flow": {
         "max_nesting_depth": 0,
-        "cognitive_complexity": 3
+        "cognitive_complexity": 4
       },
       "docs": {
         "documented_symbols": 0,
         "undocumented_public": 1
       },
       "activation": {
-        "total_sites": 1,
+        "total_sites": 4,
         "kinds": [
-          "callback-surface"
+          "callback-surface",
+          "registration-site"
         ]
+      },
+      "guards": {
+        "total_sites": 1
       }
     }
   },
@@ -446,10 +653,10 @@
         "avg_cognitive_complexity": 0
       },
       "calls": {
-        "total_calls": 83,
+        "total_calls": 87,
         "resolved_calls": 24,
-        "unresolved_calls": 59,
-        "resolution_rate": 0.28915662
+        "unresolved_calls": 63,
+        "resolution_rate": 0.27586207
       },
       "control_flow": {
         "max_nesting_depth": 1,
@@ -465,6 +672,64 @@
           "callback-surface",
           "registration-site"
         ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/ui/pretext.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Updates pretext tree.",
+    "exports": [
+      "syncPretextTree",
+      "initPretextText",
+      "setPretextText"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-state"
+    ],
+    "quality_tags": [
+      "undocumented"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 15.8,
+    "semantic_summary": "side-effecting stateful module",
+    "analysis": {
+      "functions": {
+        "total": 16,
+        "public": 3,
+        "max_cognitive_complexity": 9,
+        "avg_cognitive_complexity": 2
+      },
+      "types": {
+        "total": 1,
+        "public": 0
+      },
+      "calls": {
+        "total_calls": 138,
+        "resolved_calls": 23,
+        "unresolved_calls": 115,
+        "resolution_rate": 0.16666667
+      },
+      "control_flow": {
+        "max_nesting_depth": 2,
+        "cognitive_complexity": 33
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 3
+      },
+      "activation": {
+        "total_sites": 40,
+        "kinds": [
+          "callback-surface",
+          "registration-site"
+        ]
+      },
+      "guards": {
+        "total_sites": 1
       }
     }
   },
@@ -491,24 +756,24 @@
     "semantic_summary": "async side-effecting constant-owning module",
     "analysis": {
       "functions": {
-        "total": 5,
+        "total": 10,
         "public": 2,
         "max_cognitive_complexity": 10,
-        "avg_cognitive_complexity": 3
+        "avg_cognitive_complexity": 5
       },
       "types": {
-        "total": 1,
+        "total": 2,
         "public": 0
       },
       "calls": {
-        "total_calls": 45,
-        "resolved_calls": 4,
-        "unresolved_calls": 41,
-        "resolution_rate": 0.08888889
+        "total_calls": 129,
+        "resolved_calls": 14,
+        "unresolved_calls": 115,
+        "resolution_rate": 0.10852713
       },
       "control_flow": {
         "max_nesting_depth": 2,
-        "cognitive_complexity": 19
+        "cognitive_complexity": 52
       },
       "concurrency": {
         "total_sites": 5,
@@ -521,11 +786,14 @@
         "undocumented_public": 2
       },
       "activation": {
-        "total_sites": 7,
+        "total_sites": 25,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
+      },
+      "guards": {
+        "total_sites": 2
       }
     }
   },
@@ -535,14 +803,14 @@
     "file_kind": "production",
     "description": "Sets the selection by extension.",
     "exports": [
+      "applyRustSelectionState",
       "setSelectionByExtension",
-      "initTreeState",
       "toggleAllFolders",
-      "setAllSelections"
+      "initTreeState"
     ],
     "coupling": "mixed",
     "behavior_tags": [
-      "owns-const-state",
+      "owns-state",
       "persists"
     ],
     "quality_tags": [
@@ -551,38 +819,41 @@
     "hotspot": true,
     "fan_in": 0,
     "risk_score": 8.8,
-    "semantic_summary": "side-effecting adapter",
+    "semantic_summary": "side-effecting stateful adapter",
     "analysis": {
       "functions": {
-        "total": 23,
-        "public": 5,
+        "total": 31,
+        "public": 6,
         "max_cognitive_complexity": 14,
         "avg_cognitive_complexity": 4
       },
       "types": {
-        "total": 4,
+        "total": 5,
         "public": 0
       },
       "calls": {
-        "total_calls": 310,
-        "resolved_calls": 42,
-        "unresolved_calls": 268,
-        "resolution_rate": 0.13548388
+        "total_calls": 384,
+        "resolved_calls": 64,
+        "unresolved_calls": 320,
+        "resolution_rate": 0.16666667
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 99
+        "cognitive_complexity": 125
       },
       "docs": {
         "documented_symbols": 0,
-        "undocumented_public": 5
+        "undocumented_public": 6
       },
       "activation": {
-        "total_sites": 81,
+        "total_sites": 92,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
+      },
+      "guards": {
+        "total_sites": 1
       }
     }
   },
@@ -590,7 +861,7 @@
     "path": "src/ts/ui/viewer.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Updates viewer.",
+    "description": "Implements open file.",
     "exports": [
       "openFile",
       "closeViewer",
@@ -613,7 +884,7 @@
     "semantic_summary": "async side-effecting adapter that logs and continues",
     "analysis": {
       "functions": {
-        "total": 8,
+        "total": 7,
         "public": 3,
         "max_cognitive_complexity": 6,
         "avg_cognitive_complexity": 2
@@ -623,14 +894,14 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 49,
-        "resolved_calls": 9,
-        "unresolved_calls": 40,
-        "resolution_rate": 0.18367347
+        "total_calls": 54,
+        "resolved_calls": 8,
+        "unresolved_calls": 46,
+        "resolution_rate": 0.14814815
       },
       "control_flow": {
         "max_nesting_depth": 1,
-        "cognitive_complexity": 20
+        "cognitive_complexity": 14
       },
       "error_handling": {
         "total_sites": 1,
@@ -649,7 +920,7 @@
         "undocumented_public": 3
       },
       "activation": {
-        "total_sites": 12,
+        "total_sites": 14,
         "kinds": [
           "callback-surface"
         ]
@@ -743,7 +1014,7 @@
     ],
     "hotspot": true,
     "fan_in": 0,
-    "risk_score": 18.0,
+    "risk_score": 19.0,
     "semantic_summary": "async side-effecting stateful adapter",
     "analysis": {
       "functions": {
@@ -838,6 +1109,65 @@
         "kinds": [
           "callback-surface"
         ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/workers/scan.worker.ts",
+    "layer": 2,
+    "file_kind": "production",
+    "description": "Implements scan.worker functionality.",
+    "exports": [],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-state",
+      "async",
+      "logs-and-continues"
+    ],
+    "quality_tags": [
+      "complex-flow"
+    ],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 9.133333,
+    "semantic_summary": "async side-effecting stateful module that logs and continues",
+    "analysis": {
+      "functions": {
+        "total": 3,
+        "public": 0,
+        "max_cognitive_complexity": 34,
+        "avg_cognitive_complexity": 13
+      },
+      "calls": {
+        "total_calls": 52,
+        "resolved_calls": 4,
+        "unresolved_calls": 48,
+        "resolution_rate": 0.07692308
+      },
+      "control_flow": {
+        "max_nesting_depth": 4,
+        "cognitive_complexity": 48
+      },
+      "error_handling": {
+        "total_sites": 1,
+        "panics": 0,
+        "swallowed": 0,
+        "propagated": 0
+      },
+      "concurrency": {
+        "total_sites": 2,
+        "has_async": true,
+        "has_locks": false,
+        "has_spawn": false
+      },
+      "activation": {
+        "total_sites": 8,
+        "kinds": [
+          "callback-surface"
+        ]
+      },
+      "guards": {
+        "total_sites": 1
       }
     }
   },
@@ -955,27 +1285,27 @@
     "path": "src/ts/types/index.ts",
     "layer": 3,
     "file_kind": "production",
-    "description": "Implements file type data.",
+    "description": "Implements serializable folder entry.",
     "exports": [
+      "WorkerInboundMessage",
+      "WorkerOutboundMessage",
       "FileTypeData",
-      "AppState",
-      "FolderInfo",
-      "ScanData"
+      "SerializableFolderEntry"
     ],
     "quality_tags": [
       "undocumented"
     ],
     "hotspot": true,
     "fan_in": 0,
-    "risk_score": 20.0,
+    "risk_score": 13.0,
     "analysis": {
       "types": {
-        "total": 6,
-        "public": 6
+        "total": 13,
+        "public": 13
       },
       "docs": {
         "documented_symbols": 0,
-        "undocumented_public": 6
+        "undocumented_public": 13
       }
     }
   },
@@ -1005,40 +1335,37 @@
     "semantic_summary": "async side-effecting stateful module",
     "analysis": {
       "functions": {
-        "total": 20,
-        "public": 10,
+        "total": 21,
+        "public": 11,
         "max_cognitive_complexity": 5,
         "avg_cognitive_complexity": 1
       },
       "calls": {
-        "total_calls": 176,
-        "resolved_calls": 25,
-        "unresolved_calls": 151,
-        "resolution_rate": 0.14204545
+        "total_calls": 196,
+        "resolved_calls": 22,
+        "unresolved_calls": 174,
+        "resolution_rate": 0.1122449
       },
       "control_flow": {
         "max_nesting_depth": 2,
-        "cognitive_complexity": 35
+        "cognitive_complexity": 32
       },
       "concurrency": {
-        "total_sites": 9,
+        "total_sites": 8,
         "has_async": true,
         "has_locks": false,
         "has_spawn": true
       },
       "docs": {
         "documented_symbols": 0,
-        "undocumented_public": 10
+        "undocumented_public": 11
       },
       "activation": {
-        "total_sites": 42,
+        "total_sites": 49,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
-      },
-      "guards": {
-        "total_sites": 1
       }
     }
   }

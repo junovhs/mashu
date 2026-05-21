@@ -13,8 +13,9 @@ import { downloadZip, exportCombined } from "./features.js";
 import type { ScanAggregator } from "./filesystem.js";
 import { formatBytes, initTypeData, scanDir, scanFileList } from "./filesystem.js";
 import { appState, elements } from "./state.js";
-import type { FolderInfo, ScanData } from "./types/index.js";
+import type { FolderInfo, ScanData, SerializableEntry, SerializableFileEntry, SerializableFolderEntry, WorkerOutboundMessage } from "./types/index.js";
 import {
+  applyRustSelectionState,
   closeViewer,
   copyCurrentReport,
   disableUIControls,
@@ -74,6 +75,8 @@ async function processFileList(files: FileList): Promise<void> {
   );
 
   if (scanRes.ok) {
+    const root = scanRes.value.directoryData;
+    console.info(`[counts] files:${scanRes.value.allFilesList.length} folders:${scanRes.value.allFoldersList.length} ignored:0 bytes:${root?.totalSize ?? 0}`);
     applyScanData(scanRes.value);
   } else {
     showFailedUI("Scan failed.");
@@ -90,11 +93,13 @@ async function finishScan(handle: VirtualDirectoryHandle) {
   const agg: ScanAggregator = {
     allFilesList: [],
     allFoldersList: [],
+    ignoredCount: 0,
     maxDepth: 0,
   };
   const scanRes = await scanDir(handle, handle.name, 0, agg);
   logPerfMeasure("scan", "mashu:scan:start", "mashu:scan:end");
   if (scanRes.ok) {
+    console.info(`[counts] files:${agg.allFilesList.length} folders:${agg.allFoldersList.length} ignored:${agg.ignoredCount} bytes:${scanRes.value.totalSize}`);
     applyScanData({ directoryData: scanRes.value, ...agg });
   } else {
     showFailedUI("Scan failed.");
@@ -109,6 +114,7 @@ function applyScanData(data: ScanData): void {
   appState.fullScanData = data;
   saveRecentProjectSummary(data);
   document.body.classList.add("project-loaded");
+  postScanBatchToWorker(data);
   updateUI(appState.fullScanData.directoryData as FolderInfo);
 }
 
@@ -116,13 +122,19 @@ function updateUI(data: FolderInfo) {
   performance.mark("mashu:update-ui:start");
   const container = elements.treeContainer;
   if (container) {
+    performance.mark("mashu:init-tree-state:start");
     initTreeState(data, {
       initialCollapsed: true,
       initialSelected: false,
       expandRootOnly: true,
     });
+    logPerfMeasure("init-tree-state", "mashu:init-tree-state:start", "mashu:init-tree-state:end");
+
+    performance.mark("mashu:render-tree:start");
     container.innerHTML = "";
     renderTree(data, container);
+    logPerfMeasure("render-tree", "mashu:render-tree:start", "mashu:render-tree:end");
+
     refreshAllUI();
     enableUIControls();
     logPerfMeasure(
@@ -136,6 +148,10 @@ function updateUI(data: FolderInfo) {
         "mashu:process-directory:start",
         "mashu:visible-load:end",
       );
+      const sd = appState.fullScanData;
+      if (sd) {
+        console.info(`[counts] rendered-rows:${sd.allFilesList.length + sd.allFoldersList.length} selected:${appState.selectedPaths.size} bytes:${sd.directoryData?.totalSize ?? 0}`);
+      }
     });
   }
 }
@@ -391,7 +407,11 @@ function setupListeners(): void {
     container.innerHTML = "";
     renderTree(root, container);
   });
-  elements.downloadProjectBtn?.addEventListener("click", downloadZip);
+  elements.downloadProjectBtn?.addEventListener("click", async () => {
+    performance.mark("mashu:export-zip:start");
+    await downloadZip();
+    logPerfMeasure("export-zip", "mashu:export-zip:start", "mashu:export-zip:end");
+  });
   elements.clearProjectBtn?.addEventListener("click", clearProject);
   elements.selectAllBtn?.addEventListener("click", () =>
     setAllSelections(true),
@@ -412,7 +432,11 @@ function setupListeners(): void {
     void saveCurrentReport();
   });
   elements.closeViewerBtn?.addEventListener("click", closeViewer);
-  elements.aiDebriefingAssistantBtn?.addEventListener("click", exportCombined);
+  elements.aiDebriefingAssistantBtn?.addEventListener("click", async () => {
+    performance.mark("mashu:export-combined:start");
+    await exportCombined();
+    logPerfMeasure("export-combined", "mashu:export-combined:start", "mashu:export-combined:end");
+  });
 }
 
 function renderEmptyShell(): void {
@@ -556,6 +580,80 @@ function logPerfMeasure(name: string, startMark: string, endMark: string): void 
   }
 }
 
+function buildSerializableEntries(data: ScanData): SerializableEntry[] {
+  const entries: SerializableEntry[] = [];
+  for (const f of data.allFilesList) {
+    const e: SerializableFileEntry = {
+      id: f.path,
+      kind: "file",
+      name: f.name,
+      path: f.path,
+      size: f.size,
+      extension: f.extension,
+      depth: f.depth,
+    };
+    entries.push(e);
+  }
+  for (const folder of data.allFoldersList) {
+    const depth = folder.path.split("/").length - 1;
+    const e: SerializableFolderEntry = {
+      id: folder.path,
+      kind: "folder",
+      name: folder.name,
+      path: folder.path,
+      depth,
+    };
+    entries.push(e);
+  }
+  return entries;
+}
+
+function postScanBatchToWorker(data: ScanData): void {
+  if (!scanWorker) return;
+  const entries = buildSerializableEntries(data);
+  const batchId = Date.now().toString(36);
+  scanWorker.postMessage({ type: "scan-batch", batchId, entries });
+  console.info(`[worker] scan-batch sent batchId=${batchId} entries=${entries.length}`);
+}
+
+let scanWorker: Worker | null = null;
+
+function initWorker(): void {
+  try {
+    scanWorker = new Worker(
+      new URL("./workers/scan.worker.ts", import.meta.url),
+      { type: "module" },
+    );
+    scanWorker.addEventListener("message", (event: MessageEvent<WorkerOutboundMessage>) => {
+      const msg = event.data;
+      if (msg.type === "pong") {
+        console.info("[worker] ready");
+      } else if (msg.type === "scan-result") {
+        console.info(`[worker] scan-result batchId=${msg.batchId} ok=${msg.ok}`);
+      } else if (msg.type === "stats-ready") {
+        appState.rustIndexReady = msg.rustIndexReady;
+        const main = appState.fullScanData?.directoryData;
+        const fileMatch = main ? msg.tree.fileCount === main.fileCount : null;
+        const sizeMatch = main ? msg.tree.totalSize === main.totalSize : null;
+        console.info(
+          `[worker] stats-ready batchId=${msg.batchId}` +
+          ` files=${msg.tree.fileCount}(parity=${fileMatch})` +
+          ` bytes=${msg.tree.totalSize}(parity=${sizeMatch})` +
+          ` rustIndex=${msg.rustIndexReady}`,
+        );
+      } else if (msg.type === "selection-state-ready") {
+        applyRustSelectionState(msg.selectedSubtreeCounts, msg.selectedFolderPaths);
+      }
+    });
+    scanWorker.addEventListener("error", (e) => {
+      console.warn("[worker] error:", e.message);
+    });
+    appState.scanWorker = scanWorker;
+  } catch (e) {
+    console.warn("[worker] could not start, running without worker:", e);
+  }
+}
+
 async function init() {
   initLayout();
   populateElements();
@@ -563,6 +661,7 @@ async function init() {
   initSidebarResizer();
   initPretextText();
   setupHiddenInput();
+  initWorker();
 
   // Load filetype data
   try {

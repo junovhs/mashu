@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ishoo brief *)",
+      "Bash(ishoo plan *)",
+      "Bash(ishoo show *)",
+      "Bash(semmap generate *)",
+      "Bash(semmap summary *)",
+      "Bash(semmap context *)",
+      "Bash(semmap inspect *)",
+      "Bash(semmap cat *)",
+      "Bash(ishoo set *)",
+      "Bash(npx tsc *)",
+      "Bash(neti check *)",
+      "Skill(update-config)",
+      "Bash(ishoo land *)",
+      "Bash(ishoo edit *)",
+      "Bash(semmap find *)",
+      "Bash(ishoo list *)",
+      "Bash(rustc --version)",
+      "Bash(wasm-pack --version)",
+      "Bash(cargo --version)",
+      "Bash(wasm-pack build *)",
+      "Bash(npm install *)",
+      "Bash(npx vite *)",
+      "Bash(ishoo new *)"
+    ]
+  }
+}

@@ -17,6 +17,8 @@ export const appState: AppState = {
   currentViewingFile: null,
   viewerInstance: null,
   isViewerActive: false,
+  scanWorker: null,
+  rustIndexReady: false,
 };
 
 /**
