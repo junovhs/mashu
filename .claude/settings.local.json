@@ -33,7 +33,10 @@
       "Bash(curl *)",
       "Bash(git ls-tree *)",
       "Bash(git branch *)",
-      "Bash(git rm *)"
+      "Bash(git rm *)",
+      "Bash(git config *)",
+      "Bash(New-Item -ItemType SymbolicLink -Path \"marketing.md\" -Target \"..\\\\marketing.md\")",
+      "PowerShell(Copy-Item *)"
     ]
   }
 }
