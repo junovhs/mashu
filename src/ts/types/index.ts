@@ -57,4 +57,4 @@ export interface FileTypeData {
 export interface ParsedFile {
   filePath: string;
   content: string;
-}
+}

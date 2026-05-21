@@ -330,6 +330,7 @@ function createFolderLi(folder: FolderInfo): HTMLLIElement {
 
   itemLine.appendChild(prefix);
   itemLine.appendChild(name);
+  itemLine.appendChild(createSizeBar(folder.totalSize));
   itemLine.appendChild(stats);
 
   li.appendChild(itemLine);
@@ -405,10 +406,28 @@ function createFileLi(file: FileInfo): HTMLLIElement {
 
   itemLine.appendChild(prefix);
   itemLine.appendChild(name);
+  itemLine.appendChild(createSizeBar(file.size));
   itemLine.appendChild(stats);
 
   li.appendChild(itemLine);
   return li;
+}
+
+function createSizeBar(size: number): HTMLSpanElement {
+  const root = appState.fullScanData?.directoryData;
+  const denom = root?.totalSize ?? 0;
+  // Square-root scaling keeps tiny files visible while letting big folders fill the bar.
+  let ratio = 0;
+  if (denom > 0 && size > 0) {
+    ratio = Math.sqrt(size / denom);
+  }
+  ratio = Math.max(0.04, Math.min(1, ratio));
+  const bar = document.createElement("span");
+  bar.className = "sizebar";
+  const fill = document.createElement("i");
+  fill.style.width = `${(ratio * 100).toFixed(1)}%`;
+  bar.appendChild(fill);
+  return bar;
 }
 
 export function setSelectionByExtension(ext: string, selected: boolean): void {

@@ -86,4 +86,4 @@ interface JSZip {
 
 declare const JSZip: {
   new (): JSZip;
-};
+};

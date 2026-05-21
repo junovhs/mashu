@@ -1,59 +1,72 @@
-/* --- DROP OVERLAY (Cloudflare style) --- */
+/* --- DROP OVERLAY (Paper style) --- */
 
 #fullPageDropOverlay {
-	position: fixed;
-	inset: 0;
-	background: rgba(17, 17, 19, 0.8);
-	backdrop-filter: blur(6px);
-	-webkit-backdrop-filter: blur(6px);
-	z-index: 99999;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	opacity: 0;
-	visibility: hidden;
-	pointer-events: none;
-	transition: opacity 0.12s, visibility 0.12s;
+  position: fixed;
+  inset: 0;
+  background: oklch(0.97 0.005 80 / 0.78);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.14s, visibility 0.14s;
 }
 
 #fullPageDropOverlay.visible {
-	opacity: 1;
-	visibility: visible;
-	pointer-events: auto;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .drop-overlay-content {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding: 48px 64px;
-	border: 1px solid var(--border-strong);
-	border-radius: 12px;
-	background: var(--surface);
-	box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 64px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--shadow-medium);
+  max-width: 480px;
+  text-align: center;
 }
 
 #fullPageDropOverlay.drag-over .drop-overlay-content {
-	border-color: var(--orange);
-	box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px var(--orange), 0 0 32px rgba(246,130,31,0.15);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-medium), 0 0 0 1px var(--accent), 0 0 32px var(--accent-soft);
 }
 
-.drop-overlay-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.6; }
+.drop-overlay-mark {
+  width: 56px; height: 56px;
+  display: grid; place-items: center;
+  margin-bottom: 16px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 14px;
+  border: 1px solid oklch(0.62 0.16 50 / 0.3);
+}
+.drop-overlay-mark svg { width: 26px; height: 26px; }
 
 .drop-overlay-title {
-	font-size: 20px;
-	font-weight: 600;
-	color: var(--text);
-	margin: 0 0 8px;
-	letter-spacing: -0.02em;
+  font-family: var(--font-disp);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
 }
 
-#fullPageDropOverlay.drag-over .drop-overlay-title { color: var(--orange); }
+#fullPageDropOverlay.drag-over .drop-overlay-title { color: var(--accent); }
 
 .drop-overlay-subtitle {
-	font-size: 12px;
-	color: var(--text3);
-	margin: 0;
-	font-weight: 500;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  margin: 0;
+  line-height: 1.55;
+  max-width: 320px;
 }

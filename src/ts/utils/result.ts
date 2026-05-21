@@ -22,4 +22,4 @@ export async function toResult<T>(
   } catch (error) {
     return Err(error instanceof Error ? error : new Error(String(error)));
   }
-}
+}

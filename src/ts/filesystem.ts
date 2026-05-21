@@ -449,4 +449,4 @@ export async function readFile(
     console.error("readFile failed:", error);
     return Err(error instanceof Error ? error : new Error(String(error)));
   }
-}
+}

@@ -410,4 +410,4 @@ async function init() {
   console.log("Mashu (Cross-Browser) Initialized.");
 }
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", init);

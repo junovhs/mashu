@@ -1,132 +1,176 @@
-/* --- TREE VIEW (Cloudflare style) --- */
+/* --- TREE VIEW (Paper style) --- */
 
 .tree {
-	padding: 4px 0;
-	overflow-y: auto;
-	flex-grow: 1;
-	font-size: 12px;
-	font-family: var(--font-ui);
-	background: transparent;
-	line-height: 1;
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 8px 16px;
+  font-size: 12.5px;
+  font-family: var(--font-ui);
+  background: transparent;
+  line-height: 1;
 }
 
 .tree ul {
-	list-style: none;
-	padding-left: 12px;
-	margin: 0;
+  list-style: none;
+  padding-left: 16px;
+  margin: 0;
 }
+.tree > ul { padding-left: 0; }
 
 .tree li.collapsed > ul { display: none; }
+.tree li.dimmed-uncommitted { opacity: 0.42; }
 
+/* Each row */
 .item-line {
-	display: flex;
-	align-items: flex-start;
-	padding: 3px 12px;
-	cursor: pointer;
-	transition: background 0.1s, box-shadow 0.1s;
-	gap: 5px;
-	user-select: none;
-	border-radius: 0;
-	min-height: 22px;
-	line-height: 1.2;
+  display: grid;
+  grid-template-columns: auto 1fr 36px 56px;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 8px 3px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  min-height: 24px;
+  position: relative;
+  transition: background 0.1s, box-shadow 0.1s;
+}
+.item-line:hover { background: oklch(0.22 0.013 70 / 0.05); }
+
+li.folder[data-selected="true"] > .item-line,
+li.file[data-selected="true"] > .item-line {
+  background: var(--accent-soft);
+  box-shadow: inset 2px 0 0 var(--accent);
 }
 
-.item-line:hover {
-	background: rgba(255,255,255,0.06);
-	box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
-}
-
+/* Prefix: checkbox + folder toggle + icon */
 .item-prefix {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-	flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
 }
 
+/* Custom checkbox using accent color */
 .selector {
-	margin: 0;
-	cursor: pointer;
-	accent-color: var(--orange);
-	flex-shrink: 0;
-	inline-size: 14px;
-	block-size: 14px;
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--ink-4);
+  border-radius: 4px;
+  background: #fff;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  transition: all 0.12s;
+  position: relative;
+}
+.item-line:hover .selector { border-color: var(--ink-3); }
+.selector:checked,
+.selector:indeterminate {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.selector:checked::after {
+  content: "";
+  position: absolute;
+  width: 8px; height: 4px;
+  border: 1.6px solid #fff;
+  border-top: 0;
+  border-right: 0;
+  transform: rotate(-45deg) translate(0, -1px);
+  border-radius: 0.5px;
+}
+.selector:indeterminate::after {
+  content: "";
+  position: absolute;
+  width: 7px; height: 2px;
+  background: #fff;
+  border-radius: 1px;
+}
+.selector:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
+/* Twist (▶ / ▼) */
 .folder-toggle {
-	width: 10px;
-	color: var(--text3);
-	font-size: 8px;
-	user-select: none;
-	flex-shrink: 0;
-	text-align: center;
+  width: 10px;
+  font-size: 8px;
+  color: var(--ink-4);
+  text-align: center;
+  user-select: none;
+  flex-shrink: 0;
+  line-height: 1;
 }
+.item-line:hover .folder-toggle { color: var(--ink-2); }
 
-.item-line:hover .folder-toggle { color: var(--text2); }
-
+/* Icons */
 .icon {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-shrink: 0;
-	inline-size: 14px;
-	block-size: 14px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--ink-3);
 }
+.icon svg { width: 14px; height: 14px; fill: currentColor; }
 
-.icon svg {
-	width: 14px;
-	height: 14px;
-	fill: currentColor;
-}
+.icon--folder   { color: var(--accent); }
+.icon--archive  { color: oklch(0.65 0.13 75); }
+.icon--binary   { color: oklch(0.55 0.10 240); }
+.icon--code     { color: oklch(0.55 0.13 240); }
+.icon--config   { color: oklch(0.50 0.06 290); }
+.icon--data     { color: oklch(0.55 0.11 165); }
+.icon--doc      { color: oklch(0.55 0.02 80); }
+.icon--image    { color: oklch(0.60 0.16 0); }
+.icon--media    { color: oklch(0.55 0.14 300); }
+.icon--shell    { color: oklch(0.55 0.13 145); }
 
-.icon--folder { color: var(--orange); }
-.icon--archive { color: #f1c46a; }
-.icon--binary { color: #8bb3ff; }
-.icon--code { color: #69b7ff; }
-.icon--config { color: #b7c0d6; }
-.icon--data { color: #62d7b3; }
-.icon--doc { color: #d7dce8; }
-.icon--image { color: #ff9db2; }
-.icon--media { color: #c099ff; }
-.icon--shell { color: #7fd08f; }
-
-/* Ext chip in tree, sized down for density */
-.item-prefix .ext-chip {
-	font-size: 9px;
-	padding: 0 5px 1px;
-	line-height: 1.6;
-}
-
+/* Name */
 .name {
-	white-space: pre-wrap;
-	overflow: visible;
-	text-overflow: clip;
-	flex: 1 1 160px;
-	color: var(--text2);
-	font-size: 12px;
-	line-height: 1.2;
-	min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  line-height: 1.25;
+}
+li.folder > .item-line > .name { color: var(--ink); font-weight: 600; }
+.item-line:hover .name { color: var(--ink); }
+
+/* Size bar (injected by tree.ts) — proportional fill */
+.sizebar {
+  height: 3px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: var(--line-soft);
+  position: relative;
+  align-self: center;
+}
+.sizebar > i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  border-radius: 99px;
+}
+li.folder > .item-line .sizebar > i {
+  background: var(--ink-3);
+  opacity: 0.55;
 }
 
-li.folder > .item-line > .name {
-	color: var(--text);
-	font-weight: 600;
-}
-
-.item-line:hover .name { color: var(--text); }
-
+/* Stats column (small mono number) */
 .stats {
-	font-size: 10px;
-	color: var(--text3);
-	margin-left: auto;
-	padding-left: 6px;
-	white-space: pre-wrap;
-	flex: 0 1 120px;
-	font-family: var(--font-main);
-	line-height: 1.2;
-	text-align: right;
-	min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-4);
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
 }
-
-.item-line:hover .stats { color: var(--text2); }
-
-li.dimmed-uncommitted { opacity: 0.42; }
+.item-line:hover .stats { color: var(--ink-3); }

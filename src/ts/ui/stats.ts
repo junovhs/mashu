@@ -11,6 +11,49 @@ const TREE_BRANCH = {
   pipe: "│   ",
 };
 
+// File-kind colour swatches — paired with the same kinds used by the tree icons.
+type Kind =
+  | "archive" | "binary" | "code" | "config" | "data"
+  | "doc"     | "image"  | "media"| "shell"  | "other";
+
+const KIND_COLOR: Record<Kind, string> = {
+  archive: "oklch(0.70 0.13 75)",
+  binary:  "oklch(0.60 0.10 240)",
+  code:    "oklch(0.60 0.13 240)",
+  config:  "oklch(0.55 0.08 290)",
+  data:    "oklch(0.62 0.13 165)",
+  doc:     "oklch(0.62 0.02 80)",
+  image:   "oklch(0.62 0.16 0)",
+  media:   "oklch(0.60 0.14 300)",
+  shell:   "oklch(0.60 0.13 145)",
+  other:   "oklch(0.55 0.02 80)",
+};
+
+const CODE_EXT  = new Set([".asm",".c",".cc",".cpp",".cs",".css",".go",".h",".hpp",".java",".js",".jsx",".kt",".less",".lua",".m",".mdx",".mjs",".php",".py",".rb",".rs",".sass",".scss",".sh",".sql",".swift",".ts",".tsx",".vue"]);
+const DATA_EXT  = new Set([".csv",".geojson",".graphql",".json",".json5",".jsonl",".ndjson",".parquet",".proto",".prisma",".tsv"]);
+const DOC_EXT   = new Set([".adoc",".asciidoc",".log",".markdown",".md",".note",".notes",".pdf",".rst",".rtf",".txt"]);
+const IMAGE_EXT = new Set([".avif",".bmp",".gif",".ico",".jpeg",".jpg",".png",".svg",".webp"]);
+const MEDIA_EXT = new Set([".avi",".flac",".m4a",".mkv",".mov",".mp3",".mp4",".ogg",".wav",".webm"]);
+const SHELL_EXT = new Set([".bash",".bat",".cmd",".fish",".ksh",".ps1",".psd1",".psm1",".zsh"]);
+const CONFIG_EXT= new Set([".cfg",".conf",".editorconfig",".env",".gitignore",".ini",".lock",".plist",".properties",".rc",".toml",".xml",".yaml",".yml"]);
+const ARCHIVE_EXT= new Set([".7z",".bz2",".gz",".jar",".rar",".tar",".tgz",".war",".zip"]);
+const BINARY_EXT = new Set([".a",".bin",".class",".dat",".dll",".dylib",".exe",".o",".obj",".so",".wasm"]);
+
+function extToKind(ext: string): Kind {
+  if (!ext) return "other";
+  const e = ext.toLowerCase();
+  if (ARCHIVE_EXT.has(e)) return "archive";
+  if (IMAGE_EXT.has(e))   return "image";
+  if (MEDIA_EXT.has(e))   return "media";
+  if (SHELL_EXT.has(e))   return "shell";
+  if (DATA_EXT.has(e))    return "data";
+  if (CONFIG_EXT.has(e))  return "config";
+  if (BINARY_EXT.has(e))  return "binary";
+  if (DOC_EXT.has(e))     return "doc";
+  if (CODE_EXT.has(e))    return "code";
+  return "other";
+}
+
 interface TextTreeFrame {
   isLastChild: boolean;
   isRoot: boolean;
@@ -28,63 +71,207 @@ export function displayGlobalStats(data: ScanData): void {
   const { directoryData, allFilesList, allFoldersList } = data;
   if (!directoryData) return;
 
-  if (appState.selectedPaths.size > 0 && elements.selectionSummary) {
-    elements.selectionSummary.dataset.pretext = "";
-    elements.selectionSummary.classList.add("pretext-flow");
-    setPretextText(
-      elements.selectionSummary,
-      `Focused view active: stats, report, and export now use ${allFilesList.length} selected files and ${allFoldersList.length} selected folders.`,
-    );
-    elements.selectionSummary.style.display = "block";
-  } else if (elements.selectionSummary) {
-    elements.selectionSummary.style.display = "none";
+  const isSelection = appState.selectedPaths.size > 0;
+
+  // Selection summary card
+  if (elements.selectionSummary) {
+    if (isSelection) {
+      elements.selectionSummary.dataset.pretext = "";
+      elements.selectionSummary.classList.add("pretext-flow");
+      setPretextText(
+        elements.selectionSummary,
+        `Focused view active: ${allFilesList.length} files · ${formatBytes(directoryData.totalSize)}`,
+      );
+      elements.selectionSummary.style.display = "block";
+    } else {
+      elements.selectionSummary.style.display = "none";
+    }
   }
 
+  // Stat scope pill (Project vs Selection)
+  const scopePill = document.getElementById("statScopePill");
+  if (scopePill) scopePill.style.display = isSelection ? "inline-flex" : "none";
+
+  // Hero stat grid
   if (elements.globalStats) {
     elements.globalStats.innerHTML = `
-            <div class="stat-item">
-              <span class="stat-label pretext-flow" data-pretext>Root Folder</span>
-              <span class="stat-value stat-value--name pretext-flow" data-pretext>${directoryData.name}</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label pretext-flow" data-pretext>Files in View</span>
-              <span class="stat-value pretext-flow" data-pretext>${allFilesList.length}</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label pretext-flow" data-pretext>Folders in View</span>
-              <span class="stat-value pretext-flow" data-pretext>${allFoldersList.length}</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label pretext-flow" data-pretext>Total Size</span>
-              <span class="stat-value stat-value--name pretext-flow" data-pretext>${formatBytes(directoryData.totalSize)}</span>
-            </div>
-        `;
+      <div class="stat-item">
+        <span class="stat-label pretext-flow" data-pretext>Files</span>
+        <span class="stat-value pretext-flow" data-pretext>${formatCount(allFilesList.length)}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label pretext-flow" data-pretext>Folders</span>
+        <span class="stat-value pretext-flow" data-pretext>${formatCount(Math.max(0, allFoldersList.length - 1))}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label pretext-flow" data-pretext>Size</span>
+        <span class="stat-value pretext-flow" data-pretext>${formatBytes(directoryData.totalSize)}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label pretext-flow" data-pretext>Root</span>
+        <span class="stat-value stat-value--name pretext-flow" data-pretext>${escapeHtml(directoryData.name)}</span>
+      </div>
+    `;
   }
 
+  // File-type breakdown — sort by size
   const filterSource =
     appState.fullScanData?.directoryData?.fileTypes || directoryData.fileTypes;
   const sortedTypes = Object.entries(filterSource).sort(
     ([, a], [, b]) => b.size - a.size,
   );
 
+  // Composition strip (top 7 + "other")
+  renderCompositionBar(sortedTypes, directoryData.totalSize);
+
+  // File-type table with kind swatches
   if (elements.fileTypeTableBody) {
     elements.fileTypeTableBody.innerHTML = sortedTypes
-      .map(
-        ([ext, typeData]) =>
-          `<tr data-ext="${ext}">
-            <td><span class="ext-chip" data-ext="${ext}">${ext}</span></td>
-            <td><span class="table-cell-text pretext-flow" data-pretext>${typeData.count}</span></td>
-            <td><span class="table-cell-text pretext-flow" data-pretext>${formatBytes(typeData.size)}</span></td>
-          </tr>`,
-      )
+      .map(([ext, td]) => {
+        const kind = extToKind(ext);
+        return `<tr data-ext="${ext}">
+          <td>
+            <span class="type-row-swatch" style="background:${KIND_COLOR[kind]}"></span>
+            <span class="pretext-flow" data-pretext>${ext || "[none]"}</span>
+          </td>
+          <td><span class="pretext-flow" data-pretext>${td.count}</span></td>
+          <td><span class="pretext-flow" data-pretext>${formatBytes(td.size)}</span></td>
+        </tr>`;
+      })
       .join("");
   }
 
+  // Extension filter pills (left sidebar)
   renderExtFilterPills(sortedTypes);
+
+  // Side-head selected counter + bottom bar info
+  updateAncillaryUI(allFilesList.length, allFoldersList.length, directoryData.totalSize, isSelection);
+
+  // Update tabs/title to reflect scope
+  const reportTitle = document.getElementById("reportTitle");
+  if (reportTitle) {
+    reportTitle.textContent = isSelection ? `${directoryData.name} — selection` : directoryData.name;
+  }
+
   syncPretextTree(document.getElementById("rightStatsPanel") ?? document);
+  syncPretextTree(document.getElementById("bottomBar") ?? document);
 }
 
-function renderExtFilterPills(sortedTypes: [string, { count: number; size: number }][]): void {
+function renderCompositionBar(
+  sortedTypes: [string, { count: number; size: number }][],
+  totalSize: number,
+): void {
+  const bar = document.getElementById("compositionBar");
+  const legend = document.getElementById("compositionLegend");
+  if (!bar || !legend || totalSize <= 0) return;
+
+  // Group small (< 1% each) into "other"
+  const top: { ext: string; kind: Kind; count: number; size: number }[] = [];
+  let otherSize = 0;
+  let otherCount = 0;
+
+  for (const [ext, td] of sortedTypes) {
+    const pct = td.size / totalSize;
+    if (top.length < 7 && pct >= 0.01) {
+      top.push({ ext, kind: extToKind(ext), count: td.count, size: td.size });
+    } else {
+      otherSize += td.size;
+      otherCount += td.count;
+    }
+  }
+
+  const segs = [...top];
+  if (otherSize > 0) {
+    segs.push({ ext: "other", kind: "other", count: otherCount, size: otherSize });
+  }
+
+  bar.innerHTML = segs
+    .map((s) => {
+      const w = (s.size / totalSize) * 100;
+      return `<span style="width:${w.toFixed(2)}%; background:${KIND_COLOR[s.kind]}" title="${s.ext} — ${w.toFixed(1)}%"></span>`;
+    })
+    .join("");
+
+  legend.innerHTML = segs
+    .slice(0, 5)
+    .map((s) => {
+      const pct = (s.size / totalSize) * 100;
+      return `<span class="legend-item">
+        <span class="legend-swatch" style="background:${KIND_COLOR[s.kind]}"></span>
+        <b>${s.ext || "[none]"}</b>
+        <span class="legend-pct">${pct.toFixed(0)}%</span>
+      </span>`;
+    })
+    .join("");
+}
+
+function updateAncillaryUI(
+  fileCount: number,
+  folderCount: number,
+  size: number,
+  isSelection: boolean,
+): void {
+  const sideSelected = document.getElementById("sideSelected");
+  if (sideSelected) {
+    if (isSelection) {
+      sideSelected.innerHTML = `<b>${appState.selectedPaths.size}</b> selected`;
+    } else {
+      sideSelected.textContent = "click ◯ to focus";
+    }
+  }
+
+  const barInfo = document.getElementById("barInfo");
+  if (barInfo) {
+    if (isSelection) {
+      barInfo.innerHTML = `
+        <span><b>${fileCount}</b> files · <b>${formatBytes(size)}</b></span>
+        <span class="scope-pill">SELECTION MODE</span>
+      `;
+    } else {
+      barInfo.innerHTML = `
+        <span>Working set: <b>full project</b> — <b>${fileCount}</b> files · <b>${formatBytes(size)}</b></span>
+      `;
+    }
+  }
+
+  // Top-bar scope path + meta
+  const scopePath = document.getElementById("scopePath");
+  const scopeMeta = document.getElementById("scopeMeta");
+  const root = appState.fullScanData?.directoryData;
+  if (scopePath && root) {
+    scopePath.innerHTML = `
+      <span class="crumb">~</span>
+      <span class="sep">/</span>
+      <span class="crumb tip">${escapeHtml(root.name)}</span>
+    `;
+  }
+  if (scopeMeta && root) {
+    scopeMeta.innerHTML = `
+      <span><span class="pulse"></span>local</span>
+      <span><b>${root.fileCount}</b> files · <b>${formatBytes(root.totalSize)}</b></span>
+    `;
+  }
+}
+
+function formatCount(n: number): string {
+  if (n < 1000) return String(n);
+  if (n < 1_000_000) return `${(n / 1000).toFixed(n < 10_000 ? 2 : 1)}k`;
+  return `${(n / 1_000_000).toFixed(2)}M`;
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  }[c] as string));
+}
+
+function renderExtFilterPills(
+  sortedTypes: [string, { count: number; size: number }][],
+): void {
   const bar = document.getElementById("extFilterBar");
   const pills = document.getElementById("extPills");
   if (!bar || !pills) return;
@@ -97,13 +284,16 @@ function renderExtFilterPills(sortedTypes: [string, { count: number; size: numbe
   bar.style.display = "block";
 
   pills.innerHTML = sortedTypes
-      .slice(0, 12)
-      .map(([ext, d]) => `
-      <button class="ext-filter-pill" data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}" title="Toggle selection for every ${ext || "[no extension]"} file in the tree">
-        <span class="pill-label pretext-flow" data-pretext>${ext || "[none]"}</span>
-        <span class="pill-count pretext-flow" data-pretext>${d.count}</span>
-      </button>
-    `)
+    .slice(0, 12)
+    .map(([ext, d]) => {
+      const kind = extToKind(ext);
+      return `
+        <button class="ext-filter-pill" data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}" title="Toggle selection for every ${ext || "[no extension]"} file in the tree">
+          <span class="pill-label pretext-flow" data-pretext>${ext || "[none]"}</span>
+          <span class="pill-count pretext-flow" data-pretext>${d.count}</span>
+        </button>
+      `;
+    })
     .join("");
 
   pills.querySelectorAll<HTMLButtonElement>(".ext-filter-pill").forEach((btn) => {

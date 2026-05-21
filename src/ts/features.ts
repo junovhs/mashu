@@ -93,4 +93,4 @@ export async function downloadZip() {
   const zipBlob = await zip.generateAsync({ type: "blob" });
   downloadBlob(zipBlob, `${appState.fullScanData.directoryData.name}.zip`);
   showNotification("ZIP download started!", 3500);
-}
+}

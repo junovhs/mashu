@@ -63,4 +63,4 @@ export async function sniffIsText(
 
   const view = new Uint8Array(sliceResult.value);
   return !view.includes(0); // NUL = likely binary
-}
+}
