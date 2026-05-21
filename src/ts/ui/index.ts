@@ -181,6 +181,7 @@ export async function copyCurrentReport(): Promise<void> {
 
   const reportKey = getReportKey(data);
   const report = await ensureReportText(data, reportKey);
+  console.info(`[counts] export-bytes:${report.length} selected:${appState.selectedPaths.size}`);
   await navigator.clipboard.writeText(report);
   showNotification("Report copied!", 2000);
 }
@@ -191,6 +192,7 @@ export async function saveCurrentReport(): Promise<void> {
 
   const reportKey = getReportKey(data);
   const report = await ensureReportText(data, reportKey);
+  console.info(`[counts] export-bytes:${report.length} selected:${appState.selectedPaths.size}`);
   const selectionSuffix =
     appState.selectedPaths.size > 0 ? "-selection" : "";
   const filename = `${data.directoryData.name}${selectionSuffix}-report.txt`;

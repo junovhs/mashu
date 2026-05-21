@@ -1,9 +1,31 @@
 [
   {
+    "path": "APP-PIVOT.md",
+    "layer": 0,
+    "file_kind": "generated",
+    "description": "Support file for APP-PIVOT.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
     "path": "README.md",
     "layer": 0,
     "file_kind": "generated",
     "description": "Project overview and usage guide.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
+    "path": "REDESIGN_README.md",
+    "layer": 0,
+    "file_kind": "generated",
+    "description": "Support file for REDESIGN_README.",
     "exports": [],
     "hotspot": false,
     "fan_in": 0,
@@ -158,24 +180,28 @@
     ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 6.9333334,
+    "risk_score": 5.9333334,
     "semantic_summary": "async side-effecting stateful module with external API surface that logs and continues",
     "analysis": {
       "functions": {
-        "total": 17,
+        "total": 25,
         "public": 0,
         "max_cognitive_complexity": 18,
-        "avg_cognitive_complexity": 2
+        "avg_cognitive_complexity": 3
+      },
+      "types": {
+        "total": 1,
+        "public": 0
       },
       "calls": {
-        "total_calls": 189,
-        "resolved_calls": 28,
-        "unresolved_calls": 161,
-        "resolution_rate": 0.14814815
+        "total_calls": 259,
+        "resolved_calls": 42,
+        "unresolved_calls": 217,
+        "resolution_rate": 0.16216215
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 49
+        "cognitive_complexity": 76
       },
       "error_handling": {
         "total_sites": 1,
@@ -190,7 +216,7 @@
         "has_spawn": false
       },
       "activation": {
-        "total_sites": 45,
+        "total_sites": 60,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -205,7 +231,7 @@
     "path": "src/ts/features.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Implements download zip.",
+    "description": "Implements export combined.",
     "exports": [
       "downloadZip",
       "exportCombined"
@@ -385,34 +411,38 @@
     "coupling": "pure",
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 3.6,
+    "risk_score": 3.8,
     "semantic_summary": "pure computation",
     "analysis": {
       "functions": {
         "total": 1,
         "public": 1,
-        "max_cognitive_complexity": 3,
-        "avg_cognitive_complexity": 3
+        "max_cognitive_complexity": 4,
+        "avg_cognitive_complexity": 4
       },
       "calls": {
-        "total_calls": 6,
+        "total_calls": 19,
         "resolved_calls": 0,
-        "unresolved_calls": 6,
+        "unresolved_calls": 19,
         "resolution_rate": 0.0
       },
       "control_flow": {
         "max_nesting_depth": 0,
-        "cognitive_complexity": 3
+        "cognitive_complexity": 4
       },
       "docs": {
         "documented_symbols": 0,
         "undocumented_public": 1
       },
       "activation": {
-        "total_sites": 1,
+        "total_sites": 4,
         "kinds": [
-          "callback-surface"
+          "callback-surface",
+          "registration-site"
         ]
+      },
+      "guards": {
+        "total_sites": 1
       }
     }
   },
@@ -446,10 +476,10 @@
         "avg_cognitive_complexity": 0
       },
       "calls": {
-        "total_calls": 83,
+        "total_calls": 87,
         "resolved_calls": 24,
-        "unresolved_calls": 59,
-        "resolution_rate": 0.28915662
+        "unresolved_calls": 63,
+        "resolution_rate": 0.27586207
       },
       "control_flow": {
         "max_nesting_depth": 1,
@@ -465,6 +495,64 @@
           "callback-surface",
           "registration-site"
         ]
+      }
+    }
+  },
+  {
+    "path": "src/ts/ui/pretext.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Updates pretext tree.",
+    "exports": [
+      "syncPretextTree",
+      "initPretextText",
+      "setPretextText"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-state"
+    ],
+    "quality_tags": [
+      "undocumented"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 15.8,
+    "semantic_summary": "side-effecting stateful module",
+    "analysis": {
+      "functions": {
+        "total": 16,
+        "public": 3,
+        "max_cognitive_complexity": 9,
+        "avg_cognitive_complexity": 2
+      },
+      "types": {
+        "total": 1,
+        "public": 0
+      },
+      "calls": {
+        "total_calls": 138,
+        "resolved_calls": 23,
+        "unresolved_calls": 115,
+        "resolution_rate": 0.16666667
+      },
+      "control_flow": {
+        "max_nesting_depth": 2,
+        "cognitive_complexity": 33
+      },
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 3
+      },
+      "activation": {
+        "total_sites": 40,
+        "kinds": [
+          "callback-surface",
+          "registration-site"
+        ]
+      },
+      "guards": {
+        "total_sites": 1
       }
     }
   },
@@ -491,24 +579,24 @@
     "semantic_summary": "async side-effecting constant-owning module",
     "analysis": {
       "functions": {
-        "total": 5,
+        "total": 10,
         "public": 2,
         "max_cognitive_complexity": 10,
-        "avg_cognitive_complexity": 3
+        "avg_cognitive_complexity": 5
       },
       "types": {
-        "total": 1,
+        "total": 2,
         "public": 0
       },
       "calls": {
-        "total_calls": 45,
-        "resolved_calls": 4,
-        "unresolved_calls": 41,
-        "resolution_rate": 0.08888889
+        "total_calls": 129,
+        "resolved_calls": 14,
+        "unresolved_calls": 115,
+        "resolution_rate": 0.10852713
       },
       "control_flow": {
         "max_nesting_depth": 2,
-        "cognitive_complexity": 19
+        "cognitive_complexity": 52
       },
       "concurrency": {
         "total_sites": 5,
@@ -521,11 +609,14 @@
         "undocumented_public": 2
       },
       "activation": {
-        "total_sites": 7,
+        "total_sites": 25,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
+      },
+      "guards": {
+        "total_sites": 2
       }
     }
   },
@@ -554,7 +645,7 @@
     "semantic_summary": "side-effecting adapter",
     "analysis": {
       "functions": {
-        "total": 23,
+        "total": 26,
         "public": 5,
         "max_cognitive_complexity": 14,
         "avg_cognitive_complexity": 4
@@ -564,25 +655,28 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 310,
-        "resolved_calls": 42,
-        "unresolved_calls": 268,
-        "resolution_rate": 0.13548388
+        "total_calls": 358,
+        "resolved_calls": 49,
+        "unresolved_calls": 309,
+        "resolution_rate": 0.1368715
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 99
+        "cognitive_complexity": 105
       },
       "docs": {
         "documented_symbols": 0,
         "undocumented_public": 5
       },
       "activation": {
-        "total_sites": 81,
+        "total_sites": 93,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
+      },
+      "guards": {
+        "total_sites": 1
       }
     }
   },
@@ -613,7 +707,7 @@
     "semantic_summary": "async side-effecting adapter that logs and continues",
     "analysis": {
       "functions": {
-        "total": 8,
+        "total": 7,
         "public": 3,
         "max_cognitive_complexity": 6,
         "avg_cognitive_complexity": 2
@@ -623,14 +717,14 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 49,
-        "resolved_calls": 9,
-        "unresolved_calls": 40,
-        "resolution_rate": 0.18367347
+        "total_calls": 54,
+        "resolved_calls": 8,
+        "unresolved_calls": 46,
+        "resolution_rate": 0.14814815
       },
       "control_flow": {
         "max_nesting_depth": 1,
-        "cognitive_complexity": 20
+        "cognitive_complexity": 14
       },
       "error_handling": {
         "total_sites": 1,
@@ -649,7 +743,7 @@
         "undocumented_public": 3
       },
       "activation": {
-        "total_sites": 12,
+        "total_sites": 14,
         "kinds": [
           "callback-surface"
         ]
@@ -784,7 +878,7 @@
     "path": "src/ts/utils/result.ts",
     "layer": 2,
     "file_kind": "production",
-    "description": "Implements to result.",
+    "description": "Implements Err functionality.",
     "exports": [
       "toResult",
       "None",
@@ -1005,40 +1099,37 @@
     "semantic_summary": "async side-effecting stateful module",
     "analysis": {
       "functions": {
-        "total": 20,
-        "public": 10,
+        "total": 21,
+        "public": 11,
         "max_cognitive_complexity": 5,
         "avg_cognitive_complexity": 1
       },
       "calls": {
-        "total_calls": 176,
-        "resolved_calls": 25,
-        "unresolved_calls": 151,
-        "resolution_rate": 0.14204545
+        "total_calls": 194,
+        "resolved_calls": 22,
+        "unresolved_calls": 172,
+        "resolution_rate": 0.11340206
       },
       "control_flow": {
         "max_nesting_depth": 2,
-        "cognitive_complexity": 35
+        "cognitive_complexity": 32
       },
       "concurrency": {
-        "total_sites": 9,
+        "total_sites": 8,
         "has_async": true,
         "has_locks": false,
         "has_spawn": true
       },
       "docs": {
         "documented_symbols": 0,
-        "undocumented_public": 10
+        "undocumented_public": 11
       },
       "activation": {
-        "total_sites": 42,
+        "total_sites": 49,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
-      },
-      "guards": {
-        "total_sites": 1
       }
     }
   }

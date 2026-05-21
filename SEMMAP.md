@@ -120,8 +120,14 @@
 
 ## Layer 0 -- Config
 
+`APP-PIVOT.md`
+Support file for APP-PIVOT.
+
 `README.md`
 Project overview and usage guide.
+
+`REDESIGN_README.md`
+Support file for REDESIGN_README.
 
 `SEMMAP.md`
 Generated semantic map.
@@ -153,7 +159,7 @@ Implements app functionality. [COUPLING:mixed] [BEHAVIOR:owns-state,async,logs-a
 Semantic: async side-effecting stateful module with external API surface that logs and continues
 
 `src/ts/features.ts`
-Implements download zip. [COUPLING:mixed] [BEHAVIOR:persists,async]
+Implements export combined. [COUPLING:mixed] [BEHAVIOR:persists,async]
 Exports: downloadZip, exportCombined
 Semantic: async side-effecting adapter
 
@@ -179,6 +185,11 @@ Semantic: pure computation
 Implements apply preferred sidebar ratio. [COUPLING:pure] [BEHAVIOR:owns-const-state] [QUALITY:undocumented]
 Exports: applyPreferredSidebarRatio, clampSidebarWidth, initSidebarResizer, applySidebarRatio
 Semantic: pure computation constant-owning module
+
+`src/ts/ui/pretext.ts`
+Updates pretext tree. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
+Exports: syncPretextTree, initPretextText, setPretextText
+Semantic: side-effecting stateful module
 
 `src/ts/ui/stats.ts`
 Formats global stats for output. [COUPLING:mixed] [BEHAVIOR:owns-const-state,async] [QUALITY:concurrency-heavy]
@@ -208,7 +219,7 @@ Exports: initTypeData, isLikelyText, sniffIsText, formatBytes
 Semantic: async side-effecting stateful adapter
 
 `src/ts/utils/result.ts`
-Implements to result. [HOTSPOT] [COUPLING:pure] [BEHAVIOR:async] [QUALITY:undocumented]
+Implements Err functionality. [HOTSPOT] [COUPLING:pure] [BEHAVIOR:async] [QUALITY:undocumented]
 Exports: toResult, None, Option, Some
 Semantic: async pure computation
 
@@ -260,7 +271,7 @@ Semantic: async side-effecting stateful module
 DependencyGraph:
   # --- Entrypoints ---
   index.html:
-    Imports: [app.ts]
+    Imports: []
     ImportedBy: []
   # --- High Fan-In Hotspots ---
   crossbrowser_fs.ts:
@@ -272,29 +283,32 @@ DependencyGraph:
   fs_utils.ts:
     Imports: [crossbrowser_fs.ts, result.ts]
     ImportedBy: [app.ts, features.ts, filesystem.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
+  pretext.ts:
+    Imports: []
+    ImportedBy: [app.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
   state.ts:
     Imports: [types/index.ts]
     ImportedBy: [app.ts, features.ts, modals.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
   tree.ts:
-    Imports: [fs_utils.ts, state.ts, types/index.ts, viewer.ts]
+    Imports: [fs_utils.ts, pretext.ts, state.ts, types/index.ts, viewer.ts]
     ImportedBy: [app.ts, stats.ts, ui/index.ts]
   types/index.ts:
     Imports: [crossbrowser_fs.ts]
     ImportedBy: [app.ts, features.ts, filesystem.ts, state.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
   ui/index.ts:
-    Imports: [filesystem.ts, fs_utils.ts, layout.ts, modals.ts, state.ts, stats.ts, tree.ts, types/index.ts, viewer.ts]
+    Imports: [filesystem.ts, fs_utils.ts, layout.ts, modals.ts, pretext.ts, state.ts, stats.ts, tree.ts, types/index.ts, viewer.ts]
     ImportedBy: [app.ts, features.ts, viewer.ts]
   viewer.ts:
-    Imports: [fs_utils.ts, state.ts, types/index.ts, ui/index.ts]
+    Imports: [fs_utils.ts, pretext.ts, state.ts, types/index.ts, ui/index.ts]
     ImportedBy: [app.ts, tree.ts, ui/index.ts]
   # --- Layer 0 -- Config ---
-  README.md, SEMMAP.md, package.json, tsconfig.json, vite.config.ts:
+  APP-PIVOT.md, README.md, REDESIGN_README.md, SEMMAP.md, package.json, tsconfig.json, vite.config.ts:
     Imports: []
     ImportedBy: []
   # --- Layer 1 -- Domain (Engine) ---
   app.ts:
-    Imports: [app.css, components.css, crossbrowser_fs.ts, dropoverlay.css, extensions.css, features.ts, filesystem.ts, fs_utils.ts, layout.ts, modals.css, modals.ts, report.css, state.ts, stats.css, tree.css, tree.ts, types/index.ts, ui/index.ts, viewer.css, viewer.ts]
-    ImportedBy: [index.html]
+    Imports: [app.css, components.css, crossbrowser_fs.ts, dropoverlay.css, extensions.css, features.ts, filesystem.ts, fs_utils.ts, layout.ts, modals.css, modals.ts, pretext.ts, report.css, state.ts, stats.css, tree.css, tree.ts, types/index.ts, ui/index.ts, viewer.css, viewer.ts]
+    ImportedBy: []
   features.ts:
     Imports: [filesystem.ts, fs_utils.ts, state.ts, types/index.ts, ui/index.ts]
     ImportedBy: [app.ts]
@@ -308,7 +322,7 @@ DependencyGraph:
     Imports: [state.ts]
     ImportedBy: [app.ts, ui/index.ts]
   stats.ts:
-    Imports: [filesystem.ts, fs_utils.ts, state.ts, tree.ts, types/index.ts]
+    Imports: [filesystem.ts, fs_utils.ts, pretext.ts, state.ts, tree.ts, types/index.ts]
     ImportedBy: [ui/index.ts]
   # --- Layer 2 -- Adapters / Infra ---
   result.ts:

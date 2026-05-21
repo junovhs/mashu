@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-20T18:16:30Z",
+  "generated_at": "2026-05-21T17:13:32Z",
   "entries": [
     {
       "file": "public/js/jszip.min.js",
@@ -39,7 +39,7 @@
         "",
         "import { downloadZip, exportCombined } from \"./features.js\";",
         "import type { ScanAggregator } from \"./filesystem.js\";",
-        "import { initTypeData, scanDir, scanFileList } from \"./filesystem.js\";",
+        "import { formatBytes, initTypeData, scanDir, scanFileList } from \"./filesystem.js\";",
         "import { appState, elements } from \"./state.js\";"
       ]
     },
@@ -93,20 +93,20 @@
       "idiom_category": "general-idioms",
       "excerpts": [
         "export function initLayout(): void {",
-        "  // Add full-page drop overlay",
+        "  // Full-page drop overlay (same behavior, restyled)",
         "  const dropOverlay = document.createElement(\"div\");",
         "  dropOverlay.id = \"fullPageDropOverlay\";",
         "  dropOverlay.innerHTML = `",
         "    <div class=\"drop-overlay-content\">",
-        "      <div class=\"drop-overlay-icon\">DIR</div>",
-        "      <h2 class=\"drop-overlay-title\">Drop your folder here</h2>",
-        "      <p class=\"drop-overlay-subtitle\">Release to analyze immediately</p>",
-        "    </div>",
-        "  `;",
-        "  document.body.appendChild(dropOverlay);",
-        "",
-        "  const leftSidebar = document.getElementById(\"leftSidebar\");",
-        "  if (leftSidebar) {"
+        "      <div class=\"drop-overlay-mark\" aria-hidden=\"true\">",
+        "        <svg viewBox=\"0 0 24 24\" fill=\"none\">",
+        "          <path d=\"M12 3v12m0 0l-4-4m4 4l4-4\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>",
+        "          <path d=\"M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/>",
+        "        </svg>",
+        "      </div>",
+        "      <h2 class=\"drop-overlay-title pretext-flow\" data-pretext>Drop your folder here</h2>",
+        "      <p class=\"drop-overlay-subtitle pretext-flow\" data-pretext>Release to analyze immediately — everything stays in your browser.</p>",
+        "    </div>"
       ]
     },
     {
@@ -132,6 +132,28 @@
       ]
     },
     {
+      "file": "src/ts/ui/pretext.ts",
+      "language": "typescript",
+      "idiom_category": "state-management",
+      "excerpts": [
+        "import {",
+        "  layoutWithLines,",
+        "  measureNaturalWidth,",
+        "  prepareWithSegments,",
+        "  setLocale,",
+        "  type PrepareOptions,",
+        "  type PreparedTextWithSegments,",
+        "} from \"@chenglou/pretext\";",
+        "",
+        "type PretextBinding = {",
+        "  element: HTMLElement;",
+        "  sourceText: string;",
+        "  lastWidth: number;",
+        "  preparedKey: string | null;",
+        "  prepared: PreparedTextWithSegments | null;"
+      ]
+    },
+    {
       "file": "src/ts/ui/stats.ts",
       "language": "typescript",
       "idiom_category": "concurrency-pattern",
@@ -139,6 +161,7 @@
         "import { formatBytes } from \"../filesystem.js\";",
         "import { appState, elements } from \"../state.js\";",
         "import type { FileInfo, FolderInfo, ScanData } from \"../types/index.js\";",
+        "import { setPretextText, syncPretextTree } from \"./pretext.js\";",
         "import { setSelectionByExtension } from \"./tree.js\";",
         "",
         "const REPORT_YIELD_EVERY = 400;",
@@ -148,9 +171,8 @@
         "  pipe: \"│   \",",
         "};",
         "",
-        "interface TextTreeFrame {",
-        "  isLastChild: boolean;",
-        "  isRoot: boolean;"
+        "// File-kind colour swatches — paired with the same kinds used by the tree icons.",
+        "type Kind ="
       ]
     },
     {
@@ -161,6 +183,7 @@
         "import { appState, elements, ICONS } from \"../state.js\";",
         "import type { FileInfo, FolderInfo } from \"../types/index.js\";",
         "import { formatBytes } from \"../utils/fs_utils.js\";",
+        "import { setPretextText } from \"./pretext.js\";",
         "import { openFile } from \"./viewer.js\";",
         "",
         "interface TreeStateOptions {",
@@ -171,8 +194,7 @@
         "",
         "type TreeNode = FileInfo | FolderInfo;",
         "type SelectionState = \"all\" | \"none\" | \"partial\";",
-        "type FileIconKind =",
-        "  | \"archive\""
+        "type FileIconKind ="
       ]
     },
     {
@@ -183,7 +205,8 @@
         "import { appState, elements } from \"../state.js\";",
         "import type { FileInfo } from \"../types/index.js\";",
         "import { formatBytes, getExt } from \"../utils/fs_utils.js\";",
-        "import { showNotification } from \"./index.js\";",
+        "import { activateTab, showNotification } from \"./index.js\";",
+        "import { setPretextText } from \"./pretext.js\";",
         "",
         "type ModeSpec = {",
         "  label: string;",
@@ -193,8 +216,7 @@
         "",
         "const MODE_CDN_BASE =",
         "  \"https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/%N/%N.min.js\";",
-        "",
-        "function getFallbackModeSpec(): ModeSpec {"
+        ""
       ]
     },
     {
@@ -272,17 +294,17 @@
         "import type { FileInfo, FolderInfo, ScanData } from \"../types/index.js\";",
         "import { filterScanData, formatBytes } from \"../filesystem.js\";",
         "import { displayGlobalStats, generateTextReportAsync } from \"./stats.js\";",
+        "import { setPretextText, syncPretextTree } from \"./pretext.js\";",
         "import { closeViewer } from \"./viewer.js\";",
         "",
         "// Export everything so app.ts can find them",
         "export * from \"./layout.js\";",
         "export * from \"./modals.js\";",
+        "export * from \"./pretext.js\";",
         "export * from \"./stats.js\";",
         "export * from \"./tree.js\";",
         "export * from \"./viewer.js\";",
-        "",
-        "let reportRefreshToken = 0;",
-        "let cachedReportKey: string | null = null;"
+        ""
       ]
     }
   ]

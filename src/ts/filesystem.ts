@@ -18,6 +18,7 @@ export interface ScanAggregator {
     path: string;
     entryHandle: VirtualDirectoryHandle;
   }>;
+  ignoredCount: number;
   maxDepth: number;
 }
 
@@ -78,10 +79,12 @@ export async function scanDir(
   const localAggregator = aggregator || {
     allFilesList: [],
     allFoldersList: [],
+    ignoredCount: 0,
     maxDepth: depth,
   };
 
   if (IGNORE_LIST.includes(dirHandle.name)) {
+    localAggregator.ignoredCount++;
     return Ok(emptyFolder(dirHandle, currentPath, depth));
   }
 
@@ -95,7 +98,7 @@ export async function scanDir(
 
   let processedEntries = 0;
   for await (const entry of dirHandle.values()) {
-    if (IGNORE_LIST.includes(entry.name)) continue;
+    if (IGNORE_LIST.includes(entry.name)) { localAggregator.ignoredCount++; continue; }
     const entryPath = `${currentPath}/${entry.name}`;
 
     if (entry.kind === "file") {

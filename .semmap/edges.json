@@ -141,6 +141,11 @@
   },
   {
     "from": "src/ts/ui/stats.ts",
+    "to": "src/ts/ui/pretext.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/stats.ts",
     "to": "src/ts/ui/tree.ts",
     "kind": "import"
   },
@@ -157,6 +162,11 @@
   {
     "from": "src/ts/ui/tree.ts",
     "to": "src/ts/utils/fs_utils.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/tree.ts",
+    "to": "src/ts/ui/pretext.ts",
     "kind": "import"
   },
   {
@@ -185,6 +195,11 @@
     "kind": "import"
   },
   {
+    "from": "src/ts/ui/viewer.ts",
+    "to": "src/ts/ui/pretext.ts",
+    "kind": "import"
+  },
+  {
     "from": "src/ts/utils/fs_utils.ts",
     "to": "src/ts/utils/crossbrowser_fs.ts",
     "kind": "import"
@@ -192,11 +207,6 @@
   {
     "from": "src/ts/utils/fs_utils.ts",
     "to": "src/ts/utils/result.ts",
-    "kind": "import"
-  },
-  {
-    "from": "index.html",
-    "to": "src/ts/app.ts",
     "kind": "import"
   },
   {
@@ -222,6 +232,11 @@
   {
     "from": "src/ts/ui/index.ts",
     "to": "src/ts/ui/stats.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/ui/pretext.ts",
     "kind": "import"
   },
   {
@@ -276,6 +291,11 @@
   },
   {
     "from": "src/ts/app.ts",
+    "to": "src/ts/utils/fs_utils.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/app.ts",
     "to": "src/ts/ui/layout.ts",
     "kind": "call"
   },
@@ -286,7 +306,7 @@
   },
   {
     "from": "src/ts/app.ts",
-    "to": "src/ts/utils/fs_utils.ts",
+    "to": "src/ts/ui/pretext.ts",
     "kind": "call"
   },
   {
@@ -321,6 +341,11 @@
   },
   {
     "from": "src/ts/ui/stats.ts",
+    "to": "src/ts/ui/pretext.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/stats.ts",
     "to": "src/ts/utils/fs_utils.ts",
     "kind": "call"
   },
@@ -336,6 +361,11 @@
   },
   {
     "from": "src/ts/ui/tree.ts",
+    "to": "src/ts/ui/pretext.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/tree.ts",
     "to": "src/ts/utils/fs_utils.ts",
     "kind": "call"
   },
@@ -346,12 +376,22 @@
   },
   {
     "from": "src/ts/ui/viewer.ts",
+    "to": "src/ts/ui/pretext.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/viewer.ts",
     "to": "src/ts/utils/fs_utils.ts",
     "kind": "call"
   },
   {
     "from": "src/ts/utils/fs_utils.ts",
     "to": "src/ts/utils/result.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/ui/index.ts",
+    "to": "src/ts/ui/pretext.ts",
     "kind": "call"
   },
   {

@@ -74,6 +74,8 @@ async function processFileList(files: FileList): Promise<void> {
   );
 
   if (scanRes.ok) {
+    const root = scanRes.value.directoryData;
+    console.info(`[counts] files:${scanRes.value.allFilesList.length} folders:${scanRes.value.allFoldersList.length} ignored:0 bytes:${root?.totalSize ?? 0}`);
     applyScanData(scanRes.value);
   } else {
     showFailedUI("Scan failed.");
@@ -90,11 +92,13 @@ async function finishScan(handle: VirtualDirectoryHandle) {
   const agg: ScanAggregator = {
     allFilesList: [],
     allFoldersList: [],
+    ignoredCount: 0,
     maxDepth: 0,
   };
   const scanRes = await scanDir(handle, handle.name, 0, agg);
   logPerfMeasure("scan", "mashu:scan:start", "mashu:scan:end");
   if (scanRes.ok) {
+    console.info(`[counts] files:${agg.allFilesList.length} folders:${agg.allFoldersList.length} ignored:${agg.ignoredCount} bytes:${scanRes.value.totalSize}`);
     applyScanData({ directoryData: scanRes.value, ...agg });
   } else {
     showFailedUI("Scan failed.");
@@ -116,13 +120,19 @@ function updateUI(data: FolderInfo) {
   performance.mark("mashu:update-ui:start");
   const container = elements.treeContainer;
   if (container) {
+    performance.mark("mashu:init-tree-state:start");
     initTreeState(data, {
       initialCollapsed: true,
       initialSelected: false,
       expandRootOnly: true,
     });
+    logPerfMeasure("init-tree-state", "mashu:init-tree-state:start", "mashu:init-tree-state:end");
+
+    performance.mark("mashu:render-tree:start");
     container.innerHTML = "";
     renderTree(data, container);
+    logPerfMeasure("render-tree", "mashu:render-tree:start", "mashu:render-tree:end");
+
     refreshAllUI();
     enableUIControls();
     logPerfMeasure(
@@ -136,6 +146,10 @@ function updateUI(data: FolderInfo) {
         "mashu:process-directory:start",
         "mashu:visible-load:end",
       );
+      const sd = appState.fullScanData;
+      if (sd) {
+        console.info(`[counts] rendered-rows:${sd.allFilesList.length + sd.allFoldersList.length} selected:${appState.selectedPaths.size} bytes:${sd.directoryData?.totalSize ?? 0}`);
+      }
     });
   }
 }
@@ -391,7 +405,11 @@ function setupListeners(): void {
     container.innerHTML = "";
     renderTree(root, container);
   });
-  elements.downloadProjectBtn?.addEventListener("click", downloadZip);
+  elements.downloadProjectBtn?.addEventListener("click", async () => {
+    performance.mark("mashu:export-zip:start");
+    await downloadZip();
+    logPerfMeasure("export-zip", "mashu:export-zip:start", "mashu:export-zip:end");
+  });
   elements.clearProjectBtn?.addEventListener("click", clearProject);
   elements.selectAllBtn?.addEventListener("click", () =>
     setAllSelections(true),
@@ -412,7 +430,11 @@ function setupListeners(): void {
     void saveCurrentReport();
   });
   elements.closeViewerBtn?.addEventListener("click", closeViewer);
-  elements.aiDebriefingAssistantBtn?.addEventListener("click", exportCombined);
+  elements.aiDebriefingAssistantBtn?.addEventListener("click", async () => {
+    performance.mark("mashu:export-combined:start");
+    await exportCombined();
+    logPerfMeasure("export-combined", "mashu:export-combined:start", "mashu:export-combined:end");
+  });
 }
 
 function renderEmptyShell(): void {
