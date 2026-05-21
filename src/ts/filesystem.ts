@@ -8,7 +8,6 @@ export {
   getExt,
   initTypeData,
   isLikelyText,
-  sniffIsText,
 } from "./utils/fs_utils.js";
 
 export interface ScanAggregator {

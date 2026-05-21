@@ -1,4 +1,5 @@
-import { filterScanData, isLikelyText, readFile, sniffIsText } from "./filesystem.js";
+import { filterScanData, isLikelyText, readFile } from "./filesystem.js";
+import { sniffIsText } from "./utils/fs_utils.js";
 import { appState } from "./state.js";
 import type { FileInfo } from "./types/index.js";
 import { showNotification } from "./ui/index.js";
