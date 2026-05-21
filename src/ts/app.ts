@@ -566,7 +566,8 @@ async function init() {
 
   // Load filetype data
   try {
-    const response = await fetch("/data/filetypes.json");
+    const filetypesUrl = new URL("data/filetypes.json", document.baseURI);
+    const response = await fetch(filetypesUrl);
     const data = await response.json();
     initTypeData(data);
   } catch (e) {
