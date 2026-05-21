@@ -89,6 +89,29 @@ export type WorkerInboundMessage =
   | { type: "ping" }
   | { type: "scan-batch"; batchId: string; entries: SerializableEntry[] };
 
+// Pure tree nodes (no browser handles) — built by worker, verified on main thread
+export interface PureFileInfo {
+  type: "file";
+  name: string;
+  path: string;
+  size: number;
+  extension: string;
+  depth: number;
+}
+
+export interface PureFolderInfo {
+  type: "folder";
+  name: string;
+  path: string;
+  depth: number;
+  children: Array<PureFileInfo | PureFolderInfo>;
+  fileCount: number;
+  dirCount: number;
+  totalSize: number;
+  fileTypes: Record<string, { count: number; size: number }>;
+}
+
 export type WorkerOutboundMessage =
   | { type: "pong" }
-  | { type: "scan-result"; batchId: string; ok: boolean };
+  | { type: "scan-result"; batchId: string; ok: boolean }
+  | { type: "stats-ready"; batchId: string; tree: PureFolderInfo };

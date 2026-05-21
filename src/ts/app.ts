@@ -629,6 +629,15 @@ function initWorker(): void {
         console.info("[worker] ready");
       } else if (msg.type === "scan-result") {
         console.info(`[worker] scan-result batchId=${msg.batchId} ok=${msg.ok}`);
+      } else if (msg.type === "stats-ready") {
+        const main = appState.fullScanData?.directoryData;
+        const fileMatch = main ? msg.tree.fileCount === main.fileCount : null;
+        const sizeMatch = main ? msg.tree.totalSize === main.totalSize : null;
+        console.info(
+          `[worker] stats-ready batchId=${msg.batchId}` +
+          ` files=${msg.tree.fileCount}(parity=${fileMatch})` +
+          ` bytes=${msg.tree.totalSize}(parity=${sizeMatch})`,
+        );
       }
     });
     scanWorker.addEventListener("error", (e) => {
