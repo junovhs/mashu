@@ -13,7 +13,7 @@ import { downloadZip, exportCombined } from "./features.js";
 import type { ScanAggregator } from "./filesystem.js";
 import { formatBytes, initTypeData, scanDir, scanFileList } from "./filesystem.js";
 import { appState, elements } from "./state.js";
-import type { FolderInfo, ScanData, WorkerOutboundMessage } from "./types/index.js";
+import type { FolderInfo, ScanData, SerializableEntry, SerializableFileEntry, SerializableFolderEntry, WorkerOutboundMessage } from "./types/index.js";
 import {
   closeViewer,
   copyCurrentReport,
@@ -113,6 +113,7 @@ function applyScanData(data: ScanData): void {
   appState.fullScanData = data;
   saveRecentProjectSummary(data);
   document.body.classList.add("project-loaded");
+  postScanBatchToWorker(data);
   updateUI(appState.fullScanData.directoryData as FolderInfo);
 }
 
@@ -576,6 +577,42 @@ function logPerfMeasure(name: string, startMark: string, endMark: string): void 
   } catch {
     // Ignore measurement failures when the browser drops a mark.
   }
+}
+
+function buildSerializableEntries(data: ScanData): SerializableEntry[] {
+  const entries: SerializableEntry[] = [];
+  for (const f of data.allFilesList) {
+    const e: SerializableFileEntry = {
+      id: f.path,
+      kind: "file",
+      name: f.name,
+      path: f.path,
+      size: f.size,
+      extension: f.extension,
+      depth: f.depth,
+    };
+    entries.push(e);
+  }
+  for (const folder of data.allFoldersList) {
+    const depth = folder.path.split("/").length - 1;
+    const e: SerializableFolderEntry = {
+      id: folder.path,
+      kind: "folder",
+      name: folder.name,
+      path: folder.path,
+      depth,
+    };
+    entries.push(e);
+  }
+  return entries;
+}
+
+function postScanBatchToWorker(data: ScanData): void {
+  if (!scanWorker) return;
+  const entries = buildSerializableEntries(data);
+  const batchId = Date.now().toString(36);
+  scanWorker.postMessage({ type: "scan-batch", batchId, entries });
+  console.info(`[worker] scan-batch sent batchId=${batchId} entries=${entries.length}`);
 }
 
 let scanWorker: Worker | null = null;
