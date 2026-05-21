@@ -230,6 +230,7 @@ export function renderTree(
   container: HTMLElement,
   isRoot = true,
 ): void {
+  const searchQuery = appState.treeSearchQuery.trim().toLowerCase();
   if (isRoot) {
     bindTreeInteractions(container);
   }
@@ -243,10 +244,10 @@ export function renderTree(
     const li = createFolderLi(node);
     ul.appendChild(li);
 
-    if (appState.expandedFolderPaths.has(node.path)) {
+    if (shouldRenderChildren(node, searchQuery)) {
       const childUl = document.createElement("ul");
       for (const child of node.children) {
-        renderTreeNode(child, childUl);
+        renderTreeNode(child, childUl, searchQuery);
       }
       li.appendChild(childUl);
     }
@@ -264,21 +265,49 @@ export function renderTree(
 function renderTreeNode(
   node: FolderInfo | FileInfo,
   parentUl: HTMLElement,
+  searchQuery = "",
 ): void {
+  if (searchQuery && !treeMatchesQuery(node, searchQuery)) {
+    return;
+  }
+
   if (node.type === "folder") {
     const li = createFolderLi(node);
     parentUl.appendChild(li);
 
-    if (appState.expandedFolderPaths.has(node.path)) {
+    if (shouldRenderChildren(node, searchQuery)) {
       const childUl = document.createElement("ul");
       for (const child of node.children) {
-        renderTreeNode(child, childUl);
+        renderTreeNode(child, childUl, searchQuery);
       }
       li.appendChild(childUl);
     }
   } else {
     parentUl.appendChild(createFileLi(node));
   }
+}
+
+function shouldRenderChildren(folder: FolderInfo, searchQuery: string): boolean {
+  if (searchQuery) {
+    return folder.children.some((child) => treeMatchesQuery(child, searchQuery));
+  }
+
+  return appState.expandedFolderPaths.has(folder.path);
+}
+
+function treeMatchesQuery(node: FolderInfo | FileInfo, searchQuery: string): boolean {
+  if (!searchQuery) return true;
+
+  const haystack = `${node.name} ${node.path}`.toLowerCase();
+  if (haystack.includes(searchQuery)) {
+    return true;
+  }
+
+  if (node.type === "folder") {
+    return node.children.some((child) => treeMatchesQuery(child, searchQuery));
+  }
+
+  return false;
 }
 
 function createFolderLi(folder: FolderInfo): HTMLLIElement {

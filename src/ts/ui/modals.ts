@@ -52,6 +52,7 @@ function readSavedSidebarRatio(): number | null {
 export function initSidebarResizer(): void {
   const leftSidebar = elements.leftSidebar;
   const sidebarResizer = elements.sidebarResizer;
+  const appContainer = document.getElementById("appContainer");
   if (!leftSidebar || !sidebarResizer) return;
 
   const clampSidebarWidth = (width: number): number => {
@@ -63,8 +64,9 @@ export function initSidebarResizer(): void {
     const availableWidth = getAvailableContentWidth();
     const clampedRatio = clampSidebarRatio(ratio);
     const nextWidth = clampSidebarWidth(Math.round(availableWidth * clampedRatio));
-    leftSidebar.style.width = `${nextWidth}px`;
-    leftSidebar.style.flexBasis = `${nextWidth}px`;
+    appContainer?.style.setProperty("--left-sidebar-width", `${nextWidth}px`);
+    leftSidebar.style.width = "";
+    leftSidebar.style.flexBasis = "";
 
     if (persist) {
       localStorage.setItem(SIDEBAR_RATIO_STORAGE_KEY, String(clampedRatio));
@@ -96,14 +98,13 @@ export function initSidebarResizer(): void {
     const handlePointerMove = (moveEvent: PointerEvent) => {
       const nextWidth = startWidth + moveEvent.clientX - startX;
       const clampedWidth = clampSidebarWidth(nextWidth);
-      leftSidebar.style.width = `${clampedWidth}px`;
-      leftSidebar.style.flexBasis = `${clampedWidth}px`;
+      appContainer?.style.setProperty("--left-sidebar-width", `${clampedWidth}px`);
     };
 
     const stopResizing = () => {
       sidebarResizer.classList.remove("resizing");
       document.body.classList.remove("sidebar-is-resizing");
-      const finalWidth = parseInt(leftSidebar.style.width || `${startWidth}`, 10);
+      const finalWidth = Math.round(leftSidebar.getBoundingClientRect().width);
       const finalRatio = finalWidth / getAvailableContentWidth();
       applySidebarRatio(finalRatio, true);
       sidebarResizer.removeEventListener("pointermove", handlePointerMove);

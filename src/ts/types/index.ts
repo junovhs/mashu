@@ -37,6 +37,7 @@ export interface ScanData {
 export interface AppState {
   activeTabId: string;
   fullScanData: ScanData | null;
+  treeSearchQuery: string;
   expandedFolderPaths: Set<string>;
   selectedPaths: Set<string>;
   treeNodesByPath: Map<string, FileInfo | FolderInfo>;
@@ -57,4 +58,4 @@ export interface FileTypeData {
 export interface ParsedFile {
   filePath: string;
   content: string;
-}
+}

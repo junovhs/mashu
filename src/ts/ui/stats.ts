@@ -17,16 +17,16 @@ type Kind =
   | "doc"     | "image"  | "media"| "shell"  | "other";
 
 const KIND_COLOR: Record<Kind, string> = {
-  archive: "oklch(0.70 0.13 75)",
-  binary:  "oklch(0.60 0.10 240)",
-  code:    "oklch(0.60 0.13 240)",
-  config:  "oklch(0.55 0.08 290)",
-  data:    "oklch(0.62 0.13 165)",
-  doc:     "oklch(0.62 0.02 80)",
-  image:   "oklch(0.62 0.16 0)",
-  media:   "oklch(0.60 0.14 300)",
-  shell:   "oklch(0.60 0.13 145)",
-  other:   "oklch(0.55 0.02 80)",
+  archive: "oklch(0.78 0.07 75)",
+  binary:  "oklch(0.76 0.06 245)",
+  code:    "oklch(0.74 0.09 240)",
+  config:  "oklch(0.76 0.04 290)",
+  data:    "oklch(0.75 0.08 165)",
+  doc:     "oklch(0.76 0.02 80)",
+  image:   "oklch(0.79 0.10 12)",
+  media:   "oklch(0.75 0.08 300)",
+  shell:   "oklch(0.75 0.08 145)",
+  other:   "oklch(0.73 0.01 80)",
 };
 
 const CODE_EXT  = new Set([".asm",".c",".cc",".cpp",".cs",".css",".go",".h",".hpp",".java",".js",".jsx",".kt",".less",".lua",".m",".mdx",".mjs",".php",".py",".rb",".rs",".sass",".scss",".sh",".sql",".swift",".ts",".tsx",".vue"]);

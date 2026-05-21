@@ -6,6 +6,7 @@ import type { AppState } from "./types/index.js";
 export const appState: AppState = {
   activeTabId: "textReportTab",
   fullScanData: null,
+  treeSearchQuery: "",
   expandedFolderPaths: new Set(),
   selectedPaths: new Set(),
   treeNodesByPath: new Map(),

@@ -1,7 +1,7 @@
 import { appState, elements } from "../state.js";
 import type { FileInfo } from "../types/index.js";
 import { formatBytes, getExt } from "../utils/fs_utils.js";
-import { showNotification } from "./index.js";
+import { activateTab, showNotification } from "./index.js";
 import { setPretextText } from "./pretext.js";
 
 type ModeSpec = {
@@ -110,7 +110,7 @@ export async function openFile(file: FileInfo): Promise<void> {
 
     initOrSet(content, modeSpec);
     updateViewer(file.path, content, modeSpec.label);
-    showUI();
+    activateTab("fileViewerTab");
     appState.isViewerActive = true;
     setTimeout(() => {
       appState.viewerInstance?.refresh();
@@ -129,7 +129,6 @@ function initOrSet(content: string, modeSpec: ModeSpec): void {
       value: content,
       mode: modeSpec.option,
       lineNumbers: true,
-      theme: "material-darker",
       readOnly: true,
       lineWrapping: true,
     });
@@ -140,16 +139,8 @@ function initOrSet(content: string, modeSpec: ModeSpec): void {
   }
 }
 
-function showUI() {
-  if (elements.mainViewTabs) elements.mainViewTabs.style.display = "none";
-  if (elements.tabContentArea) elements.tabContentArea.style.display = "none";
-  if (elements.fileViewer) elements.fileViewer.style.display = "flex";
-}
-
 export function closeViewer(): void {
-  if (elements.fileViewer) elements.fileViewer.style.display = "none";
-  if (elements.mainViewTabs) elements.mainViewTabs.style.display = "flex";
-  if (elements.tabContentArea) elements.tabContentArea.style.display = "flex";
+  activateTab("textReportTab");
   appState.isViewerActive = false;
   appState.currentViewingFile = null;
 }

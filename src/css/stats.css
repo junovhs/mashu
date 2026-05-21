@@ -36,6 +36,15 @@
   font-weight: 500;
 }
 
+.stat-empty-copy {
+  color: var(--ink-3);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.stat-empty-copy p {
+  margin: 0;
+}
+
 .selection-summary {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -194,4 +203,13 @@
   border-radius: 2px;
   margin-right: 8px;
   vertical-align: 1px;
+}
+
+body:not(.project-loaded) #selectionSummary,
+body:not(.project-loaded) #globalStats,
+body:not(.project-loaded) .stat-section,
+body:not(.project-loaded) #compositionBar,
+body:not(.project-loaded) #compositionLegend,
+body:not(.project-loaded) #fileTypeTable {
+  display: none;
 }

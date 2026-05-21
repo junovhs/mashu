@@ -23,6 +23,7 @@ export function populateElements(): void {
     "selectFolderBtn",
     "dropZone",
     "loader",
+    "treeSearchInput",
     "treeContainer",
     "textOutput",
     "copyReportButton",
@@ -131,6 +132,10 @@ function setActiveTab(tabName: string): void {
   });
 
   if (tabName === "textReportTab") refreshAllUI();
+}
+
+export function activateTab(tabName: string): void {
+  setActiveTab(tabName);
 }
 
 export function refreshAllUI(): void {

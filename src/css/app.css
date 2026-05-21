@@ -10,9 +10,9 @@
   --ink-2:     oklch(0.34 0.013 70);
   --ink-3:     oklch(0.50 0.013 70);
   --ink-4:     oklch(0.65 0.013 70);
-  --accent:    oklch(0.62 0.16 50);
-  --accent-2:  oklch(0.58 0.18 35);
-  --accent-soft: oklch(0.62 0.16 50 / 0.12);
+  --accent:    oklch(0.68 0.13 50);
+  --accent-2:  oklch(0.64 0.11 44);
+  --accent-soft: oklch(0.68 0.13 50 / 0.12);
   --positive:  oklch(0.62 0.14 155);
   --warn:      oklch(0.65 0.16 50);
   --danger:    oklch(0.58 0.20 25);
@@ -54,8 +54,9 @@
 
   /* Resizer + ratios kept compatible with modals.ts */
   --left-sidebar-ratio: 30%;
+  --left-sidebar-width: var(--left-sidebar-ratio);
   --right-stats-panel-ratio: 22%;
-  --resizer-width: 10px;
+  --resizer-width: 14px;
   --app-shell-gap: 0px;
   --terminal-shadow: none;
 
@@ -95,7 +96,7 @@ body {
 /* App shell grid */
 #appContainer {
   display: grid;
-  grid-template-columns: var(--left-sidebar-ratio) var(--resizer-width) 1fr var(--right-stats-panel-ratio);
+  grid-template-columns: minmax(220px, var(--left-sidebar-width)) var(--resizer-width) 1fr var(--right-stats-panel-ratio);
   grid-template-rows: var(--topbar-h) 1fr var(--bottombar-h);
   grid-template-areas:
     "top   top   top   top"
@@ -107,7 +108,7 @@ body {
 }
 
 #topBar     { grid-area: top; }
-#leftSidebar{ grid-area: side; min-width: 220px; max-width: 55%; }
+#leftSidebar{ grid-area: side; min-width: 220px; max-width: none; width: auto; }
 #sidebarResizer { grid-area: rsz; }
 #mainView   { grid-area: main; min-width: 0; }
 #rightStatsPanel { grid-area: stat; min-width: 240px; }
@@ -157,13 +158,14 @@ body {
   cursor: col-resize;
   touch-action: none;
   transition: background 0.15s ease;
+  z-index: 20;
 }
 #sidebarResizer::after {
   content: "";
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 3px;
+  width: 4px;
   height: 56px;
   transform: translate(-50%, -50%);
   border-radius: 999px;
@@ -177,7 +179,7 @@ body.sidebar-is-resizing { cursor: col-resize; user-select: none; }
 /* Resp */
 @media (max-width: 1100px) {
   #appContainer {
-    grid-template-columns: var(--left-sidebar-ratio) var(--resizer-width) 1fr;
+    grid-template-columns: minmax(180px, var(--left-sidebar-width)) var(--resizer-width) 1fr;
     grid-template-areas:
       "top   top   top"
       "side  rsz   main"

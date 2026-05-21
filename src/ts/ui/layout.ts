@@ -30,16 +30,19 @@ export function initLayout(): void {
             </svg>
           </span>
           <span class="brand-name pretext-flow" data-pretext>Mashu</span>
-          <span class="brand-tag pretext-flow" data-pretext>local</span>
+          <span class="brand-tag pretext-flow" data-pretext>V2 · LOCAL</span>
         </div>
         <div class="scope" id="topScope">
           <div class="scope-path" id="scopePath">
-            <span class="scope-empty pretext-flow" data-pretext>No project loaded</span>
+            <span class="scope-empty pretext-flow" data-pretext>NO PROJECT LOADED</span>
           </div>
           <div class="scope-meta" id="scopeMeta"></div>
         </div>
         <div class="top-actions">
-          <button id="topOpenBtn" class="top-action pretext-flow" data-pretext title="Browse for a folder">Open folder</button>
+          <button id="topOpenBtn" class="top-action pretext-flow" data-pretext title="Browse for a folder">
+            <span>Open folder</span>
+            <span class="top-action-kbd" aria-hidden="true">⌘O</span>
+          </button>
         </div>
       </header>
 
@@ -49,21 +52,15 @@ export function initLayout(): void {
           <span id="sideSelected" class="side-selected"></span>
         </div>
 
-        <div id="mainAction">
-          <div id="dropZone">
-            <div class="dz-mark" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="dz-title pretext-flow" data-pretext>Drop a folder to map the project</div>
-            <div class="dz-sub pretext-flow" data-pretext>Mashu builds a local tree, live stats, and a plain-text report.</div>
-            <div class="dz-or pretext-flow" data-pretext>OR</div>
-            <button id="selectFolderBtn" class="dz-browse pretext-flow" data-pretext title="Browse for a folder and analyze it locally">Browse for folder</button>
-            <p class="dz-privacy pretext-flow" data-pretext>Everything stays in your browser. There is no upload step.</p>
-          </div>
-          <div id="loader" class="loader pretext-flow" data-pretext>Scanning…</div>
+        <div id="emptyTreeIntro" class="side-intro">
+          <p class="pretext-flow" data-pretext>Once you load a folder, the tree appears here. Click a file to view it, tick a folder to scope the report.</p>
+        </div>
+
+        <div id="treeSearchBar" class="tree-search">
+          <label class="tree-search-input-wrap" for="treeSearchInput">
+            <input id="treeSearchInput" class="tree-search-input pretext-flow" data-pretext placeholder="Filter by name..." type="text" autocomplete="off" spellcheck="false" />
+            <span class="tree-search-kbd" aria-hidden="true">/</span>
+          </label>
         </div>
 
         <div id="extFilterBar" style="display:none;">
@@ -88,8 +85,42 @@ export function initLayout(): void {
       <div id="sidebarResizer" aria-hidden="true"></div>
 
       <main id="mainView">
+        <div id="emptyStateView">
+          <section class="empty-state-hero">
+            <div class="empty-state-copy">
+              <h1 class="empty-state-title">
+                Turn any folder into <span class="empty-state-title-accent">readable</span> text.
+              </h1>
+              <p class="empty-state-sub pretext-flow" data-pretext>Drop a project folder to map its tree, see what's actually in it, and export the parts you care about as one combined text file.</p>
+            </div>
+
+            <div id="mainAction" class="empty-state-drop-wrap">
+              <div id="dropZone">
+                <div class="dz-mark" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="dz-title pretext-flow" data-pretext>Drop a folder here</div>
+                <div class="dz-sub pretext-flow" data-pretext>… or any file selection — Mashu figures out the shape.</div>
+                <div class="dz-or pretext-flow" data-pretext>OR</div>
+                <button id="selectFolderBtn" class="dz-browse pretext-flow" data-pretext title="Browse for a folder and analyze it locally">Browse for folder</button>
+                <p class="dz-privacy pretext-flow" data-pretext>Everything stays in your browser</p>
+              </div>
+              <div id="loader" class="loader pretext-flow" data-pretext>Scanning…</div>
+            </div>
+
+            <section id="recentProjects" class="recent-projects" aria-labelledby="recentProjectsTitle">
+              <h2 id="recentProjectsTitle" class="recent-projects-title pretext-flow" data-pretext>Recent</h2>
+              <div id="recentProjectsList" class="recent-projects-list"></div>
+            </section>
+          </section>
+        </div>
+
         <nav id="mainViewTabs">
           <button class="tab-button active pretext-flow" data-pretext data-tab="textReportTab" title="View the current folder or selection as plain text">Text report</button>
+          <button class="tab-button pretext-flow" data-pretext data-tab="fileViewerTab" title="Preview the selected file">File viewer</button>
         </nav>
         <div id="tabContentArea">
           <div id="textReportTab" class="tab-content-item active">
@@ -105,18 +136,20 @@ export function initLayout(): void {
               </div>
             </div>
           </div>
-        </div>
-        <div id="fileViewer" style="display:none;">
-          <div class="viewer-header">
-            <h3 id="viewerFileTitle" class="pretext-flow" data-pretext>File viewer</h3>
-            <div class="viewer-actions">
-              <button id="closeViewerBtn" class="viewer-button pretext-flow" data-pretext>Close</button>
+          <div id="fileViewerTab" class="tab-content-item">
+            <div id="fileViewer">
+              <div class="viewer-header">
+                <h3 id="viewerFileTitle" class="pretext-flow" data-pretext>File viewer</h3>
+                <div class="viewer-actions">
+                  <button id="closeViewerBtn" class="viewer-button pretext-flow" data-pretext>Close</button>
+                </div>
+              </div>
+              <div class="viewer-container">
+                <div id="viewerContent" style="height:100%; width:100%;"></div>
+              </div>
+              <div class="viewer-footer"><span id="viewerInfo" class="pretext-flow" data-pretext>Select a file in the tree to preview it here.</span></div>
             </div>
           </div>
-          <div class="viewer-container">
-            <div id="viewerContent" style="height:100%; width:100%;"></div>
-          </div>
-          <div class="viewer-footer"><span id="viewerInfo" class="pretext-flow" data-pretext></span></div>
         </div>
       </main>
 
@@ -124,6 +157,9 @@ export function initLayout(): void {
         <div class="stat-head">
           <h2 class="pretext-flow" data-pretext>Project</h2>
           <span id="statScopePill" class="scope-pill" style="display:none;">SELECTION</span>
+        </div>
+        <div id="emptyStatsIntro" class="stat-empty-copy">
+          <p class="pretext-flow" data-pretext>Stats appear here after you load a folder — file counts, size, composition by type, depth profile.</p>
         </div>
         <div id="selectionSummary" class="selection-summary" style="display:none;"></div>
         <div id="globalStats"></div>
@@ -155,6 +191,7 @@ export function initLayout(): void {
           <span class="pretext-flow" data-pretext>Awaiting a folder…</span>
         </div>
         <div class="bar-spacer"></div>
+        <button id="emptyChooseFolderBtn" class="btn primary pretext-flow" data-pretext title="Browse for a folder and analyze it locally">Choose a folder</button>
         <button id="clearProjectBtn" class="btn ghost pretext-flow" data-pretext title="Remove the current scan and start over" disabled>Clear project</button>
         <button id="downloadProjectBtn" class="btn pretext-flow" data-pretext title="Download the full scanned project as a ZIP" disabled>Download .zip</button>
         <button id="aiDebriefingAssistantBtn" class="btn primary pretext-flow" data-pretext title="Download one text file containing every text file in the current view" disabled>Export combined text</button>
@@ -166,6 +203,14 @@ export function initLayout(): void {
   const topOpenBtn = document.getElementById("topOpenBtn");
   if (topOpenBtn) {
     topOpenBtn.addEventListener("click", () => {
+      const selectBtn = document.getElementById("selectFolderBtn") as HTMLButtonElement | null;
+      selectBtn?.click();
+    });
+  }
+
+  const emptyChooseBtn = document.getElementById("emptyChooseFolderBtn");
+  if (emptyChooseBtn) {
+    emptyChooseBtn.addEventListener("click", () => {
       const selectBtn = document.getElementById("selectFolderBtn") as HTMLButtonElement | null;
       selectBtn?.click();
     });
