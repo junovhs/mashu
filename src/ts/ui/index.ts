@@ -89,7 +89,9 @@ export function resetUIForProcessing(message = "Processing..."): void {
     (elements.loader as HTMLElement).textContent = message;
     elements.loader.classList.add("visible");
   }
-  if (elements.treeContainer) elements.treeContainer.innerHTML = "";
+  if (elements.treeContainer) {
+    elements.treeContainer.innerHTML = `<div class="tree-loading"><div class="tree-loading-spinner"></div><span class="tree-loading-label">${message}</span></div>`;
+  }
   if (elements.textOutput) {
     renderReportPlaceholder(getIdleReportMessage());
   }

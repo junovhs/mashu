@@ -195,3 +195,32 @@
   padding-right: 4px;
 }
 .item-line:hover .stats { color: var(--ink-3); }
+
+/* --- TREE LOADING STATE --- */
+.tree-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 100%;
+  min-height: 200px;
+  color: var(--ink-4);
+  font-size: 12px;
+  font-family: var(--font-ui);
+}
+.tree-loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--line-soft);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: tree-spin 0.7s linear infinite;
+}
+@keyframes tree-spin {
+  to { transform: rotate(360deg); }
+}
+.tree-loading-label {
+  color: var(--ink-4);
+  letter-spacing: 0.01em;
+}

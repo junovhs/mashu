@@ -51,21 +51,23 @@ interface RecentProjectSummary {
 
 async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
   performance.mark("mashu:process-directory:start");
+  const scanStart = Date.now();
   appState.processingInProgress = true;
   document.body.classList.add("project-loaded");
-  resetUIForProcessing(`Processing '${handle.name}'...`);
+  resetUIForProcessing(`Scanning '${handle.name}'…`);
   disableUIControls();
 
-  await finishScan(handle);
+  await finishScan(handle, scanStart);
 }
 
 async function processFileList(files: FileList): Promise<void> {
   performance.mark("mashu:process-directory:start");
+  const scanStart = Date.now();
   appState.processingInProgress = true;
   document.body.classList.add("project-loaded");
 
   const rootName = getFileListRootName(files) || "PROJECT";
-  resetUIForProcessing(`Processing '${rootName}'...`);
+  resetUIForProcessing(`Scanning '${rootName}'…`);
   disableUIControls();
 
   performance.mark("mashu:scan-file-list:start");
@@ -79,7 +81,7 @@ async function processFileList(files: FileList): Promise<void> {
   if (scanRes.ok) {
     const root = scanRes.value.directoryData;
     console.info(`[counts] files:${scanRes.value.allFilesList.length} folders:${scanRes.value.allFoldersList.length} ignored:0 bytes:${root?.totalSize ?? 0}`);
-    applyScanData(scanRes.value);
+    applyScanData(scanRes.value, scanStart);
   } else {
     showFailedUI("Scan failed.");
     console.error(scanRes.error);
@@ -90,7 +92,7 @@ async function processFileList(files: FileList): Promise<void> {
   if (loader) loader.classList.remove("visible");
 }
 
-async function finishScan(handle: VirtualDirectoryHandle) {
+async function finishScan(handle: VirtualDirectoryHandle, scanStart: number) {
   performance.mark("mashu:scan:start");
   const agg: ScanAggregator = {
     allFilesList: [],
@@ -102,7 +104,7 @@ async function finishScan(handle: VirtualDirectoryHandle) {
   logPerfMeasure("scan", "mashu:scan:start", "mashu:scan:end");
   if (scanRes.ok) {
     console.info(`[counts] files:${agg.allFilesList.length} folders:${agg.allFoldersList.length} ignored:${agg.ignoredCount} bytes:${scanRes.value.totalSize}`);
-    applyScanData({ directoryData: scanRes.value, ...agg });
+    applyScanData({ directoryData: scanRes.value, ...agg }, scanStart);
   } else {
     showFailedUI("Scan failed.");
     console.error(scanRes.error);
@@ -112,12 +114,20 @@ async function finishScan(handle: VirtualDirectoryHandle) {
   if (loader) loader.classList.remove("visible");
 }
 
-function applyScanData(data: ScanData): void {
+function applyScanData(data: ScanData, scanStart?: number): void {
   appState.fullScanData = data;
   saveRecentProjectSummary(data);
   document.body.classList.add("project-loaded");
   postScanBatchToWorker(data);
   updateUI(appState.fullScanData.directoryData as FolderInfo);
+  if (scanStart !== undefined) {
+    const elapsed = (Date.now() - scanStart) / 1000;
+    const elapsedStr = elapsed < 60
+      ? `${elapsed.toFixed(1)}s`
+      : `${Math.floor(elapsed / 60)}m ${Math.round(elapsed % 60)}s`;
+    const fileCount = data.allFilesList.length.toLocaleString();
+    showNotification(`Scanned ${fileCount} files in ${elapsedStr}`, 4000);
+  }
 }
 
 function updateUI(data: FolderInfo) {
