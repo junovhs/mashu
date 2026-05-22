@@ -382,9 +382,14 @@ function setupListeners(): void {
     (elements.treeSearchInput as HTMLInputElement | undefined)?.focus();
   });
 
+  let selectionRefreshTimer: ReturnType<typeof setTimeout> | null = null;
   window.addEventListener("mashu:selection-changed", () => {
-    refreshAllUI();
     enableUIControls();
+    if (selectionRefreshTimer !== null) clearTimeout(selectionRefreshTimer);
+    selectionRefreshTimer = setTimeout(() => {
+      selectionRefreshTimer = null;
+      refreshAllUI();
+    }, 200);
   });
 
   elements.dropZone?.addEventListener("click", (event: Event) => {
