@@ -111,7 +111,7 @@ export function initLayout(): void {
               <div id="loader" class="loader pretext-flow" data-pretext>Scanning…</div>
             </div>
 
-            <section id="recentProjects" class="recent-projects" aria-labelledby="recentProjectsTitle">
+            <section id="recentProjects" class="recent-projects" data-empty="true" aria-labelledby="recentProjectsTitle">
               <h2 id="recentProjectsTitle" class="recent-projects-title pretext-flow" data-pretext>Recent</h2>
               <div id="recentProjectsList" class="recent-projects-list"></div>
             </section>
