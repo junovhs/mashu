@@ -252,6 +252,22 @@
   text-align: center;
 }
 
+.report-tree-preview {
+  position: relative;
+  max-height: 360px;
+  overflow: hidden;
+}
+.report-tree-preview::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: linear-gradient(to bottom, transparent, oklch(1 0 0 / 0.5));
+  pointer-events: none;
+}
+
 .report-tree-abbreviated-note {
   padding: 10px 20px 16px;
   font-size: 11px;

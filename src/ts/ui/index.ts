@@ -284,14 +284,17 @@ function renderVisualReport(data: ScanData): void {
 
   const MAX_VISUAL_NODES = 2000;
   if (data.allFilesList.length > MAX_VISUAL_NODES) {
+    const budget = { remaining: 400 };
+    const preview = document.createElement("div");
+    preview.className = "report-tree-preview";
     const tree = document.createElement("ul");
     tree.className = "report-tree";
-    const { truncated } = appendShallowTree(root, tree);
-    visual.appendChild(tree);
+    appendVisualTreeNode(root, tree, true, [], true, budget);
+    preview.appendChild(tree);
+    visual.appendChild(preview);
     const note = document.createElement("div");
     note.className = "report-tree-abbreviated-note";
-    const truncatedSuffix = truncated > 0 ? `, +${truncated.toLocaleString()} more not shown` : "";
-    note.textContent = `Top-level only${truncatedSuffix} — ${data.allFilesList.length.toLocaleString()} files total`;
+    note.textContent = `Tree preview — ${data.allFilesList.length.toLocaleString()} files total. Export for full output.`;
     visual.appendChild(note);
   } else {
     const tree = document.createElement("ul");
@@ -358,41 +361,18 @@ function renderReportPlaceholder(text: string): void {
   host.appendChild(copy);
 }
 
-const MAX_SHALLOW_ROWS = 50;
-
-function appendShallowTree(root: FolderInfo, parent: HTMLUListElement): { truncated: number } {
-  const children = root.children ?? [];
-  const visible = children.slice(0, MAX_SHALLOW_ROWS);
-  const truncated = children.length - visible.length;
-
-  // Render root manually (isRoot=true, no elbow)
-  appendVisualTreeNode(root, parent, true, [], true);
-  const rootItem = parent.firstElementChild as HTMLLIElement | null;
-  if (!rootItem) return { truncated };
-
-  const childList = rootItem.querySelector("ul.report-tree-children");
-  if (!childList) return { truncated };
-
-  // Remove all auto-rendered children, re-render only the visible slice
-  childList.replaceChildren();
-  visible.forEach((child, i) => {
-    const isLast = i === visible.length - 1 && truncated === 0;
-    appendVisualTreeNode(child, childList as HTMLUListElement, false, [false], isLast);
-  });
-
-  // Strip any grandchildren from what we just added
-  childList.querySelectorAll("ul.report-tree-children").forEach((ul) => ul.remove());
-
-  return { truncated };
-}
-
 function appendVisualTreeNode(
   node: FolderInfo | FileInfo,
   parent: HTMLUListElement,
   isRoot = false,
   ancestorContinuations: boolean[] = [],
   isLast = true,
+  budget?: { remaining: number },
 ): void {
+  if (budget) {
+    if (budget.remaining <= 0) return;
+    budget.remaining--;
+  }
   const item = document.createElement("li");
   item.className = `report-tree-node report-tree-node--${node.type}${isRoot ? " report-tree-node--root" : ""}`;
 
@@ -444,6 +424,7 @@ function appendVisualTreeNode(
         false,
         [...ancestorContinuations, !isLast],
         index === node.children.length - 1,
+        budget,
       );
     });
 
