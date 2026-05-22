@@ -1,7 +1,7 @@
 import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo, ScanData } from "../types/index.js";
 import { filterScanData, formatBytes } from "../filesystem.js";
-import { displayGlobalStats, generateTextReportAsync } from "./stats.js";
+import { displayGlobalStats, generateTextReportAsync, resetStatsCache } from "./stats.js";
 import { setPretextText } from "./pretext.js";
 import { closeViewer } from "./viewer.js";
 
@@ -87,6 +87,7 @@ function getIdleReportMessage(): string {
 export function resetUIForProcessing(message = "Processing..."): void {
   cachedVisualKey = null;
   cachedVisualNode = null;
+  resetStatsCache();
   if (elements.loader) {
     setPretextText(elements.loader as HTMLElement, message);
     elements.loader.classList.add("visible");

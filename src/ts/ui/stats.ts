@@ -67,64 +67,70 @@ async function yieldToMainThread(): Promise<void> {
   });
 }
 
+let cachedStatsKey: string | null = null;
+
+export function resetStatsCache(): void {
+  cachedStatsKey = null;
+}
+
 export function displayGlobalStats(data: ScanData): void {
   const { directoryData, allFilesList, allFoldersList } = data;
   if (!directoryData) return;
 
   const isSelection = appState.selectedPaths.size > 0;
+  const statsKey = [
+    isSelection ? "sel" : "full",
+    allFilesList.length,
+    allFoldersList.length,
+    directoryData.totalSize,
+    directoryData.name,
+  ].join("|");
 
-  // Selection summary card
+  const scopePill = document.getElementById("statScopePill");
+  if (scopePill) scopePill.style.display = isSelection ? "inline-flex" : "none";
+
   if (elements.selectionSummary) {
     if (isSelection) {
-      elements.selectionSummary.dataset.pretext = "";
-      elements.selectionSummary.classList.add("pretext-flow");
-      setPretextText(
-        elements.selectionSummary,
-        `Focused view active: ${allFilesList.length} files · ${formatBytes(directoryData.totalSize)}`,
-      );
+      elements.selectionSummary.textContent =
+        `Focused view active: ${allFilesList.length} files · ${formatBytes(directoryData.totalSize)}`;
       elements.selectionSummary.style.display = "block";
     } else {
       elements.selectionSummary.style.display = "none";
     }
   }
 
-  // Stat scope pill (Project vs Selection)
-  const scopePill = document.getElementById("statScopePill");
-  if (scopePill) scopePill.style.display = isSelection ? "inline-flex" : "none";
+  if (statsKey === cachedStatsKey) return;
+  cachedStatsKey = statsKey;
 
-  // Hero stat grid
   if (elements.globalStats) {
     elements.globalStats.innerHTML = `
       <div class="stat-item">
-        <span class="stat-label pretext-flow" data-pretext>Files</span>
-        <span class="stat-value pretext-flow" data-pretext>${formatCount(allFilesList.length)}</span>
+        <span class="stat-label">Files</span>
+        <span class="stat-value">${formatCount(allFilesList.length)}</span>
       </div>
       <div class="stat-item">
-        <span class="stat-label pretext-flow" data-pretext>Folders</span>
-        <span class="stat-value pretext-flow" data-pretext>${formatCount(Math.max(0, allFoldersList.length - 1))}</span>
+        <span class="stat-label">Folders</span>
+        <span class="stat-value">${formatCount(Math.max(0, allFoldersList.length - 1))}</span>
       </div>
       <div class="stat-item">
-        <span class="stat-label pretext-flow" data-pretext>Size</span>
-        <span class="stat-value pretext-flow" data-pretext>${formatBytes(directoryData.totalSize)}</span>
+        <span class="stat-label">Size</span>
+        <span class="stat-value">${formatBytes(directoryData.totalSize)}</span>
       </div>
       <div class="stat-item">
-        <span class="stat-label pretext-flow" data-pretext>Root</span>
-        <span class="stat-value stat-value--name pretext-flow" data-pretext>${escapeHtml(directoryData.name)}</span>
+        <span class="stat-label">Root</span>
+        <span class="stat-value stat-value--name">${escapeHtml(directoryData.name)}</span>
       </div>
     `;
   }
 
-  // File-type breakdown — sort by size
   const filterSource =
     appState.fullScanData?.directoryData?.fileTypes || directoryData.fileTypes;
   const sortedTypes = Object.entries(filterSource).sort(
     ([, a], [, b]) => b.size - a.size,
   );
 
-  // Composition strip (top 7 + "other")
   renderCompositionBar(sortedTypes, directoryData.totalSize);
 
-  // File-type table with kind swatches
   if (elements.fileTypeTableBody) {
     elements.fileTypeTableBody.innerHTML = sortedTypes
       .map(([ext, td]) => {
@@ -132,37 +138,25 @@ export function displayGlobalStats(data: ScanData): void {
         return `<tr data-ext="${ext}">
           <td>
             <span class="type-row-swatch" style="background:${KIND_COLOR[kind]}"></span>
-            <span class="pretext-flow" data-pretext>${ext || "[none]"}</span>
+            ${ext || "[none]"}
           </td>
-          <td><span class="pretext-flow" data-pretext>${td.count}</span></td>
-          <td><span class="pretext-flow" data-pretext>${formatBytes(td.size)}</span></td>
+          <td>${td.count}</td>
+          <td>${formatBytes(td.size)}</td>
         </tr>`;
       })
       .join("");
   }
 
-  // Extension filter pills (left sidebar)
   renderExtFilterPills(sortedTypes);
-
-  // Side-head selected counter + bottom bar info
   updateAncillaryUI(allFilesList.length, directoryData.totalSize, isSelection);
 
-  // Update tabs/title to reflect scope
   const reportTitle = document.getElementById("reportTitle");
-  if (reportTitle) {
-    setPretextText(reportTitle, directoryData.name);
-  }
+  if (reportTitle) reportTitle.textContent = directoryData.name;
 
   const reportDescription = document.getElementById("reportDescription");
   if (reportDescription) {
-    setPretextText(
-      reportDescription,
-      "Plain-text map of everything in scope. Ready to copy or save.",
-    );
+    reportDescription.textContent = "Plain-text map of everything in scope. Ready to copy or save.";
   }
-
-  syncPretextTree(document.getElementById("rightStatsPanel") ?? document);
-  syncPretextTree(document.getElementById("bottomBar") ?? document);
 }
 
 function renderCompositionBar(
