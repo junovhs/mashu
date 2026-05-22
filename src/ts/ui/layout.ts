@@ -69,7 +69,7 @@ export function initLayout(): void {
             <span class="ctrl-divider" aria-hidden="true"></span>
             <button id="expandAllBtn" class="ctrl-btn ctrl-btn--expand" data-help="Expand every folder so all files are visible in the tree." disabled>Expand</button>
             <button id="collapseAllBtn" class="ctrl-btn ctrl-btn--collapse" data-help="Collapse all folders to show only top-level items." disabled>Collapse</button>
-            <span class="tree-hint" data-help="Shift or Alt-click any folder to expand or collapse its entire subtree at once." aria-label="Shift or Alt-click a folder to expand or collapse its entire subtree.">⇧/Alt+click: subtree</span>
+            <span class="tree-shortcuts-hint" aria-label="Tree shortcuts" data-tooltip="☑  Click checkbox — include in export&#10;▶  Click folder — expand / collapse&#10;⇧/Alt+click — expand / collapse subtree&#10;/  key — focus search filter">
           </div>
         </div>
 
