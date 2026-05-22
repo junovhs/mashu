@@ -426,25 +426,29 @@
 }
 .ctrl-btn {
   appearance: none;
-  border: 1px solid transparent;
-  background: var(--surface-2);
+  border: 1px solid var(--line);
+  background: #fff;
   color: var(--ink);
   font: inherit;
   font-family: var(--font-ui);
   font-size: 11.5px;
-  font-weight: 600;
-  padding: 6px 12px 7px;
-  border-radius: 9px;
+  font-weight: 500;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.12s;
+  display: inline-flex;
+  align-items: center;
   flex-shrink: 0;
   white-space: nowrap;
   letter-spacing: 0.01em;
   box-shadow: var(--shadow-small);
 }
 .ctrl-btn:hover:not(:disabled) {
+  background: oklch(0.96 0.005 80);
+  border-color: var(--ink-3);
   transform: translateY(-1px);
-  filter: saturate(1.05);
 }
 .ctrl-btn:active:not(:disabled) {
   transform: translateY(1px);
@@ -455,36 +459,36 @@
   box-shadow: none;
 }
 .ctrl-btn--select {
-  background: oklch(0.83 0.09 145);
-  border-color: oklch(0.76 0.09 145);
-  color: oklch(0.23 0.03 145);
+  background: #fff;
+  border-color: var(--line);
+  color: var(--ink);
 }
 .ctrl-btn--select:hover:not(:disabled) {
-  background: oklch(0.79 0.11 145);
+  background: oklch(0.96 0.005 80);
 }
 .ctrl-btn--clear {
-  background: oklch(0.88 0.07 32);
-  border-color: oklch(0.8 0.08 32);
-  color: oklch(0.32 0.06 32);
+  background: #fff;
+  border-color: var(--line);
+  color: var(--ink);
 }
 .ctrl-btn--clear:hover:not(:disabled) {
-  background: oklch(0.84 0.09 32);
+  background: oklch(0.96 0.005 80);
 }
 .ctrl-btn--expand {
-  background: oklch(0.84 0.08 220);
-  border-color: oklch(0.76 0.09 220);
-  color: oklch(0.28 0.05 220);
+  background: #fff;
+  border-color: var(--line);
+  color: var(--ink);
 }
 .ctrl-btn--expand:hover:not(:disabled) {
-  background: oklch(0.8 0.1 220);
+  background: oklch(0.96 0.005 80);
 }
 .ctrl-btn--collapse {
-  background: oklch(0.87 0.03 82);
-  border-color: oklch(0.79 0.04 82);
-  color: oklch(0.34 0.03 82);
+  background: #fff;
+  border-color: var(--line);
+  color: var(--ink);
 }
 .ctrl-btn--collapse:hover:not(:disabled) {
-  background: oklch(0.83 0.05 82);
+  background: oklch(0.96 0.005 80);
 }
 .ctrl-divider {
   width: 1px;
