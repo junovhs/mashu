@@ -10,6 +10,27 @@ export {
   isLikelyText,
 } from "./utils/fs_utils.js";
 
+interface ConcurrencyPool {
+  active: number;
+  readonly max: number;
+  readonly queue: Array<() => void>;
+}
+
+function makePool(max: number): ConcurrencyPool {
+  return { active: 0, max, queue: [] };
+}
+
+async function acquireSlot(pool: ConcurrencyPool): Promise<void> {
+  if (pool.active < pool.max) { pool.active++; return; }
+  await new Promise<void>((resolve) => pool.queue.push(resolve));
+  pool.active++;
+}
+
+function releaseSlot(pool: ConcurrencyPool): void {
+  pool.active--;
+  pool.queue.shift()?.();
+}
+
 export interface ScanAggregator {
   allFilesList: FileInfo[];
   allFoldersList: Array<{
@@ -19,6 +40,7 @@ export interface ScanAggregator {
   }>;
   ignoredCount: number;
   maxDepth: number;
+  pool?: ConcurrencyPool;
 }
 
 const IGNORE_LIST = [
@@ -69,18 +91,24 @@ function createVirtualDirectoryHandle(name: string): VirtualDirectoryHandle {
   };
 }
 
+const MAX_CONCURRENT_DIR_SCANS = 16;
+
 export async function scanDir(
   dirHandle: VirtualDirectoryHandle,
   currentPath: string,
   depth: number,
   aggregator?: ScanAggregator,
 ): Promise<Result<FolderInfo>> {
-  const localAggregator = aggregator || {
+  const localAggregator: ScanAggregator = aggregator ?? {
     allFilesList: [],
     allFoldersList: [],
     ignoredCount: 0,
     maxDepth: depth,
   };
+
+  // Lazy-init the concurrency pool on the shared aggregator
+  if (!localAggregator.pool) localAggregator.pool = makePool(MAX_CONCURRENT_DIR_SCANS);
+  const pool = localAggregator.pool;
 
   if (IGNORE_LIST.includes(dirHandle.name)) {
     localAggregator.ignoredCount++;
@@ -95,33 +123,40 @@ export async function scanDir(
     entryHandle: dirData.entryHandle,
   });
 
-  let processedEntries = 0;
+  // Acquire a slot, list this directory, then release before recursing
+  await acquireSlot(pool);
+  const fileEntries: Array<{ entry: VirtualFileHandle; path: string }> = [];
+  const dirEntries: Array<{ entry: VirtualDirectoryHandle; path: string }> = [];
   for await (const entry of dirHandle.values()) {
     if (IGNORE_LIST.includes(entry.name)) { localAggregator.ignoredCount++; continue; }
     const entryPath = `${currentPath}/${entry.name}`;
-
     if (entry.kind === "file") {
-      handleFileEntry(
-        entry as VirtualFileHandle,
-        entryPath,
-        depth,
-        dirData,
-        localAggregator,
-      );
-    } else if (entry.kind === "directory") {
-      await handleDirEntry(
-        entry as VirtualDirectoryHandle,
-        entryPath,
-        localAggregator,
-        depth,
-        dirData,
-        );
-      }
-
-    processedEntries++;
-    if (processedEntries % YIELD_EVERY === 0) {
-      await yieldToMainThread();
+      fileEntries.push({ entry: entry as VirtualFileHandle, path: entryPath });
+    } else {
+      dirEntries.push({ entry: entry as VirtualDirectoryHandle, path: entryPath });
     }
+  }
+  releaseSlot(pool);
+
+  // Files are synchronous — no I/O needed, size comes from directory metadata
+  let processed = 0;
+  for (const { entry, path } of fileEntries) {
+    handleFileEntry(entry, path, depth, dirData, localAggregator);
+    if (++processed % YIELD_EVERY === 0) await yieldToMainThread();
+  }
+
+  // Scan all subdirectories in parallel; results arrive in original listing order
+  const subResults = await Promise.all(
+    dirEntries.map(({ entry, path }) => scanDir(entry, path, depth + 1, localAggregator)),
+  );
+  for (const subResult of subResults) {
+    if (!subResult.ok) continue;
+    const sub = subResult.value;
+    dirData.children.push(sub);
+    dirData.dirCount += 1 + sub.dirCount;
+    dirData.fileCount += sub.fileCount;
+    dirData.totalSize += sub.totalSize;
+    mergeTypes(dirData, sub.fileTypes);
   }
 
   return Ok(dirData);
@@ -312,24 +347,6 @@ function handleFileEntry(
   parent.fileTypes[ext].size += entry.size;
 }
 
-async function handleDirEntry(
-  entry: VirtualDirectoryHandle,
-  path: string,
-  agg: ScanAggregator,
-  depth: number,
-  parent: FolderInfo,
-) {
-  const subResult = await scanDir(entry, path, depth + 1, agg);
-  if (!subResult.ok) return;
-
-  const subData = subResult.value;
-  parent.children.push(subData);
-  parent.dirCount += 1 + subData.dirCount;
-  parent.fileCount += subData.fileCount;
-  parent.totalSize += subData.totalSize;
-
-  mergeTypes(parent, subData.fileTypes);
-}
 
 function mergeTypes(
   parent: FolderInfo,
