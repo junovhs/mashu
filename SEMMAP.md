@@ -197,9 +197,9 @@ Exports: appState, ICONS, elements
 Semantic: constant-owning module
 
 `src/ts/ui/layout.ts`
-Creates layout. [COUPLING:pure]
-Exports: initLayout
-Semantic: pure computation
+Creates help system. [COUPLING:mixed] [QUALITY:undocumented]
+Exports: initHelpSystem, closeDocs, initLayout, openDocs
+Semantic: side-effecting
 
 `src/ts/ui/modals.ts`
 Implements apply preferred sidebar ratio. [COUPLING:pure] [BEHAVIOR:owns-const-state] [QUALITY:undocumented]
@@ -207,7 +207,7 @@ Exports: applyPreferredSidebarRatio, clampSidebarWidth, initSidebarResizer, appl
 Semantic: pure computation constant-owning module
 
 `src/ts/ui/pretext.ts`
-Updates pretext tree. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
+Creates pretext text. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
 Exports: syncPretextTree, initPretextText, setPretextText
 Semantic: side-effecting stateful module
 
@@ -239,7 +239,7 @@ Exports: initTypeData, isLikelyText, sniffIsText, formatBytes
 Semantic: async side-effecting stateful adapter
 
 `src/ts/utils/result.ts`
-Implements to result. [HOTSPOT] [COUPLING:pure] [BEHAVIOR:async] [QUALITY:undocumented]
+Implements Err functionality. [HOTSPOT] [COUPLING:pure] [BEHAVIOR:async] [QUALITY:undocumented]
 Exports: toResult, None, Option, Some
 Semantic: async pure computation
 
@@ -248,6 +248,9 @@ Implements scan.worker functionality. [COUPLING:mixed] [BEHAVIOR:owns-state,asyn
 Semantic: async side-effecting stateful module that logs and continues
 
 ## Layer 3 -- App / Entrypoints
+
+`docs.html`
+Mashu — Documentation
 
 `index.html`
 Mashu
@@ -284,7 +287,7 @@ Implements serializable folder entry. [HOTSPOT] [QUALITY:undocumented]
 Exports: WorkerInboundMessage, WorkerOutboundMessage, FileTypeData, SerializableFolderEntry
 
 `src/ts/ui/index.ts`
-Updates selection ui. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,concurrency-heavy]
+Implements show notification. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,concurrency-heavy]
 Exports: resetUIForProcessing, copyCurrentReport, saveCurrentReport, disableUIControls
 Semantic: async side-effecting stateful module
 
@@ -294,7 +297,7 @@ Semantic: async side-effecting stateful module
 ```yaml
 DependencyGraph:
   # --- Entrypoints ---
-  index.html:
+  docs.html, index.html:
     Imports: []
     ImportedBy: []
   # --- High Fan-In Hotspots ---

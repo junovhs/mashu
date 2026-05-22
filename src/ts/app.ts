@@ -436,7 +436,28 @@ function setupListeners(): void {
     await downloadZip();
     logPerfMeasure("export-zip", "mashu:export-zip:start", "mashu:export-zip:end");
   });
-  elements.clearProjectBtn?.addEventListener("click", clearProject);
+  (() => {
+    const btn = elements.clearProjectBtn;
+    if (!btn) return;
+    let confirmTimer: ReturnType<typeof setTimeout> | null = null;
+    const reset = () => {
+      btn.textContent = "Clear project";
+      btn.classList.remove("confirming");
+      btn.dataset.help = "Remove the current scan and start fresh.";
+      if (confirmTimer !== null) { clearTimeout(confirmTimer); confirmTimer = null; }
+    };
+    btn.addEventListener("click", () => {
+      if (btn.classList.contains("confirming")) {
+        reset();
+        clearProject();
+      } else {
+        btn.classList.add("confirming");
+        btn.textContent = "Are you sure?";
+        btn.dataset.help = "Click again to confirm — this will clear the loaded project.";
+        confirmTimer = setTimeout(reset, 3000);
+      }
+    });
+  })();
   elements.selectAllBtn?.addEventListener("click", () =>
     setAllSelections(true),
   );

@@ -278,6 +278,50 @@
   color: var(--ink-4);
 }
 
+/* --- HELP ZONE (bottom bar) --- */
+#helpZone {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  min-width: 0;
+  pointer-events: none;
+}
+.help-zone-text {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.help-zone-text.visible { opacity: 1; }
+
+/* Docs link in brand area */
+.brand-docs-link {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 8px 3px;
+  transition: color 0.12s, border-color 0.12s;
+}
+.brand-docs-link:hover { color: var(--ink-2); border-color: var(--ink-4); }
+
+/* Clear project confirming state */
+.btn.ghost.confirming {
+  color: var(--danger, oklch(0.55 0.2 25));
+  border-color: var(--danger, oklch(0.55 0.2 25));
+  background: oklch(0.55 0.2 25 / 0.06);
+}
+
 /* --- LOADER --- */
 .loader {
   display: none;

@@ -325,7 +325,7 @@
     "semantic_summary": "async side-effecting stateful module with external API surface that logs and continues",
     "analysis": {
       "functions": {
-        "total": 29,
+        "total": 31,
         "public": 0,
         "max_cognitive_complexity": 18,
         "avg_cognitive_complexity": 3
@@ -335,14 +335,14 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 311,
-        "resolved_calls": 53,
-        "unresolved_calls": 258,
-        "resolution_rate": 0.17041801
+        "total_calls": 327,
+        "resolved_calls": 58,
+        "unresolved_calls": 269,
+        "resolution_rate": 0.17737003
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 90
+        "cognitive_complexity": 96
       },
       "error_handling": {
         "total_sites": 2,
@@ -351,20 +351,20 @@
         "propagated": 0
       },
       "concurrency": {
-        "total_sites": 23,
+        "total_sites": 26,
         "has_async": true,
         "has_locks": false,
         "has_spawn": true
       },
       "activation": {
-        "total_sites": 67,
+        "total_sites": 68,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
       },
       "guards": {
-        "total_sites": 3
+        "total_sites": 4
       }
     }
   },
@@ -545,45 +545,57 @@
     "path": "src/ts/ui/layout.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Creates layout.",
+    "description": "Creates help system.",
     "exports": [
-      "initLayout"
+      "initHelpSystem",
+      "closeDocs",
+      "initLayout",
+      "openDocs"
     ],
-    "coupling": "pure",
+    "coupling": "mixed",
+    "quality_tags": [
+      "undocumented"
+    ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 3.6,
-    "semantic_summary": "pure computation",
+    "risk_score": 6.0,
+    "semantic_summary": "side-effecting",
     "analysis": {
       "functions": {
-        "total": 1,
-        "public": 1,
-        "max_cognitive_complexity": 3,
-        "avg_cognitive_complexity": 3
+        "total": 6,
+        "public": 6,
+        "max_cognitive_complexity": 5,
+        "avg_cognitive_complexity": 1
       },
       "calls": {
-        "total_calls": 14,
-        "resolved_calls": 0,
-        "unresolved_calls": 14,
-        "resolution_rate": 0.0
+        "total_calls": 50,
+        "resolved_calls": 7,
+        "unresolved_calls": 43,
+        "resolution_rate": 0.14
       },
       "control_flow": {
-        "max_nesting_depth": 0,
-        "cognitive_complexity": 3
+        "max_nesting_depth": 1,
+        "cognitive_complexity": 9
+      },
+      "concurrency": {
+        "total_sites": 1,
+        "has_async": false,
+        "has_locks": false,
+        "has_spawn": true
       },
       "docs": {
         "documented_symbols": 0,
-        "undocumented_public": 1
+        "undocumented_public": 6
       },
       "activation": {
-        "total_sites": 3,
+        "total_sites": 13,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
       },
       "guards": {
-        "total_sites": 1
+        "total_sites": 3
       }
     }
   },
@@ -646,7 +658,7 @@
     "path": "src/ts/ui/pretext.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Updates pretext tree.",
+    "description": "Creates pretext text.",
     "exports": [
       "syncPretextTree",
       "initPretextText",
@@ -794,31 +806,31 @@
     "semantic_summary": "side-effecting stateful adapter",
     "analysis": {
       "functions": {
-        "total": 30,
+        "total": 33,
         "public": 6,
         "max_cognitive_complexity": 20,
-        "avg_cognitive_complexity": 5
+        "avg_cognitive_complexity": 4
       },
       "types": {
         "total": 5,
         "public": 0
       },
       "calls": {
-        "total_calls": 399,
-        "resolved_calls": 61,
-        "unresolved_calls": 338,
-        "resolution_rate": 0.1528822
+        "total_calls": 436,
+        "resolved_calls": 67,
+        "unresolved_calls": 369,
+        "resolution_rate": 0.15366973
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 153
+        "cognitive_complexity": 157
       },
       "docs": {
         "documented_symbols": 0,
         "undocumented_public": 6
       },
       "activation": {
-        "total_sites": 95,
+        "total_sites": 105,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -1027,7 +1039,7 @@
     "path": "src/ts/utils/result.ts",
     "layer": 2,
     "file_kind": "production",
-    "description": "Implements to result.",
+    "description": "Implements Err functionality.",
     "exports": [
       "toResult",
       "None",
@@ -1142,6 +1154,17 @@
         "total_sites": 1
       }
     }
+  },
+  {
+    "path": "docs.html",
+    "layer": 3,
+    "file_kind": "production",
+    "description": "Mashu — Documentation",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
   },
   {
     "path": "index.html",
@@ -1285,7 +1308,7 @@
     "path": "src/ts/ui/index.ts",
     "layer": 3,
     "file_kind": "production",
-    "description": "Updates selection ui.",
+    "description": "Implements show notification.",
     "exports": [
       "resetUIForProcessing",
       "copyCurrentReport",

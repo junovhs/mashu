@@ -1,6 +1,7 @@
 import { formatBytes } from "../filesystem.js";
 import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo, ScanData } from "../types/index.js";
+import { showNotification } from "./index.js";
 import { setSelectionByExtension } from "./tree.js";
 
 const REPORT_YIELD_EVERY = 400;
@@ -67,9 +68,11 @@ async function yieldToMainThread(): Promise<void> {
 }
 
 let cachedStatsKey: string | null = null;
+let wasInSelectionMode = false;
 
 export function resetStatsCache(): void {
   cachedStatsKey = null;
+  wasInSelectionMode = false;
 }
 
 export function displayGlobalStats(data: ScanData): void {
@@ -87,16 +90,6 @@ export function displayGlobalStats(data: ScanData): void {
 
   const scopePill = document.getElementById("statScopePill");
   if (scopePill) scopePill.style.display = isSelection ? "inline-flex" : "none";
-
-  if (elements.selectionSummary) {
-    if (isSelection) {
-      elements.selectionSummary.textContent =
-        `Focused view active: ${allFilesList.length} files · ${formatBytes(directoryData.totalSize)}`;
-      elements.selectionSummary.style.display = "block";
-    } else {
-      elements.selectionSummary.style.display = "none";
-    }
-  }
 
   if (statsKey === cachedStatsKey) return;
   cachedStatsKey = statsKey;
@@ -186,15 +179,10 @@ export function refreshSelectionStats(): void {
   const scopePill = document.getElementById("statScopePill");
   if (scopePill) scopePill.style.display = isSelection ? "inline-flex" : "none";
 
-  if (elements.selectionSummary) {
-    if (isSelection) {
-      elements.selectionSummary.textContent =
-        `Focused view active: ${fileCount} files · ${formatBytes(totalSize)}`;
-      elements.selectionSummary.style.display = "block";
-    } else {
-      elements.selectionSummary.style.display = "none";
-    }
+  if (isSelection && !wasInSelectionMode) {
+    showNotification(`Focused: ${fileCount} files · ${formatBytes(totalSize)}`);
   }
+  wasInSelectionMode = isSelection;
 
   const statFiles = document.getElementById("statFiles");
   if (statFiles) statFiles.textContent = formatCount(fileCount);
@@ -262,7 +250,7 @@ function updateAncillaryUI(
     if (isSelection) {
       sideSelected.innerHTML = `<b>${appState.selectedPaths.size}</b> selected`;
     } else {
-      sideSelected.textContent = "click ◯ to focus";
+      sideSelected.textContent = "tick items to filter export";
     }
   }
 
@@ -356,7 +344,7 @@ function renderExtFilterPills(
     .map(([ext, d]) => {
       const dotColor = KIND_COLOR[extToKind(ext)];
       return `
-        <button class="ext-filter-pill" data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}" title="Toggle selection for every ${ext || "[no extension]"} file in the tree">
+        <button class="ext-filter-pill" data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}" data-help="Toggle selection for every ${ext || "[no extension]"} file in the project.">
           <span class="pill-dot" style="background:${dotColor}"></span>
           <span class="pill-label">${ext || "[none]"}</span>
           <span class="pill-count">${d.count}</span>

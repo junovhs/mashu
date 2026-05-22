@@ -22,6 +22,16 @@
   padding: 4px 14px 8px;
   flex-shrink: 0;
 }
+.ext-filter-head { margin-bottom: 5px; }
+.ext-filter-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  cursor: default;
+}
 .ext-pills {
   display: flex;
   flex-wrap: wrap;
