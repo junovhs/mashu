@@ -530,8 +530,46 @@ function rerenderVisibleTree(): void {
 }
 
 function refreshVisibleSelectionState(): void {
-  if (!vScrollContainer) return;
-  renderVisibleWindow(vScrollContainer.scrollTop);
+  if (!vRowWindow) return;
+  const selectedPaths = appState.selectedPaths;
+  const hasAnySelection = selectedPaths.size > 0;
+
+  for (const rowEl of vRowWindow.children) {
+    if (!(rowEl instanceof HTMLElement)) continue;
+    const path = rowEl.dataset.path;
+    if (!path) continue;
+    const node = appState.treeNodesByPath.get(path);
+    if (!node) continue;
+
+    const checkbox = rowEl.querySelector<HTMLInputElement>(".selector");
+    let isSelected: boolean;
+
+    if (node.type === "folder") {
+      const state = getSelectionState(path);
+      isSelected = state !== "none";
+      if (checkbox) {
+        checkbox.checked = state === "all";
+        checkbox.indeterminate = state === "partial";
+      }
+    } else {
+      isSelected = selectedPaths.has(path);
+      if (checkbox) {
+        checkbox.checked = isSelected;
+        checkbox.indeterminate = false;
+      }
+    }
+
+    rowEl.dataset.selected = String(isSelected);
+
+    if (hasAnySelection) {
+      const inSelection = node.type === "folder"
+        ? (appState.selectedSubtreeCounts.get(path) ?? 0) > 0
+        : selectedPaths.has(path);
+      rowEl.classList.toggle("dimmed-uncommitted", !inSelection);
+    } else {
+      rowEl.classList.remove("dimmed-uncommitted");
+    }
+  }
 }
 
 function notifySelectionChanged(): void {
