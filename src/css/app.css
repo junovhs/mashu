@@ -158,26 +158,35 @@ body {
   touch-action: none;
   z-index: 20;
 }
+/* Full-height hairline */
+#sidebarResizer::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: oklch(0.80 0.006 80 / 0.30);
+  transition: background 0.12s ease;
+}
+/* Small centered grip indicator */
 #sidebarResizer::after {
   content: "";
   position: absolute;
-  left: calc(50% + 6px);
+  left: 50%;
   top: 50%;
-  width: 4px;
-  height: min(760px, calc(100vh - 140px));
+  width: 3px;
+  height: 24px;
   transform: translate(-50%, -50%);
-  border-radius: 999px;
-  background: oklch(0.78 0.008 80 / 0.45);
-  transition: width 0.12s ease, background 0.12s ease;
+  border-radius: 2px;
+  background: oklch(0.76 0.008 80 / 0.45);
+  transition: background 0.12s ease, width 0.12s ease;
 }
-#sidebarResizer:hover::after {
-  background: oklch(0.68 0.13 50 / 0.55);
-  width: 6px;
-}
-#sidebarResizer.resizing::after {
-  background: var(--accent);
-  width: 6px;
-}
+#sidebarResizer:hover::before { background: oklch(0.68 0.13 50 / 0.35); }
+#sidebarResizer:hover::after  { background: oklch(0.60 0.15 50 / 0.70); width: 4px; }
+#sidebarResizer.resizing::before { background: var(--accent); opacity: 0.4; }
+#sidebarResizer.resizing::after  { background: var(--accent); width: 4px; }
 body.sidebar-is-resizing { cursor: col-resize; user-select: none; }
 body.sidebar-is-resizing #textOutput { contain: layout paint; }
 
