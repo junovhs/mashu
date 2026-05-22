@@ -480,12 +480,25 @@ function renderRecentProjects(): void {
 
   list.innerHTML = recents
     .map((item) => `
-      <div class="recent-project-row">
+      <div class="recent-project-row" role="button" tabindex="0" data-recent-name="${escapeHtml(item.name)}">
         <span class="recent-project-name">${escapeHtml(item.name)}</span>
         <span class="recent-project-meta">${formatRecentMeta(item)}</span>
+        <span class="recent-project-reopen" aria-hidden="true">↑ Open</span>
       </div>
     `)
     .join("");
+
+  list.querySelectorAll<HTMLElement>(".recent-project-row").forEach((row) => {
+    const name = row.dataset.recentName ?? "project";
+    const activate = () => {
+      showNotification(`Select "${name}" to re-analyze it`, 4000);
+      void handleSelect();
+    };
+    row.addEventListener("click", activate);
+    row.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(); }
+    });
+  });
 }
 
 function getRecentProjectSummaries(): RecentProjectSummary[] {

@@ -359,7 +359,7 @@
 }
 .recent-project-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 14px;
   min-height: 38px;
@@ -367,6 +367,14 @@
   border: 1px solid var(--line-soft);
   border-radius: 10px;
   background: oklch(1 0 0 / 0.55);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  outline: none;
+}
+.recent-project-row:hover,
+.recent-project-row:focus-visible {
+  background: oklch(1 0 0 / 0.85);
+  border-color: var(--accent);
 }
 .recent-project-name {
   min-width: 0;
@@ -382,6 +390,19 @@
   font-size: 11px;
   color: var(--ink-4);
   white-space: nowrap;
+}
+.recent-project-reopen {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.recent-project-row:hover .recent-project-reopen,
+.recent-project-row:focus-visible .recent-project-reopen {
+  opacity: 1;
 }
 
 /* --- TREE CONTROLS (compact toolbar) --- */
