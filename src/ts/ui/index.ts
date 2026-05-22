@@ -2,7 +2,7 @@ import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo, ScanData } from "../types/index.js";
 import { filterScanData, formatBytes } from "../filesystem.js";
 import { displayGlobalStats, generateTextReportAsync } from "./stats.js";
-import { setPretextText, syncPretextTree } from "./pretext.js";
+import { setPretextText } from "./pretext.js";
 import { closeViewer } from "./viewer.js";
 
 // Export everything so app.ts can find them
@@ -17,6 +17,8 @@ let cachedReportKey: string | null = null;
 let cachedReportText: string | null = null;
 let pendingReportKey: string | null = null;
 let pendingReportPromise: Promise<string> | null = null;
+let cachedVisualKey: string | null = null;
+let cachedVisualNode: HTMLElement | null = null;
 
 export function populateElements(): void {
   const ids = [
@@ -83,6 +85,8 @@ function getIdleReportMessage(): string {
 }
 
 export function resetUIForProcessing(message = "Processing..."): void {
+  cachedVisualKey = null;
+  cachedVisualNode = null;
   if (elements.loader) {
     setPretextText(elements.loader as HTMLElement, message);
     elements.loader.classList.add("visible");
@@ -230,10 +234,22 @@ function renderVisualReport(data: ScanData): void {
   if (!elements.textOutput || !data.directoryData) return;
 
   const host = elements.textOutput as HTMLElement;
+  const key = getReportKey(data);
+
+  // If the DOM node for this key is already in the host, nothing to do.
+  if (key === cachedVisualKey && cachedVisualNode) {
+    if (host.firstChild !== cachedVisualNode) {
+      host.className = "report-visual-host";
+      host.removeAttribute("title");
+      host.replaceChildren(cachedVisualNode);
+    }
+    return;
+  }
+
+  cachedVisualKey = key;
   const root = data.directoryData;
   const isSelection = appState.selectedPaths.size > 0;
   host.className = "report-visual-host";
-  host.replaceChildren();
   host.removeAttribute("title");
 
   const visual = document.createElement("div");
@@ -263,7 +279,8 @@ function renderVisualReport(data: ScanData): void {
   visual.appendChild(summaryRow);
   visual.appendChild(divider);
   visual.appendChild(tree);
-  host.appendChild(visual);
+  cachedVisualNode = visual;
+  host.replaceChildren(visual);
 }
 
 async function ensureReportText(

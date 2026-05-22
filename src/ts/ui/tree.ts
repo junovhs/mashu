@@ -1,7 +1,6 @@
 import { appState, ICONS } from "../state.js";
 import type { FileInfo, FolderInfo } from "../types/index.js";
 import { formatBytes } from "../utils/fs_utils.js";
-import { setPretextText } from "./pretext.js";
 import { openFile } from "./viewer.js";
 
 interface TreeStateOptions {
