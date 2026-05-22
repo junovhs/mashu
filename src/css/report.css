@@ -243,3 +243,11 @@
     gap: 6px;
   }
 }
+
+.report-tree-large-notice {
+  padding: 24px 20px;
+  font-size: 13px;
+  color: var(--ink-4);
+  font-style: italic;
+  text-align: center;
+}

@@ -90,7 +90,7 @@ export function resetUIForProcessing(message = "Processing..."): void {
     elements.loader.classList.add("visible");
   }
   if (elements.treeContainer) {
-    elements.treeContainer.innerHTML = `<div class="tree-loading"><div class="tree-loading-spinner"></div><span class="tree-loading-label">${message}</span></div>`;
+    elements.treeContainer.innerHTML = `<div class="tree-loading"><span class="tree-loading-label">${message}</span><div class="tree-loading-bar"><div class="tree-loading-bar-fill"></div></div></div>`;
   }
   if (elements.textOutput) {
     renderReportPlaceholder(getIdleReportMessage());
@@ -279,13 +279,22 @@ function renderVisualReport(data: ScanData): void {
   summaryRow.appendChild(projectMeta);
   summaryRow.appendChild(scopeMeta);
 
-  const tree = document.createElement("ul");
-  tree.className = "report-tree";
-  appendVisualTreeNode(root, tree, true, [], true);
-
   visual.appendChild(summaryRow);
   visual.appendChild(divider);
-  visual.appendChild(tree);
+
+  const MAX_VISUAL_NODES = 2000;
+  if (data.allFilesList.length > MAX_VISUAL_NODES) {
+    const notice = document.createElement("div");
+    notice.className = "report-tree-large-notice";
+    notice.textContent = `Tree preview unavailable for projects over ${MAX_VISUAL_NODES.toLocaleString()} files — use Export combined text to get the full output.`;
+    visual.appendChild(notice);
+  } else {
+    const tree = document.createElement("ul");
+    tree.className = "report-tree";
+    appendVisualTreeNode(root, tree, true, [], true);
+    visual.appendChild(tree);
+  }
+
   cachedVisualNode = visual;
   host.replaceChildren(visual);
 }
