@@ -353,6 +353,13 @@ export function initLayout(): void {
       }
     });
   });
+  // Open first pill by default so the detail block is already in layout (prevents shift on first click)
+  const firstPill = document.querySelector<HTMLButtonElement>(".uc-pill");
+  if (firstPill && ucDetail) {
+    firstPill.dataset.active = "true";
+    ucDetail.textContent = UC_DESCRIPTIONS[firstPill.dataset.uc ?? ""] ?? "";
+    ucDetail.hidden = false;
+  }
 
   initHelpSystem();
 }
