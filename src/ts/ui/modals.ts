@@ -1,5 +1,10 @@
 import { appState, elements } from "../state.js";
 
+let _applyPreferredSidebarRatio: (() => void) | null = null;
+export function reapplySidebarRatio(): void {
+  _applyPreferredSidebarRatio?.();
+}
+
 const MIN_SIDEBAR_WIDTH = 220;
 const MAX_SIDEBAR_WIDTH_RATIO = 0.55;
 const VISIBLE_STATS_DEFAULT_RATIO = 0.375;
@@ -79,6 +84,9 @@ export function initSidebarResizer(): void {
     const preferredRatio = readSavedSidebarRatio() ?? getDefaultSidebarRatio();
     applySidebarRatio(preferredRatio, false);
   };
+
+  // Expose so callers can re-trigger after layout changes (e.g. project load)
+  _applyPreferredSidebarRatio = applyPreferredSidebarRatio;
 
   applyPreferredSidebarRatio();
 

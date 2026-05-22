@@ -23,6 +23,7 @@ import {
   initTreeState,
   initLayout,
   initSidebarResizer,
+  reapplySidebarRatio,
   initTabs,
   populateElements,
   refreshAllUI,
@@ -118,6 +119,7 @@ function applyScanData(data: ScanData, scanStart?: number): void {
   appState.fullScanData = data;
   saveRecentProjectSummary(data);
   document.body.classList.add("project-loaded");
+  reapplySidebarRatio();
   postScanBatchToWorker(data);
   updateUI(appState.fullScanData.directoryData as FolderInfo);
   if (scanStart !== undefined) {
