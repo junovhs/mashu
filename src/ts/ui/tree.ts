@@ -220,11 +220,16 @@ let vScrollContainer: HTMLElement | null = null;
 let vTopSpacer: HTMLDivElement | null = null;
 let vRowWindow: HTMLDivElement | null = null;
 let vBottomSpacer: HTMLDivElement | null = null;
+let vWindowStart = -1;
+let vWindowEnd = -1;
+let scrollRAF: number | null = null;
 
 function onTreeScroll(): void {
-  if (vScrollContainer) {
-    renderVisibleWindow(vScrollContainer.scrollTop);
-  }
+  if (scrollRAF !== null) return;
+  scrollRAF = requestAnimationFrame(() => {
+    scrollRAF = null;
+    if (vScrollContainer) renderVisibleWindow(vScrollContainer.scrollTop);
+  });
 }
 
 function flattenVisible(
@@ -242,23 +247,57 @@ function flattenVisible(
   }
 }
 
-function renderVisibleWindow(scrollTop: number): void {
+function renderVisibleWindow(scrollTop: number, forceRebuild = false): void {
   if (!vRowWindow || !vTopSpacer || !vBottomSpacer || !vScrollContainer) return;
 
   const viewHeight = vScrollContainer.clientHeight || 600;
   const totalRows = flatRows.length;
 
   const firstVisible = Math.floor(scrollTop / ROW_HEIGHT);
-  const start = Math.max(0, firstVisible - OVERSCAN);
-  const end = Math.min(totalRows, firstVisible + Math.ceil(viewHeight / ROW_HEIGHT) + OVERSCAN);
+  const newStart = Math.max(0, firstVisible - OVERSCAN);
+  const newEnd = Math.min(totalRows, firstVisible + Math.ceil(viewHeight / ROW_HEIGHT) + OVERSCAN);
 
-  vTopSpacer.style.height = `${start * ROW_HEIGHT}px`;
-  vBottomSpacer.style.height = `${Math.max(0, totalRows - end) * ROW_HEIGHT}px`;
+  vTopSpacer.style.height = `${newStart * ROW_HEIGHT}px`;
+  vBottomSpacer.style.height = `${Math.max(0, totalRows - newEnd) * ROW_HEIGHT}px`;
 
-  vRowWindow.innerHTML = "";
-  for (let i = start; i < end; i++) {
-    vRowWindow.appendChild(createRowElement(flatRows[i]));
+  // Full rebuild when forced, first render, or no overlap with current window.
+  if (forceRebuild || vWindowStart === -1 || newEnd <= vWindowStart || newStart >= vWindowEnd) {
+    vRowWindow.innerHTML = "";
+    for (let i = newStart; i < newEnd; i++) {
+      vRowWindow.appendChild(createRowElement(flatRows[i]));
+    }
+    vWindowStart = newStart;
+    vWindowEnd = newEnd;
+    return;
   }
+
+  // Skip if window hasn't changed.
+  if (newStart === vWindowStart && newEnd === vWindowEnd) return;
+
+  // Incremental: remove rows that scrolled out, append/prepend rows that scrolled in.
+  if (newStart > vWindowStart) {
+    const count = Math.min(newStart - vWindowStart, vRowWindow.children.length);
+    for (let i = 0; i < count; i++) vRowWindow.firstChild?.remove();
+  }
+  if (newEnd < vWindowEnd) {
+    const count = Math.min(vWindowEnd - newEnd, vRowWindow.children.length);
+    for (let i = 0; i < count; i++) vRowWindow.lastChild?.remove();
+  }
+  if (newEnd > vWindowEnd) {
+    for (let i = Math.max(vWindowEnd, newStart); i < newEnd; i++) {
+      vRowWindow.appendChild(createRowElement(flatRows[i]));
+    }
+  }
+  if (newStart < vWindowStart) {
+    const frag = document.createDocumentFragment();
+    for (let i = newStart; i < Math.min(vWindowStart, newEnd); i++) {
+      frag.appendChild(createRowElement(flatRows[i]));
+    }
+    vRowWindow.insertBefore(frag, vRowWindow.firstChild);
+  }
+
+  vWindowStart = newStart;
+  vWindowEnd = newEnd;
 }
 
 // ---------------------------------------------------------------------------
@@ -308,6 +347,8 @@ export function renderTree(root: FolderInfo, container: HTMLElement): void {
 
   flatRows = [];
   flattenVisible(root, query, 0, flatRows);
+  vWindowStart = -1;
+  vWindowEnd = -1;
   renderVisibleWindow(container.scrollTop);
 
   bindTreeInteractions(container);
@@ -526,6 +567,8 @@ function rerenderVisibleTree(): void {
   const query = appState.treeSearchQuery.trim().toLowerCase();
   flatRows = [];
   flattenVisible(root, query, 0, flatRows);
+  vWindowStart = -1; // force full rebuild — structure changed
+  vWindowEnd = -1;
   renderVisibleWindow(vScrollContainer.scrollTop);
 }
 
@@ -640,22 +683,17 @@ export function setSelectionByExtension(ext: string, selected: boolean): void {
     if (node.type === "file" && getFileExt(node.name) === ext) {
       if (selected) appState.selectedPaths.add(node.path);
       else appState.selectedPaths.delete(node.path);
+      appState.selectedSubtreeCounts.set(node.path, selected ? 1 : 0);
     }
   });
+  appState.treeNodesByPath.forEach((node) => {
+    if (node.type === "folder") recomputeAncestorCounts(node.path);
+  });
+  refreshVisibleSelectionState();
+  notifySelectionChanged();
 
   if (appState.scanWorker && appState.rustIndexReady) {
     postSelectionUpdate();
-  } else {
-    appState.treeNodesByPath.forEach((node) => {
-      if (node.type === "file" && getFileExt(node.name) === ext) {
-        appState.selectedSubtreeCounts.set(node.path, selected ? 1 : 0);
-      }
-    });
-    appState.treeNodesByPath.forEach((node) => {
-      if (node.type === "folder") recomputeAncestorCounts(node.path);
-    });
-    refreshVisibleSelectionState();
-    notifySelectionChanged();
   }
 }
 
@@ -810,8 +848,9 @@ export function applyRustSelectionState(
   for (const path of selectedFolderPaths) {
     appState.selectedPaths.add(path);
   }
+  // Patch tree rows to reflect Rust-corrected counts. Don't re-notify —
+  // the optimistic update already fired notifySelectionChanged.
   refreshVisibleSelectionState();
-  notifySelectionChanged();
 }
 
 function recomputeAncestorCounts(path: string): void {
