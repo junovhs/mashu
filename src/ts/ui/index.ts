@@ -305,6 +305,15 @@ function renderVisualReport(data: ScanData): void {
 
   cachedVisualNode = visual;
   host.replaceChildren(visual);
+
+  const copyBtn = elements.copyReportButton as HTMLButtonElement | null;
+  if (copyBtn) {
+    const isLarge = data.allFilesList.length > MAX_VISUAL_NODES;
+    copyBtn.classList.toggle("btn--large-project", isLarge);
+    copyBtn.title = isLarge
+      ? `This project has ${data.allFilesList.length.toLocaleString()} files — clipboard copy may be very slow or fail. Use Save instead.`
+      : "";
+  }
 }
 
 async function ensureReportText(

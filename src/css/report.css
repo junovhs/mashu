@@ -49,6 +49,8 @@
   flex-direction: column;
   gap: 14px;
   min-width: max-content;
+  flex: 1;
+  min-height: 0;
 }
 
 .report-summary-row {
@@ -88,6 +90,8 @@
   --report-tree-line-x: 10px;
   --report-tree-row-mid: 14px;
   --report-tree-branch-length: 9px;
+  display: flex;
+  flex-direction: column;
 }
 
 .report-tree,
@@ -254,7 +258,8 @@
 
 .report-tree-preview {
   position: relative;
-  max-height: 360px;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
 }
 .report-tree-preview::after {
