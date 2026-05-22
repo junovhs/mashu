@@ -1,7 +1,6 @@
 import { formatBytes } from "../filesystem.js";
 import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo, ScanData } from "../types/index.js";
-import { setPretextText, syncPretextTree } from "./pretext.js";
 import { setSelectionByExtension } from "./tree.js";
 
 const REPORT_YIELD_EVERY = 400;
@@ -106,7 +105,7 @@ export function displayGlobalStats(data: ScanData): void {
     elements.globalStats.innerHTML = `
       <div class="stat-item">
         <span class="stat-label">Files</span>
-        <span class="stat-value">${formatCount(allFilesList.length)}</span>
+        <span class="stat-value" id="statFiles">${formatCount(allFilesList.length)}</span>
       </div>
       <div class="stat-item">
         <span class="stat-label">Folders</span>
@@ -114,7 +113,7 @@ export function displayGlobalStats(data: ScanData): void {
       </div>
       <div class="stat-item">
         <span class="stat-label">Size</span>
-        <span class="stat-value">${formatBytes(directoryData.totalSize)}</span>
+        <span class="stat-value" id="statSize">${formatBytes(directoryData.totalSize)}</span>
       </div>
       <div class="stat-item">
         <span class="stat-label">Root</span>
@@ -157,6 +156,51 @@ export function displayGlobalStats(data: ScanData): void {
   if (reportDescription) {
     reportDescription.textContent = "Plain-text map of everything in scope. Ready to copy or save.";
   }
+}
+
+export function refreshSelectionStats(): void {
+  const fullData = appState.fullScanData;
+  if (!fullData?.directoryData) return;
+
+  const isSelection = appState.selectedPaths.size > 0;
+
+  let fileCount: number;
+  let totalSize: number;
+
+  if (isSelection) {
+    fileCount = 0;
+    totalSize = 0;
+    for (const path of appState.selectedPaths) {
+      const node = appState.treeNodesByPath.get(path);
+      if (node?.type === "file") {
+        fileCount++;
+        totalSize += node.size;
+      }
+    }
+  } else {
+    fileCount = fullData.allFilesList.length;
+    totalSize = fullData.directoryData.totalSize;
+  }
+
+  const scopePill = document.getElementById("statScopePill");
+  if (scopePill) scopePill.style.display = isSelection ? "inline-flex" : "none";
+
+  if (elements.selectionSummary) {
+    if (isSelection) {
+      elements.selectionSummary.textContent =
+        `Focused view active: ${fileCount} files · ${formatBytes(totalSize)}`;
+      elements.selectionSummary.style.display = "block";
+    } else {
+      elements.selectionSummary.style.display = "none";
+    }
+  }
+
+  const statFiles = document.getElementById("statFiles");
+  if (statFiles) statFiles.textContent = formatCount(fileCount);
+  const statSize = document.getElementById("statSize");
+  if (statSize) statSize.textContent = formatBytes(totalSize);
+
+  updateAncillaryUI(fileCount, totalSize, isSelection);
 }
 
 function renderCompositionBar(

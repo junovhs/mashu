@@ -27,6 +27,7 @@ import {
   initTabs,
   populateElements,
   refreshAllUI,
+  refreshSelectionStats,
   renderTree,
   resetUIForProcessing,
   saveCurrentReport,
@@ -388,7 +389,7 @@ function setupListeners(): void {
     if (selectionRefreshTimer !== null) clearTimeout(selectionRefreshTimer);
     selectionRefreshTimer = setTimeout(() => {
       selectionRefreshTimer = null;
-      refreshAllUI();
+      refreshSelectionStats();
     }, 200);
   });
 
