@@ -652,8 +652,16 @@ body:not(.project-loaded) #sideSelected {
   display: none;
 }
 body:not(.project-loaded) #leftSidebar,
+body:not(.project-loaded) #sidebarResizer,
 body:not(.project-loaded) #rightStatsPanel {
-  padding-top: 14px;
+  display: none;
+}
+body:not(.project-loaded) #appContainer {
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "top"
+    "main"
+    "bar";
 }
 
 @media (max-width: 900px) {
