@@ -134,7 +134,7 @@ export function displayGlobalStats(data: ScanData): void {
     elements.fileTypeTableBody.innerHTML = sortedTypes
       .map(([ext, td]) => {
         const kind = extToKind(ext);
-        return `<tr data-ext="${ext}">
+        return `<tr data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}">
           <td>
             <span class="type-row-swatch" style="background:${KIND_COLOR[kind]}"></span>
             ${ext || "[none]"}
@@ -144,6 +144,7 @@ export function displayGlobalStats(data: ScanData): void {
         </tr>`;
       })
       .join("");
+    wireFileTypeTableClicks();
   }
 
   renderExtFilterPills(sortedTypes);
@@ -314,6 +315,28 @@ function escapeHtml(s: string): string {
   }[c] as string));
 }
 
+function syncExtActiveStates(): void {
+  document.querySelectorAll<HTMLElement>(".ext-filter-pill[data-ext]").forEach((pill) => {
+    pill.dataset.active = String(isExtensionFullySelected(pill.dataset.ext ?? ""));
+  });
+  document.querySelectorAll<HTMLElement>("#fileTypeTableBody tr[data-ext]").forEach((row) => {
+    row.dataset.active = String(isExtensionFullySelected(row.dataset.ext ?? ""));
+  });
+}
+
+function wireFileTypeTableClicks(): void {
+  const tbody = elements.fileTypeTableBody as HTMLTableSectionElement | undefined;
+  if (!tbody) return;
+  tbody.querySelectorAll<HTMLElement>("tr[data-ext]").forEach((row) => {
+    row.addEventListener("click", () => {
+      const ext = row.dataset.ext ?? "";
+      const nowActive = row.dataset.active !== "true";
+      setSelectionByExtension(ext, nowActive);
+      syncExtActiveStates();
+    });
+  });
+}
+
 function renderExtFilterPills(
   sortedTypes: [string, { count: number; size: number }][],
 ): void {
@@ -331,8 +354,10 @@ function renderExtFilterPills(
   pills.innerHTML = sortedTypes
     .slice(0, 12)
     .map(([ext, d]) => {
+      const dotColor = KIND_COLOR[extToKind(ext)];
       return `
         <button class="ext-filter-pill" data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}" title="Toggle selection for every ${ext || "[no extension]"} file in the tree">
+          <span class="pill-dot" style="background:${dotColor}"></span>
           <span class="pill-label">${ext || "[none]"}</span>
           <span class="pill-count">${d.count}</span>
         </button>
@@ -344,8 +369,8 @@ function renderExtFilterPills(
     btn.addEventListener("click", () => {
       const ext = btn.dataset.ext!;
       const nowActive = btn.dataset.active !== "true";
-      btn.dataset.active = String(nowActive);
       setSelectionByExtension(ext, nowActive);
+      syncExtActiveStates();
     });
   });
 }

@@ -49,6 +49,13 @@
     "doc_coverage": 1.0
   },
   {
+    "file": "ux-progress.md",
+    "hotspot_score": 0.0,
+    "fan_in": 0,
+    "cognitive_complexity_max": 0,
+    "doc_coverage": 1.0
+  },
+  {
     "file": "vite.config.ts",
     "hotspot_score": 0.0,
     "fan_in": 0,
@@ -91,13 +98,6 @@
     "doc_coverage": 1.0
   },
   {
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "hotspot_score": 0.013333335,
-    "fan_in": 0,
-    "cognitive_complexity_max": 1,
-    "doc_coverage": 0.3333333
-  },
-  {
     "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
     "hotspot_score": 0.0,
     "fan_in": 0,
@@ -113,9 +113,9 @@
   },
   {
     "file": "src/ts/features.ts",
-    "hotspot_score": 0.120000005,
+    "hotspot_score": 0.14666668,
     "fan_in": 1,
-    "cognitive_complexity_max": 4,
+    "cognitive_complexity_max": 6,
     "doc_coverage": 0.0
   },
   {
@@ -141,37 +141,37 @@
   },
   {
     "file": "src/ts/ui/layout.ts",
+    "hotspot_score": 0.10666667,
+    "fan_in": 1,
+    "cognitive_complexity_max": 3,
+    "doc_coverage": 0.0
+  },
+  {
+    "file": "src/ts/ui/modals.ts",
     "hotspot_score": 0.120000005,
     "fan_in": 1,
     "cognitive_complexity_max": 4,
     "doc_coverage": 0.0
   },
   {
-    "file": "src/ts/ui/modals.ts",
-    "hotspot_score": 0.09333334,
-    "fan_in": 1,
-    "cognitive_complexity_max": 2,
-    "doc_coverage": 0.0
-  },
-  {
     "file": "src/ts/ui/pretext.ts",
-    "hotspot_score": 0.3866667,
-    "fan_in": 4,
+    "hotspot_score": 0.120000005,
+    "fan_in": 0,
     "cognitive_complexity_max": 9,
     "doc_coverage": 0.0
   },
   {
     "file": "src/ts/ui/stats.ts",
-    "hotspot_score": 0.20000002,
+    "hotspot_score": 0.26666668,
     "fan_in": 1,
-    "cognitive_complexity_max": 10,
+    "cognitive_complexity_max": 15,
     "doc_coverage": 0.0
   },
   {
     "file": "src/ts/ui/tree.ts",
-    "hotspot_score": 0.32,
+    "hotspot_score": 0.40000004,
     "fan_in": 2,
-    "cognitive_complexity_max": 14,
+    "cognitive_complexity_max": 20,
     "doc_coverage": 0.0
   },
   {

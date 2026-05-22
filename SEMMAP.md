@@ -1,6 +1,6 @@
 # mashu -- Semantic Map
 
-**Purpose:** Desktop/web app for selecting files from a codebase, browsing the tree, and collapsing the chosen project contents into a single text export that can be uploaded to chat AI tools that cannot access the local filesystem.
+**Purpose:** Browser tool for selecting files and combining them into a single text export.
 
 ## Legend
 
@@ -141,6 +141,9 @@ Node.js package manifest.
 `tsconfig.json`
 Configuration for tsconfig.
 
+`ux-progress.md`
+Support file for ux-progress.
+
 `vite.config.ts`
 Implements vite.config functionality.
 Exports: default
@@ -165,11 +168,6 @@ Exports: SyncInitInput, InitOutput, __wbg_init, InitInput
 Build a pure tree from a JSON array of SerializableEntry. [COUPLING:mixed] [BEHAVIOR:owns-state,async] [SURFACE:external-api] [QUALITY:complex-flow]
 Exports: build_tree_from_entries, compute_selection_state, init_tree_index, engine_version
 Semantic: async side-effecting stateful module with external API surface
-
-`rust-core/pkg/rust_core_bg.js`
-Returns the engine version string. [COUPLING:mixed] [BEHAVIOR:owns-state]
-Exports: __wbindgen_init_externref_table, __wbg_set_wasm, engine_version
-Semantic: side-effecting stateful module
 
 `rust-core/pkg/rust_core_bg.wasm.d.ts`
 Implements wbindgen externrefs. [HOTSPOT] [BEHAVIOR:owns-const-state] [QUALITY:undocumented]
@@ -209,22 +207,22 @@ Exports: applyPreferredSidebarRatio, clampSidebarWidth, initSidebarResizer, appl
 Semantic: pure computation constant-owning module
 
 `src/ts/ui/pretext.ts`
-Updates pretext tree. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
+Updates pretext tree. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
 Exports: syncPretextTree, initPretextText, setPretextText
 Semantic: side-effecting stateful module
 
 `src/ts/ui/stats.ts`
-Formats global stats for output. [COUPLING:mixed] [BEHAVIOR:owns-const-state,async] [QUALITY:concurrency-heavy]
-Exports: generateTextReportAsync, displayGlobalStats
-Semantic: async side-effecting constant-owning module
+Formats global stats for output. [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,complex-flow,concurrency-heavy]
+Exports: generateTextReportAsync, displayGlobalStats, refreshSelectionStats, resetStatsCache
+Semantic: async side-effecting stateful module
 
 `src/ts/ui/tree.ts`
-Sets the selection by extension. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,persists] [QUALITY:undocumented]
+Sets the selection by extension. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,persists] [QUALITY:undocumented,complex-flow]
 Exports: applyRustSelectionState, setSelectionByExtension, toggleAllFolders, initTreeState
 Semantic: side-effecting stateful adapter
 
 `src/ts/ui/viewer.ts`
-Implements open file. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
+Implements close viewer. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
 Exports: openFile, closeViewer, updateViewer
 Semantic: async side-effecting adapter that logs and continues
 
@@ -286,8 +284,8 @@ Implements serializable folder entry. [HOTSPOT] [QUALITY:undocumented]
 Exports: WorkerInboundMessage, WorkerOutboundMessage, FileTypeData, SerializableFolderEntry
 
 `src/ts/ui/index.ts`
-Implements show notification. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,concurrency-heavy]
-Exports: resetUIForProcessing, copyCurrentReport, saveCurrentReport, refreshAllUI
+Updates selection ui. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,concurrency-heavy]
+Exports: resetUIForProcessing, copyCurrentReport, saveCurrentReport, disableUIControls
 Semantic: async side-effecting stateful module
 
 
@@ -309,36 +307,33 @@ DependencyGraph:
   fs_utils.ts:
     Imports: [crossbrowser_fs.ts, result.ts]
     ImportedBy: [app.ts, features.ts, filesystem.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
-  pretext.ts:
-    Imports: []
-    ImportedBy: [app.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
   state.ts:
     Imports: [types/index.ts]
     ImportedBy: [app.ts, features.ts, modals.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
   tree.ts:
-    Imports: [fs_utils.ts, pretext.ts, state.ts, types/index.ts, viewer.ts]
+    Imports: [fs_utils.ts, state.ts, types/index.ts, viewer.ts]
     ImportedBy: [app.ts, stats.ts, ui/index.ts]
   types/index.ts:
     Imports: [crossbrowser_fs.ts]
     ImportedBy: [app.ts, features.ts, filesystem.ts, scan.worker.ts, state.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
   ui/index.ts:
-    Imports: [filesystem.ts, fs_utils.ts, layout.ts, modals.ts, pretext.ts, state.ts, stats.ts, tree.ts, types/index.ts, viewer.ts]
+    Imports: [filesystem.ts, fs_utils.ts, layout.ts, modals.ts, state.ts, stats.ts, tree.ts, types/index.ts, viewer.ts]
     ImportedBy: [app.ts, features.ts, viewer.ts]
   viewer.ts:
-    Imports: [fs_utils.ts, pretext.ts, state.ts, types/index.ts, ui/index.ts]
+    Imports: [fs_utils.ts, state.ts, types/index.ts, ui/index.ts]
     ImportedBy: [app.ts, tree.ts, ui/index.ts]
   # --- Layer 0 -- Config ---
-  APP-PIVOT.md, README.md, REDESIGN_README.md, SEMMAP.md, package.json, tsconfig.json, vite.config.ts:
+  APP-PIVOT.md, README.md, REDESIGN_README.md, SEMMAP.md, package.json, tsconfig.json, ux-progress.md, vite.config.ts:
     Imports: []
     ImportedBy: []
   # --- Layer 1 -- Domain (Engine) ---
   app.ts:
-    Imports: [app.css, components.css, crossbrowser_fs.ts, dropoverlay.css, extensions.css, features.ts, filesystem.ts, fs_utils.ts, layout.ts, modals.css, modals.ts, pretext.ts, report.css, state.ts, stats.css, tree.css, tree.ts, types/index.ts, ui/index.ts, viewer.css, viewer.ts]
+    Imports: [app.css, components.css, crossbrowser_fs.ts, dropoverlay.css, extensions.css, features.ts, filesystem.ts, fs_utils.ts, layout.ts, modals.css, modals.ts, report.css, state.ts, stats.css, tree.css, tree.ts, types/index.ts, ui/index.ts, viewer.css, viewer.ts]
     ImportedBy: []
   features.ts:
     Imports: [filesystem.ts, fs_utils.ts, state.ts, types/index.ts, ui/index.ts]
     ImportedBy: [app.ts]
-  filetypes.json, global.d.ts, jszip.min.js, package-lock.json:
+  filetypes.json, global.d.ts, jszip.min.js, package-lock.json, pretext.ts:
     Imports: []
     ImportedBy: []
   layout.ts:
@@ -348,7 +343,7 @@ DependencyGraph:
     Imports: [state.ts]
     ImportedBy: [app.ts, ui/index.ts]
   stats.ts:
-    Imports: [filesystem.ts, fs_utils.ts, pretext.ts, state.ts, tree.ts, types/index.ts]
+    Imports: [filesystem.ts, fs_utils.ts, state.ts, tree.ts, types/index.ts]
     ImportedBy: [ui/index.ts]
   # --- Layer 2 -- Adapters / Infra ---
   result.ts:
@@ -368,10 +363,7 @@ DependencyGraph:
   rust_core.js:
     Imports: [rust_core_bg.wasm.d.ts]
     ImportedBy: [scan.worker.ts]
-  rust_core_bg.js:
-    Imports: [rust_core_bg.wasm.d.ts]
-    ImportedBy: []
   rust_core_bg.wasm.d.ts:
     Imports: []
-    ImportedBy: [rust_core.js, rust_core_bg.js, scan.worker.ts]
+    ImportedBy: [rust_core.js, scan.worker.ts]
 ```

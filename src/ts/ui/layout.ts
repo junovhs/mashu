@@ -22,15 +22,7 @@ export function initLayout(): void {
     appContainer.innerHTML = `
       <header id="topBar">
         <div class="brand">
-          <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <rect x="2" y="3" width="20" height="18" rx="5" fill="currentColor"/>
-              <path d="M6 16V9l3 4 3-4v7" stroke="oklch(0.22 0.013 70)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              <path d="M14 12c0-1.5 1.2-2.5 2.5-2.5S19 10.5 19 12c0 .9-.7 1.5-1.5 2-1 .6-1.5 1-1.5 2h3" stroke="oklch(0.22 0.013 70)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-          </span>
           <span class="brand-name">Mashu</span>
-          <span class="brand-tag">V2 · LOCAL</span>
         </div>
         <div class="scope" id="topScope">
           <div class="scope-path" id="scopePath">
@@ -39,10 +31,9 @@ export function initLayout(): void {
           <div class="scope-meta" id="scopeMeta"></div>
         </div>
         <div class="top-actions">
-          <button id="topOpenBtn" class="top-action" title="Browse for a folder">
-            <span>Open folder</span>
-            <span class="top-action-kbd" aria-hidden="true">⌘O</span>
-          </button>
+          <button id="clearProjectBtn" class="btn ghost" title="Remove the current scan and start over" disabled>Clear project</button>
+          <button id="downloadProjectBtn" class="btn" title="Download the full scanned project as a ZIP" disabled>Download .zip</button>
+          <button id="aiDebriefingAssistantBtn" class="btn primary" title="Download one text file containing every text file in the current view" disabled>Export combined text</button>
         </div>
       </header>
 
@@ -112,10 +103,6 @@ export function initLayout(): void {
               <div id="loader" class="loader">Scanning…</div>
             </div>
 
-            <section id="recentProjects" class="recent-projects" data-empty="true" aria-labelledby="recentProjectsTitle">
-              <h2 id="recentProjectsTitle" class="recent-projects-title">Recent</h2>
-              <div id="recentProjectsList" class="recent-projects-list"></div>
-            </section>
           </section>
         </div>
 
@@ -156,7 +143,7 @@ export function initLayout(): void {
 
       <aside id="rightStatsPanel">
         <div class="stat-head">
-          <h2>Project</h2>
+          <h2>Info</h2>
           <span id="statScopePill" class="scope-pill" style="display:none;">SELECTION</span>
         </div>
         <div id="emptyStatsIntro" class="stat-empty-copy">
@@ -193,20 +180,8 @@ export function initLayout(): void {
         </div>
         <div class="bar-spacer"></div>
         <button id="emptyChooseFolderBtn" class="btn primary" title="Browse for a folder and analyze it locally">Choose a folder</button>
-        <button id="clearProjectBtn" class="btn ghost" title="Remove the current scan and start over" disabled>Clear project</button>
-        <button id="downloadProjectBtn" class="btn" title="Download the full scanned project as a ZIP" disabled>Download .zip</button>
-        <button id="aiDebriefingAssistantBtn" class="btn primary" title="Download one text file containing every text file in the current view" disabled>Export combined text</button>
       </footer>
     `;
-  }
-
-  // Wire the topOpenBtn to also call the folder-select flow (same behavior as #selectFolderBtn).
-  const topOpenBtn = document.getElementById("topOpenBtn");
-  if (topOpenBtn) {
-    topOpenBtn.addEventListener("click", () => {
-      const selectBtn = document.getElementById("selectFolderBtn") as HTMLButtonElement | null;
-      selectBtn?.click();
-    });
   }
 
   const emptyChooseBtn = document.getElementById("emptyChooseFolderBtn");

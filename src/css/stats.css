@@ -192,10 +192,15 @@
   color: var(--ink-3);
   font-variant-numeric: tabular-nums;
 }
+#fileTypeTable tbody tr { cursor: pointer; }
 #fileTypeTable tr:hover td {
   background: oklch(1 0 0 / 0.5);
   color: var(--ink-2);
 }
+#fileTypeTable tr[data-active="true"] td {
+  background: var(--accent-soft);
+}
+#fileTypeTable tr[data-active="true"] td:first-child { color: var(--ink-2); }
 
 .type-row-swatch {
   display: inline-block;

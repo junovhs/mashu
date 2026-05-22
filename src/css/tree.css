@@ -20,14 +20,14 @@
 /* Each row */
 .item-line {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) 38px minmax(86px, max-content);
+  grid-template-columns: auto minmax(0, 1fr) max-content 38px;
   align-items: center;
   gap: 8px;
-  padding: 4px 6px 4px 6px;
+  padding: 5px 6px;
   border-radius: 6px;
   cursor: pointer;
   user-select: none;
-  height: 32px;
+  height: 36px;
   box-sizing: border-box;
   position: relative;
   transition: none;
@@ -107,7 +107,7 @@
 .folder-toggle {
   width: 20px;
   height: 20px;
-  font-size: 9px;
+  font-size: 10px;
   color: var(--ink-4);
   text-align: center;
   user-select: none;
@@ -145,7 +145,7 @@
 /* Name */
 .name {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--ink-2);
   white-space: nowrap;
   overflow: hidden;
@@ -158,7 +158,7 @@
 .item-line:hover .name { color: var(--ink); }
 .tree-row--file .item-line:hover .name { text-decoration: underline; text-underline-offset: 2px; text-decoration-color: oklch(0.22 0.013 70 / 0.3); }
 
-/* Size bar (injected by tree.ts) — proportional fill */
+/* Size bar — rightmost fixed column */
 .sizebar {
   width: 38px;
   height: 3px;
@@ -167,7 +167,8 @@
   background: oklch(0.82 0.006 80 / 0.55);
   position: relative;
   align-self: center;
-  justify-self: end;
+  justify-self: center;
+  flex-shrink: 0;
 }
 .sizebar > i {
   display: block;
@@ -184,12 +185,13 @@
 /* Stats column (small mono number) */
 .stats {
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 11.5px;
   color: var(--ink-4);
   text-align: right;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
   line-height: 1.25;
   justify-self: end;
+  padding-right: 4px;
 }
 .item-line:hover .stats { color: var(--ink-3); }

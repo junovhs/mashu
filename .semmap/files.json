@@ -77,6 +77,17 @@
     "analysis": {}
   },
   {
+    "path": "ux-progress.md",
+    "layer": 0,
+    "file_kind": "generated",
+    "description": "Support file for ux-progress.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
     "path": "vite.config.ts",
     "layer": 0,
     "file_kind": "production",
@@ -262,53 +273,6 @@
     }
   },
   {
-    "path": "rust-core/pkg/rust_core_bg.js",
-    "layer": 1,
-    "file_kind": "production",
-    "description": "Returns the engine version string.",
-    "exports": [
-      "__wbindgen_init_externref_table",
-      "__wbg_set_wasm",
-      "engine_version"
-    ],
-    "coupling": "mixed",
-    "behavior_tags": [
-      "owns-state"
-    ],
-    "hotspot": false,
-    "fan_in": 0,
-    "risk_score": 0.2,
-    "semantic_summary": "side-effecting stateful module",
-    "analysis": {
-      "functions": {
-        "total": 6,
-        "public": 3,
-        "max_cognitive_complexity": 1,
-        "avg_cognitive_complexity": 0
-      },
-      "calls": {
-        "total_calls": 21,
-        "resolved_calls": 3,
-        "unresolved_calls": 18,
-        "resolution_rate": 0.14285715
-      },
-      "control_flow": {
-        "max_nesting_depth": 1,
-        "cognitive_complexity": 3
-      },
-      "docs": {
-        "documented_symbols": 1,
-        "undocumented_public": 2
-      },
-      "activation": {
-        "total_sites": 3,
-        "kinds": [
-          "callback-surface"
-        ]
-      }
-    }
-  },
-  {
     "path": "rust-core/pkg/rust_core_bg.wasm.d.ts",
     "layer": 1,
     "file_kind": "production",
@@ -327,7 +291,7 @@
     ],
     "hotspot": true,
     "fan_in": 0,
-    "risk_score": 6.0,
+    "risk_score": 4.0,
     "semantic_summary": "constant-owning module",
     "analysis": {
       "docs": {
@@ -361,7 +325,7 @@
     "semantic_summary": "async side-effecting stateful module with external API surface that logs and continues",
     "analysis": {
       "functions": {
-        "total": 28,
+        "total": 29,
         "public": 0,
         "max_cognitive_complexity": 18,
         "avg_cognitive_complexity": 3
@@ -371,14 +335,14 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 303,
-        "resolved_calls": 49,
-        "unresolved_calls": 254,
-        "resolution_rate": 0.16171618
+        "total_calls": 311,
+        "resolved_calls": 53,
+        "unresolved_calls": 258,
+        "resolution_rate": 0.17041801
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 89
+        "cognitive_complexity": 90
       },
       "error_handling": {
         "total_sites": 2,
@@ -387,20 +351,20 @@
         "propagated": 0
       },
       "concurrency": {
-        "total_sites": 21,
+        "total_sites": 23,
         "has_async": true,
         "has_locks": false,
         "has_spawn": true
       },
       "activation": {
-        "total_sites": 65,
+        "total_sites": 67,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
       },
       "guards": {
-        "total_sites": 2
+        "total_sites": 3
       }
     }
   },
@@ -420,24 +384,24 @@
     ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 5.8,
+    "risk_score": 6.2,
     "semantic_summary": "async side-effecting adapter",
     "analysis": {
       "functions": {
         "total": 6,
         "public": 2,
-        "max_cognitive_complexity": 4,
-        "avg_cognitive_complexity": 1
+        "max_cognitive_complexity": 6,
+        "avg_cognitive_complexity": 2
       },
       "calls": {
-        "total_calls": 43,
+        "total_calls": 54,
         "resolved_calls": 5,
-        "unresolved_calls": 38,
-        "resolution_rate": 0.11627907
+        "unresolved_calls": 49,
+        "resolution_rate": 0.09259259
       },
       "control_flow": {
         "max_nesting_depth": 2,
-        "cognitive_complexity": 11
+        "cognitive_complexity": 13
       },
       "concurrency": {
         "total_sites": 12,
@@ -588,31 +552,31 @@
     "coupling": "pure",
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 3.8,
+    "risk_score": 3.6,
     "semantic_summary": "pure computation",
     "analysis": {
       "functions": {
         "total": 1,
         "public": 1,
-        "max_cognitive_complexity": 4,
-        "avg_cognitive_complexity": 4
+        "max_cognitive_complexity": 3,
+        "avg_cognitive_complexity": 3
       },
       "calls": {
-        "total_calls": 19,
+        "total_calls": 14,
         "resolved_calls": 0,
-        "unresolved_calls": 19,
+        "unresolved_calls": 14,
         "resolution_rate": 0.0
       },
       "control_flow": {
         "max_nesting_depth": 0,
-        "cognitive_complexity": 4
+        "cognitive_complexity": 3
       },
       "docs": {
         "documented_symbols": 0,
         "undocumented_public": 1
       },
       "activation": {
-        "total_sites": 4,
+        "total_sites": 3,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -643,35 +607,38 @@
     ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 3.4,
+    "risk_score": 3.8,
     "semantic_summary": "pure computation constant-owning module",
     "analysis": {
       "functions": {
-        "total": 13,
+        "total": 14,
         "public": 4,
-        "max_cognitive_complexity": 2,
+        "max_cognitive_complexity": 4,
         "avg_cognitive_complexity": 0
       },
       "calls": {
-        "total_calls": 87,
-        "resolved_calls": 24,
-        "unresolved_calls": 63,
-        "resolution_rate": 0.27586207
+        "total_calls": 97,
+        "resolved_calls": 25,
+        "unresolved_calls": 72,
+        "resolution_rate": 0.25773194
       },
       "control_flow": {
         "max_nesting_depth": 1,
-        "cognitive_complexity": 5
+        "cognitive_complexity": 7
       },
       "docs": {
         "documented_symbols": 0,
         "undocumented_public": 4
       },
       "activation": {
-        "total_sites": 25,
+        "total_sites": 27,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
+      },
+      "guards": {
+        "total_sites": 2
       }
     }
   },
@@ -692,9 +659,9 @@
     "quality_tags": [
       "undocumented"
     ],
-    "hotspot": true,
+    "hotspot": false,
     "fan_in": 0,
-    "risk_score": 15.8,
+    "risk_score": 1.8,
     "semantic_summary": "side-effecting stateful module",
     "analysis": {
       "functions": {
@@ -740,40 +707,44 @@
     "description": "Formats global stats for output.",
     "exports": [
       "generateTextReportAsync",
-      "displayGlobalStats"
+      "displayGlobalStats",
+      "refreshSelectionStats",
+      "resetStatsCache"
     ],
     "coupling": "mixed",
     "behavior_tags": [
-      "owns-const-state",
+      "owns-state",
       "async"
     ],
     "quality_tags": [
+      "undocumented",
+      "complex-flow",
       "concurrency-heavy"
     ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 9.0,
-    "semantic_summary": "async side-effecting constant-owning module",
+    "risk_score": 10.0,
+    "semantic_summary": "async side-effecting stateful module",
     "analysis": {
       "functions": {
-        "total": 10,
-        "public": 2,
-        "max_cognitive_complexity": 10,
-        "avg_cognitive_complexity": 5
+        "total": 14,
+        "public": 4,
+        "max_cognitive_complexity": 15,
+        "avg_cognitive_complexity": 4
       },
       "types": {
         "total": 2,
         "public": 0
       },
       "calls": {
-        "total_calls": 129,
-        "resolved_calls": 14,
-        "unresolved_calls": 115,
-        "resolution_rate": 0.10852713
+        "total_calls": 155,
+        "resolved_calls": 23,
+        "unresolved_calls": 132,
+        "resolution_rate": 0.14838709
       },
       "control_flow": {
         "max_nesting_depth": 2,
-        "cognitive_complexity": 52
+        "cognitive_complexity": 69
       },
       "concurrency": {
         "total_sites": 5,
@@ -783,10 +754,10 @@
       },
       "docs": {
         "documented_symbols": 0,
-        "undocumented_public": 2
+        "undocumented_public": 4
       },
       "activation": {
-        "total_sites": 25,
+        "total_sites": 31,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -814,46 +785,47 @@
       "persists"
     ],
     "quality_tags": [
-      "undocumented"
+      "undocumented",
+      "complex-flow"
     ],
     "hotspot": true,
     "fan_in": 0,
-    "risk_score": 8.8,
+    "risk_score": 10.0,
     "semantic_summary": "side-effecting stateful adapter",
     "analysis": {
       "functions": {
-        "total": 31,
+        "total": 30,
         "public": 6,
-        "max_cognitive_complexity": 14,
-        "avg_cognitive_complexity": 4
+        "max_cognitive_complexity": 20,
+        "avg_cognitive_complexity": 5
       },
       "types": {
         "total": 5,
         "public": 0
       },
       "calls": {
-        "total_calls": 384,
-        "resolved_calls": 64,
-        "unresolved_calls": 320,
-        "resolution_rate": 0.16666667
+        "total_calls": 399,
+        "resolved_calls": 61,
+        "unresolved_calls": 338,
+        "resolution_rate": 0.1528822
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 125
+        "cognitive_complexity": 153
       },
       "docs": {
         "documented_symbols": 0,
         "undocumented_public": 6
       },
       "activation": {
-        "total_sites": 92,
+        "total_sites": 95,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
       },
       "guards": {
-        "total_sites": 1
+        "total_sites": 2
       }
     }
   },
@@ -861,7 +833,7 @@
     "path": "src/ts/ui/viewer.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Implements open file.",
+    "description": "Implements close viewer.",
     "exports": [
       "openFile",
       "closeViewer",
@@ -894,10 +866,10 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 54,
+        "total_calls": 50,
         "resolved_calls": 8,
-        "unresolved_calls": 46,
-        "resolution_rate": 0.14814815
+        "unresolved_calls": 42,
+        "resolution_rate": 0.16
       },
       "control_flow": {
         "max_nesting_depth": 1,
@@ -920,7 +892,7 @@
         "undocumented_public": 3
       },
       "activation": {
-        "total_sites": 14,
+        "total_sites": 12,
         "kinds": [
           "callback-surface"
         ]
@@ -1313,12 +1285,12 @@
     "path": "src/ts/ui/index.ts",
     "layer": 3,
     "file_kind": "production",
-    "description": "Implements show notification.",
+    "description": "Updates selection ui.",
     "exports": [
       "resetUIForProcessing",
       "copyCurrentReport",
       "saveCurrentReport",
-      "refreshAllUI"
+      "disableUIControls"
     ],
     "coupling": "mixed",
     "behavior_tags": [
@@ -1335,20 +1307,20 @@
     "semantic_summary": "async side-effecting stateful module",
     "analysis": {
       "functions": {
-        "total": 21,
-        "public": 11,
+        "total": 22,
+        "public": 12,
         "max_cognitive_complexity": 5,
         "avg_cognitive_complexity": 1
       },
       "calls": {
-        "total_calls": 196,
-        "resolved_calls": 22,
-        "unresolved_calls": 174,
-        "resolution_rate": 0.1122449
+        "total_calls": 175,
+        "resolved_calls": 25,
+        "unresolved_calls": 150,
+        "resolution_rate": 0.14285715
       },
       "control_flow": {
-        "max_nesting_depth": 2,
-        "cognitive_complexity": 32
+        "max_nesting_depth": 1,
+        "cognitive_complexity": 34
       },
       "concurrency": {
         "total_sites": 8,
@@ -1358,10 +1330,10 @@
       },
       "docs": {
         "documented_symbols": 0,
-        "undocumented_public": 11
+        "undocumented_public": 12
       },
       "activation": {
-        "total_sites": 49,
+        "total_sites": 41,
         "kinds": [
           "callback-surface",
           "registration-site"

@@ -361,7 +361,6 @@ export function renderTree(root: FolderInfo, container: HTMLElement): void {
 function createRowElement(row: FlatRow): HTMLDivElement {
   const { node, depth } = row;
   const div = document.createElement("div");
-  div.style.paddingLeft = `${depth * 14}px`;
   div.dataset.path = node.path;
 
   if (node.type === "folder") {
@@ -371,13 +370,13 @@ function createRowElement(row: FlatRow): HTMLDivElement {
     if (!appState.expandedFolderPaths.has(node.path)) {
       div.classList.add("collapsed");
     }
-    div.appendChild(createFolderItemLine(node, selectionState));
+    div.appendChild(createFolderItemLine(node, selectionState, depth));
   } else {
     const ext = getFileExt(node.name);
     div.className = "tree-row tree-row--file";
     div.dataset.ext = ext;
     div.dataset.selected = String(appState.selectedPaths.has(node.path));
-    div.appendChild(createFileItemLine(node));
+    div.appendChild(createFileItemLine(node, depth));
   }
 
   const selectedPaths = appState.selectedPaths;
@@ -397,12 +396,14 @@ function createRowElement(row: FlatRow): HTMLDivElement {
 function createFolderItemLine(
   folder: FolderInfo,
   selectionState: SelectionState,
+  depth: number,
 ): HTMLDivElement {
   const itemLine = document.createElement("div");
   itemLine.className = "item-line";
 
   const prefix = document.createElement("span");
   prefix.className = "item-prefix";
+  if (depth > 0) prefix.style.paddingLeft = `${depth * 22}px`;
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
@@ -434,13 +435,13 @@ function createFolderItemLine(
 
   itemLine.appendChild(prefix);
   itemLine.appendChild(name);
-  itemLine.appendChild(createSizeBar(folder.totalSize));
   itemLine.appendChild(stats);
+  itemLine.appendChild(createSizeBar(folder.totalSize));
 
   return itemLine;
 }
 
-function createFileItemLine(file: FileInfo): HTMLDivElement {
+function createFileItemLine(file: FileInfo, depth: number): HTMLDivElement {
   const iconKind = getFileIconKind(file);
 
   const itemLine = document.createElement("div");
@@ -448,6 +449,7 @@ function createFileItemLine(file: FileInfo): HTMLDivElement {
 
   const prefix = document.createElement("span");
   prefix.className = "item-prefix";
+  if (depth > 0) prefix.style.paddingLeft = `${depth * 22}px`;
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
@@ -477,8 +479,8 @@ function createFileItemLine(file: FileInfo): HTMLDivElement {
 
   itemLine.appendChild(prefix);
   itemLine.appendChild(name);
-  itemLine.appendChild(createSizeBar(file.size));
   itemLine.appendChild(stats);
+  itemLine.appendChild(createSizeBar(file.size));
 
   return itemLine;
 }
@@ -546,7 +548,7 @@ function bindTreeInteractions(container: HTMLElement): void {
     if (!target.closest(".name")) return;
     const node = appState.treeNodesByPath.get(path);
     if (node?.type === "file") {
-      console.log("[tree] Click on file:", node.path);
+      event.stopPropagation();
       void openFile(node);
     }
   });

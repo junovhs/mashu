@@ -146,11 +146,6 @@
   },
   {
     "from": "src/ts/ui/stats.ts",
-    "to": "src/ts/ui/pretext.ts",
-    "kind": "import"
-  },
-  {
-    "from": "src/ts/ui/stats.ts",
     "to": "src/ts/ui/tree.ts",
     "kind": "import"
   },
@@ -167,11 +162,6 @@
   {
     "from": "src/ts/ui/tree.ts",
     "to": "src/ts/utils/fs_utils.ts",
-    "kind": "import"
-  },
-  {
-    "from": "src/ts/ui/tree.ts",
-    "to": "src/ts/ui/pretext.ts",
     "kind": "import"
   },
   {
@@ -197,11 +187,6 @@
   {
     "from": "src/ts/ui/viewer.ts",
     "to": "src/ts/ui/index.ts",
-    "kind": "import"
-  },
-  {
-    "from": "src/ts/ui/viewer.ts",
-    "to": "src/ts/ui/pretext.ts",
     "kind": "import"
   },
   {
@@ -251,11 +236,6 @@
   },
   {
     "from": "src/ts/ui/index.ts",
-    "to": "src/ts/ui/pretext.ts",
-    "kind": "import"
-  },
-  {
-    "from": "src/ts/ui/index.ts",
     "to": "src/ts/ui/viewer.ts",
     "kind": "import"
   },
@@ -276,11 +256,6 @@
   },
   {
     "from": "rust-core/pkg/rust_core.js",
-    "to": "rust-core/pkg/rust_core_bg.wasm.d.ts",
-    "kind": "call"
-  },
-  {
-    "from": "rust-core/pkg/rust_core_bg.js",
     "to": "rust-core/pkg/rust_core_bg.wasm.d.ts",
     "kind": "call"
   },
@@ -335,11 +310,6 @@
     "kind": "call"
   },
   {
-    "from": "src/ts/app.ts",
-    "to": "src/ts/ui/pretext.ts",
-    "kind": "call"
-  },
-  {
     "from": "src/ts/features.ts",
     "to": "src/ts/filesystem.ts",
     "kind": "call"
@@ -356,11 +326,6 @@
   },
   {
     "from": "src/ts/ui/stats.ts",
-    "to": "src/ts/ui/pretext.ts",
-    "kind": "call"
-  },
-  {
-    "from": "src/ts/ui/stats.ts",
     "to": "src/ts/utils/fs_utils.ts",
     "kind": "call"
   },
@@ -371,22 +336,12 @@
   },
   {
     "from": "src/ts/ui/tree.ts",
-    "to": "src/ts/ui/pretext.ts",
-    "kind": "call"
-  },
-  {
-    "from": "src/ts/ui/tree.ts",
     "to": "src/ts/utils/fs_utils.ts",
     "kind": "call"
   },
   {
     "from": "src/ts/ui/tree.ts",
     "to": "src/ts/ui/viewer.ts",
-    "kind": "call"
-  },
-  {
-    "from": "src/ts/ui/viewer.ts",
-    "to": "src/ts/ui/pretext.ts",
     "kind": "call"
   },
   {
@@ -411,17 +366,12 @@
   },
   {
     "from": "src/ts/ui/index.ts",
-    "to": "src/ts/ui/pretext.ts",
+    "to": "src/ts/ui/stats.ts",
     "kind": "call"
   },
   {
     "from": "src/ts/ui/index.ts",
     "to": "src/ts/ui/viewer.ts",
-    "kind": "call"
-  },
-  {
-    "from": "src/ts/ui/index.ts",
-    "to": "src/ts/ui/stats.ts",
     "kind": "call"
   },
   {

@@ -104,7 +104,7 @@
       "fn::Z@13",
       "fn::G@13",
       "fn::c@13",
-      "fn::formatCount@263"
+      "fn::formatCount@302"
     ],
     "callees": [],
     "doc_comment": null,
@@ -804,7 +804,7 @@
       "fn::r@13",
       "fn::p@13",
       "fn::j@13",
-      "fn::postSelectionUpdate@750"
+      "fn::postSelectionUpdate@814"
     ],
     "callees": [],
     "doc_comment": null,
@@ -2231,190 +2231,6 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::engine_version@5",
-    "name": "engine_version",
-    "kind": "Function",
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "start_line": 5,
-    "end_line": 16,
-    "visibility": "Public",
-    "cognitive_complexity": 1,
-    "callers": [],
-    "callees": [
-      "fn::getStringFromWasm0@26",
-      "const::__wbindgen_free@11"
-    ],
-    "doc_comment": "Returns the engine version string. Called by the worker to confirm init.\n@returns {string}",
-    "signature": "function engine_version()",
-    "has_guard_coverage": false,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "fn::__wbindgen_init_externref_table@17",
-    "name": "__wbindgen_init_externref_table",
-    "kind": "Function",
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "start_line": 17,
-    "end_line": 25,
-    "visibility": "Public",
-    "cognitive_complexity": 0,
-    "callers": [],
-    "callees": [],
-    "doc_comment": null,
-    "signature": "function __wbindgen_init_externref_table()",
-    "has_guard_coverage": false,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "fn::getStringFromWasm0@26",
-    "name": "getStringFromWasm0",
-    "kind": "Function",
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "start_line": 26,
-    "end_line": 28,
-    "visibility": "Private",
-    "cognitive_complexity": 0,
-    "callers": [
-      "fn::engine_version@5"
-    ],
-    "callees": [
-      "fn::decodeText@42"
-    ],
-    "doc_comment": null,
-    "signature": "function getStringFromWasm0(ptr, len)",
-    "has_guard_coverage": false,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "fn::getUint8ArrayMemory0@31",
-    "name": "getUint8ArrayMemory0",
-    "kind": "Function",
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "start_line": 31,
-    "end_line": 36,
-    "visibility": "Private",
-    "cognitive_complexity": 1,
-    "callers": [
-      "fn::decodeText@42"
-    ],
-    "callees": [],
-    "doc_comment": null,
-    "signature": "function getUint8ArrayMemory0()",
-    "has_guard_coverage": false,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "fn::decodeText@42",
-    "name": "decodeText",
-    "kind": "Function",
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "start_line": 42,
-    "end_line": 50,
-    "visibility": "Private",
-    "cognitive_complexity": 1,
-    "callers": [
-      "fn::getStringFromWasm0@26"
-    ],
-    "callees": [
-      "fn::getUint8ArrayMemory0@31"
-    ],
-    "doc_comment": null,
-    "signature": "function decodeText(ptr, len)",
-    "has_guard_coverage": false,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "fn::__wbg_set_wasm@54",
-    "name": "__wbg_set_wasm",
-    "kind": "Function",
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "start_line": 54,
-    "end_line": 56,
-    "visibility": "Public",
-    "cognitive_complexity": 0,
-    "callers": [],
-    "callees": [],
-    "doc_comment": null,
-    "signature": "function __wbg_set_wasm(val)",
-    "has_guard_coverage": false,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "static::cachedUint8ArrayMemory0@30",
-    "name": "cachedUint8ArrayMemory0",
-    "kind": "Static",
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "start_line": 30,
-    "end_line": 30,
-    "visibility": "Private",
-    "cognitive_complexity": 0,
-    "callers": [],
-    "callees": [],
-    "doc_comment": null,
-    "has_guard_coverage": false,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "static::cachedTextDecoder@38",
-    "name": "cachedTextDecoder",
-    "kind": "Static",
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "start_line": 38,
-    "end_line": 38,
-    "visibility": "Private",
-    "cognitive_complexity": 0,
-    "callers": [],
-    "callees": [],
-    "doc_comment": null,
-    "has_guard_coverage": false,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "const::MAX_SAFARI_DECODE_BYTES@40",
-    "name": "MAX_SAFARI_DECODE_BYTES",
-    "kind": "Constant",
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "start_line": 40,
-    "end_line": 40,
-    "visibility": "Private",
-    "cognitive_complexity": 0,
-    "callers": [],
-    "callees": [],
-    "doc_comment": null,
-    "has_guard_coverage": false,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "static::numBytesDecoded@41",
-    "name": "numBytesDecoded",
-    "kind": "Static",
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "start_line": 41,
-    "end_line": 41,
-    "visibility": "Private",
-    "cognitive_complexity": 0,
-    "callers": [],
-    "callees": [],
-    "doc_comment": null,
-    "has_guard_coverage": false,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "static::wasm@53",
-    "name": "wasm",
-    "kind": "Static",
-    "file": "rust-core/pkg/rust_core_bg.js",
-    "start_line": 53,
-    "end_line": 53,
-    "visibility": "Private",
-    "cognitive_complexity": 0,
-    "callers": [],
-    "callees": [],
-    "doc_comment": null,
-    "has_guard_coverage": false,
-    "panic_sites": 0
-  },
-  {
     "stable_id": "const::memory@3",
     "name": "memory",
     "kind": "Constant",
@@ -2430,8 +2246,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::engine_version@4",
-    "name": "engine_version",
+    "stable_id": "const::build_tree_from_entries@4",
+    "name": "build_tree_from_entries",
     "kind": "Constant",
     "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
     "start_line": 4,
@@ -2445,8 +2261,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::build_tree_from_entries@5",
-    "name": "build_tree_from_entries",
+    "stable_id": "const::compute_selection_state@5",
+    "name": "compute_selection_state",
     "kind": "Constant",
     "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
     "start_line": 5,
@@ -2460,8 +2276,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::init_tree_index@6",
-    "name": "init_tree_index",
+    "stable_id": "const::engine_version@6",
+    "name": "engine_version",
     "kind": "Constant",
     "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
     "start_line": 6,
@@ -2475,8 +2291,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::compute_selection_state@7",
-    "name": "compute_selection_state",
+    "stable_id": "const::init_tree_index@7",
+    "name": "init_tree_index",
     "kind": "Constant",
     "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
     "start_line": 7,
@@ -2546,8 +2362,7 @@
     "callers": [
       "fn::build_tree_from_entries@9",
       "fn::compute_selection_state@30",
-      "fn::engine_version@49",
-      "fn::engine_version@5"
+      "fn::engine_version@49"
     ],
     "callees": [],
     "doc_comment": null,
@@ -2586,8 +2401,8 @@
     ],
     "callees": [
       "interface::VirtualDirectoryHandle@22",
-      "fn::resetUIForProcessing@85",
-      "fn::disableUIControls@174",
+      "fn::resetUIForProcessing@84",
+      "fn::disableUIControls@183",
       "fn::finishScan@91"
     ],
     "doc_comment": null,
@@ -2609,11 +2424,11 @@
       "fn::setupHiddenInput@329"
     ],
     "callees": [
-      "fn::resetUIForProcessing@85",
-      "fn::disableUIControls@174",
-      "fn::logPerfMeasure@569",
+      "fn::resetUIForProcessing@84",
+      "fn::disableUIControls@183",
+      "fn::logPerfMeasure@583",
       "fn::applyScanData@113",
-      "fn::showFailedUI@97"
+      "fn::showFailedUI@99"
     ],
     "doc_comment": null,
     "signature": "function processFileList(files: FileList): Promise<void>",
@@ -2634,9 +2449,9 @@
     ],
     "callees": [
       "interface::VirtualDirectoryHandle@22",
-      "fn::logPerfMeasure@569",
+      "fn::logPerfMeasure@583",
       "fn::applyScanData@113",
-      "fn::showFailedUI@97"
+      "fn::showFailedUI@99"
     ],
     "doc_comment": null,
     "signature": "function finishScan(handle: VirtualDirectoryHandle)",
@@ -2658,8 +2473,8 @@
     ],
     "callees": [
       "interface::ScanData@26",
-      "fn::saveRecentProjectSummary@518",
-      "fn::postScanBatchToWorker@611",
+      "fn::saveRecentProjectSummary@532",
+      "fn::postScanBatchToWorker@625",
       "fn::updateUI@121"
     ],
     "doc_comment": null,
@@ -2681,11 +2496,11 @@
     ],
     "callees": [
       "interface::FolderInfo@13",
-      "fn::initTreeState@268",
-      "fn::logPerfMeasure@569",
-      "fn::renderTree@290",
-      "fn::refreshAllUI@141",
-      "fn::enableUIControls@155"
+      "fn::initTreeState@306",
+      "fn::logPerfMeasure@583",
+      "fn::renderTree@328",
+      "fn::refreshAllUI@143",
+      "fn::enableUIControls@164"
     ],
     "doc_comment": null,
     "signature": "function updateUI(data: FolderInfo)",
@@ -2705,9 +2520,9 @@
       "fn::setupListeners@353"
     ],
     "callees": [
-      "fn::resetUIForProcessing@85",
-      "fn::enableUIControls@155",
-      "fn::renderEmptyShell@442"
+      "fn::resetUIForProcessing@84",
+      "fn::enableUIControls@164",
+      "fn::renderEmptyShell@443"
     ],
     "doc_comment": null,
     "signature": "function clearProject()",
@@ -2788,7 +2603,7 @@
       "fn::processFileList@61",
       "fn::showNotification@65",
       "fn::buildFromEntry@269",
-      "fn::logPerfMeasure@569",
+      "fn::logPerfMeasure@583",
       "fn::processDirectory@52"
     ],
     "doc_comment": null,
@@ -2864,7 +2679,7 @@
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::init@657"
+      "fn::init@671"
     ],
     "callees": [
       "fn::processFileList@61"
@@ -2880,26 +2695,26 @@
     "kind": "Function",
     "file": "src/ts/app.ts",
     "start_line": 353,
-    "end_line": 440,
+    "end_line": 441,
     "visibility": "Private",
     "cognitive_complexity": 9,
     "callers": [
-      "fn::init@657"
+      "fn::init@671"
     ],
     "callees": [
       "fn::setupFullPageDrop@201",
-      "fn::closeViewer@142",
-      "fn::refreshAllUI@141",
-      "fn::enableUIControls@155",
+      "fn::closeViewer@138",
+      "fn::enableUIControls@164",
+      "fn::refreshSelectionUI@157",
       "fn::handleSelect@306",
-      "fn::renderTree@290",
-      "fn::downloadZip@75",
-      "fn::logPerfMeasure@569",
+      "fn::renderTree@328",
+      "fn::downloadZip@82",
+      "fn::logPerfMeasure@583",
       "fn::clearProject@159",
-      "fn::setAllSelections@819",
-      "fn::toggleAllFolders@849",
-      "fn::copyCurrentReport@178",
-      "fn::saveCurrentReport@189",
+      "fn::setAllSelections@884",
+      "fn::toggleAllFolders@914",
+      "fn::copyCurrentReport@187",
+      "fn::saveCurrentReport@198",
       "fn::exportCombined@14"
     ],
     "doc_comment": null,
@@ -2908,20 +2723,20 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::renderEmptyShell@442",
+    "stable_id": "fn::renderEmptyShell@443",
     "name": "renderEmptyShell",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 442,
-    "end_line": 466,
+    "start_line": 443,
+    "end_line": 467,
     "visibility": "Private",
     "cognitive_complexity": 5,
     "callers": [
       "fn::clearProject@159",
-      "fn::init@657"
+      "fn::init@671"
     ],
     "callees": [
-      "fn::renderRecentProjects@468"
+      "fn::renderRecentProjects@469"
     ],
     "doc_comment": null,
     "signature": "function renderEmptyShell()",
@@ -2929,21 +2744,21 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::renderRecentProjects@468",
+    "stable_id": "fn::renderRecentProjects@469",
     "name": "renderRecentProjects",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 468,
-    "end_line": 489,
+    "start_line": 469,
+    "end_line": 503,
     "visibility": "Private",
-    "cognitive_complexity": 2,
+    "cognitive_complexity": 3,
     "callers": [
-      "fn::renderEmptyShell@442",
-      "fn::saveRecentProjectSummary@518"
+      "fn::renderEmptyShell@443",
+      "fn::saveRecentProjectSummary@532"
     ],
     "callees": [
-      "fn::escapeHtml@559",
-      "fn::formatRecentMeta@542"
+      "fn::escapeHtml@573",
+      "fn::formatRecentMeta@556"
     ],
     "doc_comment": null,
     "signature": "function renderRecentProjects()",
@@ -2951,18 +2766,18 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getRecentProjectSummaries@491",
+    "stable_id": "fn::getRecentProjectSummaries@505",
     "name": "getRecentProjectSummaries",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 491,
-    "end_line": 503,
+    "start_line": 505,
+    "end_line": 517,
     "visibility": "Private",
     "cognitive_complexity": 7,
     "callers": [],
     "callees": [
       "interface::RecentProjectSummary@44",
-      "fn::isRecentProjectSummary@505",
+      "fn::isRecentProjectSummary@519",
       "const::MAX_RECENT_PROJECTS@42"
     ],
     "doc_comment": null,
@@ -2971,16 +2786,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::isRecentProjectSummary@505",
+    "stable_id": "fn::isRecentProjectSummary@519",
     "name": "isRecentProjectSummary",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 505,
-    "end_line": 516,
+    "start_line": 519,
+    "end_line": 530,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::getRecentProjectSummaries@491"
+      "fn::getRecentProjectSummaries@505"
     ],
     "callees": [],
     "doc_comment": null,
@@ -2989,12 +2804,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::saveRecentProjectSummary@518",
+    "stable_id": "fn::saveRecentProjectSummary@532",
     "name": "saveRecentProjectSummary",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 518,
-    "end_line": 540,
+    "start_line": 532,
+    "end_line": 554,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [
@@ -3003,7 +2818,7 @@
     "callees": [
       "interface::ScanData@26",
       "const::RECENT_PROJECTS_STORAGE_KEY@41",
-      "fn::renderRecentProjects@468"
+      "fn::renderRecentProjects@469"
     ],
     "doc_comment": null,
     "signature": "function saveRecentProjectSummary(data: ScanData)",
@@ -3011,21 +2826,21 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::formatRecentMeta@542",
+    "stable_id": "fn::formatRecentMeta@556",
     "name": "formatRecentMeta",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 542,
-    "end_line": 544,
+    "start_line": 556,
+    "end_line": 558,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::renderRecentProjects@468"
+      "fn::renderRecentProjects@469"
     ],
     "callees": [
       "interface::RecentProjectSummary@44",
       "fn::formatBytes@4",
-      "fn::formatRelativeTime@546"
+      "fn::formatRelativeTime@560"
     ],
     "doc_comment": null,
     "signature": "function formatRecentMeta(item: RecentProjectSummary): string",
@@ -3033,16 +2848,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::formatRelativeTime@546",
+    "stable_id": "fn::formatRelativeTime@560",
     "name": "formatRelativeTime",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 546,
-    "end_line": 557,
+    "start_line": 560,
+    "end_line": 571,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [
-      "fn::formatRecentMeta@542"
+      "fn::formatRecentMeta@556"
     ],
     "callees": [],
     "doc_comment": null,
@@ -3051,16 +2866,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::escapeHtml@559",
+    "stable_id": "fn::escapeHtml@573",
     "name": "escapeHtml",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 559,
-    "end_line": 567,
+    "start_line": 573,
+    "end_line": 581,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::renderRecentProjects@468"
+      "fn::renderRecentProjects@469"
     ],
     "callees": [],
     "doc_comment": null,
@@ -3069,12 +2884,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::logPerfMeasure@569",
+    "stable_id": "fn::logPerfMeasure@583",
     "name": "logPerfMeasure",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 569,
-    "end_line": 581,
+    "start_line": 583,
+    "end_line": 595,
     "visibility": "Private",
     "cognitive_complexity": 5,
     "callers": [
@@ -3091,12 +2906,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::buildSerializableEntries@583",
+    "stable_id": "fn::buildSerializableEntries@597",
     "name": "buildSerializableEntries",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 583,
-    "end_line": 609,
+    "start_line": 597,
+    "end_line": 623,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [],
@@ -3110,12 +2925,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::postScanBatchToWorker@611",
+    "stable_id": "fn::postScanBatchToWorker@625",
     "name": "postScanBatchToWorker",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 611,
-    "end_line": 617,
+    "start_line": 625,
+    "end_line": 631,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
@@ -3130,19 +2945,19 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::initWorker@621",
+    "stable_id": "fn::initWorker@635",
     "name": "initWorker",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 621,
-    "end_line": 655,
+    "start_line": 635,
+    "end_line": 669,
     "visibility": "Private",
     "cognitive_complexity": 8,
     "callers": [
-      "fn::init@657"
+      "fn::init@671"
     ],
     "callees": [
-      "fn::applyRustSelectionState@760"
+      "fn::applyRustSelectionState@824"
     ],
     "doc_comment": null,
     "signature": "function initWorker()",
@@ -3150,12 +2965,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::init@657",
+    "stable_id": "fn::init@671",
     "name": "init",
     "kind": "Function",
     "file": "src/ts/app.ts",
-    "start_line": 657,
-    "end_line": 680,
+    "start_line": 671,
+    "end_line": 692,
     "visibility": "Private",
     "cognitive_complexity": 3,
     "callers": [
@@ -3164,15 +2979,14 @@
     "callees": [
       "fn::initLayout@1",
       "fn::populateElements@21",
-      "fn::initTabs@104",
+      "fn::initTabs@106",
       "fn::initSidebarResizer@52",
-      "fn::initPretextText@26",
       "fn::setupHiddenInput@329",
-      "fn::initWorker@621",
+      "fn::initWorker@635",
       "fn::initTypeData@27",
       "fn::setupListeners@353",
-      "fn::disableUIControls@174",
-      "fn::renderEmptyShell@442"
+      "fn::disableUIControls@183",
+      "fn::renderEmptyShell@443"
     ],
     "doc_comment": null,
     "signature": "function init()",
@@ -3189,8 +3003,8 @@
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::getRecentProjectSummaries@491",
-      "fn::formatRecentMeta@542"
+      "fn::getRecentProjectSummaries@505",
+      "fn::formatRecentMeta@556"
     ],
     "callees": [],
     "doc_comment": null,
@@ -3207,7 +3021,7 @@
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::saveRecentProjectSummary@518"
+      "fn::saveRecentProjectSummary@532"
     ],
     "callees": [],
     "doc_comment": null,
@@ -3224,7 +3038,7 @@
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::getRecentProjectSummaries@491"
+      "fn::getRecentProjectSummaries@505"
     ],
     "callees": [],
     "doc_comment": null,
@@ -3247,12 +3061,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "static::scanWorker@619",
+    "stable_id": "static::scanWorker@633",
     "name": "scanWorker",
     "kind": "Static",
     "file": "src/ts/app.ts",
-    "start_line": 619,
-    "end_line": 619,
+    "start_line": 633,
+    "end_line": 633,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -3267,7 +3081,7 @@
     "kind": "Function",
     "file": "src/ts/features.ts",
     "start_line": 14,
-    "end_line": 31,
+    "end_line": 29,
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
@@ -3275,7 +3089,7 @@
     ],
     "callees": [
       "fn::showNotification@65",
-      "fn::downloadBlob@63"
+      "fn::downloadBlob@70"
     ],
     "doc_comment": null,
     "signature": "function exportCombined()",
@@ -3283,12 +3097,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getExportData@33",
+    "stable_id": "fn::getExportData@31",
     "name": "getExportData",
     "kind": "Function",
     "file": "src/ts/features.ts",
-    "start_line": 33,
-    "end_line": 38,
+    "start_line": 31,
+    "end_line": 36,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [],
@@ -3301,12 +3115,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getTextFiles@40",
-    "name": "getTextFiles",
+    "stable_id": "fn::buildManifest@38",
+    "name": "buildManifest",
     "kind": "Function",
     "file": "src/ts/features.ts",
-    "start_line": 40,
-    "end_line": 46,
+    "start_line": 38,
+    "end_line": 44,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -3314,40 +3128,41 @@
       "interface::FileInfo@3"
     ],
     "doc_comment": null,
-    "signature": "function getTextFiles(candidates: FileInfo[])",
+    "signature": "function buildManifest(candidates: FileInfo[]): Promise<FileInfo[]>",
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::buildExport@48",
-    "name": "buildExport",
+    "stable_id": "fn::assembleExportBlob@46",
+    "name": "assembleExportBlob",
     "kind": "Function",
     "file": "src/ts/features.ts",
-    "start_line": 48,
-    "end_line": 61,
+    "start_line": 46,
+    "end_line": 68,
     "visibility": "Private",
-    "cognitive_complexity": 4,
+    "cognitive_complexity": 6,
     "callers": [],
     "callees": [
-      "interface::FileInfo@3"
+      "interface::FileInfo@3",
+      "fn::showNotification@65"
     ],
     "doc_comment": null,
-    "signature": "function buildExport(files: FileInfo[])",
+    "signature": "function assembleExportBlob(manifest: FileInfo[]): Promise<Blob>",
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::downloadBlob@63",
+    "stable_id": "fn::downloadBlob@70",
     "name": "downloadBlob",
     "kind": "Function",
     "file": "src/ts/features.ts",
-    "start_line": 63,
-    "end_line": 73,
+    "start_line": 70,
+    "end_line": 80,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
       "fn::exportCombined@14",
-      "fn::downloadZip@75"
+      "fn::downloadZip@82"
     ],
     "callees": [],
     "doc_comment": null,
@@ -3356,12 +3171,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::downloadZip@75",
+    "stable_id": "fn::downloadZip@82",
     "name": "downloadZip",
     "kind": "Function",
     "file": "src/ts/features.ts",
-    "start_line": 75,
-    "end_line": 97,
+    "start_line": 82,
+    "end_line": 104,
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
@@ -3369,7 +3184,7 @@
     ],
     "callees": [
       "fn::showNotification@65",
-      "fn::downloadBlob@63"
+      "fn::downloadBlob@70"
     ],
     "doc_comment": null,
     "signature": "function downloadZip()",
@@ -3578,8 +3393,8 @@
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::getExportData@33",
-      "fn::getActiveScanData@209"
+      "fn::getExportData@31",
+      "fn::getActiveScanData@218"
     ],
     "callees": [
       "interface::ScanData@26"
@@ -3973,11 +3788,11 @@
     "kind": "Function",
     "file": "src/ts/ui/layout.ts",
     "start_line": 1,
-    "end_line": 231,
+    "end_line": 207,
     "visibility": "Public",
-    "cognitive_complexity": 4,
+    "cognitive_complexity": 3,
     "callers": [
-      "fn::init@657"
+      "fn::init@671"
     ],
     "callees": [],
     "doc_comment": null,
@@ -4000,7 +3815,7 @@
     "callees": [],
     "doc_comment": null,
     "signature": "function isStatsPanelVisible(): boolean",
-    "has_guard_coverage": false,
+    "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
@@ -4016,7 +3831,7 @@
     "callees": [],
     "doc_comment": null,
     "signature": "function getAvailableContentWidth(): number",
-    "has_guard_coverage": false,
+    "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
@@ -4036,7 +3851,7 @@
     ],
     "doc_comment": null,
     "signature": "function clampSidebarRatio(ratio: number): number",
-    "has_guard_coverage": false,
+    "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
@@ -4054,7 +3869,7 @@
     ],
     "doc_comment": null,
     "signature": "function getDefaultSidebarRatio(): number",
-    "has_guard_coverage": false,
+    "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
@@ -4072,7 +3887,7 @@
     ],
     "doc_comment": null,
     "signature": "function readSavedSidebarRatio(): number | null",
-    "has_guard_coverage": false,
+    "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
@@ -4081,16 +3896,16 @@
     "kind": "Function",
     "file": "src/ts/ui/modals.ts",
     "start_line": 52,
-    "end_line": 135,
+    "end_line": 149,
     "visibility": "Public",
-    "cognitive_complexity": 2,
+    "cognitive_complexity": 4,
     "callers": [
-      "fn::init@657"
+      "fn::init@671"
     ],
     "callees": [],
     "doc_comment": null,
     "signature": "function initSidebarResizer()",
-    "has_guard_coverage": false,
+    "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
@@ -4105,7 +3920,7 @@
     "callers": [],
     "callees": [],
     "doc_comment": null,
-    "has_guard_coverage": false,
+    "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
@@ -4122,7 +3937,7 @@
     ],
     "callees": [],
     "doc_comment": null,
-    "has_guard_coverage": false,
+    "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
@@ -4137,7 +3952,7 @@
     "callers": [],
     "callees": [],
     "doc_comment": null,
-    "has_guard_coverage": false,
+    "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
@@ -4152,7 +3967,7 @@
     "callers": [],
     "callees": [],
     "doc_comment": null,
-    "has_guard_coverage": false,
+    "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
@@ -4167,7 +3982,7 @@
     "callers": [],
     "callees": [],
     "doc_comment": null,
-    "has_guard_coverage": false,
+    "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
@@ -4180,7 +3995,6 @@
     "visibility": "Public",
     "cognitive_complexity": 9,
     "callers": [
-      "fn::init@657",
       "fn::ensureInitialized@281"
     ],
     "callees": [
@@ -4203,9 +4017,7 @@
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::initPretextText@26",
-      "fn::displayGlobalStats@70",
-      "fn::renderVisualReport@229"
+      "fn::initPretextText@26"
     ],
     "callees": [
       "fn::ensureInitialized@281",
@@ -4227,17 +4039,7 @@
     "end_line": 78,
     "visibility": "Public",
     "cognitive_complexity": 1,
-    "callers": [
-      "fn::displayGlobalStats@70",
-      "fn::createFolderItemLine@357",
-      "fn::createFileItemLine@405",
-      "fn::updateViewer@65",
-      "fn::showNotification@65",
-      "fn::resetUIForProcessing@85",
-      "fn::showFailedUI@97",
-      "fn::renderVisualReport@229",
-      "fn::renderReportPlaceholder@316"
-    ],
+    "callers": [],
     "callees": [
       "fn::ensureInitialized@281",
       "fn::bindElement@80",
@@ -4602,19 +4404,19 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::extToKind@42",
+    "stable_id": "fn::extToKind@41",
     "name": "extToKind",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 42,
-    "end_line": 55,
+    "start_line": 41,
+    "end_line": 54,
     "visibility": "Private",
     "cognitive_complexity": 10,
     "callers": [
-      "fn::renderCompositionBar@168"
+      "fn::renderCompositionBar@207"
     ],
     "callees": [
-      "type::Kind@15"
+      "type::Kind@14"
     ],
     "doc_comment": null,
     "signature": "function extToKind(ext: string): Kind",
@@ -4622,16 +4424,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::yieldToMainThread@64",
+    "stable_id": "fn::yieldToMainThread@63",
     "name": "yieldToMainThread",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 64,
-    "end_line": 68,
+    "start_line": 63,
+    "end_line": 67,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::generateTextReportAsync@325"
+      "fn::generateTextReportAsync@388"
     ],
     "callees": [],
     "doc_comment": null,
@@ -4640,27 +4442,45 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::displayGlobalStats@70",
+    "stable_id": "fn::resetStatsCache@71",
+    "name": "resetStatsCache",
+    "kind": "Function",
+    "file": "src/ts/ui/stats.ts",
+    "start_line": 71,
+    "end_line": 73,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [
+      "fn::resetUIForProcessing@84"
+    ],
+    "callees": [],
+    "doc_comment": null,
+    "signature": "function resetStatsCache()",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::displayGlobalStats@75",
     "name": "displayGlobalStats",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 70,
-    "end_line": 166,
+    "start_line": 75,
+    "end_line": 160,
     "visibility": "Public",
-    "cognitive_complexity": 10,
+    "cognitive_complexity": 11,
     "callers": [
-      "fn::refreshAllUI@141"
+      "fn::refreshAllUI@143"
     ],
     "callees": [
       "interface::ScanData@26",
-      "fn::setPretextText@68",
       "fn::formatBytes@4",
-      "fn::formatCount@263",
-      "fn::escapeHtml@269",
-      "fn::renderCompositionBar@168",
-      "fn::renderExtFilterPills@279",
-      "fn::updateAncillaryUI@216",
-      "fn::syncPretextTree@57"
+      "fn::formatCount@302",
+      "fn::escapeHtml@308",
+      "fn::renderCompositionBar@207",
+      "fn::isExtensionFullySelected@378",
+      "fn::wireFileTypeTableClicks@327",
+      "fn::renderExtFilterPills@340",
+      "fn::updateAncillaryUI@255"
     ],
     "doc_comment": null,
     "signature": "function displayGlobalStats(data: ScanData)",
@@ -4668,19 +4488,41 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::renderCompositionBar@168",
+    "stable_id": "fn::refreshSelectionStats@162",
+    "name": "refreshSelectionStats",
+    "kind": "Function",
+    "file": "src/ts/ui/stats.ts",
+    "start_line": 162,
+    "end_line": 205,
+    "visibility": "Public",
+    "cognitive_complexity": 15,
+    "callers": [
+      "fn::refreshSelectionUI@157"
+    ],
+    "callees": [
+      "fn::formatBytes@4",
+      "fn::formatCount@302",
+      "fn::updateAncillaryUI@255"
+    ],
+    "doc_comment": null,
+    "signature": "function refreshSelectionStats()",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::renderCompositionBar@207",
     "name": "renderCompositionBar",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 168,
-    "end_line": 214,
+    "start_line": 207,
+    "end_line": 253,
     "visibility": "Private",
     "cognitive_complexity": 6,
     "callers": [
-      "fn::displayGlobalStats@70"
+      "fn::displayGlobalStats@75"
     ],
     "callees": [
-      "fn::extToKind@42"
+      "fn::extToKind@41"
     ],
     "doc_comment": null,
     "signature": "function renderCompositionBar(sortedTypes: [string, { count: number; size: number }][], totalSize: number)",
@@ -4688,20 +4530,21 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::updateAncillaryUI@216",
+    "stable_id": "fn::updateAncillaryUI@255",
     "name": "updateAncillaryUI",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 216,
-    "end_line": 261,
+    "start_line": 255,
+    "end_line": 300,
     "visibility": "Private",
     "cognitive_complexity": 10,
     "callers": [
-      "fn::displayGlobalStats@70"
+      "fn::displayGlobalStats@75",
+      "fn::refreshSelectionStats@162"
     ],
     "callees": [
       "fn::formatBytes@4",
-      "fn::escapeHtml@269"
+      "fn::escapeHtml@308"
     ],
     "doc_comment": null,
     "signature": "function updateAncillaryUI(fileCount: number, size: number, isSelection: boolean)",
@@ -4709,16 +4552,17 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::formatCount@263",
+    "stable_id": "fn::formatCount@302",
     "name": "formatCount",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 263,
-    "end_line": 267,
+    "start_line": 302,
+    "end_line": 306,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::displayGlobalStats@70"
+      "fn::displayGlobalStats@75",
+      "fn::refreshSelectionStats@162"
     ],
     "callees": [
       "fn::n@13"
@@ -4729,17 +4573,17 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::escapeHtml@269",
+    "stable_id": "fn::escapeHtml@308",
     "name": "escapeHtml",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 269,
-    "end_line": 277,
+    "start_line": 308,
+    "end_line": 316,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::displayGlobalStats@70",
-      "fn::updateAncillaryUI@216"
+      "fn::displayGlobalStats@75",
+      "fn::updateAncillaryUI@255"
     ],
     "callees": [],
     "doc_comment": null,
@@ -4748,20 +4592,63 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::renderExtFilterPills@279",
+    "stable_id": "fn::syncExtActiveStates@318",
+    "name": "syncExtActiveStates",
+    "kind": "Function",
+    "file": "src/ts/ui/stats.ts",
+    "start_line": 318,
+    "end_line": 325,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [
+      "fn::wireFileTypeTableClicks@327",
+      "fn::renderExtFilterPills@340"
+    ],
+    "callees": [
+      "fn::isExtensionFullySelected@378"
+    ],
+    "doc_comment": null,
+    "signature": "function syncExtActiveStates()",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::wireFileTypeTableClicks@327",
+    "name": "wireFileTypeTableClicks",
+    "kind": "Function",
+    "file": "src/ts/ui/stats.ts",
+    "start_line": 327,
+    "end_line": 338,
+    "visibility": "Private",
+    "cognitive_complexity": 1,
+    "callers": [
+      "fn::displayGlobalStats@75"
+    ],
+    "callees": [
+      "fn::setSelectionByExtension@676",
+      "fn::syncExtActiveStates@318"
+    ],
+    "doc_comment": null,
+    "signature": "function wireFileTypeTableClicks()",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::renderExtFilterPills@340",
     "name": "renderExtFilterPills",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 279,
-    "end_line": 313,
+    "start_line": 340,
+    "end_line": 376,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::displayGlobalStats@70"
+      "fn::displayGlobalStats@75"
     ],
     "callees": [
-      "fn::isExtensionFullySelected@315",
-      "fn::setSelectionByExtension@597"
+      "fn::isExtensionFullySelected@378",
+      "fn::setSelectionByExtension@676",
+      "fn::syncExtActiveStates@318"
     ],
     "doc_comment": null,
     "signature": "function renderExtFilterPills(sortedTypes: [string, { count: number; size: number }][])",
@@ -4769,16 +4656,18 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::isExtensionFullySelected@315",
+    "stable_id": "fn::isExtensionFullySelected@378",
     "name": "isExtensionFullySelected",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 315,
-    "end_line": 323,
+    "start_line": 378,
+    "end_line": 386,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::renderExtFilterPills@279"
+      "fn::displayGlobalStats@75",
+      "fn::syncExtActiveStates@318",
+      "fn::renderExtFilterPills@340"
     ],
     "callees": [],
     "doc_comment": null,
@@ -4787,21 +4676,21 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::generateTextReportAsync@325",
+    "stable_id": "fn::generateTextReportAsync@388",
     "name": "generateTextReportAsync",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 325,
-    "end_line": 380,
+    "start_line": 388,
+    "end_line": 443,
     "visibility": "Public",
     "cognitive_complexity": 10,
     "callers": [
-      "fn::ensureReportText@275"
+      "fn::ensureReportText@291"
     ],
     "callees": [
       "interface::ScanData@26",
       "fn::formatBytes@4",
-      "fn::yieldToMainThread@64"
+      "fn::yieldToMainThread@63"
     ],
     "doc_comment": null,
     "signature": "function generateTextReportAsync(data: ScanData): Promise<string>",
@@ -4809,16 +4698,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "type::Kind@15",
+    "stable_id": "type::Kind@14",
     "name": "Kind",
     "kind": "Type",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 15,
-    "end_line": 17,
+    "start_line": 14,
+    "end_line": 16,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::extToKind@42"
+      "fn::extToKind@41"
     ],
     "callees": [],
     "doc_comment": null,
@@ -4826,12 +4715,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "interface::TextTreeFrame@57",
+    "stable_id": "interface::TextTreeFrame@56",
     "name": "TextTreeFrame",
     "kind": "Interface",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 57,
-    "end_line": 62,
+    "start_line": 56,
+    "end_line": 61,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -4841,12 +4730,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::REPORT_YIELD_EVERY@7",
+    "stable_id": "const::REPORT_YIELD_EVERY@6",
     "name": "REPORT_YIELD_EVERY",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 7,
-    "end_line": 7,
+    "start_line": 6,
+    "end_line": 6,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -4856,12 +4745,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::TREE_BRANCH@8",
+    "stable_id": "const::TREE_BRANCH@7",
     "name": "TREE_BRANCH",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 8,
-    "end_line": 12,
+    "start_line": 7,
+    "end_line": 11,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -4871,12 +4760,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::KIND_COLOR@19",
+    "stable_id": "const::KIND_COLOR@18",
     "name": "KIND_COLOR",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 19,
-    "end_line": 30,
+    "start_line": 18,
+    "end_line": 29,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -4886,8 +4775,23 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::CODE_EXT@32",
+    "stable_id": "const::CODE_EXT@31",
     "name": "CODE_EXT",
+    "kind": "Constant",
+    "file": "src/ts/ui/stats.ts",
+    "start_line": 31,
+    "end_line": 31,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::DATA_EXT@32",
+    "name": "DATA_EXT",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
     "start_line": 32,
@@ -4901,8 +4805,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::DATA_EXT@33",
-    "name": "DATA_EXT",
+    "stable_id": "const::DOC_EXT@33",
+    "name": "DOC_EXT",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
     "start_line": 33,
@@ -4916,8 +4820,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::DOC_EXT@34",
-    "name": "DOC_EXT",
+    "stable_id": "const::IMAGE_EXT@34",
+    "name": "IMAGE_EXT",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
     "start_line": 34,
@@ -4931,8 +4835,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::IMAGE_EXT@35",
-    "name": "IMAGE_EXT",
+    "stable_id": "const::MEDIA_EXT@35",
+    "name": "MEDIA_EXT",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
     "start_line": 35,
@@ -4946,8 +4850,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::MEDIA_EXT@36",
-    "name": "MEDIA_EXT",
+    "stable_id": "const::SHELL_EXT@36",
+    "name": "SHELL_EXT",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
     "start_line": 36,
@@ -4961,8 +4865,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::SHELL_EXT@37",
-    "name": "SHELL_EXT",
+    "stable_id": "const::CONFIG_EXT@37",
+    "name": "CONFIG_EXT",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
     "start_line": 37,
@@ -4976,8 +4880,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::CONFIG_EXT@38",
-    "name": "CONFIG_EXT",
+    "stable_id": "const::ARCHIVE_EXT@38",
+    "name": "ARCHIVE_EXT",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
     "start_line": 38,
@@ -4991,8 +4895,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::ARCHIVE_EXT@39",
-    "name": "ARCHIVE_EXT",
+    "stable_id": "const::BINARY_EXT@39",
+    "name": "BINARY_EXT",
     "kind": "Constant",
     "file": "src/ts/ui/stats.ts",
     "start_line": 39,
@@ -5006,12 +4910,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::BINARY_EXT@40",
-    "name": "BINARY_EXT",
-    "kind": "Constant",
+    "stable_id": "static::cachedStatsKey@69",
+    "name": "cachedStatsKey",
+    "kind": "Static",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 40,
-    "end_line": 40,
+    "start_line": 69,
+    "end_line": 69,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5021,19 +4925,19 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::onTreeScroll@224",
+    "stable_id": "fn::onTreeScroll@226",
     "name": "onTreeScroll",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 224,
-    "end_line": 228,
+    "start_line": 226,
+    "end_line": 232,
     "visibility": "Private",
-    "cognitive_complexity": 1,
+    "cognitive_complexity": 2,
     "callers": [
-      "fn::renderTree@290"
+      "fn::renderTree@328"
     ],
     "callees": [
-      "fn::renderVisibleWindow@245"
+      "fn::renderVisibleWindow@249"
     ],
     "doc_comment": null,
     "signature": "function onTreeScroll()",
@@ -5041,24 +4945,24 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::flattenVisible@230",
+    "stable_id": "fn::flattenVisible@234",
     "name": "flattenVisible",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 230,
-    "end_line": 243,
+    "start_line": 234,
+    "end_line": 247,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [
-      "fn::renderTree@290",
-      "fn::rerenderVisibleTree@522"
+      "fn::renderTree@328",
+      "fn::rerenderVisibleTree@561"
     ],
     "callees": [
       "interface::FileInfo@3",
       "interface::FolderInfo@13",
-      "interface::FlatRow@210",
-      "fn::treeMatchesQuery@552",
-      "fn::shouldRenderChildren@545"
+      "interface::FlatRow@209",
+      "fn::treeMatchesQuery@631",
+      "fn::shouldRenderChildren@624"
     ],
     "doc_comment": null,
     "signature": "function flattenVisible(node: FileInfo | FolderInfo, query: string, depth: number, out: FlatRow[])",
@@ -5066,35 +4970,35 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::renderVisibleWindow@245",
+    "stable_id": "fn::renderVisibleWindow@249",
     "name": "renderVisibleWindow",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 245,
-    "end_line": 262,
+    "start_line": 249,
+    "end_line": 300,
     "visibility": "Private",
-    "cognitive_complexity": 2,
+    "cognitive_complexity": 17,
     "callers": [
-      "fn::onTreeScroll@224",
-      "fn::renderTree@290",
-      "fn::rerenderVisibleTree@522",
-      "fn::refreshVisibleSelectionState@532"
+      "fn::onTreeScroll@226",
+      "fn::renderTree@328",
+      "fn::rerenderVisibleTree@561"
     ],
     "callees": [
-      "fn::createRowElement@321"
+      "fn::createRowElement@361",
+      "static::vWindowStart@222"
     ],
     "doc_comment": null,
-    "signature": "function renderVisibleWindow(scrollTop: number)",
+    "signature": "function renderVisibleWindow(scrollTop: number, forceRebuild)",
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::initTreeState@268",
+    "stable_id": "fn::initTreeState@306",
     "name": "initTreeState",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 268,
-    "end_line": 286,
+    "start_line": 306,
+    "end_line": 324,
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
@@ -5102,9 +5006,9 @@
     ],
     "callees": [
       "interface::FolderInfo@13",
-      "interface::TreeStateOptions@7",
-      "fn::buildTreeModel@652",
-      "fn::expandAllFoldersInState@811"
+      "interface::TreeStateOptions@6",
+      "fn::buildTreeModel@726",
+      "fn::expandAllFoldersInState@876"
     ],
     "doc_comment": null,
     "signature": "function initTreeState(root: FolderInfo, options: TreeStateOptions)",
@@ -5112,12 +5016,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::renderTree@290",
+    "stable_id": "fn::renderTree@328",
     "name": "renderTree",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 290,
-    "end_line": 315,
+    "start_line": 328,
+    "end_line": 355,
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
@@ -5126,11 +5030,11 @@
     ],
     "callees": [
       "interface::FolderInfo@13",
-      "fn::onTreeScroll@224",
-      "fn::flattenVisible@230",
-      "static::flatRows@218",
-      "fn::renderVisibleWindow@245",
-      "fn::bindTreeInteractions@471"
+      "fn::onTreeScroll@226",
+      "fn::flattenVisible@234",
+      "static::flatRows@217",
+      "fn::renderVisibleWindow@249",
+      "fn::bindTreeInteractions@509"
     ],
     "doc_comment": null,
     "signature": "function renderTree(root: FolderInfo, container: HTMLElement)",
@@ -5138,21 +5042,21 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::createRowElement@321",
+    "stable_id": "fn::createRowElement@361",
     "name": "createRowElement",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 321,
-    "end_line": 355,
+    "start_line": 361,
+    "end_line": 394,
     "visibility": "Private",
     "cognitive_complexity": 7,
     "callers": [
-      "fn::renderVisibleWindow@245"
+      "fn::renderVisibleWindow@249"
     ],
     "callees": [
-      "interface::FlatRow@210",
-      "fn::createFolderItemLine@357",
-      "fn::createFileItemLine@405"
+      "interface::FlatRow@209",
+      "fn::createFolderItemLine@396",
+      "fn::createFileItemLine@444"
     ],
     "doc_comment": null,
     "signature": "function createRowElement(row: FlatRow): HTMLDivElement",
@@ -5160,64 +5064,62 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::createFolderItemLine@357",
+    "stable_id": "fn::createFolderItemLine@396",
     "name": "createFolderItemLine",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 357,
-    "end_line": 403,
-    "visibility": "Private",
-    "cognitive_complexity": 0,
-    "callers": [
-      "fn::createRowElement@321"
-    ],
-    "callees": [
-      "interface::FolderInfo@13",
-      "type::SelectionState@14",
-      "fn::setPretextText@68",
-      "fn::formatBytes@4",
-      "fn::createSizeBar@450"
-    ],
-    "doc_comment": null,
-    "signature": "function createFolderItemLine(folder: FolderInfo, selectionState: SelectionState): HTMLDivElement",
-    "has_guard_coverage": true,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "fn::createFileItemLine@405",
-    "name": "createFileItemLine",
-    "kind": "Function",
-    "file": "src/ts/ui/tree.ts",
-    "start_line": 405,
-    "end_line": 448,
-    "visibility": "Private",
-    "cognitive_complexity": 0,
-    "callers": [
-      "fn::createRowElement@321"
-    ],
-    "callees": [
-      "interface::FileInfo@3",
-      "fn::setPretextText@68",
-      "fn::formatBytes@4",
-      "fn::createSizeBar@450"
-    ],
-    "doc_comment": null,
-    "signature": "function createFileItemLine(file: FileInfo): HTMLDivElement",
-    "has_guard_coverage": true,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "fn::createSizeBar@450",
-    "name": "createSizeBar",
-    "kind": "Function",
-    "file": "src/ts/ui/tree.ts",
-    "start_line": 450,
-    "end_line": 465,
+    "start_line": 396,
+    "end_line": 442,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::createFolderItemLine@357",
-      "fn::createFileItemLine@405"
+      "fn::createRowElement@361"
+    ],
+    "callees": [
+      "interface::FolderInfo@13",
+      "type::SelectionState@13",
+      "fn::formatBytes@4",
+      "fn::createSizeBar@488"
+    ],
+    "doc_comment": null,
+    "signature": "function createFolderItemLine(folder: FolderInfo, selectionState: SelectionState, depth: number): HTMLDivElement",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::createFileItemLine@444",
+    "name": "createFileItemLine",
+    "kind": "Function",
+    "file": "src/ts/ui/tree.ts",
+    "start_line": 444,
+    "end_line": 486,
+    "visibility": "Private",
+    "cognitive_complexity": 1,
+    "callers": [
+      "fn::createRowElement@361"
+    ],
+    "callees": [
+      "interface::FileInfo@3",
+      "fn::formatBytes@4",
+      "fn::createSizeBar@488"
+    ],
+    "doc_comment": null,
+    "signature": "function createFileItemLine(file: FileInfo, depth: number): HTMLDivElement",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::createSizeBar@488",
+    "name": "createSizeBar",
+    "kind": "Function",
+    "file": "src/ts/ui/tree.ts",
+    "start_line": 488,
+    "end_line": 503,
+    "visibility": "Private",
+    "cognitive_complexity": 1,
+    "callers": [
+      "fn::createFolderItemLine@396",
+      "fn::createFileItemLine@444"
     ],
     "callees": [],
     "doc_comment": null,
@@ -5226,23 +5128,23 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::bindTreeInteractions@471",
+    "stable_id": "fn::bindTreeInteractions@509",
     "name": "bindTreeInteractions",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 471,
-    "end_line": 516,
+    "start_line": 509,
+    "end_line": 555,
     "visibility": "Private",
-    "cognitive_complexity": 14,
+    "cognitive_complexity": 15,
     "callers": [
-      "fn::renderTree@290"
+      "fn::renderTree@328"
     ],
     "callees": [
-      "fn::setSelectionForSubtree@702",
-      "fn::setExpandedForSubtree@632",
-      "fn::toggleExpanded@624",
-      "fn::rerenderVisibleTree@522",
-      "fn::openFile@83"
+      "fn::setSelectionForSubtree@776",
+      "fn::setExpandedForSubtree@706",
+      "fn::toggleExpanded@698",
+      "fn::rerenderVisibleTree@561",
+      "fn::openFile@79"
     ],
     "doc_comment": null,
     "signature": "function bindTreeInteractions(container: HTMLElement)",
@@ -5250,22 +5152,22 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::rerenderVisibleTree@522",
+    "stable_id": "fn::rerenderVisibleTree@561",
     "name": "rerenderVisibleTree",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 522,
-    "end_line": 530,
+    "start_line": 561,
+    "end_line": 571,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::bindTreeInteractions@471",
-      "fn::toggleAllFolders@849"
+      "fn::bindTreeInteractions@509",
+      "fn::toggleAllFolders@914"
     ],
     "callees": [
-      "fn::flattenVisible@230",
-      "static::flatRows@218",
-      "fn::renderVisibleWindow@245"
+      "fn::flattenVisible@234",
+      "static::flatRows@217",
+      "fn::renderVisibleWindow@249"
     ],
     "doc_comment": null,
     "signature": "function rerenderVisibleTree()",
@@ -5273,42 +5175,39 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::refreshVisibleSelectionState@532",
+    "stable_id": "fn::refreshVisibleSelectionState@573",
     "name": "refreshVisibleSelectionState",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 532,
-    "end_line": 535,
+    "start_line": 573,
+    "end_line": 614,
     "visibility": "Private",
-    "cognitive_complexity": 1,
+    "cognitive_complexity": 20,
     "callers": [
-      "fn::setSelectionByExtension@597",
-      "fn::setSelectionForSubtree@702",
-      "fn::applyRustSelectionState@760",
-      "fn::setAllSelections@819"
+      "fn::setSelectionByExtension@676",
+      "fn::setSelectionForSubtree@776",
+      "fn::applyRustSelectionState@824",
+      "fn::setAllSelections@884"
     ],
-    "callees": [
-      "fn::renderVisibleWindow@245"
-    ],
+    "callees": [],
     "doc_comment": null,
     "signature": "function refreshVisibleSelectionState()",
     "has_guard_coverage": true,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::notifySelectionChanged@537",
+    "stable_id": "fn::notifySelectionChanged@616",
     "name": "notifySelectionChanged",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 537,
-    "end_line": 539,
+    "start_line": 616,
+    "end_line": 618,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::setSelectionByExtension@597",
-      "fn::setSelectionForSubtree@702",
-      "fn::applyRustSelectionState@760",
-      "fn::setAllSelections@819"
+      "fn::setSelectionByExtension@676",
+      "fn::setSelectionForSubtree@776",
+      "fn::setAllSelections@884"
     ],
     "callees": [],
     "doc_comment": null,
@@ -5317,20 +5216,20 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::shouldRenderChildren@545",
+    "stable_id": "fn::shouldRenderChildren@624",
     "name": "shouldRenderChildren",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 545,
-    "end_line": 550,
+    "start_line": 624,
+    "end_line": 629,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::flattenVisible@230"
+      "fn::flattenVisible@234"
     ],
     "callees": [
       "interface::FolderInfo@13",
-      "fn::treeMatchesQuery@552"
+      "fn::treeMatchesQuery@631"
     ],
     "doc_comment": null,
     "signature": "function shouldRenderChildren(folder: FolderInfo, searchQuery: string): boolean",
@@ -5338,17 +5237,17 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::treeMatchesQuery@552",
+    "stable_id": "fn::treeMatchesQuery@631",
     "name": "treeMatchesQuery",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 552,
-    "end_line": 563,
+    "start_line": 631,
+    "end_line": 642,
     "visibility": "Private",
     "cognitive_complexity": 3,
     "callers": [
-      "fn::flattenVisible@230",
-      "fn::shouldRenderChildren@545"
+      "fn::flattenVisible@234",
+      "fn::shouldRenderChildren@624"
     ],
     "callees": [
       "interface::FolderInfo@13",
@@ -5360,16 +5259,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getFileExt@569",
+    "stable_id": "fn::getFileExt@648",
     "name": "getFileExt",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 569,
-    "end_line": 573,
+    "start_line": 648,
+    "end_line": 652,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::setSelectionByExtension@597"
+      "fn::setSelectionByExtension@676"
     ],
     "callees": [],
     "doc_comment": null,
@@ -5378,18 +5277,18 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getFileIconKind@575",
+    "stable_id": "fn::getFileIconKind@654",
     "name": "getFileIconKind",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 575,
-    "end_line": 591,
+    "start_line": 654,
+    "end_line": 670,
     "visibility": "Private",
     "cognitive_complexity": 10,
     "callers": [],
     "callees": [
       "interface::FileInfo@3",
-      "type::FileIconKind@15"
+      "type::FileIconKind@14"
     ],
     "doc_comment": null,
     "signature": "function getFileIconKind(file: FileInfo): FileIconKind",
@@ -5397,23 +5296,24 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setSelectionByExtension@597",
+    "stable_id": "fn::setSelectionByExtension@676",
     "name": "setSelectionByExtension",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 597,
-    "end_line": 622,
+    "start_line": 676,
+    "end_line": 696,
     "visibility": "Public",
-    "cognitive_complexity": 11,
+    "cognitive_complexity": 7,
     "callers": [
-      "fn::renderExtFilterPills@279"
+      "fn::wireFileTypeTableClicks@327",
+      "fn::renderExtFilterPills@340"
     ],
     "callees": [
-      "fn::getFileExt@569",
-      "fn::postSelectionUpdate@750",
-      "fn::recomputeAncestorCounts@778",
-      "fn::refreshVisibleSelectionState@532",
-      "fn::notifySelectionChanged@537"
+      "fn::getFileExt@648",
+      "fn::recomputeAncestorCounts@843",
+      "fn::refreshVisibleSelectionState@573",
+      "fn::notifySelectionChanged@616",
+      "fn::postSelectionUpdate@814"
     ],
     "doc_comment": null,
     "signature": "function setSelectionByExtension(ext: string, selected: boolean)",
@@ -5421,16 +5321,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::toggleExpanded@624",
+    "stable_id": "fn::toggleExpanded@698",
     "name": "toggleExpanded",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 624,
-    "end_line": 630,
+    "start_line": 698,
+    "end_line": 704,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::bindTreeInteractions@471"
+      "fn::bindTreeInteractions@509"
     ],
     "callees": [],
     "doc_comment": null,
@@ -5439,16 +5339,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setExpandedForSubtree@632",
+    "stable_id": "fn::setExpandedForSubtree@706",
     "name": "setExpandedForSubtree",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 632,
-    "end_line": 650,
+    "start_line": 706,
+    "end_line": 724,
     "visibility": "Private",
     "cognitive_complexity": 10,
     "callers": [
-      "fn::bindTreeInteractions@471"
+      "fn::bindTreeInteractions@509"
     ],
     "callees": [],
     "doc_comment": null,
@@ -5457,19 +5357,19 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::buildTreeModel@652",
+    "stable_id": "fn::buildTreeModel@726",
     "name": "buildTreeModel",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 652,
-    "end_line": 685,
+    "start_line": 726,
+    "end_line": 759,
     "visibility": "Private",
     "cognitive_complexity": 6,
     "callers": [
-      "fn::initTreeState@268"
+      "fn::initTreeState@306"
     ],
     "callees": [
-      "type::TreeNode@13"
+      "type::TreeNode@12"
     ],
     "doc_comment": null,
     "signature": "function buildTreeModel(node: TreeNode, parentPath: string | null, initiallySelected: boolean): number",
@@ -5477,17 +5377,17 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getSelectionState@687",
+    "stable_id": "fn::getSelectionState@761",
     "name": "getSelectionState",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 687,
-    "end_line": 700,
+    "start_line": 761,
+    "end_line": 774,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [],
     "callees": [
-      "type::SelectionState@14"
+      "type::SelectionState@13"
     ],
     "doc_comment": null,
     "signature": "function getSelectionState(path: string): SelectionState",
@@ -5495,24 +5395,23 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setSelectionForSubtree@702",
+    "stable_id": "fn::setSelectionForSubtree@776",
     "name": "setSelectionForSubtree",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 702,
-    "end_line": 715,
+    "start_line": 776,
+    "end_line": 790,
     "visibility": "Private",
-    "cognitive_complexity": 3,
+    "cognitive_complexity": 2,
     "callers": [
-      "fn::bindTreeInteractions@471"
+      "fn::bindTreeInteractions@509"
     ],
     "callees": [
-      "fn::applyFileSelectionInSubtree@739",
-      "fn::postSelectionUpdate@750",
-      "fn::applySelectionToNode@717",
-      "fn::recomputeAncestorCounts@778",
-      "fn::refreshVisibleSelectionState@532",
-      "fn::notifySelectionChanged@537"
+      "fn::applySelectionToNode@792",
+      "fn::recomputeAncestorCounts@843",
+      "fn::refreshVisibleSelectionState@573",
+      "fn::notifySelectionChanged@616",
+      "fn::postSelectionUpdate@814"
     ],
     "doc_comment": null,
     "signature": "function setSelectionForSubtree(path: string, selected: boolean)",
@@ -5520,20 +5419,20 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::applySelectionToNode@717",
+    "stable_id": "fn::applySelectionToNode@792",
     "name": "applySelectionToNode",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 717,
-    "end_line": 737,
+    "start_line": 792,
+    "end_line": 812,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [
-      "fn::setSelectionForSubtree@702",
-      "fn::setAllSelections@819"
+      "fn::setSelectionForSubtree@776",
+      "fn::setAllSelections@884"
     ],
     "callees": [
-      "type::TreeNode@13"
+      "type::TreeNode@12"
     ],
     "doc_comment": null,
     "signature": "function applySelectionToNode(node: TreeNode, selected: boolean)",
@@ -5541,38 +5440,18 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::applyFileSelectionInSubtree@739",
-    "name": "applyFileSelectionInSubtree",
-    "kind": "Function",
-    "file": "src/ts/ui/tree.ts",
-    "start_line": 739,
-    "end_line": 748,
-    "visibility": "Private",
-    "cognitive_complexity": 5,
-    "callers": [
-      "fn::setSelectionForSubtree@702"
-    ],
-    "callees": [
-      "type::TreeNode@13"
-    ],
-    "doc_comment": null,
-    "signature": "function applyFileSelectionInSubtree(node: TreeNode, selected: boolean)",
-    "has_guard_coverage": true,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "fn::postSelectionUpdate@750",
+    "stable_id": "fn::postSelectionUpdate@814",
     "name": "postSelectionUpdate",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 750,
-    "end_line": 758,
+    "start_line": 814,
+    "end_line": 822,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::setSelectionByExtension@597",
-      "fn::setSelectionForSubtree@702",
-      "fn::setAllSelections@819"
+      "fn::setSelectionByExtension@676",
+      "fn::setSelectionForSubtree@776",
+      "fn::setAllSelections@884"
     ],
     "callees": [
       "fn::p@13"
@@ -5583,20 +5462,19 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::applyRustSelectionState@760",
+    "stable_id": "fn::applyRustSelectionState@824",
     "name": "applyRustSelectionState",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 760,
-    "end_line": 776,
+    "start_line": 824,
+    "end_line": 841,
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
-      "fn::initWorker@621"
+      "fn::initWorker@635"
     ],
     "callees": [
-      "fn::refreshVisibleSelectionState@532",
-      "fn::notifySelectionChanged@537"
+      "fn::refreshVisibleSelectionState@573"
     ],
     "doc_comment": null,
     "signature": "function applyRustSelectionState(selectedSubtreeCounts: Record<string, number>, selectedFolderPaths: string[])",
@@ -5604,17 +5482,17 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::recomputeAncestorCounts@778",
+    "stable_id": "fn::recomputeAncestorCounts@843",
     "name": "recomputeAncestorCounts",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 778,
-    "end_line": 809,
+    "start_line": 843,
+    "end_line": 874,
     "visibility": "Private",
     "cognitive_complexity": 13,
     "callers": [
-      "fn::setSelectionByExtension@597",
-      "fn::setSelectionForSubtree@702"
+      "fn::setSelectionByExtension@676",
+      "fn::setSelectionForSubtree@776"
     ],
     "callees": [],
     "doc_comment": null,
@@ -5623,17 +5501,17 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::expandAllFoldersInState@811",
+    "stable_id": "fn::expandAllFoldersInState@876",
     "name": "expandAllFoldersInState",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 811,
-    "end_line": 817,
+    "start_line": 876,
+    "end_line": 882,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::initTreeState@268",
-      "fn::toggleAllFolders@849"
+      "fn::initTreeState@306",
+      "fn::toggleAllFolders@914"
     ],
     "callees": [],
     "doc_comment": null,
@@ -5642,22 +5520,22 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setAllSelections@819",
+    "stable_id": "fn::setAllSelections@884",
     "name": "setAllSelections",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 819,
-    "end_line": 847,
+    "start_line": 884,
+    "end_line": 912,
     "visibility": "Public",
     "cognitive_complexity": 12,
     "callers": [
       "fn::setupListeners@353"
     ],
     "callees": [
-      "fn::postSelectionUpdate@750",
-      "fn::refreshVisibleSelectionState@532",
-      "fn::notifySelectionChanged@537",
-      "fn::applySelectionToNode@717"
+      "fn::postSelectionUpdate@814",
+      "fn::refreshVisibleSelectionState@573",
+      "fn::notifySelectionChanged@616",
+      "fn::applySelectionToNode@792"
     ],
     "doc_comment": null,
     "signature": "function setAllSelections(selected: boolean)",
@@ -5665,20 +5543,20 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::toggleAllFolders@849",
+    "stable_id": "fn::toggleAllFolders@914",
     "name": "toggleAllFolders",
     "kind": "Function",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 849,
-    "end_line": 855,
+    "start_line": 914,
+    "end_line": 920,
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
       "fn::setupListeners@353"
     ],
     "callees": [
-      "fn::expandAllFoldersInState@811",
-      "fn::rerenderVisibleTree@522"
+      "fn::expandAllFoldersInState@876",
+      "fn::rerenderVisibleTree@561"
     ],
     "doc_comment": null,
     "signature": "function toggleAllFolders(collapse: boolean)",
@@ -5686,16 +5564,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "interface::TreeStateOptions@7",
+    "stable_id": "interface::TreeStateOptions@6",
     "name": "TreeStateOptions",
     "kind": "Interface",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 7,
-    "end_line": 11,
+    "start_line": 6,
+    "end_line": 10,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::initTreeState@268"
+      "fn::initTreeState@306"
     ],
     "callees": [],
     "doc_comment": null,
@@ -5703,8 +5581,26 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "type::TreeNode@13",
+    "stable_id": "type::TreeNode@12",
     "name": "TreeNode",
+    "kind": "Type",
+    "file": "src/ts/ui/tree.ts",
+    "start_line": 12,
+    "end_line": 12,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [
+      "fn::buildTreeModel@726",
+      "fn::applySelectionToNode@792"
+    ],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "type::SelectionState@13",
+    "name": "SelectionState",
     "kind": "Type",
     "file": "src/ts/ui/tree.ts",
     "start_line": 13,
@@ -5712,9 +5608,8 @@
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::buildTreeModel@652",
-      "fn::applySelectionToNode@717",
-      "fn::applyFileSelectionInSubtree@739"
+      "fn::createFolderItemLine@396",
+      "fn::getSelectionState@761"
     ],
     "callees": [],
     "doc_comment": null,
@@ -5722,34 +5617,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "type::SelectionState@14",
-    "name": "SelectionState",
-    "kind": "Type",
-    "file": "src/ts/ui/tree.ts",
-    "start_line": 14,
-    "end_line": 14,
-    "visibility": "Private",
-    "cognitive_complexity": 0,
-    "callers": [
-      "fn::createFolderItemLine@357",
-      "fn::getSelectionState@687"
-    ],
-    "callees": [],
-    "doc_comment": null,
-    "has_guard_coverage": true,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "type::FileIconKind@15",
+    "stable_id": "type::FileIconKind@14",
     "name": "FileIconKind",
     "kind": "Type",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 15,
-    "end_line": 24,
+    "start_line": 14,
+    "end_line": 23,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::getFileIconKind@575"
+      "fn::getFileIconKind@654"
     ],
     "callees": [],
     "doc_comment": null,
@@ -5757,18 +5634,18 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "interface::FlatRow@210",
+    "stable_id": "interface::FlatRow@209",
     "name": "FlatRow",
     "kind": "Interface",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 210,
-    "end_line": 213,
+    "start_line": 209,
+    "end_line": 212,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "static::flatRows@218",
-      "fn::flattenVisible@230",
-      "fn::createRowElement@321"
+      "static::flatRows@217",
+      "fn::flattenVisible@234",
+      "fn::createRowElement@361"
     ],
     "callees": [],
     "doc_comment": null,
@@ -5776,12 +5653,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::ARCHIVE_EXTENSIONS@26",
+    "stable_id": "const::ARCHIVE_EXTENSIONS@25",
     "name": "ARCHIVE_EXTENSIONS",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 26,
-    "end_line": 36,
+    "start_line": 25,
+    "end_line": 35,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5791,12 +5668,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::BINARY_EXTENSIONS@38",
+    "stable_id": "const::BINARY_EXTENSIONS@37",
     "name": "BINARY_EXTENSIONS",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 38,
-    "end_line": 50,
+    "start_line": 37,
+    "end_line": 49,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5806,12 +5683,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::CODE_EXTENSIONS@52",
+    "stable_id": "const::CODE_EXTENSIONS@51",
     "name": "CODE_EXTENSIONS",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 52,
-    "end_line": 89,
+    "start_line": 51,
+    "end_line": 88,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5821,12 +5698,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::CONFIG_EXTENSIONS@91",
+    "stable_id": "const::CONFIG_EXTENSIONS@90",
     "name": "CONFIG_EXTENSIONS",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 91,
-    "end_line": 106,
+    "start_line": 90,
+    "end_line": 105,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5836,12 +5713,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::DATA_EXTENSIONS@108",
+    "stable_id": "const::DATA_EXTENSIONS@107",
     "name": "DATA_EXTENSIONS",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 108,
-    "end_line": 120,
+    "start_line": 107,
+    "end_line": 119,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5851,12 +5728,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::DOC_EXTENSIONS@122",
+    "stable_id": "const::DOC_EXTENSIONS@121",
     "name": "DOC_EXTENSIONS",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 122,
-    "end_line": 135,
+    "start_line": 121,
+    "end_line": 134,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5866,12 +5743,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::IMAGE_EXTENSIONS@137",
+    "stable_id": "const::IMAGE_EXTENSIONS@136",
     "name": "IMAGE_EXTENSIONS",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 137,
-    "end_line": 147,
+    "start_line": 136,
+    "end_line": 146,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5881,12 +5758,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::MEDIA_EXTENSIONS@149",
+    "stable_id": "const::MEDIA_EXTENSIONS@148",
     "name": "MEDIA_EXTENSIONS",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 149,
-    "end_line": 160,
+    "start_line": 148,
+    "end_line": 159,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5896,12 +5773,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::SHELL_EXTENSIONS@162",
+    "stable_id": "const::SHELL_EXTENSIONS@161",
     "name": "SHELL_EXTENSIONS",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 162,
-    "end_line": 172,
+    "start_line": 161,
+    "end_line": 171,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5911,12 +5788,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::FILE_ICON_MARKUP@174",
+    "stable_id": "const::FILE_ICON_MARKUP@173",
     "name": "FILE_ICON_MARKUP",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 174,
-    "end_line": 193,
+    "start_line": 173,
+    "end_line": 192,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5926,12 +5803,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::SPECIAL_FILE_KINDS@195",
+    "stable_id": "const::SPECIAL_FILE_KINDS@194",
     "name": "SPECIAL_FILE_KINDS",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 195,
-    "end_line": 204,
+    "start_line": 194,
+    "end_line": 203,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5941,8 +5818,23 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::ROW_HEIGHT@215",
+    "stable_id": "const::ROW_HEIGHT@214",
     "name": "ROW_HEIGHT",
+    "kind": "Constant",
+    "file": "src/ts/ui/tree.ts",
+    "start_line": 214,
+    "end_line": 214,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::OVERSCAN@215",
+    "name": "OVERSCAN",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
     "start_line": 215,
@@ -5956,12 +5848,32 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::OVERSCAN@216",
-    "name": "OVERSCAN",
-    "kind": "Constant",
+    "stable_id": "static::flatRows@217",
+    "name": "flatRows",
+    "kind": "Static",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 216,
-    "end_line": 216,
+    "start_line": 217,
+    "end_line": 217,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [
+      "fn::renderTree@328",
+      "fn::rerenderVisibleTree@561"
+    ],
+    "callees": [
+      "interface::FlatRow@209"
+    ],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "static::vScrollContainer@218",
+    "name": "vScrollContainer",
+    "kind": "Static",
+    "file": "src/ts/ui/tree.ts",
+    "start_line": 218,
+    "end_line": 218,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -5971,28 +5883,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "static::flatRows@218",
-    "name": "flatRows",
-    "kind": "Static",
-    "file": "src/ts/ui/tree.ts",
-    "start_line": 218,
-    "end_line": 218,
-    "visibility": "Private",
-    "cognitive_complexity": 0,
-    "callers": [
-      "fn::renderTree@290",
-      "fn::rerenderVisibleTree@522"
-    ],
-    "callees": [
-      "interface::FlatRow@210"
-    ],
-    "doc_comment": null,
-    "has_guard_coverage": true,
-    "panic_sites": 0
-  },
-  {
-    "stable_id": "static::vScrollContainer@219",
-    "name": "vScrollContainer",
+    "stable_id": "static::vTopSpacer@219",
+    "name": "vTopSpacer",
     "kind": "Static",
     "file": "src/ts/ui/tree.ts",
     "start_line": 219,
@@ -6006,8 +5898,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "static::vTopSpacer@220",
-    "name": "vTopSpacer",
+    "stable_id": "static::vRowWindow@220",
+    "name": "vRowWindow",
     "kind": "Static",
     "file": "src/ts/ui/tree.ts",
     "start_line": 220,
@@ -6021,8 +5913,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "static::vRowWindow@221",
-    "name": "vRowWindow",
+    "stable_id": "static::vBottomSpacer@221",
+    "name": "vBottomSpacer",
     "kind": "Static",
     "file": "src/ts/ui/tree.ts",
     "start_line": 221,
@@ -6036,14 +5928,31 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "static::vBottomSpacer@222",
-    "name": "vBottomSpacer",
+    "stable_id": "static::vWindowStart@222",
+    "name": "vWindowStart",
     "kind": "Static",
     "file": "src/ts/ui/tree.ts",
     "start_line": 222,
     "end_line": 222,
     "visibility": "Private",
     "cognitive_complexity": 0,
+    "callers": [
+      "fn::renderVisibleWindow@249"
+    ],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "static::vWindowEnd@223",
+    "name": "vWindowEnd",
+    "kind": "Static",
+    "file": "src/ts/ui/tree.ts",
+    "start_line": 223,
+    "end_line": 223,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
     "callers": [],
     "callees": [],
     "doc_comment": null,
@@ -6051,12 +5960,27 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::boundTreeContainers@288",
+    "stable_id": "static::scrollRAF@224",
+    "name": "scrollRAF",
+    "kind": "Static",
+    "file": "src/ts/ui/tree.ts",
+    "start_line": 224,
+    "end_line": 224,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::boundTreeContainers@326",
     "name": "boundTreeContainers",
     "kind": "Constant",
     "file": "src/ts/ui/tree.ts",
-    "start_line": 288,
-    "end_line": 288,
+    "start_line": 326,
+    "end_line": 326,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -6066,19 +5990,19 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getFallbackModeSpec@16",
+    "stable_id": "fn::getFallbackModeSpec@15",
     "name": "getFallbackModeSpec",
     "kind": "Function",
     "file": "src/ts/ui/viewer.ts",
-    "start_line": 16,
-    "end_line": 22,
+    "start_line": 15,
+    "end_line": 21,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::resolveModeSpec@24"
+      "fn::resolveModeSpec@23"
     ],
     "callees": [
-      "type::ModeSpec@7"
+      "type::ModeSpec@6"
     ],
     "doc_comment": null,
     "signature": "function getFallbackModeSpec(): ModeSpec",
@@ -6086,18 +6010,18 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::resolveModeSpec@24",
+    "stable_id": "fn::resolveModeSpec@23",
     "name": "resolveModeSpec",
     "kind": "Function",
     "file": "src/ts/ui/viewer.ts",
-    "start_line": 24,
-    "end_line": 54,
+    "start_line": 23,
+    "end_line": 53,
     "visibility": "Private",
     "cognitive_complexity": 3,
     "callers": [],
     "callees": [
-      "type::ModeSpec@7",
-      "fn::getFallbackModeSpec@16"
+      "type::ModeSpec@6",
+      "fn::getFallbackModeSpec@15"
     ],
     "doc_comment": null,
     "signature": "function resolveModeSpec(fileName: string, mimeType: string): ModeSpec",
@@ -6105,16 +6029,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::ensureModeLoaded@56",
+    "stable_id": "fn::ensureModeLoaded@55",
     "name": "ensureModeLoaded",
     "kind": "Function",
     "file": "src/ts/ui/viewer.ts",
-    "start_line": 56,
-    "end_line": 63,
+    "start_line": 55,
+    "end_line": 62,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::openFile@83"
+      "fn::openFile@79"
     ],
     "callees": [],
     "doc_comment": null,
@@ -6123,19 +6047,18 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::updateViewer@65",
+    "stable_id": "fn::updateViewer@64",
     "name": "updateViewer",
     "kind": "Function",
     "file": "src/ts/ui/viewer.ts",
-    "start_line": 65,
-    "end_line": 81,
+    "start_line": 64,
+    "end_line": 77,
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::openFile@83"
+      "fn::openFile@79"
     ],
     "callees": [
-      "fn::setPretextText@68",
       "fn::formatBytes@4"
     ],
     "doc_comment": null,
@@ -6144,24 +6067,24 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::openFile@83",
+    "stable_id": "fn::openFile@79",
     "name": "openFile",
     "kind": "Function",
     "file": "src/ts/ui/viewer.ts",
-    "start_line": 83,
-    "end_line": 123,
+    "start_line": 79,
+    "end_line": 119,
     "visibility": "Public",
     "cognitive_complexity": 6,
     "callers": [
-      "fn::bindTreeInteractions@471"
+      "fn::bindTreeInteractions@509"
     ],
     "callees": [
       "interface::FileInfo@3",
       "fn::showNotification@65",
-      "fn::ensureModeLoaded@56",
-      "fn::initOrSet@125",
-      "fn::updateViewer@65",
-      "fn::activateTab@137"
+      "fn::ensureModeLoaded@55",
+      "fn::initOrSet@121",
+      "fn::updateViewer@64",
+      "fn::activateTab@139"
     ],
     "doc_comment": null,
     "signature": "function openFile(file: FileInfo): Promise<void>",
@@ -6169,19 +6092,19 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::initOrSet@125",
+    "stable_id": "fn::initOrSet@121",
     "name": "initOrSet",
     "kind": "Function",
     "file": "src/ts/ui/viewer.ts",
-    "start_line": 125,
-    "end_line": 140,
+    "start_line": 121,
+    "end_line": 136,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::openFile@83"
+      "fn::openFile@79"
     ],
     "callees": [
-      "type::ModeSpec@7"
+      "type::ModeSpec@6"
     ],
     "doc_comment": null,
     "signature": "function initOrSet(content: string, modeSpec: ModeSpec)",
@@ -6189,20 +6112,20 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::closeViewer@142",
+    "stable_id": "fn::closeViewer@138",
     "name": "closeViewer",
     "kind": "Function",
     "file": "src/ts/ui/viewer.ts",
-    "start_line": 142,
-    "end_line": 146,
+    "start_line": 138,
+    "end_line": 142,
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
       "fn::setupListeners@353",
-      "fn::resetUIForProcessing@85"
+      "fn::resetUIForProcessing@84"
     ],
     "callees": [
-      "fn::activateTab@137"
+      "fn::activateTab@139"
     ],
     "doc_comment": null,
     "signature": "function closeViewer()",
@@ -6210,18 +6133,18 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "type::ModeSpec@7",
+    "stable_id": "type::ModeSpec@6",
     "name": "ModeSpec",
     "kind": "Type",
     "file": "src/ts/ui/viewer.ts",
-    "start_line": 7,
-    "end_line": 11,
+    "start_line": 6,
+    "end_line": 10,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::getFallbackModeSpec@16",
-      "fn::resolveModeSpec@24",
-      "fn::initOrSet@125"
+      "fn::getFallbackModeSpec@15",
+      "fn::resolveModeSpec@23",
+      "fn::initOrSet@121"
     ],
     "callees": [],
     "doc_comment": null,
@@ -6229,12 +6152,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "const::MODE_CDN_BASE@13",
+    "stable_id": "const::MODE_CDN_BASE@12",
     "name": "MODE_CDN_BASE",
     "kind": "Constant",
     "file": "src/ts/ui/viewer.ts",
-    "start_line": 13,
-    "end_line": 14,
+    "start_line": 12,
+    "end_line": 13,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -6658,15 +6581,16 @@
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::formatRecentMeta@542",
-      "fn::displayGlobalStats@70",
-      "fn::updateAncillaryUI@216",
-      "fn::generateTextReportAsync@325",
-      "fn::createFolderItemLine@357",
-      "fn::createFileItemLine@405",
-      "fn::updateViewer@65",
-      "fn::renderVisualReport@229",
-      "fn::appendVisualTreeNode@332"
+      "fn::formatRecentMeta@556",
+      "fn::displayGlobalStats@75",
+      "fn::refreshSelectionStats@162",
+      "fn::updateAncillaryUI@255",
+      "fn::generateTextReportAsync@388",
+      "fn::createFolderItemLine@396",
+      "fn::createFileItemLine@444",
+      "fn::updateViewer@64",
+      "fn::renderVisualReport@238",
+      "fn::appendVisualTreeNode@345"
     ],
     "callees": [],
     "doc_comment": null,
@@ -6700,7 +6624,7 @@
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::init@657"
+      "fn::init@671"
     ],
     "callees": [],
     "doc_comment": null,
@@ -6928,7 +6852,7 @@
       "const::engineReady@34"
     ],
     "callees": [
-      "fn::init@657",
+      "fn::init@671",
       "fn::engine_version@49"
     ],
     "doc_comment": null,
@@ -7019,17 +6943,17 @@
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::getTextFiles@40",
-      "fn::buildExport@48",
+      "fn::buildManifest@38",
+      "fn::assembleExportBlob@46",
       "fn::filterNode@375",
       "fn::updateFileStat@408",
       "fn::collectNodes@424",
-      "fn::flattenVisible@230",
-      "fn::createFileItemLine@405",
-      "fn::treeMatchesQuery@552",
-      "fn::getFileIconKind@575",
-      "fn::openFile@83",
-      "fn::appendVisualTreeNode@332"
+      "fn::flattenVisible@234",
+      "fn::createFileItemLine@444",
+      "fn::treeMatchesQuery@631",
+      "fn::getFileIconKind@654",
+      "fn::openFile@79",
+      "fn::appendVisualTreeNode@345"
     ],
     "callees": [],
     "doc_comment": null,
@@ -7056,13 +6980,13 @@
       "fn::updateFileStat@408",
       "fn::updateDirStat@417",
       "fn::collectNodes@424",
-      "fn::flattenVisible@230",
-      "fn::initTreeState@268",
-      "fn::renderTree@290",
-      "fn::createFolderItemLine@357",
-      "fn::shouldRenderChildren@545",
-      "fn::treeMatchesQuery@552",
-      "fn::appendVisualTreeNode@332"
+      "fn::flattenVisible@234",
+      "fn::initTreeState@306",
+      "fn::renderTree@328",
+      "fn::createFolderItemLine@396",
+      "fn::shouldRenderChildren@624",
+      "fn::treeMatchesQuery@631",
+      "fn::appendVisualTreeNode@345"
     ],
     "callees": [],
     "doc_comment": null,
@@ -7080,16 +7004,16 @@
     "cognitive_complexity": 0,
     "callers": [
       "fn::applyScanData@113",
-      "fn::saveRecentProjectSummary@518",
-      "fn::buildSerializableEntries@583",
-      "fn::postScanBatchToWorker@611",
+      "fn::saveRecentProjectSummary@532",
+      "fn::buildSerializableEntries@597",
+      "fn::postScanBatchToWorker@625",
       "fn::filterScanData@345",
-      "fn::displayGlobalStats@70",
-      "fn::generateTextReportAsync@325",
-      "fn::getActiveScanData@209",
-      "fn::getReportKey@216",
-      "fn::renderVisualReport@229",
-      "fn::ensureReportText@275"
+      "fn::displayGlobalStats@75",
+      "fn::generateTextReportAsync@388",
+      "fn::getActiveScanData@218",
+      "fn::getReportKey@225",
+      "fn::renderVisualReport@238",
+      "fn::ensureReportText@291"
     ],
     "callees": [],
     "doc_comment": null,
@@ -7183,7 +7107,7 @@
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::buildSerializableEntries@583",
+      "fn::buildSerializableEntries@597",
       "fn::buildTreeViaRust@91",
       "fn::buildPureTree@105"
     ],
@@ -7265,7 +7189,7 @@
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::init@657"
+      "fn::init@671"
     ],
     "callees": [],
     "doc_comment": null,
@@ -7279,36 +7203,35 @@
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
     "start_line": 65,
-    "end_line": 75,
+    "end_line": 74,
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
       "fn::setupFullPageDrop@201",
       "fn::exportCombined@14",
-      "fn::downloadZip@75",
-      "fn::openFile@83",
-      "fn::copyCurrentReport@178",
-      "fn::saveCurrentReport@189"
+      "fn::assembleExportBlob@46",
+      "fn::downloadZip@82",
+      "fn::openFile@79",
+      "fn::copyCurrentReport@187",
+      "fn::saveCurrentReport@198"
     ],
-    "callees": [
-      "fn::setPretextText@68"
-    ],
+    "callees": [],
     "doc_comment": null,
     "signature": "function showNotification(message: string, duration)",
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getIdleReportMessage@77",
+    "stable_id": "fn::getIdleReportMessage@76",
     "name": "getIdleReportMessage",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 77,
-    "end_line": 83,
+    "start_line": 76,
+    "end_line": 82,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::resetUIForProcessing@85"
+      "fn::resetUIForProcessing@84"
     ],
     "callees": [],
     "doc_comment": null,
@@ -7317,12 +7240,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::resetUIForProcessing@85",
+    "stable_id": "fn::resetUIForProcessing@84",
     "name": "resetUIForProcessing",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 85,
-    "end_line": 95,
+    "start_line": 84,
+    "end_line": 97,
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
@@ -7331,10 +7254,10 @@
       "fn::clearProject@159"
     ],
     "callees": [
-      "fn::setPretextText@68",
-      "fn::renderReportPlaceholder@316",
-      "fn::getIdleReportMessage@77",
-      "fn::closeViewer@142"
+      "fn::resetStatsCache@71",
+      "fn::renderReportPlaceholder@332",
+      "fn::getIdleReportMessage@76",
+      "fn::closeViewer@138"
     ],
     "doc_comment": null,
     "signature": "function resetUIForProcessing(message)",
@@ -7342,40 +7265,38 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::showFailedUI@97",
+    "stable_id": "fn::showFailedUI@99",
     "name": "showFailedUI",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 97,
-    "end_line": 102,
+    "start_line": 99,
+    "end_line": 104,
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
       "fn::processFileList@61",
       "fn::finishScan@91"
     ],
-    "callees": [
-      "fn::setPretextText@68"
-    ],
+    "callees": [],
     "doc_comment": null,
     "signature": "function showFailedUI(message: string)",
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::initTabs@104",
+    "stable_id": "fn::initTabs@106",
     "name": "initTabs",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 104,
-    "end_line": 115,
+    "start_line": 106,
+    "end_line": 117,
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::init@657"
+      "fn::init@671"
     ],
     "callees": [
-      "fn::setActiveTab@117"
+      "fn::setActiveTab@119"
     ],
     "doc_comment": null,
     "signature": "function initTabs()",
@@ -7383,20 +7304,20 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::setActiveTab@117",
+    "stable_id": "fn::setActiveTab@119",
     "name": "setActiveTab",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 117,
-    "end_line": 135,
+    "start_line": 119,
+    "end_line": 137,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::initTabs@104",
-      "fn::activateTab@137"
+      "fn::initTabs@106",
+      "fn::activateTab@139"
     ],
     "callees": [
-      "fn::refreshAllUI@141"
+      "fn::refreshAllUI@143"
     ],
     "doc_comment": null,
     "signature": "function setActiveTab(tabName: string)",
@@ -7404,20 +7325,20 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::activateTab@137",
+    "stable_id": "fn::activateTab@139",
     "name": "activateTab",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 137,
-    "end_line": 139,
+    "start_line": 139,
+    "end_line": 141,
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::openFile@83",
-      "fn::closeViewer@142"
+      "fn::openFile@79",
+      "fn::closeViewer@138"
     ],
     "callees": [
-      "fn::setActiveTab@117"
+      "fn::setActiveTab@119"
     ],
     "doc_comment": null,
     "signature": "function activateTab(tabName: string)",
@@ -7425,23 +7346,22 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::refreshAllUI@141",
+    "stable_id": "fn::refreshAllUI@143",
     "name": "refreshAllUI",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 141,
-    "end_line": 153,
+    "start_line": 143,
+    "end_line": 155,
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
       "fn::updateUI@121",
-      "fn::setupListeners@353",
-      "fn::setActiveTab@117"
+      "fn::setActiveTab@119"
     ],
     "callees": [
-      "fn::displayGlobalStats@70",
-      "fn::renderVisualReport@229",
-      "fn::measurePerformance@435"
+      "fn::displayGlobalStats@75",
+      "fn::renderVisualReport@238",
+      "fn::measurePerformance@425"
     ],
     "doc_comment": null,
     "signature": "function refreshAllUI()",
@@ -7449,19 +7369,40 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::enableUIControls@155",
+    "stable_id": "fn::refreshSelectionUI@157",
+    "name": "refreshSelectionUI",
+    "kind": "Function",
+    "file": "src/ts/ui/index.ts",
+    "start_line": 157,
+    "end_line": 162,
+    "visibility": "Public",
+    "cognitive_complexity": 1,
+    "callers": [
+      "fn::setupListeners@353"
+    ],
+    "callees": [
+      "fn::refreshSelectionStats@162",
+      "fn::renderVisualReport@238"
+    ],
+    "doc_comment": null,
+    "signature": "function refreshSelectionUI()",
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::enableUIControls@164",
     "name": "enableUIControls",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 155,
-    "end_line": 172,
+    "start_line": 164,
+    "end_line": 181,
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
       "fn::updateUI@121",
       "fn::clearProject@159",
       "fn::setupListeners@353",
-      "fn::disableUIControls@174"
+      "fn::disableUIControls@183"
     ],
     "callees": [],
     "doc_comment": null,
@@ -7470,21 +7411,21 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::disableUIControls@174",
+    "stable_id": "fn::disableUIControls@183",
     "name": "disableUIControls",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 174,
-    "end_line": 176,
+    "start_line": 183,
+    "end_line": 185,
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
       "fn::processDirectory@52",
       "fn::processFileList@61",
-      "fn::init@657"
+      "fn::init@671"
     ],
     "callees": [
-      "fn::enableUIControls@155"
+      "fn::enableUIControls@164"
     ],
     "doc_comment": null,
     "signature": "function disableUIControls()",
@@ -7492,12 +7433,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::copyCurrentReport@178",
+    "stable_id": "fn::copyCurrentReport@187",
     "name": "copyCurrentReport",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 178,
-    "end_line": 187,
+    "start_line": 187,
+    "end_line": 196,
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
@@ -7512,12 +7453,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::saveCurrentReport@189",
+    "stable_id": "fn::saveCurrentReport@198",
     "name": "saveCurrentReport",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 189,
-    "end_line": 207,
+    "start_line": 198,
+    "end_line": 216,
     "visibility": "Public",
     "cognitive_complexity": 1,
     "callers": [
@@ -7532,12 +7473,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getActiveScanData@209",
+    "stable_id": "fn::getActiveScanData@218",
     "name": "getActiveScanData",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 209,
-    "end_line": 214,
+    "start_line": 218,
+    "end_line": 223,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [],
@@ -7551,12 +7492,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getReportKey@216",
+    "stable_id": "fn::getReportKey@225",
     "name": "getReportKey",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 216,
-    "end_line": 227,
+    "start_line": 225,
+    "end_line": 236,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [],
@@ -7569,23 +7510,23 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::renderVisualReport@229",
+    "stable_id": "fn::renderVisualReport@238",
     "name": "renderVisualReport",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 229,
-    "end_line": 273,
+    "start_line": 238,
+    "end_line": 289,
     "visibility": "Private",
-    "cognitive_complexity": 1,
+    "cognitive_complexity": 4,
     "callers": [
-      "fn::refreshAllUI@141"
+      "fn::refreshAllUI@143",
+      "fn::refreshSelectionUI@157"
     ],
     "callees": [
       "interface::ScanData@26",
-      "fn::setPretextText@68",
+      "static::cachedVisualNode@19",
       "fn::formatBytes@4",
-      "fn::appendVisualTreeNode@332",
-      "fn::syncPretextTree@57"
+      "fn::appendVisualTreeNode@345"
     ],
     "doc_comment": null,
     "signature": "function renderVisualReport(data: ScanData)",
@@ -7593,19 +7534,19 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::ensureReportText@275",
+    "stable_id": "fn::ensureReportText@291",
     "name": "ensureReportText",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 275,
-    "end_line": 314,
+    "start_line": 291,
+    "end_line": 330,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [],
     "callees": [
       "interface::ScanData@26",
-      "fn::generateTextReportAsync@325",
-      "fn::measurePerformance@435"
+      "fn::generateTextReportAsync@388",
+      "fn::measurePerformance@425"
     ],
     "doc_comment": null,
     "signature": "function ensureReportText(data: ScanData, reportKey: string): Promise<string>",
@@ -7613,36 +7554,34 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::renderReportPlaceholder@316",
+    "stable_id": "fn::renderReportPlaceholder@332",
     "name": "renderReportPlaceholder",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 316,
-    "end_line": 330,
+    "start_line": 332,
+    "end_line": 343,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::resetUIForProcessing@85"
+      "fn::resetUIForProcessing@84"
     ],
-    "callees": [
-      "fn::setPretextText@68"
-    ],
+    "callees": [],
     "doc_comment": null,
     "signature": "function renderReportPlaceholder(text: string)",
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::appendVisualTreeNode@332",
+    "stable_id": "fn::appendVisualTreeNode@345",
     "name": "appendVisualTreeNode",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 332,
-    "end_line": 397,
+    "start_line": 345,
+    "end_line": 410,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::renderVisualReport@229"
+      "fn::renderVisualReport@238"
     ],
     "callees": [
       "interface::FolderInfo@13",
@@ -7655,33 +7594,33 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::createReportTreeConnector@399",
+    "stable_id": "fn::createReportTreeConnector@412",
     "name": "createReportTreeConnector",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 399,
-    "end_line": 433,
+    "start_line": 412,
+    "end_line": 423,
     "visibility": "Private",
-    "cognitive_complexity": 4,
+    "cognitive_complexity": 2,
     "callers": [],
     "callees": [],
     "doc_comment": null,
-    "signature": "function createReportTreeConnector(kind: \"continuation\" | \"elbow\", continues: boolean): SVGSVGElement",
+    "signature": "function createReportTreeConnector(kind: \"continuation\" | \"elbow\", continues: boolean): HTMLDivElement",
     "has_guard_coverage": false,
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::measurePerformance@435",
+    "stable_id": "fn::measurePerformance@425",
     "name": "measurePerformance",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 435,
-    "end_line": 451,
+    "start_line": 425,
+    "end_line": 441,
     "visibility": "Private",
     "cognitive_complexity": 5,
     "callers": [
-      "fn::refreshAllUI@141",
-      "fn::ensureReportText@275"
+      "fn::refreshAllUI@143",
+      "fn::ensureReportText@291"
     ],
     "callees": [],
     "doc_comment": null,
@@ -7690,8 +7629,38 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "static::cachedReportKey@16",
+    "stable_id": "static::cachedReportKey@14",
     "name": "cachedReportKey",
+    "kind": "Static",
+    "file": "src/ts/ui/index.ts",
+    "start_line": 14,
+    "end_line": 14,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "static::cachedReportText@15",
+    "name": "cachedReportText",
+    "kind": "Static",
+    "file": "src/ts/ui/index.ts",
+    "start_line": 15,
+    "end_line": 15,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "static::pendingReportKey@16",
+    "name": "pendingReportKey",
     "kind": "Static",
     "file": "src/ts/ui/index.ts",
     "start_line": 16,
@@ -7705,8 +7674,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "static::cachedReportText@17",
-    "name": "cachedReportText",
+    "stable_id": "static::pendingReportPromise@17",
+    "name": "pendingReportPromise",
     "kind": "Static",
     "file": "src/ts/ui/index.ts",
     "start_line": 17,
@@ -7720,8 +7689,8 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "static::pendingReportKey@18",
-    "name": "pendingReportKey",
+    "stable_id": "static::cachedVisualKey@18",
+    "name": "cachedVisualKey",
     "kind": "Static",
     "file": "src/ts/ui/index.ts",
     "start_line": 18,
@@ -7735,15 +7704,17 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "static::pendingReportPromise@19",
-    "name": "pendingReportPromise",
+    "stable_id": "static::cachedVisualNode@19",
+    "name": "cachedVisualNode",
     "kind": "Static",
     "file": "src/ts/ui/index.ts",
     "start_line": 19,
     "end_line": 19,
     "visibility": "Private",
     "cognitive_complexity": 0,
-    "callers": [],
+    "callers": [
+      "fn::renderVisualReport@238"
+    ],
     "callees": [],
     "doc_comment": null,
     "has_guard_coverage": false,

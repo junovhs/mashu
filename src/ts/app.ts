@@ -378,14 +378,10 @@ function setupListeners(): void {
 
   document.addEventListener("click", (event: MouseEvent) => {
     if (!appState.isViewerActive) return;
-
     const target = event.target;
     const viewer = elements.fileViewer as HTMLElement | undefined;
-    const leftSidebar = elements.leftSidebar as HTMLElement | undefined;
     if (!(target instanceof HTMLElement) || !viewer) return;
     if (viewer.contains(target)) return;
-    if (leftSidebar?.contains(target)) return;
-
     closeViewer();
   });
 

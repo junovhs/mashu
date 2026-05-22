@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-21T18:35:13Z",
+  "generated_at": "2026-05-22T06:43:28Z",
   "entries": [
     {
       "file": "public/js/jszip.min.js",
@@ -41,28 +41,6 @@
         "        const ptr0 = passStringToWasm0(entries_json, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);",
         "        const len0 = WASM_VECTOR_LEN;",
         "        const ret = wasm.build_tree_from_entries(ptr0, len0);"
-      ]
-    },
-    {
-      "file": "rust-core/pkg/rust_core_bg.js",
-      "language": "javascript",
-      "idiom_category": "state-management",
-      "excerpts": [
-        "/**",
-        " * Returns the engine version string. Called by the worker to confirm init.",
-        " * @returns {string}",
-        " */",
-        "export function engine_version() {",
-        "    let deferred1_0;",
-        "    let deferred1_1;",
-        "    try {",
-        "        const ret = wasm.engine_version();",
-        "        deferred1_0 = ret[0];",
-        "        deferred1_1 = ret[1];",
-        "        return getStringFromWasm0(ret[0], ret[1]);",
-        "    } finally {",
-        "        wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);",
-        "    }"
       ]
     },
     {
@@ -148,8 +126,8 @@
         "          <path d=\"M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/>",
         "        </svg>",
         "      </div>",
-        "      <h2 class=\"drop-overlay-title pretext-flow\" data-pretext>Drop your folder here</h2>",
-        "      <p class=\"drop-overlay-subtitle pretext-flow\" data-pretext>Release to analyze immediately — everything stays in your browser.</p>",
+        "      <h2 class=\"drop-overlay-title\">Drop your folder here</h2>",
+        "      <p class=\"drop-overlay-subtitle\">Release to analyze immediately — everything stays in your browser.</p>",
         "    </div>"
       ]
     },
@@ -163,8 +141,8 @@
         "const MIN_SIDEBAR_WIDTH = 220;",
         "const MAX_SIDEBAR_WIDTH_RATIO = 0.55;",
         "const VISIBLE_STATS_DEFAULT_RATIO = 0.375;",
-        "const HIDDEN_STATS_DEFAULT_RATIO = 0.4;",
-        "const SIDEBAR_RATIO_STORAGE_KEY = \"sidebarRatio\";",
+        "const HIDDEN_STATS_DEFAULT_RATIO = 0.30;",
+        "const SIDEBAR_RATIO_STORAGE_KEY = \"sidebarRatioV2\";",
         "",
         "function isStatsPanelVisible(): boolean {",
         "  const rightStatsPanel = document.getElementById(\"rightStatsPanel\");",
@@ -200,12 +178,11 @@
     {
       "file": "src/ts/ui/stats.ts",
       "language": "typescript",
-      "idiom_category": "concurrency-pattern",
+      "idiom_category": "state-management",
       "excerpts": [
         "import { formatBytes } from \"../filesystem.js\";",
         "import { appState, elements } from \"../state.js\";",
         "import type { FileInfo, FolderInfo, ScanData } from \"../types/index.js\";",
-        "import { setPretextText, syncPretextTree } from \"./pretext.js\";",
         "import { setSelectionByExtension } from \"./tree.js\";",
         "",
         "const REPORT_YIELD_EVERY = 400;",
@@ -216,7 +193,8 @@
         "};",
         "",
         "// File-kind colour swatches — paired with the same kinds used by the tree icons.",
-        "type Kind ="
+        "type Kind =",
+        "  | \"archive\" | \"binary\" | \"code\" | \"config\" | \"data\""
       ]
     },
     {
@@ -227,7 +205,6 @@
         "import { appState, ICONS } from \"../state.js\";",
         "import type { FileInfo, FolderInfo } from \"../types/index.js\";",
         "import { formatBytes } from \"../utils/fs_utils.js\";",
-        "import { setPretextText } from \"./pretext.js\";",
         "import { openFile } from \"./viewer.js\";",
         "",
         "interface TreeStateOptions {",
@@ -238,7 +215,8 @@
         "",
         "type TreeNode = FileInfo | FolderInfo;",
         "type SelectionState = \"all\" | \"none\" | \"partial\";",
-        "type FileIconKind ="
+        "type FileIconKind =",
+        "  | \"archive\""
       ]
     },
     {
@@ -250,7 +228,6 @@
         "import type { FileInfo } from \"../types/index.js\";",
         "import { formatBytes, getExt } from \"../utils/fs_utils.js\";",
         "import { activateTab, showNotification } from \"./index.js\";",
-        "import { setPretextText } from \"./pretext.js\";",
         "",
         "type ModeSpec = {",
         "  label: string;",
@@ -260,7 +237,8 @@
         "",
         "const MODE_CDN_BASE =",
         "  \"https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/%N/%N.min.js\";",
-        ""
+        "",
+        "function getFallbackModeSpec(): ModeSpec {"
       ]
     },
     {
@@ -359,18 +337,18 @@
         "import { appState, elements } from \"../state.js\";",
         "import type { FileInfo, FolderInfo, ScanData } from \"../types/index.js\";",
         "import { filterScanData, formatBytes } from \"../filesystem.js\";",
-        "import { displayGlobalStats, generateTextReportAsync } from \"./stats.js\";",
-        "import { setPretextText, syncPretextTree } from \"./pretext.js\";",
+        "import { displayGlobalStats, generateTextReportAsync, refreshSelectionStats, resetStatsCache } from \"./stats.js\";",
         "import { closeViewer } from \"./viewer.js\";",
         "",
         "// Export everything so app.ts can find them",
         "export * from \"./layout.js\";",
         "export * from \"./modals.js\";",
-        "export * from \"./pretext.js\";",
         "export * from \"./stats.js\";",
         "export * from \"./tree.js\";",
         "export * from \"./viewer.js\";",
-        ""
+        "",
+        "let cachedReportKey: string | null = null;",
+        "let cachedReportText: string | null = null;"
       ]
     }
   ]

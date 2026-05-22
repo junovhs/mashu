@@ -3,8 +3,8 @@ import { appState, elements } from "../state.js";
 const MIN_SIDEBAR_WIDTH = 220;
 const MAX_SIDEBAR_WIDTH_RATIO = 0.55;
 const VISIBLE_STATS_DEFAULT_RATIO = 0.375;
-const HIDDEN_STATS_DEFAULT_RATIO = 0.4;
-const SIDEBAR_RATIO_STORAGE_KEY = "sidebarRatio";
+const HIDDEN_STATS_DEFAULT_RATIO = 0.30;
+const SIDEBAR_RATIO_STORAGE_KEY = "sidebarRatioV2";
 
 function isStatsPanelVisible(): boolean {
   const rightStatsPanel = document.getElementById("rightStatsPanel");
