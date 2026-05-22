@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mashu — Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:    oklch(0.18 0.01 60);
+      --ink-2:  oklch(0.35 0.01 60);
+      --ink-3:  oklch(0.52 0.01 60);
+      --ink-4:  oklch(0.68 0.01 60);
+      --bg:     oklch(0.98 0.005 80);
+      --bg-2:   oklch(0.95 0.007 80);
+      --line:   oklch(0.88 0.006 80);
+      --accent: oklch(0.52 0.18 255);
+      --font-sans: "Inter Tight", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+      --font-display: "Fraunces", Georgia, serif;
+    }
+
+    html { background: var(--bg); color: var(--ink); font-family: var(--font-sans); }
+
+    body {
+      min-height: 100vh;
+      padding: 0 20px 80px;
+    }
+
+    /* Nav */
+    .site-nav {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 20px;
+    }
+    .nav-brand {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-sep { color: var(--line); }
+    .nav-page { font-size: 13px; color: var(--ink-3); }
+    .nav-back {
+      margin-left: auto;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--ink-3);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 4px 10px;
+    }
+    .nav-back:hover { color: var(--ink-2); border-color: var(--ink-4); }
+
+    /* Content */
+    .doc-content {
+      max-width: 680px;
+      margin: 0 auto;
+      padding-top: 56px;
+    }
+
+    .doc-header { margin-bottom: 56px; }
+    .doc-title {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .doc-lead {
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--ink-2);
+    }
+
+    /* Sections */
+    .doc-section { margin-bottom: 52px; }
+    h2 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--ink-2);
+      margin-bottom: 14px;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+    li {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--ink-2);
+      margin-bottom: 4px;
+    }
+
+    /* Table */
+    .bench-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      margin: 20px 0;
+    }
+    .bench-table th {
+      text-align: left;
+      font-weight: 500;
+      color: var(--ink-3);
+      border-bottom: 1px solid var(--line);
+      padding: 6px 12px 6px 0;
+    }
+    .bench-table td {
+      padding: 7px 12px 7px 0;
+      color: var(--ink-2);
+      border-bottom: 1px solid var(--bg-2);
+    }
+    .bench-table td:last-child { text-align: right; color: var(--ink); font-weight: 500; }
+
+    /* Callout */
+    .callout {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 20px 0;
+    }
+    .callout p { font-size: 14px; margin-bottom: 0; }
+
+    /* Code */
+    code {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1px 5px;
+      color: var(--ink-2);
+    }
+
+    /* TOC */
+    .toc {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px 22px;
+      margin-bottom: 48px;
+    }
+    .toc-title {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      margin-bottom: 10px;
+    }
+    .toc ol { margin-bottom: 0; }
+    .toc li { margin-bottom: 3px; }
+    .toc a {
+      font-size: 14px;
+      color: var(--ink-3);
+      text-decoration: none;
+    }
+    .toc a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a class="nav-brand" href="/">Mashu</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-page">Documentation</span>
+    <a class="nav-back" href="/">Open app</a>
+  </nav>
+
+  <div class="doc-content">
+
+    <header class="doc-header">
+      <h1 class="doc-title">How Mashu works</h1>
+      <p class="doc-lead">Everything you need to know about what Mashu does, how your files are handled, and what to do with the output.</p>
+    </header>
+
+    <nav class="toc" aria-label="Contents">
+      <div class="toc-title">On this page</div>
+      <ol>
+        <li><a href="#what-it-does">What Mashu does</a></li>
+        <li><a href="#privacy">Your files stay in your browser</a></li>
+        <li><a href="#how-to-use">How to use it</a></li>
+        <li><a href="#export-format">What the export looks like</a></li>
+        <li><a href="#large-repos">Large folders and scan time</a></li>
+        <li><a href="#with-ai">Using the export with AI tools</a></li>
+        <li><a href="#tech">How it's built</a></li>
+      </ol>
+    </nav>
+
+    <section class="doc-section" id="what-it-does">
+      <h2>What Mashu does</h2>
+      <p>Mashu packages a local codebase into a single structured text file that AI tools can navigate like a real project.</p>
+      <p>The common objection: <em>"stuffing a whole repo into an AI ruins its attention."</em> That's true for naive copy-paste dumps. But modern AI tools like Claude and ChatGPT have internal environments — they can execute code, grep, search, and navigate structured text the same way a developer would in a terminal. When the export has clear file path headers and explicit boundaries, the AI doesn't have to read everything at once. It finds what it needs, reads that file, traces imports, and moves on.</p>
+      <p>Mashu's job is to make that export as clean and navigable as possible: select the right files, package them with structured headers, and give the AI something it can actually work with — not a wall of text.</p>
+      <p>Everything runs in your browser. Nothing is uploaded to any server.</p>
+    </section>
+
+    <section class="doc-section" id="privacy">
+      <h2>Your files stay in your browser</h2>
+      <p>Mashu reads your files through your browser's built-in file APIs. This is the same mechanism your browser uses when you upload a file to any website — except Mashu never sends anything anywhere.</p>
+      <p>When you drop a folder or use the folder picker, your browser gives Mashu read access to that folder. Mashu builds the file tree, calculates stats, and holds everything in memory. No data is uploaded to any server. There is no Mashu server for it to go to.</p>
+      <p>File contents are read only when you actually need them — when you preview a file, or when you export. Everything else (the tree, stats, file names, sizes) comes from filesystem metadata, which is much lighter.</p>
+
+      <div class="callout">
+        <p>If you export a combined text file and upload it to an AI tool, that upload is governed by that tool's privacy policy — not Mashu's. Mashu's job ends when the file lands on your disk.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="how-to-use">
+      <h2>How to use it</h2>
+      <ol>
+        <li><strong>Drop a folder</strong> onto the app, or use the folder picker. Mashu scans the folder and builds a tree.</li>
+        <li><strong>Browse the tree.</strong> You can filter by name using the search bar, or click a file to preview it.</li>
+        <li><strong>Select what matters.</strong> Tick files or folders to scope your export to just those items. Use the file-type pills to select all files of a given type at once. Leave everything unticked to export the full project.</li>
+        <li><strong>Export.</strong> Click "Export combined text" to download a single text file containing your selected files, clearly separated with file path headers.</li>
+      </ol>
+      <p>The "Download project .zip" button downloads the entire folder as a ZIP archive, regardless of selection — it is a separate action from the text export.</p>
+    </section>
+
+    <section class="doc-section" id="export-format">
+      <h2>What the export looks like</h2>
+      <p>The exported file is plain text. Each file starts with a clearly marked header showing its path, followed by the file contents. Files are separated with a divider.</p>
+      <p>It looks roughly like this:</p>
+      <div class="callout">
+        <p><code>// src/app.ts</code><br>
+        <code>// ─────────────────────────────</code><br>
+        <code>import { something } from "./lib";</code><br>
+        <code>...</code><br><br>
+        <code>// src/lib.ts</code><br>
+        <code>// ─────────────────────────────</code><br>
+        <code>export function something() { ... }</code></p>
+      </div>
+      <p>This structure gives AI tools a file-addressable artifact to work with. Instead of one undifferentiated blob of text, the model can see which code belongs to which file and how the project is organized.</p>
+      <p>It works well with AI tools that accept file uploads or large text pastes, especially those with file-analysis or search capabilities.</p>
+    </section>
+
+    <section class="doc-section" id="large-repos">
+      <h2>Large folders and scan time</h2>
+      <p>For most projects, Mashu feels instant. For very large repositories — tens of thousands of files — the initial scan can take 10–20 seconds.</p>
+      <p>This time is spent on browser filesystem enumeration: your browser has to read the metadata for every file in the folder before Mashu can build the tree. This is a browser-level operation and cannot be meaningfully sped up on Mashu's end.</p>
+      <p>Once the scan is complete, everything else — browsing the tree, selecting files, filtering, exporting — is fast regardless of project size. Mashu uses a virtualized tree renderer and Rust/WebAssembly for selection math, so even a 28,000-file repository navigates smoothly.</p>
+
+      <table class="bench-table" aria-label="Performance benchmark with kubernetes/kubernetes">
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Filesystem scan (28,481 files)</td><td>13.3s</td></tr>
+          <tr><td>Tree initialization</td><td>16ms</td></tr>
+          <tr><td>Tree render</td><td>7ms</td></tr>
+          <tr><td>UI refresh</td><td>3.4s</td></tr>
+          <tr><td>Visible load total</td><td>~20.9s</td></tr>
+        </tbody>
+      </table>
+
+      <p>Tested with the <code>kubernetes/kubernetes</code> repository on a desktop browser. No backend. No upload.</p>
+    </section>
+
+    <section class="doc-section" id="with-ai">
+      <h2>Using the export with AI tools</h2>
+      <p>The obvious objection: <em>"stuffing a whole repo into an AI's context ruins its attention — the model can't reason over thousands of files."</em></p>
+      <p>That objection is correct for naive prompt dumps. But it misses how modern AI systems actually work.</p>
+      <p>Tools like ChatGPT and Claude don't just read uploaded files as raw context. They have internal environments where they can execute code, grep, search, and navigate structured text the same way a developer would in a terminal. When you upload a Mashu export, the model can treat it as a virtual project — finding a function, tracing a dependency, or reading a specific file — without loading every byte into its attention window at once.</p>
+      <p>This is why the export format uses clear path headers and explicit file boundaries. The AI isn't reading the export like a wall of text. It's navigating it like a filesystem — and the headers are what make that navigation reliable.</p>
+      <p>No guarantees: this depends on the AI provider and the tool you're using. But with current Claude and ChatGPT file analysis capabilities, a well-structured Mashu export of a real codebase is often more useful than pasting individual files — because the model can see the whole project layout and search for what it needs.</p>
+      <div class="callout">A few things that still help: select only the files relevant to your question, use file-type pills to skip assets and lock files, and check the file size before exporting — very large exports may behave differently depending on the tool.</div>
+    </section>
+
+    <section class="doc-section" id="tech">
+      <h2>How it's built</h2>
+      <p>Mashu is a static browser app — no server, no backend, no build pipeline on your end. It deploys as plain files on GitHub Pages and runs entirely client-side.</p>
+      <p>The part I'm most proud of: the indexing and selection math runs in <strong>Rust compiled to WebAssembly</strong>.</p>
+      <p>When you load a large project, there's real computation involved — building a tree from tens of thousands of file entries, calculating selection state, tracking which files are included, computing stats. Doing that on the browser's main thread would block rendering and make the UI feel sluggish. Rust/WASM behind a Web Worker keeps all of that compute off the main thread and genuinely fast, even at the scale of the Kubernetes repository.</p>
+      <p>The full stack:</p>
+      <ul>
+        <li><strong>Rust + WebAssembly</strong> — tree construction, selection state, index math. Compiled with <code>wasm-pack</code>, runs in a Web Worker.</li>
+        <li><strong>TypeScript</strong> — all UI logic, event handling, filesystem coordination, export assembly.</li>
+        <li><strong>Vite</strong> — build tooling and dev server. Handles WASM imports cleanly via <code>vite-plugin-wasm</code>.</li>
+        <li><strong>File System Access API</strong> — the browser API that lets Mashu read local folders without uploading them. Gives real directory handles with lazy file reading.</li>
+        <li><strong>Web Workers</strong> — the Rust/WASM engine runs in a Worker, keeping the main thread free for UI.</li>
+        <li><strong>Virtualized tree rendering</strong> — only the visible tree rows are in the DOM at any time. Scrolling through 28,000 files stays smooth because the browser isn't rendering 28,000 elements.</li>
+        <li><strong>CodeMirror</strong> — syntax-highlighted file preview.</li>
+      </ul>
+      <p>The result is an app that handles repositories most browser tools would choke on, while still running as a simple static site you can open from a URL.</p>
+    </section>
+
+  </div>
+
+</body>
+</html>
