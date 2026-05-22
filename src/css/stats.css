@@ -77,6 +77,8 @@
   transition: background 0.12s;
 }
 .stat-item:hover { background: oklch(1 0 0 / 0.9); }
+.stat-item--toggleable { cursor: pointer; user-select: none; }
+.stat-item--toggleable .stat-label { text-decoration: underline dotted; text-underline-offset: 2px; }
 .stat-label {
   font-size: 10px;
   font-weight: 600;

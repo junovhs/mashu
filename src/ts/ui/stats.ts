@@ -69,6 +69,11 @@ async function yieldToMainThread(): Promise<void> {
 
 let cachedStatsKey: string | null = null;
 let wasInSelectionMode = false;
+let showTokens = false;
+
+function formatTokens(bytes: number): string {
+  return `~${formatCount(Math.round(bytes / 4))}`;
+}
 
 export function resetStatsCache(): void {
   cachedStatsKey = null;
@@ -104,15 +109,16 @@ export function displayGlobalStats(data: ScanData): void {
         <span class="stat-label">Folders</span>
         <span class="stat-value">${formatCount(Math.max(0, allFoldersList.length - 1))}</span>
       </div>
-      <div class="stat-item">
-        <span class="stat-label">Size</span>
-        <span class="stat-value" id="statSize">${formatBytes(directoryData.totalSize)}</span>
+      <div class="stat-item stat-item--toggleable" id="statSizeItem" title="Click to toggle between bytes and estimated tokens">
+        <span class="stat-label" id="statSizeLabel">${showTokens ? "~Tokens" : "Size"}</span>
+        <span class="stat-value" id="statSize">${showTokens ? formatTokens(directoryData.totalSize) : formatBytes(directoryData.totalSize)}</span>
       </div>
       <div class="stat-item">
         <span class="stat-label">Root</span>
         <span class="stat-value stat-value--name">${escapeHtml(directoryData.name)}</span>
       </div>
     `;
+    wireSizeToggle();
   }
 
   const filterSource =
@@ -186,8 +192,10 @@ export function refreshSelectionStats(): void {
 
   const statFiles = document.getElementById("statFiles");
   if (statFiles) statFiles.textContent = formatCount(fileCount);
+  const statSizeLabel = document.getElementById("statSizeLabel");
+  if (statSizeLabel) statSizeLabel.textContent = showTokens ? "~Tokens" : "Size";
   const statSize = document.getElementById("statSize");
-  if (statSize) statSize.textContent = formatBytes(totalSize);
+  if (statSize) statSize.textContent = showTokens ? formatTokens(totalSize) : formatBytes(totalSize);
 
   updateAncillaryUI(fileCount, totalSize, isSelection);
 }
@@ -309,6 +317,29 @@ function syncExtActiveStates(): void {
   });
   document.querySelectorAll<HTMLElement>("#fileTypeTableBody tr[data-ext]").forEach((row) => {
     row.dataset.active = String(isExtensionFullySelected(row.dataset.ext ?? ""));
+  });
+}
+
+function wireSizeToggle(): void {
+  const item = document.getElementById("statSizeItem");
+  if (!item) return;
+  item.addEventListener("click", () => {
+    showTokens = !showTokens;
+    const label = document.getElementById("statSizeLabel");
+    const value = document.getElementById("statSize");
+    if (!label || !value) return;
+    const fullData = appState.fullScanData;
+    const isSelection = appState.selectedPaths.size > 0;
+    let totalSize = fullData?.directoryData?.totalSize ?? 0;
+    if (isSelection) {
+      totalSize = 0;
+      for (const path of appState.selectedPaths) {
+        const node = appState.treeNodesByPath.get(path);
+        if (node?.type === "file") totalSize += node.size;
+      }
+    }
+    label.textContent = showTokens ? "~Tokens" : "Size";
+    value.textContent = showTokens ? formatTokens(totalSize) : formatBytes(totalSize);
   });
 }
 
