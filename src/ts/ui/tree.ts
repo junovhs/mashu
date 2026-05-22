@@ -639,6 +639,15 @@ function treeMatchesQuery(
   return false;
 }
 
+function nodeDirectlyMatchesQuery(
+  node: FolderInfo | FileInfo,
+  searchQuery: string,
+): boolean {
+  if (!searchQuery) return true;
+  const haystack = `${node.name} ${node.path}`.toLowerCase();
+  return haystack.includes(searchQuery);
+}
+
 // ---------------------------------------------------------------------------
 // Icon helpers
 // ---------------------------------------------------------------------------
@@ -809,6 +818,59 @@ function applySelectionToNode(node: TreeNode, selected: boolean): void {
   );
 }
 
+function applySelectionToFilteredNodes(
+  node: TreeNode,
+  searchQuery: string,
+  selected: boolean,
+  coveredByMatchedAncestor = false,
+): void {
+  if (coveredByMatchedAncestor) return;
+
+  const directlyMatches = nodeDirectlyMatchesQuery(node, searchQuery);
+  if (directlyMatches) {
+    applySelectionToNode(node, selected);
+    return;
+  }
+
+  if (node.type === "folder") {
+    for (const child of node.children) {
+      applySelectionToFilteredNodes(child, searchQuery, selected, false);
+    }
+  }
+}
+
+function recomputeSelectionStateFromRoot(node: TreeNode): number {
+  if (node.type === "file") {
+    const count = appState.selectedPaths.has(node.path) ? 1 : 0;
+    appState.selectedSubtreeCounts.set(node.path, count);
+    return count;
+  }
+
+  if (node.children.length === 0) {
+    const count = appState.selectedPaths.has(node.path) ? 1 : 0;
+    appState.selectedSubtreeCounts.set(node.path, count);
+    return count;
+  }
+
+  let selectedCount = 0;
+  for (const child of node.children) {
+    selectedCount += recomputeSelectionStateFromRoot(child);
+  }
+
+  const totalCount = appState.subtreeNodeCounts.get(node.path) || 0;
+  const descendantTotal = Math.max(totalCount - 1, 0);
+
+  if (descendantTotal > 0 && selectedCount === descendantTotal) {
+    appState.selectedPaths.add(node.path);
+    selectedCount = totalCount;
+  } else {
+    appState.selectedPaths.delete(node.path);
+  }
+
+  appState.selectedSubtreeCounts.set(node.path, selectedCount);
+  return selectedCount;
+}
+
 function postSelectionUpdate(): void {
   const worker = appState.scanWorker;
   if (!worker) return;
@@ -882,30 +944,28 @@ function expandAllFoldersInState(): void {
 export function setAllSelections(selected: boolean): void {
   const root = appState.fullScanData?.directoryData;
   if (!root) return;
+  const searchQuery = appState.treeSearchQuery.trim().toLowerCase();
 
-  appState.selectedPaths.clear();
-  appState.selectedSubtreeCounts.clear();
+  if (searchQuery) {
+    applySelectionToFilteredNodes(root, searchQuery, selected);
+    recomputeSelectionStateFromRoot(root);
+  } else if (selected) {
+    appState.selectedPaths.clear();
+    appState.selectedSubtreeCounts.clear();
+    applySelectionToNode(root, true);
+  } else {
+    appState.selectedPaths.clear();
+    appState.selectedSubtreeCounts.clear();
+    appState.treeNodesByPath.forEach((node) => {
+      appState.selectedSubtreeCounts.set(node.path, 0);
+    });
+  }
+
+  refreshVisibleSelectionState();
+  notifySelectionChanged();
 
   if (appState.scanWorker && appState.rustIndexReady) {
-    if (selected) {
-      appState.treeNodesByPath.forEach((node) => {
-        if (node.type === "file") appState.selectedPaths.add(node.path);
-      });
-      postSelectionUpdate();
-    } else {
-      refreshVisibleSelectionState();
-      notifySelectionChanged();
-    }
-  } else {
-    if (selected) {
-      applySelectionToNode(root, true);
-    } else {
-      appState.treeNodesByPath.forEach((node) => {
-        appState.selectedSubtreeCounts.set(node.path, 0);
-      });
-    }
-    refreshVisibleSelectionState();
-    notifySelectionChanged();
+    postSelectionUpdate();
   }
 }
 

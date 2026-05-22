@@ -69,11 +69,12 @@ export function initLayout(): void {
 
         <div id="treeViewControls" class="tree-controls">
           <div class="tree-ctrl-row">
-            <button id="selectAllBtn" class="ctrl-btn" title="Select every visible file and folder" disabled>Select all</button>
-            <button id="deselectAllBtn" class="ctrl-btn" title="Clear the current working set" disabled>Deselect</button>
+            <button id="selectAllBtn" class="ctrl-btn ctrl-btn--select" title="Select every file and folder in the tree" disabled>Select all</button>
+            <button id="deselectAllBtn" class="ctrl-btn ctrl-btn--clear" title="Clear the current working set" disabled>Deselect all</button>
             <span class="ctrl-divider" aria-hidden="true"></span>
-            <button id="expandAllBtn" class="ctrl-btn" title="Open every folder" disabled>Expand</button>
-            <button id="collapseAllBtn" class="ctrl-btn" title="Close every folder" disabled>Collapse</button>
+            <button id="expandAllBtn" class="ctrl-btn ctrl-btn--expand" title="Open every folder" disabled>Expand</button>
+            <button id="collapseAllBtn" class="ctrl-btn ctrl-btn--collapse" title="Close every folder" disabled>Collapse</button>
+            <span class="tree-hint" title="Shift/Alt-click a folder to expand its subtree." aria-label="Shift or Alt-click a folder to expand its subtree.">Subtree</span>
           </div>
         </div>
 

@@ -137,6 +137,7 @@ function updateUI(data: FolderInfo) {
 
     refreshAllUI();
     enableUIControls();
+    syncTreeControlCopy();
     logPerfMeasure(
       "update-ui",
       "mashu:update-ui:start",
@@ -171,7 +172,28 @@ function clearProject(): void {
   const loader = elements.loader;
   if (loader) loader.classList.remove("visible");
   enableUIControls(false);
+  syncTreeControlCopy();
   renderEmptyShell();
+}
+
+function syncTreeControlCopy(): void {
+  const hasFilter = appState.treeSearchQuery.trim().length > 0;
+  const selectAllBtn = elements.selectAllBtn as HTMLButtonElement | undefined;
+  const deselectAllBtn = elements.deselectAllBtn as HTMLButtonElement | undefined;
+
+  if (selectAllBtn) {
+    selectAllBtn.textContent = hasFilter ? "Select filtered" : "Select all";
+    selectAllBtn.title = hasFilter
+      ? "Select every file and folder matching the current filter"
+      : "Select every file and folder in the tree";
+  }
+
+  if (deselectAllBtn) {
+    deselectAllBtn.textContent = hasFilter ? "Clear filtered" : "Deselect all";
+    deselectAllBtn.title = hasFilter
+      ? "Clear selection for the current filter without touching other selected items"
+      : "Clear the current working set";
+  }
 }
 
 // ============================================================================
@@ -405,6 +427,7 @@ function setupListeners(): void {
     if (!(target instanceof HTMLInputElement)) return;
 
     appState.treeSearchQuery = target.value;
+    syncTreeControlCopy();
     const root = appState.fullScanData?.directoryData;
     const container = elements.treeContainer as HTMLElement | undefined;
     if (!root || !container) return;
