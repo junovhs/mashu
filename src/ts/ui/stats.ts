@@ -333,8 +333,8 @@ function renderExtFilterPills(
     .map(([ext, d]) => {
       return `
         <button class="ext-filter-pill" data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}" title="Toggle selection for every ${ext || "[no extension]"} file in the tree">
-          <span class="pill-label pretext-flow" data-pretext>${ext || "[none]"}</span>
-          <span class="pill-count pretext-flow" data-pretext>${d.count}</span>
+          <span class="pill-label">${ext || "[none]"}</span>
+          <span class="pill-count">${d.count}</span>
         </button>
       `;
     })

@@ -1,14 +1,12 @@
 import { appState, elements } from "../state.js";
 import type { FileInfo, FolderInfo, ScanData } from "../types/index.js";
 import { filterScanData, formatBytes } from "../filesystem.js";
-import { displayGlobalStats, generateTextReportAsync, resetStatsCache } from "./stats.js";
-import { setPretextText } from "./pretext.js";
+import { displayGlobalStats, generateTextReportAsync, refreshSelectionStats, resetStatsCache } from "./stats.js";
 import { closeViewer } from "./viewer.js";
 
 // Export everything so app.ts can find them
 export * from "./layout.js";
 export * from "./modals.js";
-export * from "./pretext.js";
 export * from "./stats.js";
 export * from "./tree.js";
 export * from "./viewer.js";
@@ -66,10 +64,9 @@ export function populateElements(): void {
 
 export function showNotification(message: string, duration = 3000): void {
   const note = document.createElement("div");
-  note.className = "notification pretext-flow";
-  note.dataset.pretext = "";
+  note.className = "notification";
+  note.textContent = message;
   document.body.appendChild(note);
-  setPretextText(note, message);
   setTimeout(() => {
     note.classList.add("fade-out");
     setTimeout(() => note.remove(), 500);
@@ -89,7 +86,7 @@ export function resetUIForProcessing(message = "Processing..."): void {
   cachedVisualNode = null;
   resetStatsCache();
   if (elements.loader) {
-    setPretextText(elements.loader as HTMLElement, message);
+    (elements.loader as HTMLElement).textContent = message;
     elements.loader.classList.add("visible");
   }
   if (elements.treeContainer) elements.treeContainer.innerHTML = "";
@@ -101,7 +98,7 @@ export function resetUIForProcessing(message = "Processing..."): void {
 
 export function showFailedUI(message: string): void {
   if (elements.loader) {
-    setPretextText(elements.loader as HTMLElement, message);
+    (elements.loader as HTMLElement).textContent = message;
     elements.loader.classList.add("error");
   }
 }
@@ -155,6 +152,13 @@ export function refreshAllUI(): void {
     "mashu:refresh-ui:start",
     "mashu:refresh-ui:end",
   );
+}
+
+export function refreshSelectionUI(): void {
+  const data = getActiveScanData();
+  if (!data) return;
+  refreshSelectionStats();
+  renderVisualReport(data);
 }
 
 export function enableUIControls(enable = true): void {
@@ -333,12 +337,9 @@ function renderReportPlaceholder(text: string): void {
   host.replaceChildren();
 
   const copy = document.createElement("div");
-  copy.className = "report-placeholder-copy pretext-flow";
-  copy.dataset.pretext = "";
-  copy.dataset.pretextWhiteSpace = "pre-wrap";
+  copy.className = "report-placeholder-copy";
+  copy.textContent = text;
   host.appendChild(copy);
-
-  setPretextText(copy, text);
 }
 
 function appendVisualTreeNode(

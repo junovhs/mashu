@@ -22,12 +22,11 @@ import {
   enableUIControls,
   initTreeState,
   initLayout,
-  initPretextText,
   initSidebarResizer,
   initTabs,
   populateElements,
   refreshAllUI,
-  refreshSelectionStats,
+  refreshSelectionUI,
   renderTree,
   resetUIForProcessing,
   saveCurrentReport,
@@ -389,8 +388,8 @@ function setupListeners(): void {
     if (selectionRefreshTimer !== null) clearTimeout(selectionRefreshTimer);
     selectionRefreshTimer = setTimeout(() => {
       selectionRefreshTimer = null;
-      refreshSelectionStats();
-    }, 200);
+      refreshSelectionUI();
+    }, 60);
   });
 
   elements.dropZone?.addEventListener("click", (event: Event) => {
@@ -452,7 +451,7 @@ function renderEmptyShell(): void {
   const barInfo = document.getElementById("barInfo");
 
   if (scopePath) {
-    scopePath.innerHTML = `<span class="scope-empty pretext-flow" data-pretext>NO PROJECT LOADED</span>`;
+    scopePath.innerHTML = `<span class="scope-empty">NO PROJECT LOADED</span>`;
   }
   if (scopeMeta) {
     scopeMeta.innerHTML = "";
@@ -461,7 +460,7 @@ function renderEmptyShell(): void {
     sideSelected.textContent = "";
   }
   if (barInfo) {
-    barInfo.innerHTML = `<span class="pretext-flow" data-pretext>Awaiting a folder…</span>`;
+    barInfo.textContent = "Awaiting a folder…";
   }
   const searchInput = elements.treeSearchInput as HTMLInputElement | undefined;
   if (searchInput) {
@@ -678,7 +677,6 @@ async function init() {
   populateElements();
   initTabs();
   initSidebarResizer();
-  initPretextText();
   setupHiddenInput();
   initWorker();
 
