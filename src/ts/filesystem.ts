@@ -91,7 +91,7 @@ function createVirtualDirectoryHandle(name: string): VirtualDirectoryHandle {
   };
 }
 
-const MAX_CONCURRENT_DIR_SCANS = 48;
+const MAX_CONCURRENT_DIR_SCANS = 16;
 
 export async function scanDir(
   dirHandle: VirtualDirectoryHandle,
