@@ -37,7 +37,11 @@
       "Bash(git config *)",
       "Bash(New-Item -ItemType SymbolicLink -Path \"marketing.md\" -Target \"..\\\\marketing.md\")",
       "PowerShell(Copy-Item *)",
-      "Bash(semmap read *)"
+      "Bash(semmap read *)",
+      "Bash(npx playwright *)",
+      "Bash(node -e ' *)",
+      "Bash(npx playwright@latest --version)",
+      "Bash(npm uninstall *)"
     ]
   }
 }
