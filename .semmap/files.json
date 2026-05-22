@@ -1,16 +1,5 @@
 [
   {
-    "path": "APP-PIVOT.md",
-    "layer": 0,
-    "file_kind": "generated",
-    "description": "Support file for APP-PIVOT.",
-    "exports": [],
-    "hotspot": false,
-    "fan_in": 0,
-    "risk_score": 0.0,
-    "analysis": {}
-  },
-  {
     "path": "README.md",
     "layer": 0,
     "file_kind": "generated",
@@ -335,14 +324,14 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 327,
+        "total_calls": 340,
         "resolved_calls": 58,
-        "unresolved_calls": 269,
-        "resolution_rate": 0.17737003
+        "unresolved_calls": 282,
+        "resolution_rate": 0.17058824
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 96
+        "cognitive_complexity": 97
       },
       "error_handling": {
         "total_sites": 2,
@@ -357,14 +346,14 @@
         "has_spawn": true
       },
       "activation": {
-        "total_sites": 68,
+        "total_sites": 70,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
       },
       "guards": {
-        "total_sites": 4
+        "total_sites": 5
       }
     }
   },
@@ -372,7 +361,7 @@
     "path": "src/ts/features.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Implements download zip.",
+    "description": "Implements export combined.",
     "exports": [
       "downloadZip",
       "exportCombined"
@@ -558,24 +547,24 @@
     ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 6.0,
+    "risk_score": 7.0,
     "semantic_summary": "side-effecting",
     "analysis": {
       "functions": {
         "total": 6,
         "public": 6,
-        "max_cognitive_complexity": 5,
-        "avg_cognitive_complexity": 1
+        "max_cognitive_complexity": 10,
+        "avg_cognitive_complexity": 2
       },
       "calls": {
-        "total_calls": 50,
+        "total_calls": 59,
         "resolved_calls": 7,
-        "unresolved_calls": 43,
-        "resolution_rate": 0.14
+        "unresolved_calls": 52,
+        "resolution_rate": 0.118644066
       },
       "control_flow": {
         "max_nesting_depth": 1,
-        "cognitive_complexity": 9
+        "cognitive_complexity": 14
       },
       "concurrency": {
         "total_sites": 1,
@@ -588,14 +577,14 @@
         "undocumented_public": 6
       },
       "activation": {
-        "total_sites": 13,
+        "total_sites": 14,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
       },
       "guards": {
-        "total_sites": 3
+        "total_sites": 4
       }
     }
   },
@@ -658,7 +647,7 @@
     "path": "src/ts/ui/pretext.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Creates pretext text.",
+    "description": "Updates pretext tree.",
     "exports": [
       "syncPretextTree",
       "initPretextText",
@@ -730,18 +719,17 @@
     ],
     "quality_tags": [
       "undocumented",
-      "complex-flow",
       "concurrency-heavy"
     ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 10.0,
+    "risk_score": 9.6,
     "semantic_summary": "async side-effecting stateful module",
     "analysis": {
       "functions": {
-        "total": 14,
+        "total": 16,
         "public": 4,
-        "max_cognitive_complexity": 15,
+        "max_cognitive_complexity": 13,
         "avg_cognitive_complexity": 4
       },
       "types": {
@@ -749,14 +737,14 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 155,
-        "resolved_calls": 23,
-        "unresolved_calls": 132,
-        "resolution_rate": 0.14838709
+        "total_calls": 172,
+        "resolved_calls": 28,
+        "unresolved_calls": 144,
+        "resolution_rate": 0.1627907
       },
       "control_flow": {
         "max_nesting_depth": 2,
-        "cognitive_complexity": 69
+        "cognitive_complexity": 71
       },
       "concurrency": {
         "total_sites": 5,
@@ -769,14 +757,14 @@
         "undocumented_public": 4
       },
       "activation": {
-        "total_sites": 31,
+        "total_sites": 34,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
       },
       "guards": {
-        "total_sites": 2
+        "total_sites": 3
       }
     }
   },
@@ -845,7 +833,7 @@
     "path": "src/ts/ui/viewer.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Implements close viewer.",
+    "description": "Implements open file.",
     "exports": [
       "openFile",
       "closeViewer",
@@ -1039,7 +1027,7 @@
     "path": "src/ts/utils/result.ts",
     "layer": 2,
     "file_kind": "production",
-    "description": "Implements Err functionality.",
+    "description": "Implements to result.",
     "exports": [
       "toResult",
       "None",
@@ -1308,7 +1296,7 @@
     "path": "src/ts/ui/index.ts",
     "layer": 3,
     "file_kind": "production",
-    "description": "Implements show notification.",
+    "description": "Updates selection ui.",
     "exports": [
       "resetUIForProcessing",
       "copyCurrentReport",
@@ -1326,24 +1314,24 @@
     ],
     "hotspot": true,
     "fan_in": 0,
-    "risk_score": 10.0,
+    "risk_score": 11.2,
     "semantic_summary": "async side-effecting stateful module",
     "analysis": {
       "functions": {
         "total": 22,
         "public": 12,
-        "max_cognitive_complexity": 5,
+        "max_cognitive_complexity": 6,
         "avg_cognitive_complexity": 1
       },
       "calls": {
-        "total_calls": 175,
+        "total_calls": 179,
         "resolved_calls": 25,
-        "unresolved_calls": 150,
-        "resolution_rate": 0.14285715
+        "unresolved_calls": 154,
+        "resolution_rate": 0.1396648
       },
       "control_flow": {
         "max_nesting_depth": 1,
-        "cognitive_complexity": 34
+        "cognitive_complexity": 36
       },
       "concurrency": {
         "total_sites": 8,
@@ -1356,7 +1344,7 @@
         "undocumented_public": 12
       },
       "activation": {
-        "total_sites": 41,
+        "total_sites": 42,
         "kinds": [
           "callback-surface",
           "registration-site"

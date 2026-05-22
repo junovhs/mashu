@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-22T18:30:26Z",
+  "generated_at": "2026-05-22T20:28:35Z",
   "entries": [
     {
       "file": "public/js/jszip.min.js",
@@ -183,6 +183,7 @@
         "import { formatBytes } from \"../filesystem.js\";",
         "import { appState, elements } from \"../state.js\";",
         "import type { FileInfo, FolderInfo, ScanData } from \"../types/index.js\";",
+        "import { showNotification } from \"./index.js\";",
         "import { setSelectionByExtension } from \"./tree.js\";",
         "",
         "const REPORT_YIELD_EVERY = 400;",
@@ -193,8 +194,7 @@
         "};",
         "",
         "// File-kind colour swatches — paired with the same kinds used by the tree icons.",
-        "type Kind =",
-        "  | \"archive\" | \"binary\" | \"code\" | \"config\" | \"data\""
+        "type Kind ="
       ]
     },
     {

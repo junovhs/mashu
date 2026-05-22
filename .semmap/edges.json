@@ -146,6 +146,11 @@
   },
   {
     "from": "src/ts/ui/stats.ts",
+    "to": "src/ts/ui/index.ts",
+    "kind": "import"
+  },
+  {
+    "from": "src/ts/ui/stats.ts",
     "to": "src/ts/ui/tree.ts",
     "kind": "import"
   },

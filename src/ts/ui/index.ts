@@ -284,10 +284,14 @@ function renderVisualReport(data: ScanData): void {
 
   const MAX_VISUAL_NODES = 2000;
   if (data.allFilesList.length > MAX_VISUAL_NODES) {
-    const notice = document.createElement("div");
-    notice.className = "report-tree-large-notice";
-    notice.textContent = `Tree preview unavailable for projects over ${MAX_VISUAL_NODES.toLocaleString()} files — use Export combined text to get the full output.`;
-    visual.appendChild(notice);
+    const tree = document.createElement("ul");
+    tree.className = "report-tree";
+    appendShallowTree(root, tree);
+    visual.appendChild(tree);
+    const note = document.createElement("div");
+    note.className = "report-tree-abbreviated-note";
+    note.textContent = `Showing top-level only — ${data.allFilesList.length.toLocaleString()} files total`;
+    visual.appendChild(note);
   } else {
     const tree = document.createElement("ul");
     tree.className = "report-tree";
@@ -351,6 +355,16 @@ function renderReportPlaceholder(text: string): void {
   copy.className = "report-placeholder-copy";
   copy.textContent = text;
   host.appendChild(copy);
+}
+
+function appendShallowTree(root: FolderInfo, parent: HTMLUListElement): void {
+  appendVisualTreeNode(root, parent, true, [], true);
+  const rootItem = parent.firstElementChild as HTMLLIElement | null;
+  if (!rootItem) return;
+  const childList = rootItem.querySelector("ul.report-tree-children");
+  if (!childList) return;
+  // Strip grandchildren from each depth-1 child so only top-level is shown
+  childList.querySelectorAll("ul.report-tree-children").forEach((ul) => ul.remove());
 }
 
 function appendVisualTreeNode(

@@ -120,9 +120,6 @@
 
 ## Layer 0 -- Config
 
-`APP-PIVOT.md`
-Support file for APP-PIVOT.
-
 `README.md`
 Project overview and usage guide.
 
@@ -179,7 +176,7 @@ Implements app functionality. [COUPLING:mixed] [BEHAVIOR:owns-state,async,logs-a
 Semantic: async side-effecting stateful module with external API surface that logs and continues
 
 `src/ts/features.ts`
-Implements download zip. [COUPLING:mixed] [BEHAVIOR:persists,async]
+Implements export combined. [COUPLING:mixed] [BEHAVIOR:persists,async]
 Exports: downloadZip, exportCombined
 Semantic: async side-effecting adapter
 
@@ -207,12 +204,12 @@ Exports: applyPreferredSidebarRatio, clampSidebarWidth, initSidebarResizer, appl
 Semantic: pure computation constant-owning module
 
 `src/ts/ui/pretext.ts`
-Creates pretext text. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
+Updates pretext tree. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
 Exports: syncPretextTree, initPretextText, setPretextText
 Semantic: side-effecting stateful module
 
 `src/ts/ui/stats.ts`
-Formats global stats for output. [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,complex-flow,concurrency-heavy]
+Formats global stats for output. [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,concurrency-heavy]
 Exports: generateTextReportAsync, displayGlobalStats, refreshSelectionStats, resetStatsCache
 Semantic: async side-effecting stateful module
 
@@ -222,7 +219,7 @@ Exports: applyRustSelectionState, setSelectionByExtension, toggleAllFolders, ini
 Semantic: side-effecting stateful adapter
 
 `src/ts/ui/viewer.ts`
-Implements close viewer. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
+Implements open file. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
 Exports: openFile, closeViewer, updateViewer
 Semantic: async side-effecting adapter that logs and continues
 
@@ -239,7 +236,7 @@ Exports: initTypeData, isLikelyText, sniffIsText, formatBytes
 Semantic: async side-effecting stateful adapter
 
 `src/ts/utils/result.ts`
-Implements Err functionality. [HOTSPOT] [COUPLING:pure] [BEHAVIOR:async] [QUALITY:undocumented]
+Implements to result. [HOTSPOT] [COUPLING:pure] [BEHAVIOR:async] [QUALITY:undocumented]
 Exports: toResult, None, Option, Some
 Semantic: async pure computation
 
@@ -287,7 +284,7 @@ Implements serializable folder entry. [HOTSPOT] [QUALITY:undocumented]
 Exports: WorkerInboundMessage, WorkerOutboundMessage, FileTypeData, SerializableFolderEntry
 
 `src/ts/ui/index.ts`
-Implements show notification. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,concurrency-heavy]
+Updates selection ui. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,concurrency-heavy]
 Exports: resetUIForProcessing, copyCurrentReport, saveCurrentReport, disableUIControls
 Semantic: async side-effecting stateful module
 
@@ -321,12 +318,12 @@ DependencyGraph:
     ImportedBy: [app.ts, features.ts, filesystem.ts, scan.worker.ts, state.ts, stats.ts, tree.ts, ui/index.ts, viewer.ts]
   ui/index.ts:
     Imports: [filesystem.ts, fs_utils.ts, layout.ts, modals.ts, state.ts, stats.ts, tree.ts, types/index.ts, viewer.ts]
-    ImportedBy: [app.ts, features.ts, viewer.ts]
+    ImportedBy: [app.ts, features.ts, stats.ts, viewer.ts]
   viewer.ts:
     Imports: [fs_utils.ts, state.ts, types/index.ts, ui/index.ts]
     ImportedBy: [app.ts, tree.ts, ui/index.ts]
   # --- Layer 0 -- Config ---
-  APP-PIVOT.md, README.md, REDESIGN_README.md, SEMMAP.md, package.json, tsconfig.json, ux-progress.md, vite.config.ts:
+  README.md, REDESIGN_README.md, SEMMAP.md, package.json, tsconfig.json, ux-progress.md, vite.config.ts:
     Imports: []
     ImportedBy: []
   # --- Layer 1 -- Domain (Engine) ---
@@ -346,7 +343,7 @@ DependencyGraph:
     Imports: [state.ts]
     ImportedBy: [app.ts, ui/index.ts]
   stats.ts:
-    Imports: [filesystem.ts, fs_utils.ts, state.ts, tree.ts, types/index.ts]
+    Imports: [filesystem.ts, fs_utils.ts, state.ts, tree.ts, types/index.ts, ui/index.ts]
     ImportedBy: [ui/index.ts]
   # --- Layer 2 -- Adapters / Infra ---
   result.ts:
