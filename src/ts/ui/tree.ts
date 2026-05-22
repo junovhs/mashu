@@ -703,14 +703,15 @@ function setSelectionForSubtree(path: string, selected: boolean): void {
   const node = appState.treeNodesByPath.get(path);
   if (!node) return;
 
+  // Optimistic immediate update — no worker round-trip in the visual path.
+  applySelectionToNode(node, selected);
+  recomputeAncestorCounts(path);
+  refreshVisibleSelectionState();
+  notifySelectionChanged();
+
+  // Also send to Rust for precise subtree counts; response will re-confirm.
   if (appState.scanWorker && appState.rustIndexReady) {
-    applyFileSelectionInSubtree(node, selected);
     postSelectionUpdate();
-  } else {
-    applySelectionToNode(node, selected);
-    recomputeAncestorCounts(path);
-    refreshVisibleSelectionState();
-    notifySelectionChanged();
   }
 }
 
