@@ -107,6 +107,19 @@ export function initLayout(): void {
               <div id="loader" class="loader">Scanning…</div>
             </div>
 
+            <section class="use-cases">
+              <p class="use-cases-label">Works great for</p>
+              <div class="use-cases-pills">
+                <button class="uc-pill" data-uc="code-review">Code review</button>
+                <button class="uc-pill" data-uc="onboarding">Onboarding</button>
+                <button class="uc-pill" data-uc="debugging">Debugging</button>
+                <button class="uc-pill" data-uc="docs">Docs</button>
+                <button class="uc-pill" data-uc="refactoring">Refactoring</button>
+                <button class="uc-pill" data-uc="learning">Learning</button>
+              </div>
+              <div class="use-cases-detail" id="useCaseDetail" hidden></div>
+            </section>
+
           </section>
         </div>
 
@@ -315,6 +328,31 @@ export function initLayout(): void {
     `;
     reportPanel.appendChild(actions);
   }
+
+  // Wire use-case pill cloud
+  const UC_DESCRIPTIONS: Record<string, string> = {
+    "code-review": "Select the files changed in a PR, export them as one artifact, and hand it to an AI reviewer. It can trace call sites, spot inconsistencies, and suggest improvements across the entire diff — not just one file at a time.",
+    "onboarding": "New to an unfamiliar codebase? Export the full tree and let an AI walk you through the architecture, map the module boundaries, and explain what each part does — without spelunking through files one by one.",
+    "debugging": "Narrow your export to just the files involved — the broken component, its utilities, the failing test. A focused, structured slice gives an AI everything it needs to diagnose the issue without noise.",
+    "docs": "Export your project and prompt an AI to write a README, generate API docs, or add inline comments consistently across every file. One export, done.",
+    "refactoring": "Select the files you're about to touch and let an AI surface inconsistent patterns, naming drift, or coupling issues across the whole working set before you commit.",
+    "learning": "Studying an open-source project? Export a curated slice — the core, a feature, a module — and ask an AI to explain the architecture, trace a data flow, or compare patterns to what you already know.",
+  };
+  const ucDetail = document.getElementById("useCaseDetail") as HTMLElement | null;
+  document.querySelectorAll<HTMLButtonElement>(".uc-pill").forEach((pill) => {
+    pill.addEventListener("click", () => {
+      const uc = pill.dataset.uc ?? "";
+      const isActive = pill.dataset.active === "true";
+      document.querySelectorAll<HTMLButtonElement>(".uc-pill").forEach((p) => { p.dataset.active = "false"; });
+      if (isActive || !ucDetail) {
+        if (ucDetail) { ucDetail.textContent = ""; ucDetail.hidden = true; }
+      } else {
+        pill.dataset.active = "true";
+        ucDetail.textContent = UC_DESCRIPTIONS[uc] ?? "";
+        ucDetail.hidden = false;
+      }
+    });
+  });
 
   initHelpSystem();
 }

@@ -88,13 +88,16 @@
 }
 .stat-value {
   font-family: var(--font-disp);
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 600;
   color: var(--ink);
   letter-spacing: -0.02em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  word-break: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 .stat-value--name {
   font-family: var(--font-mono);
