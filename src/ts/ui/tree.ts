@@ -426,14 +426,12 @@ function createFolderItemLine(
   prefix.appendChild(icon);
 
   const name = document.createElement("span");
-  name.className = "name pretext-flow";
-  name.dataset.pretext = "";
-  setPretextText(name, folder.name);
+  name.className = "name";
+  name.textContent = folder.name;
 
   const stats = document.createElement("span");
-  stats.className = "stats pretext-flow";
-  stats.dataset.pretext = "";
-  setPretextText(stats, `${folder.fileCount} files, ${formatBytes(folder.totalSize)}`);
+  stats.className = "stats";
+  stats.textContent = `${folder.fileCount} files, ${formatBytes(folder.totalSize)}`;
 
   itemLine.appendChild(prefix);
   itemLine.appendChild(name);
@@ -471,14 +469,12 @@ function createFileItemLine(file: FileInfo): HTMLDivElement {
   prefix.appendChild(icon);
 
   const name = document.createElement("span");
-  name.className = "name pretext-flow";
-  name.dataset.pretext = "";
-  setPretextText(name, file.name);
+  name.className = "name";
+  name.textContent = file.name;
 
   const stats = document.createElement("span");
-  stats.className = "stats pretext-flow";
-  stats.dataset.pretext = "";
-  setPretextText(stats, formatBytes(file.size));
+  stats.className = "stats";
+  stats.textContent = formatBytes(file.size);
 
   itemLine.appendChild(prefix);
   itemLine.appendChild(name);

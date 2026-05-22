@@ -243,17 +243,12 @@ function renderVisualReport(data: ScanData): void {
   summaryRow.className = "report-summary-row";
 
   const projectMeta = document.createElement("div");
-  projectMeta.className = "report-summary-meta pretext-flow";
-  projectMeta.dataset.pretext = "";
-  setPretextText(
-    projectMeta,
-    `project ${root.name}    files ${data.allFilesList.length}    size ${formatBytes(root.totalSize)}`,
-  );
+  projectMeta.className = "report-summary-meta";
+  projectMeta.textContent = `project ${root.name}    files ${data.allFilesList.length}    size ${formatBytes(root.totalSize)}`;
 
   const scopeMeta = document.createElement("div");
-  scopeMeta.className = "report-summary-scope pretext-flow";
-  scopeMeta.dataset.pretext = "";
-  setPretextText(scopeMeta, `scope ${isSelection ? "SELECTION" : "FULL"}`);
+  scopeMeta.className = "report-summary-scope";
+  scopeMeta.textContent = `scope ${isSelection ? "SELECTION" : "FULL"}`;
 
   const divider = document.createElement("div");
   divider.className = "report-summary-divider";
@@ -269,7 +264,6 @@ function renderVisualReport(data: ScanData): void {
   visual.appendChild(divider);
   visual.appendChild(tree);
   host.appendChild(visual);
-  syncPretextTree(host);
 }
 
 async function ensureReportText(
