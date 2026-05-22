@@ -412,37 +412,14 @@ function appendVisualTreeNode(
 function createReportTreeConnector(
   kind: "continuation" | "elbow",
   continues: boolean,
-): SVGSVGElement {
-  const ns = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(ns, "svg");
-  svg.classList.add("report-tree-connector", `report-tree-connector--${kind}`);
-  if (continues) {
-    svg.classList.add("report-tree-connector--continuation");
-  }
-
-  svg.setAttribute("viewBox", "0 0 28 26");
-  svg.setAttribute("preserveAspectRatio", "none");
-  svg.setAttribute("aria-hidden", "true");
-
-  const shape = document.createElementNS(ns, "path");
-  shape.setAttribute("class", "report-tree-connector-shape");
-
+): HTMLDivElement {
+  const div = document.createElement("div");
   if (kind === "continuation") {
-    if (!continues) {
-      return svg;
-    }
-    shape.setAttribute("d", "M10 -1 V27");
-    svg.appendChild(shape);
-    return svg;
+    div.className = continues ? "rtc rtc-pipe" : "rtc";
+  } else {
+    div.className = continues ? "rtc rtc-tee" : "rtc rtc-elbow";
   }
-
-  shape.setAttribute(
-    "d",
-    continues ? "M10 -1 V27 M10 14 H22" : "M10 -1 V14 H22",
-  );
-  svg.appendChild(shape);
-
-  return svg;
+  return div;
 }
 
 function measurePerformance(

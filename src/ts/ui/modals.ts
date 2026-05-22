@@ -91,17 +91,31 @@ export function initSidebarResizer(): void {
       10,
     );
 
+    // Cache bounds once at drag start — avoids forced reflow on every pointermove
+    const cachedAvailableWidth = getAvailableContentWidth();
+    const cachedMaxWidth = Math.floor(cachedAvailableWidth * MAX_SIDEBAR_WIDTH_RATIO);
+    const clampWidth = (w: number) =>
+      Math.min(Math.max(w, MIN_SIDEBAR_WIDTH), cachedMaxWidth);
+
     sidebarResizer.classList.add("resizing");
     document.body.classList.add("sidebar-is-resizing");
     sidebarResizer.setPointerCapture(event.pointerId);
 
+    let latestX = event.clientX;
+    let rafId: number | null = null;
+
     const handlePointerMove = (moveEvent: PointerEvent) => {
-      const nextWidth = startWidth + moveEvent.clientX - startX;
-      const clampedWidth = clampSidebarWidth(nextWidth);
-      appContainer?.style.setProperty("--left-sidebar-width", `${clampedWidth}px`);
+      latestX = moveEvent.clientX;
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const nextWidth = startWidth + latestX - startX;
+        appContainer?.style.setProperty("--left-sidebar-width", `${clampWidth(nextWidth)}px`);
+      });
     };
 
     const stopResizing = () => {
+      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
       sidebarResizer.classList.remove("resizing");
       document.body.classList.remove("sidebar-is-resizing");
       const finalWidth = Math.round(leftSidebar.getBoundingClientRect().width);

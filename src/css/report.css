@@ -117,23 +117,61 @@
   align-self: stretch;
 }
 
-.report-tree-connector {
-  display: block;
+/* CSS-only tree connectors — replaces SVG, zero createElementNS cost */
+.rtc {
   width: var(--report-tree-indent);
   min-width: var(--report-tree-indent);
-  height: 100%;
-  opacity: var(--report-tree-line-opacity);
-  shape-rendering: crispEdges;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
 }
-
-.report-tree-connector-shape {
-  fill: none;
-  stroke: var(--report-tree-line-color);
-  stroke-width: var(--report-tree-line-thickness);
-  stroke-linecap: square;
-  stroke-linejoin: miter;
-  vector-effect: non-scaling-stroke;
-  shape-rendering: crispEdges;
+/* Pipe: full vertical line */
+.rtc-pipe::before {
+  content: '';
+  position: absolute;
+  left: var(--report-tree-line-x);
+  top: 0; bottom: 0;
+  width: 1px;
+  background: var(--report-tree-line-color);
+  opacity: var(--report-tree-line-opacity);
+}
+/* Elbow (last child): vertical to midpoint + horizontal arm */
+.rtc-elbow::before {
+  content: '';
+  position: absolute;
+  left: var(--report-tree-line-x);
+  top: 0; bottom: 50%;
+  width: 1px;
+  background: var(--report-tree-line-color);
+  opacity: var(--report-tree-line-opacity);
+}
+.rtc-elbow::after {
+  content: '';
+  position: absolute;
+  left: var(--report-tree-line-x);
+  top: 50%; right: 10px;
+  height: 1px;
+  background: var(--report-tree-line-color);
+  opacity: var(--report-tree-line-opacity);
+}
+/* Tee (non-last child): full vertical + horizontal arm */
+.rtc-tee::before {
+  content: '';
+  position: absolute;
+  left: var(--report-tree-line-x);
+  top: 0; bottom: 0;
+  width: 1px;
+  background: var(--report-tree-line-color);
+  opacity: var(--report-tree-line-opacity);
+}
+.rtc-tee::after {
+  content: '';
+  position: absolute;
+  left: var(--report-tree-line-x);
+  top: 50%; right: 10px;
+  height: 1px;
+  background: var(--report-tree-line-color);
+  opacity: var(--report-tree-line-opacity);
 }
 
 .report-tree-content {

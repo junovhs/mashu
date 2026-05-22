@@ -534,7 +534,7 @@ function bindTreeInteractions(container: HTMLElement): void {
     if (!path) return;
 
     if (row.classList.contains("tree-row--folder")) {
-      if (event.altKey) {
+      if (event.altKey || event.shiftKey) {
         setExpandedForSubtree(path, !appState.expandedFolderPaths.has(path));
       } else {
         toggleExpanded(path);
@@ -543,6 +543,7 @@ function bindTreeInteractions(container: HTMLElement): void {
       return;
     }
 
+    if (!target.closest(".name")) return;
     const node = appState.treeNodesByPath.get(path);
     if (node?.type === "file") {
       console.log("[tree] Click on file:", node.path);
@@ -806,17 +807,6 @@ function applySelectionToNode(node: TreeNode, selected: boolean): void {
     node.path,
     selected ? appState.subtreeNodeCounts.get(node.path) || 0 : 0,
   );
-}
-
-function applyFileSelectionInSubtree(node: TreeNode, selected: boolean): void {
-  if (node.type === "file") {
-    if (selected) appState.selectedPaths.add(node.path);
-    else appState.selectedPaths.delete(node.path);
-    return;
-  }
-  for (const child of node.children) {
-    applyFileSelectionInSubtree(child, selected);
-  }
 }
 
 function postSelectionUpdate(): void {
