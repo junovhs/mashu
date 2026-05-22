@@ -214,6 +214,42 @@ interface FlatRow {
 const ROW_HEIGHT = 32;
 const OVERSCAN = 8;
 
+let showTokensInTree = false;
+
+function formatTokens(bytes: number): string {
+  const n = Math.round(bytes / 4);
+  if (n >= 1_000_000) return `~${(n / 1_000_000).toFixed(1)}M tok`;
+  if (n >= 1_000) return `~${(n / 1_000).toFixed(1)}k tok`;
+  return `~${n} tok`;
+}
+
+function formatSize(bytes: number): string {
+  return showTokensInTree ? formatTokens(bytes) : formatBytes(bytes);
+}
+
+function patchTreeSizeLabels(): void {
+  if (!vRowWindow) return;
+  for (const rowEl of vRowWindow.children) {
+    if (!(rowEl instanceof HTMLElement)) continue;
+    const path = rowEl.dataset.path;
+    if (!path) continue;
+    const node = appState.treeNodesByPath.get(path);
+    if (!node) continue;
+    const statsEl = rowEl.querySelector<HTMLElement>(".stats");
+    if (!statsEl) continue;
+    if (node.type === "folder") {
+      statsEl.textContent = `${node.fileCount} files, ${formatSize(node.totalSize)}`;
+    } else {
+      statsEl.textContent = formatSize(node.size);
+    }
+  }
+}
+
+window.addEventListener("size-mode-changed", (e: Event) => {
+  showTokensInTree = (e as CustomEvent<{ showTokens: boolean }>).detail.showTokens;
+  patchTreeSizeLabels();
+});
+
 let flatRows: FlatRow[] = [];
 let vScrollContainer: HTMLElement | null = null;
 let vTopSpacer: HTMLDivElement | null = null;
@@ -431,7 +467,7 @@ function createFolderItemLine(
 
   const stats = document.createElement("span");
   stats.className = "stats";
-  stats.textContent = `${folder.fileCount} files, ${formatBytes(folder.totalSize)}`;
+  stats.textContent = `${folder.fileCount} files, ${formatSize(folder.totalSize)}`;
 
   itemLine.appendChild(prefix);
   itemLine.appendChild(name);
@@ -475,7 +511,7 @@ function createFileItemLine(file: FileInfo, depth: number): HTMLDivElement {
 
   const stats = document.createElement("span");
   stats.className = "stats";
-  stats.textContent = formatBytes(file.size);
+  stats.textContent = formatSize(file.size);
 
   itemLine.appendChild(prefix);
   itemLine.appendChild(name);

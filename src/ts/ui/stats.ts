@@ -72,7 +72,7 @@ let wasInSelectionMode = false;
 let showTokens = false;
 
 function formatTokens(bytes: number): string {
-  return `~${formatCount(Math.round(bytes / 4))}`;
+  return `~${formatCount(Math.round(bytes / 4))} tok`;
 }
 
 export function resetStatsCache(): void {
@@ -325,6 +325,7 @@ function wireSizeToggle(): void {
   if (!item) return;
   item.addEventListener("click", () => {
     showTokens = !showTokens;
+    window.dispatchEvent(new CustomEvent("size-mode-changed", { detail: { showTokens } }));
     const label = document.getElementById("statSizeLabel");
     const value = document.getElementById("statSize");
     if (!label || !value) return;
