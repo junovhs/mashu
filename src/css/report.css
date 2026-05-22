@@ -97,7 +97,11 @@
   padding: 0;
 }
 
-.report-tree-node { margin: 0; }
+.report-tree-node {
+  margin: 0;
+  content-visibility: auto;
+  contain-intrinsic-block-size: 22px;
+}
 
 .report-tree-row {
   display: flex;

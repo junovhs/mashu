@@ -52,6 +52,7 @@ interface RecentProjectSummary {
 async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
   performance.mark("mashu:process-directory:start");
   appState.processingInProgress = true;
+  document.body.classList.add("project-loaded");
   resetUIForProcessing(`Processing '${handle.name}'...`);
   disableUIControls();
 
@@ -61,6 +62,7 @@ async function processDirectory(handle: VirtualDirectoryHandle): Promise<void> {
 async function processFileList(files: FileList): Promise<void> {
   performance.mark("mashu:process-directory:start");
   appState.processingInProgress = true;
+  document.body.classList.add("project-loaded");
 
   const rootName = getFileListRootName(files) || "PROJECT";
   resetUIForProcessing(`Processing '${rootName}'...`);

@@ -301,19 +301,24 @@
 
 /* Docs link in brand area */
 .brand-docs-link {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-4);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #fff;
   text-decoration: none;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 2px 8px 3px;
-  transition: color 0.12s, border-color 0.12s;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 4px 10px 5px;
+  background: var(--accent);
+  cursor: pointer;
+  box-shadow: 0 1px 0 oklch(0.75 0.16 50 / 0.5) inset, 0 2px 8px oklch(0.62 0.16 50 / 0.22);
+  transition: background 0.12s, border-color 0.12s;
 }
-.brand-docs-link:hover { color: var(--ink-2); border-color: var(--ink-4); }
+.brand-docs-link:hover {
+  background: oklch(0.58 0.18 45);
+  border-color: oklch(0.58 0.18 45);
+}
 
 /* Clear project confirming state */
 .btn.ghost.confirming {

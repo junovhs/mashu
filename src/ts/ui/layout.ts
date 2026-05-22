@@ -198,7 +198,6 @@ export function initLayout(): void {
         <div class="bar-spacer" id="helpZone">
           <span id="helpZoneText" class="help-zone-text"></span>
         </div>
-        <button id="emptyChooseFolderBtn" class="btn primary" data-help="Open a folder from your computer to get started.">Choose a folder</button>
       </footer>
     `;
   }
