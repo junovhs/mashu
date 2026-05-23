@@ -210,6 +210,11 @@
     "kind": "import"
   },
   {
+    "from": "src/ts/workers/scan.worker.ts",
+    "to": "rust-core/pkg/rust_core.js",
+    "kind": "import"
+  },
+  {
     "from": "src/ts/types/index.ts",
     "to": "src/ts/utils/crossbrowser_fs.ts",
     "kind": "import"
@@ -253,6 +258,11 @@
     "from": "src/ts/ui/index.ts",
     "to": "src/ts/ui/tree.ts",
     "kind": "import"
+  },
+  {
+    "from": "rust-core/pkg/rust_core.js",
+    "to": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "kind": "call"
   },
   {
     "from": "src/ts/app.ts",
@@ -347,6 +357,11 @@
   {
     "from": "src/ts/utils/fs_utils.ts",
     "to": "src/ts/utils/result.ts",
+    "kind": "call"
+  },
+  {
+    "from": "src/ts/workers/scan.worker.ts",
+    "to": "rust-core/pkg/rust_core_bg.wasm.d.ts",
     "kind": "call"
   },
   {

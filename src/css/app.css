@@ -94,33 +94,53 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--ink-3); }
 
-/* App shell grid */
+/* App shell grid — default: no right panel */
 #appContainer {
   display: grid;
-  grid-template-columns: minmax(220px, var(--left-sidebar-width)) var(--resizer-width) 1fr var(--right-stats-panel-ratio);
+  grid-template-columns: minmax(220px, var(--left-sidebar-width)) var(--resizer-width) 1fr;
   grid-template-rows: var(--topbar-h) 1fr var(--bottombar-h);
   grid-template-areas:
-    "top   top   top   top"
-    "side  rsz   main  stat"
-    "bar   bar   bar   bar";
+    "top   top   top"
+    "side  rsz   main"
+    "bar   bar   bar";
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
+}
+
+#rightStatsPanel { display: none; }
+
+/* Wide viewports: add right panel column */
+@media (min-width: 1200px) {
+  #appContainer {
+    grid-template-columns: minmax(220px, var(--left-sidebar-width)) var(--resizer-width) 1fr var(--right-stats-panel-ratio);
+    grid-template-areas:
+      "top   top   top   top"
+      "side  rsz   main  stat"
+      "bar   bar   bar   bar";
+  }
+  #rightStatsPanel { display: flex; }
 }
 
 #topBar     { grid-area: top; }
 #leftSidebar{ grid-area: side; min-width: 220px; max-width: none; width: auto; }
 #sidebarResizer { grid-area: rsz; }
 #mainView   { grid-area: main; min-width: 0; }
-#rightStatsPanel { grid-area: stat; min-width: 240px; }
+#rightStatsPanel { grid-area: stat; min-width: 0; }
 #bottomBar  { grid-area: bar; }
 
 #leftSidebar,
 #mainView,
-#rightStatsPanel,
 #bottomBar,
 #topBar {
   display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* rightStatsPanel: hidden by default (display:none set above); only add layout props */
+#rightStatsPanel {
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
@@ -191,21 +211,26 @@ body.sidebar-is-resizing { cursor: col-resize; user-select: none; }
 body.sidebar-is-resizing #textOutput { contain: layout paint; }
 
 /* Resp */
+
+/* ≤1100px: hide scope-meta (file count / size text) to keep top bar clean */
 @media (max-width: 1100px) {
-  #appContainer {
-    grid-template-columns: minmax(180px, var(--left-sidebar-width)) var(--resizer-width) 1fr;
-    grid-template-areas:
-      "top   top   top"
-      "side  rsz   main"
-      "bar   bar   bar";
-  }
-  #rightStatsPanel { display: none; }
+  #scopeMeta { display: none; }
 }
+
+/* ≤900px: hide secondary Download button, shrink top bar further */
+@media (max-width: 900px) {
+  #downloadProjectBtn { display: none; }
+  #topBar { gap: 10px; padding: 0 14px; }
+  .brand-name { font-size: 20px; }
+}
+
+/* ≤760px: tighten sidebar */
 @media (max-width: 760px) {
   #appContainer {
     grid-template-columns: 40% 8px 1fr;
   }
-  #leftSidebar { min-width: 180px; }
+  #leftSidebar { min-width: 160px; }
+  #scopePath { display: none; }
 }
 
 /* Mobile fallback */

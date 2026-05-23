@@ -439,7 +439,7 @@ function createFolderItemLine(
 
   const prefix = document.createElement("span");
   prefix.className = "item-prefix";
-  if (depth > 0) prefix.style.paddingLeft = `${depth * 22}px`;
+  if (depth > 0) prefix.style.paddingLeft = `${depth * 16}px`;
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
@@ -485,7 +485,7 @@ function createFileItemLine(file: FileInfo, depth: number): HTMLDivElement {
 
   const prefix = document.createElement("span");
   prefix.className = "item-prefix";
-  if (depth > 0) prefix.style.paddingLeft = `${depth * 22}px`;
+  if (depth > 0) prefix.style.paddingLeft = `${depth * 16}px`;
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";

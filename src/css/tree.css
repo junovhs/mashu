@@ -158,6 +158,17 @@
 .item-line:hover .name { color: var(--ink); }
 .tree-row--file .item-line:hover .name { text-decoration: underline; text-underline-offset: 2px; text-decoration-color: oklch(0.22 0.013 70 / 0.3); }
 
+/* File rows: remove invisible toggle spacer — saves 25px per row */
+.tree-row--file .folder-toggle { display: none; }
+
+/* Narrow sidebar: hide decorative size columns so name has room */
+#leftSidebar { container-type: inline-size; }
+
+@container (max-width: 300px) {
+  .stats, .sizebar { display: none; }
+  .item-line { grid-template-columns: auto minmax(0, 1fr); gap: 6px; }
+}
+
 /* Size bar — rightmost fixed column */
 .sizebar {
   width: 38px;

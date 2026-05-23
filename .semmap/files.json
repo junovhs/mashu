@@ -44,6 +44,17 @@
     "analysis": {}
   },
   {
+    "path": "rust-core/pkg/package.json",
+    "layer": 0,
+    "file_kind": "script",
+    "description": "Node.js package manifest.",
+    "exports": [],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {}
+  },
+  {
     "path": "tsconfig.json",
     "layer": 0,
     "file_kind": "script",
@@ -161,6 +172,124 @@
     }
   },
   {
+    "path": "rust-core/pkg/rust_core.d.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Build a pure tree from a JSON array of SerializableEntry.",
+    "exports": [
+      "SyncInitInput",
+      "InitOutput",
+      "__wbg_init",
+      "InitInput"
+    ],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 0.0,
+    "analysis": {
+      "types": {
+        "total": 3,
+        "public": 3
+      },
+      "docs": {
+        "documented_symbols": 5,
+        "undocumented_public": 2
+      }
+    }
+  },
+  {
+    "path": "rust-core/pkg/rust_core.js",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Build a pure tree from a JSON array of SerializableEntry.",
+    "exports": [
+      "build_tree_from_entries",
+      "compute_selection_state",
+      "init_tree_index",
+      "engine_version"
+    ],
+    "coupling": "mixed",
+    "behavior_tags": [
+      "owns-state",
+      "async"
+    ],
+    "surface_tags": [
+      "external-api"
+    ],
+    "quality_tags": [
+      "complex-flow"
+    ],
+    "hotspot": false,
+    "fan_in": 0,
+    "risk_score": 7.2,
+    "semantic_summary": "async side-effecting stateful module with external API surface",
+    "analysis": {
+      "functions": {
+        "total": 14,
+        "public": 4,
+        "max_cognitive_complexity": 21,
+        "avg_cognitive_complexity": 3
+      },
+      "calls": {
+        "total_calls": 113,
+        "resolved_calls": 17,
+        "unresolved_calls": 96,
+        "resolution_rate": 0.15044248
+      },
+      "control_flow": {
+        "max_nesting_depth": 5,
+        "cognitive_complexity": 47
+      },
+      "concurrency": {
+        "total_sites": 8,
+        "has_async": true,
+        "has_locks": false,
+        "has_spawn": false
+      },
+      "docs": {
+        "documented_symbols": 4,
+        "undocumented_public": 0
+      },
+      "activation": {
+        "total_sites": 33,
+        "kinds": [
+          "callback-surface",
+          "string-dispatch"
+        ]
+      },
+      "guards": {
+        "total_sites": 5
+      }
+    }
+  },
+  {
+    "path": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "layer": 1,
+    "file_kind": "production",
+    "description": "Implements wbindgen externrefs.",
+    "exports": [
+      "build_tree_from_entries",
+      "compute_selection_state",
+      "init_tree_index",
+      "engine_version"
+    ],
+    "behavior_tags": [
+      "owns-const-state"
+    ],
+    "quality_tags": [
+      "undocumented"
+    ],
+    "hotspot": true,
+    "fan_in": 0,
+    "risk_score": 4.0,
+    "semantic_summary": "constant-owning module",
+    "analysis": {
+      "docs": {
+        "documented_symbols": 0,
+        "undocumented_public": 10
+      }
+    }
+  },
+  {
     "path": "src/ts/app.ts",
     "layer": 1,
     "file_kind": "production",
@@ -232,7 +361,7 @@
     "path": "src/ts/features.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Implements download zip.",
+    "description": "Implements export combined.",
     "exports": [
       "downloadZip",
       "exportCombined"
@@ -254,14 +383,14 @@
         "avg_cognitive_complexity": 2
       },
       "calls": {
-        "total_calls": 54,
+        "total_calls": 55,
         "resolved_calls": 5,
-        "unresolved_calls": 49,
-        "resolution_rate": 0.09259259
+        "unresolved_calls": 50,
+        "resolution_rate": 0.09090909
       },
       "control_flow": {
         "max_nesting_depth": 2,
-        "cognitive_complexity": 13
+        "cognitive_complexity": 14
       },
       "concurrency": {
         "total_sites": 12,
@@ -428,10 +557,10 @@
         "avg_cognitive_complexity": 2
       },
       "calls": {
-        "total_calls": 59,
+        "total_calls": 62,
         "resolved_calls": 7,
-        "unresolved_calls": 52,
-        "resolution_rate": 0.118644066
+        "unresolved_calls": 55,
+        "resolution_rate": 0.11290322
       },
       "control_flow": {
         "max_nesting_depth": 1,
@@ -448,7 +577,7 @@
         "undocumented_public": 6
       },
       "activation": {
-        "total_sites": 14,
+        "total_sites": 15,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -518,7 +647,7 @@
     "path": "src/ts/ui/pretext.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Sets the pretext text.",
+    "description": "Creates pretext text.",
     "exports": [
       "syncPretextTree",
       "initPretextText",
@@ -598,7 +727,7 @@
     "semantic_summary": "async side-effecting stateful module",
     "analysis": {
       "functions": {
-        "total": 16,
+        "total": 17,
         "public": 4,
         "max_cognitive_complexity": 13,
         "avg_cognitive_complexity": 4
@@ -608,14 +737,14 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 174,
-        "resolved_calls": 28,
-        "unresolved_calls": 146,
-        "resolution_rate": 0.16091955
+        "total_calls": 180,
+        "resolved_calls": 31,
+        "unresolved_calls": 149,
+        "resolution_rate": 0.17222223
       },
       "control_flow": {
         "max_nesting_depth": 2,
-        "cognitive_complexity": 71
+        "cognitive_complexity": 74
       },
       "concurrency": {
         "total_sites": 5,
@@ -628,14 +757,14 @@
         "undocumented_public": 4
       },
       "activation": {
-        "total_sites": 34,
+        "total_sites": 35,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
       },
       "guards": {
-        "total_sites": 3
+        "total_sites": 4
       }
     }
   },
@@ -704,7 +833,7 @@
     "path": "src/ts/ui/viewer.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Implements close viewer.",
+    "description": "Implements open file.",
     "exports": [
       "openFile",
       "closeViewer",
@@ -1167,7 +1296,7 @@
     "path": "src/ts/ui/index.ts",
     "layer": 3,
     "file_kind": "production",
-    "description": "Updates selection ui.",
+    "description": "Implements show notification.",
     "exports": [
       "resetUIForProcessing",
       "copyCurrentReport",

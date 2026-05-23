@@ -310,6 +310,7 @@ function renderVisualReport(data: ScanData): void {
   if (copyBtn) {
     const isLarge = data.allFilesList.length > MAX_VISUAL_NODES;
     copyBtn.classList.toggle("btn--large-project", isLarge);
+    copyBtn.disabled = isLarge;
     copyBtn.title = isLarge
       ? `This project has ${data.allFilesList.length.toLocaleString()} files — clipboard copy may be very slow or fail. Use Save instead.`
       : "";

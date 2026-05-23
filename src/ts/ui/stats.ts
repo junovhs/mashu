@@ -75,6 +75,10 @@ function formatTokens(bytes: number): string {
   return `~${formatCount(Math.round(bytes / 4))} tok`;
 }
 
+function formatStat(bytes: number): string {
+  return showTokens ? formatTokens(bytes) : formatBytes(bytes);
+}
+
 export function resetStatsCache(): void {
   cachedStatsKey = null;
   wasInSelectionMode = false;
@@ -140,7 +144,7 @@ export function displayGlobalStats(data: ScanData): void {
             ${ext || "[none]"}
           </td>
           <td>${td.count}</td>
-          <td>${formatBytes(td.size)}</td>
+          <td>${formatStat(td.size)}</td>
         </tr>`;
       })
       .join("");
@@ -341,7 +345,19 @@ function wireSizeToggle(): void {
       }
     }
     label.textContent = showTokens ? "~Tokens" : "Size";
-    value.textContent = showTokens ? formatTokens(totalSize) : formatBytes(totalSize);
+    value.textContent = formatStat(totalSize);
+
+    // Patch file type table size column
+    const tbody = elements.fileTypeTableBody as HTMLTableSectionElement | undefined;
+    if (tbody) {
+      const fullData = appState.fullScanData;
+      tbody.querySelectorAll<HTMLElement>("tr[data-ext]").forEach((row) => {
+        const ext = row.dataset.ext ?? "";
+        const td = fullData?.directoryData?.fileTypes?.[ext];
+        const sizeCell = row.cells[2];
+        if (td && sizeCell) sizeCell.textContent = formatStat(td.size);
+      });
+    }
   });
 }
 

@@ -104,7 +104,7 @@
       "fn::Z@13",
       "fn::G@13",
       "fn::c@13",
-      "fn::formatCount@298"
+      "fn::formatCount@303"
     ],
     "callees": [],
     "doc_comment": null,
@@ -1808,6 +1808,585 @@
     "panic_sites": 0
   },
   {
+    "stable_id": "type::InitInput@27",
+    "name": "InitInput",
+    "kind": "Type",
+    "file": "rust-core/pkg/rust_core.d.ts",
+    "start_line": 27,
+    "end_line": 27,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": "Cache a tree index for subsequent compute_selection_state calls.\nReturns true on success.",
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "interface::InitOutput@29",
+    "name": "InitOutput",
+    "kind": "Interface",
+    "file": "rust-core/pkg/rust_core.d.ts",
+    "start_line": 29,
+    "end_line": 40,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "type::SyncInitInput@42",
+    "name": "SyncInitInput",
+    "kind": "Type",
+    "file": "rust-core/pkg/rust_core.d.ts",
+    "start_line": 42,
+    "end_line": 42,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::build_tree_from_entries@9",
+    "name": "build_tree_from_entries",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 9,
+    "end_line": 22,
+    "visibility": "Public",
+    "cognitive_complexity": 1,
+    "callers": [],
+    "callees": [
+      "fn::getStringFromWasm0@93",
+      "const::__wbindgen_free@11"
+    ],
+    "doc_comment": "Build a pure tree from a JSON array of SerializableEntry.\nReturns the root PureFolderInfo as JSON, or \"\" on error.\n@param {string} entries_json\n@returns {string}",
+    "signature": "function build_tree_from_entries(entries_json)",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::compute_selection_state@30",
+    "name": "compute_selection_state",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 30,
+    "end_line": 43,
+    "visibility": "Public",
+    "cognitive_complexity": 1,
+    "callers": [],
+    "callees": [
+      "fn::getStringFromWasm0@93",
+      "const::__wbindgen_free@11"
+    ],
+    "doc_comment": "Compute selection subtree counts from a JSON array of selected file paths.\nReturns SelectionResult as JSON, or \"\" if no index is loaded.\n@param {string} selected_file_paths_json\n@returns {string}",
+    "signature": "function compute_selection_state(selected_file_paths_json)",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::engine_version@49",
+    "name": "engine_version",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 49,
+    "end_line": 60,
+    "visibility": "Public",
+    "cognitive_complexity": 1,
+    "callers": [
+      "fn::tryInitRustEngine@17"
+    ],
+    "callees": [
+      "fn::getStringFromWasm0@93",
+      "const::__wbindgen_free@11"
+    ],
+    "doc_comment": "Returns the engine version string.\n@returns {string}",
+    "signature": "function engine_version()",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::init_tree_index@68",
+    "name": "init_tree_index",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 68,
+    "end_line": 73,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": "Cache a tree index for subsequent compute_selection_state calls.\nReturns true on success.\n@param {string} entries_json\n@returns {boolean}",
+    "signature": "function init_tree_index(entries_json)",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::__wbg_get_imports@74",
+    "name": "__wbg_get_imports",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 74,
+    "end_line": 91,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "signature": "function __wbg_get_imports()",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::getStringFromWasm0@93",
+    "name": "getStringFromWasm0",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 93,
+    "end_line": 95,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [
+      "fn::build_tree_from_entries@9",
+      "fn::compute_selection_state@30",
+      "fn::engine_version@49"
+    ],
+    "callees": [
+      "fn::decodeText@146"
+    ],
+    "doc_comment": null,
+    "signature": "function getStringFromWasm0(ptr, len)",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::getUint8ArrayMemory0@98",
+    "name": "getUint8ArrayMemory0",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 98,
+    "end_line": 103,
+    "visibility": "Private",
+    "cognitive_complexity": 1,
+    "callers": [
+      "fn::passStringToWasm0@105",
+      "fn::decodeText@146"
+    ],
+    "callees": [],
+    "doc_comment": null,
+    "signature": "function getUint8ArrayMemory0()",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::passStringToWasm0@105",
+    "name": "passStringToWasm0",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 105,
+    "end_line": 140,
+    "visibility": "Private",
+    "cognitive_complexity": 7,
+    "callers": [],
+    "callees": [
+      "fn::getUint8ArrayMemory0@98"
+    ],
+    "doc_comment": null,
+    "signature": "function passStringToWasm0(arg, malloc, realloc)",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::decodeText@146",
+    "name": "decodeText",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 146,
+    "end_line": 154,
+    "visibility": "Private",
+    "cognitive_complexity": 1,
+    "callers": [
+      "fn::getStringFromWasm0@93"
+    ],
+    "callees": [
+      "fn::getUint8ArrayMemory0@98"
+    ],
+    "doc_comment": null,
+    "signature": "function decodeText(ptr, len)",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::__wbg_finalize_init@172",
+    "name": "__wbg_finalize_init",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 172,
+    "end_line": 179,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [
+      "fn::initSync@216",
+      "fn::__wbg_init@236"
+    ],
+    "callees": [
+      "const::__wbindgen_start@12"
+    ],
+    "doc_comment": null,
+    "signature": "function __wbg_finalize_init(instance, module)",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::__wbg_load@181",
+    "name": "__wbg_load",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 181,
+    "end_line": 214,
+    "visibility": "Private",
+    "cognitive_complexity": 21,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "signature": "function __wbg_load(module, imports)",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::initSync@216",
+    "name": "initSync",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 216,
+    "end_line": 234,
+    "visibility": "Private",
+    "cognitive_complexity": 6,
+    "callers": [],
+    "callees": [
+      "fn::__wbg_finalize_init@172"
+    ],
+    "doc_comment": null,
+    "signature": "function initSync(module)",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::__wbg_init@236",
+    "name": "__wbg_init",
+    "kind": "Function",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 236,
+    "end_line": 260,
+    "visibility": "Private",
+    "cognitive_complexity": 7,
+    "callers": [],
+    "callees": [
+      "fn::__wbg_finalize_init@172"
+    ],
+    "doc_comment": null,
+    "signature": "function __wbg_init(module_or_path)",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "static::cachedUint8ArrayMemory0@97",
+    "name": "cachedUint8ArrayMemory0",
+    "kind": "Static",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 97,
+    "end_line": 97,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "static::cachedTextDecoder@142",
+    "name": "cachedTextDecoder",
+    "kind": "Static",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 142,
+    "end_line": 142,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::MAX_SAFARI_DECODE_BYTES@144",
+    "name": "MAX_SAFARI_DECODE_BYTES",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 144,
+    "end_line": 144,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "static::numBytesDecoded@145",
+    "name": "numBytesDecoded",
+    "kind": "Static",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 145,
+    "end_line": 145,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::cachedTextEncoder@156",
+    "name": "cachedTextEncoder",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 156,
+    "end_line": 156,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "static::WASM_VECTOR_LEN@169",
+    "name": "WASM_VECTOR_LEN",
+    "kind": "Static",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 169,
+    "end_line": 169,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "static::wasmModule@171",
+    "name": "wasmModule",
+    "kind": "Static",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 171,
+    "end_line": 171,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "static::wasmInstance@171",
+    "name": "wasmInstance",
+    "kind": "Static",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 171,
+    "end_line": 171,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "static::wasm@171",
+    "name": "wasm",
+    "kind": "Static",
+    "file": "rust-core/pkg/rust_core.js",
+    "start_line": 171,
+    "end_line": 171,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::memory@3",
+    "name": "memory",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "start_line": 3,
+    "end_line": 3,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::build_tree_from_entries@4",
+    "name": "build_tree_from_entries",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "start_line": 4,
+    "end_line": 4,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::compute_selection_state@5",
+    "name": "compute_selection_state",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "start_line": 5,
+    "end_line": 5,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::engine_version@6",
+    "name": "engine_version",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "start_line": 6,
+    "end_line": 6,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::init_tree_index@7",
+    "name": "init_tree_index",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "start_line": 7,
+    "end_line": 7,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::__wbindgen_externrefs@8",
+    "name": "__wbindgen_externrefs",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "start_line": 8,
+    "end_line": 8,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::__wbindgen_malloc@9",
+    "name": "__wbindgen_malloc",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "start_line": 9,
+    "end_line": 9,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::__wbindgen_realloc@10",
+    "name": "__wbindgen_realloc",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "start_line": 10,
+    "end_line": 10,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::__wbindgen_free@11",
+    "name": "__wbindgen_free",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "start_line": 11,
+    "end_line": 11,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [
+      "fn::build_tree_from_entries@9",
+      "fn::compute_selection_state@30",
+      "fn::engine_version@49"
+    ],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "const::__wbindgen_start@12",
+    "name": "__wbindgen_start",
+    "kind": "Constant",
+    "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
+    "start_line": 12,
+    "end_line": 12,
+    "visibility": "Public",
+    "cognitive_complexity": 0,
+    "callers": [
+      "fn::__wbg_finalize_init@172"
+    ],
+    "callees": [],
+    "doc_comment": null,
+    "has_guard_coverage": false,
+    "panic_sites": 0
+  },
+  {
     "stable_id": "fn::processDirectory@53",
     "name": "processDirectory",
     "kind": "Function",
@@ -2154,7 +2733,7 @@
       "fn::handleSelect@342",
       "fn::syncTreeControlCopy@193",
       "fn::renderTree@364",
-      "fn::downloadZip@82",
+      "fn::downloadZip@85",
       "fn::logPerfMeasure@641",
       "fn::clearProject@174",
       "fn::setAllSelections@982",
@@ -2527,15 +3106,15 @@
     "kind": "Function",
     "file": "src/ts/features.ts",
     "start_line": 14,
-    "end_line": 29,
+    "end_line": 32,
     "visibility": "Public",
-    "cognitive_complexity": 2,
+    "cognitive_complexity": 3,
     "callers": [
       "fn::setupListeners@389"
     ],
     "callees": [
       "fn::showNotification@65",
-      "fn::downloadBlob@70"
+      "fn::downloadBlob@73"
     ],
     "doc_comment": null,
     "signature": "function exportCombined()",
@@ -2543,12 +3122,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::getExportData@31",
+    "stable_id": "fn::getExportData@34",
     "name": "getExportData",
     "kind": "Function",
     "file": "src/ts/features.ts",
-    "start_line": 31,
-    "end_line": 36,
+    "start_line": 34,
+    "end_line": 39,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [],
@@ -2561,12 +3140,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::buildManifest@38",
+    "stable_id": "fn::buildManifest@41",
     "name": "buildManifest",
     "kind": "Function",
     "file": "src/ts/features.ts",
-    "start_line": 38,
-    "end_line": 44,
+    "start_line": 41,
+    "end_line": 47,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [],
@@ -2579,12 +3158,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::assembleExportBlob@46",
+    "stable_id": "fn::assembleExportBlob@49",
     "name": "assembleExportBlob",
     "kind": "Function",
     "file": "src/ts/features.ts",
-    "start_line": 46,
-    "end_line": 68,
+    "start_line": 49,
+    "end_line": 71,
     "visibility": "Private",
     "cognitive_complexity": 6,
     "callers": [],
@@ -2598,17 +3177,17 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::downloadBlob@70",
+    "stable_id": "fn::downloadBlob@73",
     "name": "downloadBlob",
     "kind": "Function",
     "file": "src/ts/features.ts",
-    "start_line": 70,
-    "end_line": 80,
+    "start_line": 73,
+    "end_line": 83,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
       "fn::exportCombined@14",
-      "fn::downloadZip@82"
+      "fn::downloadZip@85"
     ],
     "callees": [],
     "doc_comment": null,
@@ -2617,12 +3196,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::downloadZip@82",
+    "stable_id": "fn::downloadZip@85",
     "name": "downloadZip",
     "kind": "Function",
     "file": "src/ts/features.ts",
-    "start_line": 82,
-    "end_line": 104,
+    "start_line": 85,
+    "end_line": 107,
     "visibility": "Public",
     "cognitive_complexity": 3,
     "callers": [
@@ -2630,7 +3209,7 @@
     ],
     "callees": [
       "fn::showNotification@65",
-      "fn::downloadBlob@70"
+      "fn::downloadBlob@73"
     ],
     "doc_comment": null,
     "signature": "function downloadZip()",
@@ -2880,7 +3459,7 @@
     "visibility": "Public",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::getExportData@31",
+      "fn::getExportData@34",
       "fn::getActiveScanData@220"
     ],
     "callees": [
@@ -3310,14 +3889,14 @@
     "kind": "Function",
     "file": "src/ts/ui/layout.ts",
     "start_line": 1,
-    "end_line": 364,
+    "end_line": 381,
     "visibility": "Public",
     "cognitive_complexity": 10,
     "callers": [
       "fn::init@729"
     ],
     "callees": [
-      "fn::initHelpSystem@366"
+      "fn::initHelpSystem@383"
     ],
     "doc_comment": null,
     "signature": "function initLayout()",
@@ -3325,12 +3904,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::initHelpSystem@366",
+    "stable_id": "fn::initHelpSystem@383",
     "name": "initHelpSystem",
     "kind": "Function",
     "file": "src/ts/ui/layout.ts",
-    "start_line": 366,
-    "end_line": 395,
+    "start_line": 383,
+    "end_line": 412,
     "visibility": "Public",
     "cognitive_complexity": 4,
     "callers": [
@@ -3992,7 +4571,7 @@
     "visibility": "Private",
     "cognitive_complexity": 10,
     "callers": [
-      "fn::renderCompositionBar@203"
+      "fn::renderCompositionBar@208"
     ],
     "callees": [
       "type::Kind@15"
@@ -4012,7 +4591,7 @@
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::generateTextReportAsync@408"
+      "fn::generateTextReportAsync@425"
     ],
     "callees": [],
     "doc_comment": null,
@@ -4030,12 +4609,12 @@
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::displayGlobalStats@83",
-      "fn::refreshSelectionStats@161",
-      "fn::wireSizeToggle@323"
+      "fn::formatStat@78",
+      "fn::displayGlobalStats@87",
+      "fn::refreshSelectionStats@166"
     ],
     "callees": [
-      "fn::formatCount@298"
+      "fn::formatCount@303"
     ],
     "doc_comment": null,
     "signature": "function formatTokens(bytes: number): string",
@@ -4043,12 +4622,34 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::resetStatsCache@78",
-    "name": "resetStatsCache",
+    "stable_id": "fn::formatStat@78",
+    "name": "formatStat",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
     "start_line": 78,
-    "end_line": 81,
+    "end_line": 80,
+    "visibility": "Private",
+    "cognitive_complexity": 0,
+    "callers": [
+      "fn::displayGlobalStats@87",
+      "fn::wireSizeToggle@328"
+    ],
+    "callees": [
+      "fn::formatTokens@74",
+      "fn::formatBytes@4"
+    ],
+    "doc_comment": null,
+    "signature": "function formatStat(bytes: number): string",
+    "has_guard_coverage": true,
+    "panic_sites": 0
+  },
+  {
+    "stable_id": "fn::resetStatsCache@82",
+    "name": "resetStatsCache",
+    "kind": "Function",
+    "file": "src/ts/ui/stats.ts",
+    "start_line": 82,
+    "end_line": 85,
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
@@ -4061,12 +4662,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::displayGlobalStats@83",
+    "stable_id": "fn::displayGlobalStats@87",
     "name": "displayGlobalStats",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 83,
-    "end_line": 159,
+    "start_line": 87,
+    "end_line": 164,
     "visibility": "Public",
     "cognitive_complexity": 7,
     "callers": [
@@ -4074,16 +4675,17 @@
     ],
     "callees": [
       "interface::ScanData@26",
-      "fn::formatCount@298",
+      "fn::formatCount@303",
       "fn::formatTokens@74",
       "fn::formatBytes@4",
-      "fn::escapeHtml@304",
-      "fn::wireSizeToggle@323",
-      "fn::renderCompositionBar@203",
-      "fn::isExtensionFullySelected@398",
-      "fn::wireFileTypeTableClicks@347",
-      "fn::renderExtFilterPills@360",
-      "fn::updateAncillaryUI@251"
+      "fn::escapeHtml@309",
+      "fn::wireSizeToggle@328",
+      "fn::renderCompositionBar@208",
+      "fn::isExtensionFullySelected@415",
+      "fn::formatStat@78",
+      "fn::wireFileTypeTableClicks@364",
+      "fn::renderExtFilterPills@377",
+      "fn::updateAncillaryUI@256"
     ],
     "doc_comment": null,
     "signature": "function displayGlobalStats(data: ScanData)",
@@ -4091,12 +4693,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::refreshSelectionStats@161",
+    "stable_id": "fn::refreshSelectionStats@166",
     "name": "refreshSelectionStats",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 161,
-    "end_line": 201,
+    "start_line": 166,
+    "end_line": 206,
     "visibility": "Public",
     "cognitive_complexity": 13,
     "callers": [
@@ -4105,9 +4707,9 @@
     "callees": [
       "fn::showNotification@65",
       "fn::formatBytes@4",
-      "fn::formatCount@298",
+      "fn::formatCount@303",
       "fn::formatTokens@74",
-      "fn::updateAncillaryUI@251"
+      "fn::updateAncillaryUI@256"
     ],
     "doc_comment": null,
     "signature": "function refreshSelectionStats()",
@@ -4115,16 +4717,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::renderCompositionBar@203",
+    "stable_id": "fn::renderCompositionBar@208",
     "name": "renderCompositionBar",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 203,
-    "end_line": 249,
+    "start_line": 208,
+    "end_line": 254,
     "visibility": "Private",
     "cognitive_complexity": 6,
     "callers": [
-      "fn::displayGlobalStats@83"
+      "fn::displayGlobalStats@87"
     ],
     "callees": [
       "fn::extToKind@42"
@@ -4135,21 +4737,21 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::updateAncillaryUI@251",
+    "stable_id": "fn::updateAncillaryUI@256",
     "name": "updateAncillaryUI",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 251,
-    "end_line": 296,
+    "start_line": 256,
+    "end_line": 301,
     "visibility": "Private",
     "cognitive_complexity": 10,
     "callers": [
-      "fn::displayGlobalStats@83",
-      "fn::refreshSelectionStats@161"
+      "fn::displayGlobalStats@87",
+      "fn::refreshSelectionStats@166"
     ],
     "callees": [
       "fn::formatBytes@4",
-      "fn::escapeHtml@304"
+      "fn::escapeHtml@309"
     ],
     "doc_comment": null,
     "signature": "function updateAncillaryUI(fileCount: number, size: number, isSelection: boolean)",
@@ -4157,18 +4759,18 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::formatCount@298",
+    "stable_id": "fn::formatCount@303",
     "name": "formatCount",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 298,
-    "end_line": 302,
+    "start_line": 303,
+    "end_line": 307,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
       "fn::formatTokens@74",
-      "fn::displayGlobalStats@83",
-      "fn::refreshSelectionStats@161"
+      "fn::displayGlobalStats@87",
+      "fn::refreshSelectionStats@166"
     ],
     "callees": [
       "fn::n@13"
@@ -4179,17 +4781,17 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::escapeHtml@304",
+    "stable_id": "fn::escapeHtml@309",
     "name": "escapeHtml",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 304,
-    "end_line": 312,
+    "start_line": 309,
+    "end_line": 317,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::displayGlobalStats@83",
-      "fn::updateAncillaryUI@251"
+      "fn::displayGlobalStats@87",
+      "fn::updateAncillaryUI@256"
     ],
     "callees": [],
     "doc_comment": null,
@@ -4198,20 +4800,20 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::syncExtActiveStates@314",
+    "stable_id": "fn::syncExtActiveStates@319",
     "name": "syncExtActiveStates",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 314,
-    "end_line": 321,
+    "start_line": 319,
+    "end_line": 326,
     "visibility": "Private",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::wireFileTypeTableClicks@347",
-      "fn::renderExtFilterPills@360"
+      "fn::wireFileTypeTableClicks@364",
+      "fn::renderExtFilterPills@377"
     ],
     "callees": [
-      "fn::isExtensionFullySelected@398"
+      "fn::isExtensionFullySelected@415"
     ],
     "doc_comment": null,
     "signature": "function syncExtActiveStates()",
@@ -4219,20 +4821,19 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::wireSizeToggle@323",
+    "stable_id": "fn::wireSizeToggle@328",
     "name": "wireSizeToggle",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 323,
-    "end_line": 345,
+    "start_line": 328,
+    "end_line": 362,
     "visibility": "Private",
-    "cognitive_complexity": 8,
+    "cognitive_complexity": 11,
     "callers": [
-      "fn::displayGlobalStats@83"
+      "fn::displayGlobalStats@87"
     ],
     "callees": [
-      "fn::formatTokens@74",
-      "fn::formatBytes@4"
+      "fn::formatStat@78"
     ],
     "doc_comment": null,
     "signature": "function wireSizeToggle()",
@@ -4240,20 +4841,20 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::wireFileTypeTableClicks@347",
+    "stable_id": "fn::wireFileTypeTableClicks@364",
     "name": "wireFileTypeTableClicks",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 347,
-    "end_line": 358,
+    "start_line": 364,
+    "end_line": 375,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
-      "fn::displayGlobalStats@83"
+      "fn::displayGlobalStats@87"
     ],
     "callees": [
       "fn::setSelectionByExtension@721",
-      "fn::syncExtActiveStates@314"
+      "fn::syncExtActiveStates@319"
     ],
     "doc_comment": null,
     "signature": "function wireFileTypeTableClicks()",
@@ -4261,21 +4862,21 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::renderExtFilterPills@360",
+    "stable_id": "fn::renderExtFilterPills@377",
     "name": "renderExtFilterPills",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 360,
-    "end_line": 396,
+    "start_line": 377,
+    "end_line": 413,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::displayGlobalStats@83"
+      "fn::displayGlobalStats@87"
     ],
     "callees": [
-      "fn::isExtensionFullySelected@398",
+      "fn::isExtensionFullySelected@415",
       "fn::setSelectionByExtension@721",
-      "fn::syncExtActiveStates@314"
+      "fn::syncExtActiveStates@319"
     ],
     "doc_comment": null,
     "signature": "function renderExtFilterPills(sortedTypes: [string, { count: number; size: number }][])",
@@ -4283,18 +4884,18 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::isExtensionFullySelected@398",
+    "stable_id": "fn::isExtensionFullySelected@415",
     "name": "isExtensionFullySelected",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 398,
-    "end_line": 406,
+    "start_line": 415,
+    "end_line": 423,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [
-      "fn::displayGlobalStats@83",
-      "fn::syncExtActiveStates@314",
-      "fn::renderExtFilterPills@360"
+      "fn::displayGlobalStats@87",
+      "fn::syncExtActiveStates@319",
+      "fn::renderExtFilterPills@377"
     ],
     "callees": [],
     "doc_comment": null,
@@ -4303,16 +4904,16 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::generateTextReportAsync@408",
+    "stable_id": "fn::generateTextReportAsync@425",
     "name": "generateTextReportAsync",
     "kind": "Function",
     "file": "src/ts/ui/stats.ts",
-    "start_line": 408,
-    "end_line": 463,
+    "start_line": 425,
+    "end_line": 480,
     "visibility": "Public",
     "cognitive_complexity": 10,
     "callers": [
-      "fn::ensureReportText@319"
+      "fn::ensureReportText@320"
     ],
     "callees": [
       "interface::ScanData@26",
@@ -5040,8 +5641,8 @@
     "visibility": "Public",
     "cognitive_complexity": 7,
     "callers": [
-      "fn::wireFileTypeTableClicks@347",
-      "fn::renderExtFilterPills@360"
+      "fn::wireFileTypeTableClicks@364",
+      "fn::renderExtFilterPills@377"
     ],
     "callees": [
       "fn::getFileExt@693",
@@ -6377,15 +6978,15 @@
     "cognitive_complexity": 2,
     "callers": [
       "fn::formatRecentMeta@614",
-      "fn::displayGlobalStats@83",
-      "fn::refreshSelectionStats@161",
-      "fn::updateAncillaryUI@251",
-      "fn::wireSizeToggle@323",
-      "fn::generateTextReportAsync@408",
+      "fn::formatStat@78",
+      "fn::displayGlobalStats@87",
+      "fn::refreshSelectionStats@166",
+      "fn::updateAncillaryUI@256",
+      "fn::generateTextReportAsync@425",
       "fn::formatSize@226",
       "fn::updateViewer@64",
       "fn::renderVisualReport@240",
-      "fn::appendVisualTreeNode@373"
+      "fn::appendVisualTreeNode@374"
     ],
     "callees": [],
     "doc_comment": null,
@@ -6647,7 +7248,8 @@
       "const::engineReady@34"
     ],
     "callees": [
-      "fn::init@729"
+      "fn::init@729",
+      "fn::engine_version@49"
     ],
     "doc_comment": null,
     "signature": "function tryInitRustEngine(): Promise<void>",
@@ -6737,8 +7339,8 @@
     "visibility": "Public",
     "cognitive_complexity": 0,
     "callers": [
-      "fn::buildManifest@38",
-      "fn::assembleExportBlob@46",
+      "fn::buildManifest@41",
+      "fn::assembleExportBlob@49",
       "fn::filterNode@392",
       "fn::updateFileStat@425",
       "fn::collectNodes@441",
@@ -6748,7 +7350,7 @@
       "fn::nodeDirectlyMatchesQuery@680",
       "fn::getFileIconKind@699",
       "fn::openFile@79",
-      "fn::appendVisualTreeNode@373"
+      "fn::appendVisualTreeNode@374"
     ],
     "callees": [],
     "doc_comment": null,
@@ -6781,7 +7383,7 @@
       "fn::shouldRenderChildren@660",
       "fn::treeMatchesQuery@667",
       "fn::nodeDirectlyMatchesQuery@680",
-      "fn::appendVisualTreeNode@373"
+      "fn::appendVisualTreeNode@374"
     ],
     "callees": [],
     "doc_comment": null,
@@ -6803,12 +7405,12 @@
       "fn::buildSerializableEntries@655",
       "fn::postScanBatchToWorker@683",
       "fn::filterScanData@362",
-      "fn::displayGlobalStats@83",
-      "fn::generateTextReportAsync@408",
+      "fn::displayGlobalStats@87",
+      "fn::generateTextReportAsync@425",
       "fn::getActiveScanData@220",
       "fn::getReportKey@227",
       "fn::renderVisualReport@240",
-      "fn::ensureReportText@319"
+      "fn::ensureReportText@320"
     ],
     "callees": [],
     "doc_comment": null,
@@ -7005,9 +7607,9 @@
       "fn::applyScanData@118",
       "fn::setupFullPageDrop@237",
       "fn::exportCombined@14",
-      "fn::assembleExportBlob@46",
-      "fn::downloadZip@82",
-      "fn::refreshSelectionStats@161",
+      "fn::assembleExportBlob@49",
+      "fn::downloadZip@85",
+      "fn::refreshSelectionStats@166",
       "fn::openFile@79",
       "fn::copyCurrentReport@189",
       "fn::saveCurrentReport@200"
@@ -7051,8 +7653,8 @@
       "fn::clearProject@174"
     ],
     "callees": [
-      "fn::resetStatsCache@78",
-      "fn::renderReportPlaceholder@360",
+      "fn::resetStatsCache@82",
+      "fn::renderReportPlaceholder@361",
       "fn::getIdleReportMessage@76",
       "fn::closeViewer@138"
     ],
@@ -7156,9 +7758,9 @@
       "fn::setActiveTab@121"
     ],
     "callees": [
-      "fn::displayGlobalStats@83",
+      "fn::displayGlobalStats@87",
       "fn::renderVisualReport@240",
-      "fn::measurePerformance@459"
+      "fn::measurePerformance@460"
     ],
     "doc_comment": null,
     "signature": "function refreshAllUI()",
@@ -7178,7 +7780,7 @@
       "fn::setupListeners@389"
     ],
     "callees": [
-      "fn::refreshSelectionStats@161",
+      "fn::refreshSelectionStats@166",
       "fn::renderVisualReport@240"
     ],
     "doc_comment": null,
@@ -7312,7 +7914,7 @@
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
     "start_line": 240,
-    "end_line": 317,
+    "end_line": 318,
     "visibility": "Private",
     "cognitive_complexity": 7,
     "callers": [
@@ -7323,7 +7925,7 @@
       "interface::ScanData@26",
       "static::cachedVisualNode@19",
       "fn::formatBytes@4",
-      "fn::appendVisualTreeNode@373"
+      "fn::appendVisualTreeNode@374"
     ],
     "doc_comment": null,
     "signature": "function renderVisualReport(data: ScanData)",
@@ -7331,19 +7933,19 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::ensureReportText@319",
+    "stable_id": "fn::ensureReportText@320",
     "name": "ensureReportText",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 319,
-    "end_line": 358,
+    "start_line": 320,
+    "end_line": 359,
     "visibility": "Private",
     "cognitive_complexity": 4,
     "callers": [],
     "callees": [
       "interface::ScanData@26",
-      "fn::generateTextReportAsync@408",
-      "fn::measurePerformance@459"
+      "fn::generateTextReportAsync@425",
+      "fn::measurePerformance@460"
     ],
     "doc_comment": null,
     "signature": "function ensureReportText(data: ScanData, reportKey: string): Promise<string>",
@@ -7351,12 +7953,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::renderReportPlaceholder@360",
+    "stable_id": "fn::renderReportPlaceholder@361",
     "name": "renderReportPlaceholder",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 360,
-    "end_line": 371,
+    "start_line": 361,
+    "end_line": 372,
     "visibility": "Private",
     "cognitive_complexity": 1,
     "callers": [
@@ -7369,12 +7971,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::appendVisualTreeNode@373",
+    "stable_id": "fn::appendVisualTreeNode@374",
     "name": "appendVisualTreeNode",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 373,
-    "end_line": 444,
+    "start_line": 374,
+    "end_line": 445,
     "visibility": "Private",
     "cognitive_complexity": 5,
     "callers": [
@@ -7391,12 +7993,12 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::createReportTreeConnector@446",
+    "stable_id": "fn::createReportTreeConnector@447",
     "name": "createReportTreeConnector",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 446,
-    "end_line": 457,
+    "start_line": 447,
+    "end_line": 458,
     "visibility": "Private",
     "cognitive_complexity": 2,
     "callers": [],
@@ -7407,17 +8009,17 @@
     "panic_sites": 0
   },
   {
-    "stable_id": "fn::measurePerformance@459",
+    "stable_id": "fn::measurePerformance@460",
     "name": "measurePerformance",
     "kind": "Function",
     "file": "src/ts/ui/index.ts",
-    "start_line": 459,
-    "end_line": 475,
+    "start_line": 460,
+    "end_line": 476,
     "visibility": "Private",
     "cognitive_complexity": 5,
     "callers": [
       "fn::refreshAllUI@145",
-      "fn::ensureReportText@319"
+      "fn::ensureReportText@320"
     ],
     "callees": [],
     "doc_comment": null,
