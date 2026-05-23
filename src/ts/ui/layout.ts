@@ -110,12 +110,12 @@ export function initLayout(): void {
             <section class="use-cases">
               <p class="use-cases-label">Works great for</p>
               <div class="use-cases-pills">
-                <button class="uc-pill" data-uc="code-review">Code review</button>
-                <button class="uc-pill" data-uc="onboarding">Onboarding</button>
-                <button class="uc-pill" data-uc="debugging">Debugging</button>
-                <button class="uc-pill" data-uc="docs">Docs</button>
-                <button class="uc-pill" data-uc="refactoring">Refactoring</button>
-                <button class="uc-pill" data-uc="learning">Learning</button>
+                <button class="uc-pill" data-uc="new-project">Joining a project</button>
+                <button class="uc-pill" data-uc="security">Security review</button>
+                <button class="uc-pill" data-uc="incident">Incident response</button>
+                <button class="uc-pill" data-uc="docs">Writing docs</button>
+                <button class="uc-pill" data-uc="research">Open source research</button>
+                <button class="uc-pill" data-uc="handoff">Project handoff</button>
               </div>
               <div class="use-cases-detail" id="useCaseDetail" hidden></div>
             </section>
@@ -347,12 +347,12 @@ export function initLayout(): void {
 
   // Wire use-case pill cloud
   const UC_DESCRIPTIONS: Record<string, string> = {
-    "code-review": "Select the files changed in a PR, export them as one artifact, and hand it to an AI reviewer. It can trace call sites, spot inconsistencies, and suggest improvements across the entire diff — not just one file at a time.",
-    "onboarding": "New to an unfamiliar codebase? Export the full tree and let an AI walk you through the architecture, map the module boundaries, and explain what each part does — without spelunking through files one by one.",
-    "debugging": "Narrow your export to just the files involved — the broken component, its utilities, the failing test. A focused, structured slice gives an AI everything it needs to diagnose the issue without noise.",
-    "docs": "Export your project and prompt an AI to write a README, generate API docs, or add inline comments consistently across every file. One export, done.",
-    "refactoring": "Select the files you're about to touch and let an AI surface inconsistent patterns, naming drift, or coupling issues across the whole working set before you commit.",
-    "learning": "Studying an open-source project? Export a curated slice — the core, a feature, a module — and ask an AI to explain the architecture, trace a data flow, or compare patterns to what you already know.",
+    "new-project": "Dropped into an unfamiliar codebase as a new hire, freelancer, or open-source contributor? Export the project and ask an AI to map the architecture, identify entry points, and explain what each module does — before you touch a single file.",
+    "security": "Package the codebase and ask an AI to look for exposed secrets, missing auth checks, injection surfaces, and hardcoded credentials. Scope it to the code that actually ships — skip the test fixtures.",
+    "incident": "Something broke in production. Export the relevant service, configs, and utilities and ask an AI to trace the execution path and isolate the failure — faster than reading cold code under pressure.",
+    "docs": "Export the files that need documentation and ask an AI to write accurate READMEs, API references, or inline comments grounded in the actual code — not a generic template.",
+    "research": "Studying a complex open-source project? Export a curated slice — a subsystem, a feature, a module — and ask an AI to explain the design decisions, trace a data flow, or compare the approach to alternatives.",
+    "handoff": "Leaving a project or bringing someone new in? Export the relevant modules and let an AI generate the briefing document nobody ever writes — architecture, ownership, known quirks, what to touch first.",
   };
   const ucDetail = document.getElementById("useCaseDetail") as HTMLElement | null;
   document.querySelectorAll<HTMLButtonElement>(".uc-pill").forEach((pill) => {
