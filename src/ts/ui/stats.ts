@@ -133,7 +133,8 @@ export function displayGlobalStats(data: ScanData): void {
     elements.fileTypeTableBody.innerHTML = sortedTypes
       .map(([ext, td]) => {
         const kind = extToKind(ext);
-        return `<tr data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}">
+        const extLabel = ext || "[no extension]";
+        return `<tr data-ext="${ext}" data-active="${isExtensionFullySelected(ext)}" data-help="Click to select or deselect all ${extLabel} files in the project.">
           <td>
             <span class="type-row-swatch" style="background:${KIND_COLOR[kind]}"></span>
             ${ext || "[none]"}

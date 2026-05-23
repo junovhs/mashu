@@ -314,7 +314,7 @@ function setupFullPageDrop(): void {
         return processDirectory(handle);
       }
 
-      showNotification("Could not read folder.", 4000);
+      showNotification("Could not read that folder. Try selecting the project folder again, or use a desktop browser with folder-upload support.", 6000);
     });
   });
 }

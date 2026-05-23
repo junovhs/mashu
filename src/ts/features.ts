@@ -19,11 +19,14 @@ export async function exportCombined() {
   }
 
   const manifest = await buildManifest(activeData.allFilesList);
-  if (manifest.length === 0) return showNotification("No text files to export.", 3000);
+  if (manifest.length === 0) return showNotification("No text files found in the selection. Try including more file types.", 4000);
 
   const label = manifest.length === 1 ? "1 file" : `${manifest.length} files`;
-  showNotification(`Exporting ${label}…`, 4000);
+  showNotification(`Building export — ${label} selected…`, 4000);
   const blob = await assembleExportBlob(manifest);
+  if (blob.size > 5 * 1024 * 1024) {
+    showNotification("This export is large. Consider narrowing the selection before uploading it to an AI tool.", 5000);
+  }
   downloadBlob(blob, `${appState.fullScanData?.directoryData?.name}_export.txt`);
   showNotification("Export ready.", 2500);
 }
@@ -60,7 +63,7 @@ async function assembleExportBlob(manifest: FileInfo[]): Promise<Blob> {
     }
 
     if ((i + 1) % 50 === 0 && i + 1 < manifest.length) {
-      showNotification(`Exporting… (${i + 1}/${manifest.length})`, 2000);
+      showNotification(`Exporting selected files: ${i + 1} / ${manifest.length}`, 2000);
     }
   }
 
