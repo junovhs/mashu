@@ -746,7 +746,7 @@ async function init() {
   setupListeners();
   disableUIControls();
   renderEmptyShell();
-  console.log("Mashu (Cross-Browser) Initialized.");
+  console.log("MashuPack (Cross-Browser) Initialized.");
 }
 
 document.addEventListener("DOMContentLoaded", init);

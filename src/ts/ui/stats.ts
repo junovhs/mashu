@@ -427,7 +427,7 @@ export async function generateTextReportAsync(data: ScanData): Promise<string> {
 
   const root = data.directoryData;
   const lines = [
-    "//--- Mashu Report ---//",
+    "//--- MashuPack Report ---//",
     `// Timestamp: ${new Date().toISOString()}`,
     `// Root: ${root.name}`,
     "",

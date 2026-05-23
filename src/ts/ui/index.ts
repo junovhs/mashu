@@ -76,7 +76,7 @@ export function showNotification(message: string, duration = 3000): void {
 function getIdleReportMessage(): string {
   return [
     "// Load a folder to start. //",
-    "// Mashu scans locally in your browser and shows a tree, stats, and a plain-text report. //",
+    "// MashuPack scans locally in your browser and shows a tree, stats, and a plain-text report. //",
     "// Select files or folders to instantly focus the report, stats, and export actions. //",
   ].join("\n");
 }

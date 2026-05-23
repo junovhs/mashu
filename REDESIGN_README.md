@@ -1,4 +1,4 @@
-# Mashu — redesigned visuals
+# MashuPack — redesigned visuals
 
 This drop-in replaces the original Cloudflare-derivative styling with a custom "Paper" design system:
 warm cream + ink, single saffron accent, Inter Tight / JetBrains Mono / Fraunces.
