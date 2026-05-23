@@ -212,6 +212,7 @@ export function initLayout(): void {
     <div class="docs-sheet">
       <div class="docs-sheet-head">
         <span class="docs-sheet-title">Documentation</span>
+        <a href="/docs.html" target="_blank" rel="noopener" class="docs-page-link" title="Open as full page">↗ Full page</a>
         <button id="docsCloseBtn" class="docs-close" aria-label="Close documentation">✕</button>
       </div>
       <div class="docs-sheet-body">
