@@ -296,6 +296,22 @@ export function initLayout(): void {
   `;
   document.body.appendChild(docsOverlay);
 
+  // Mobile fallback — shown via CSS below 640px
+  const mobileFallback = document.createElement("div");
+  mobileFallback.id = "mobileFallback";
+  mobileFallback.innerHTML = `
+    <div class="mobile-fallback-content">
+      <div class="mobile-fallback-brand">Mashu</div>
+      <h1 class="mobile-fallback-title">Designed for desktop browsers</h1>
+      <p class="mobile-fallback-body">To analyze a local codebase, open this page on a laptop or desktop browser and drag in a project folder.</p>
+      <div class="mobile-fallback-actions">
+        <a href="/docs.html" class="mobile-fallback-btn">Read docs</a>
+        <a href="https://github.com/junovhs/mashu" class="mobile-fallback-btn mobile-fallback-btn--ghost" rel="noopener noreferrer" target="_blank">View GitHub</a>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(mobileFallback);
+
   const docsToggle = document.getElementById("docsToggleBtn");
   const docsClose = document.getElementById("docsCloseBtn");
   const openDocs = () => docsOverlay.classList.add("open");
