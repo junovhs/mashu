@@ -351,7 +351,7 @@ function wireSizeToggle(): void {
     const tbody = elements.fileTypeTableBody as HTMLTableSectionElement | undefined;
     if (tbody) {
       const fullData = appState.fullScanData;
-      tbody.querySelectorAll<HTMLElement>("tr[data-ext]").forEach((row) => {
+      tbody.querySelectorAll<HTMLTableRowElement>("tr[data-ext]").forEach((row) => {
         const ext = row.dataset.ext ?? "";
         const td = fullData?.directoryData?.fileTypes?.[ext];
         const sizeCell = row.cells[2];
