@@ -1,6 +1,6 @@
 # mashu -- Semantic Map
 
-**Purpose:** Browser tool for selecting files and combining them into a single text export.
+**Purpose:** Turn large local codebases into AI-ready context, entirely in your browser.
 
 ## Legend
 
@@ -132,9 +132,6 @@ Generated semantic map.
 `package.json`
 Node.js package manifest.
 
-`rust-core/pkg/package.json`
-Node.js package manifest.
-
 `tsconfig.json`
 Configuration for tsconfig.
 
@@ -157,26 +154,12 @@ Implements filetypes functionality. data.
 Implements jszip.min functionality. [COUPLING:mixed] [BEHAVIOR:sync-primitives] [QUALITY:complex-flow,concurrency-heavy]
 Semantic: synchronized side-effecting
 
-`rust-core/pkg/rust_core.d.ts`
-Build a pure tree from a JSON array of SerializableEntry.
-Exports: SyncInitInput, InitOutput, __wbg_init, InitInput
-
-`rust-core/pkg/rust_core.js`
-Build a pure tree from a JSON array of SerializableEntry. [COUPLING:mixed] [BEHAVIOR:owns-state,async] [SURFACE:external-api] [QUALITY:complex-flow]
-Exports: build_tree_from_entries, compute_selection_state, init_tree_index, engine_version
-Semantic: async side-effecting stateful module with external API surface
-
-`rust-core/pkg/rust_core_bg.wasm.d.ts`
-Implements wbindgen externrefs. [HOTSPOT] [BEHAVIOR:owns-const-state] [QUALITY:undocumented]
-Exports: build_tree_from_entries, compute_selection_state, init_tree_index, engine_version
-Semantic: constant-owning module
-
 `src/ts/app.ts`
 Implements app functionality. [COUPLING:mixed] [BEHAVIOR:owns-state,async,logs-and-continues] [SURFACE:external-api] [QUALITY:complex-flow,concurrency-heavy]
 Semantic: async side-effecting stateful module with external API surface that logs and continues
 
 `src/ts/features.ts`
-Implements export combined. [COUPLING:mixed] [BEHAVIOR:persists,async]
+Implements download zip. [COUPLING:mixed] [BEHAVIOR:persists,async]
 Exports: downloadZip, exportCombined
 Semantic: async side-effecting adapter
 
@@ -199,12 +182,12 @@ Exports: initHelpSystem, closeDocs, initLayout, openDocs
 Semantic: side-effecting
 
 `src/ts/ui/modals.ts`
-Implements apply preferred sidebar ratio. [COUPLING:pure] [BEHAVIOR:owns-const-state] [QUALITY:undocumented]
-Exports: applyPreferredSidebarRatio, clampSidebarWidth, initSidebarResizer, applySidebarRatio
-Semantic: pure computation constant-owning module
+Implements apply preferred sidebar ratio. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
+Exports: applyPreferredSidebarRatio, clampSidebarWidth, initSidebarResizer, reapplySidebarRatio
+Semantic: side-effecting stateful module
 
 `src/ts/ui/pretext.ts`
-Updates pretext tree. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
+Sets the pretext text. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
 Exports: syncPretextTree, initPretextText, setPretextText
 Semantic: side-effecting stateful module
 
@@ -219,7 +202,7 @@ Exports: applyRustSelectionState, setSelectionByExtension, toggleAllFolders, ini
 Semantic: side-effecting stateful adapter
 
 `src/ts/ui/viewer.ts`
-Implements open file. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
+Implements close viewer. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
 Exports: openFile, closeViewer, updateViewer
 Semantic: async side-effecting adapter that logs and continues
 
@@ -236,7 +219,7 @@ Exports: initTypeData, isLikelyText, sniffIsText, formatBytes
 Semantic: async side-effecting stateful adapter
 
 `src/ts/utils/result.ts`
-Implements to result. [HOTSPOT] [COUPLING:pure] [BEHAVIOR:async] [QUALITY:undocumented]
+Implements Err functionality. [HOTSPOT] [COUPLING:pure] [BEHAVIOR:async] [QUALITY:undocumented]
 Exports: toResult, None, Option, Some
 Semantic: async pure computation
 
@@ -350,20 +333,10 @@ DependencyGraph:
     Imports: []
     ImportedBy: [filesystem.ts, fs_utils.ts]
   scan.worker.ts:
-    Imports: [rust_core.js, rust_core_bg.wasm.d.ts, types/index.ts]
+    Imports: [types/index.ts]
     ImportedBy: []
   # --- Layer 3 -- App / Entrypoints ---
   app.css, components.css, dropoverlay.css, extensions.css, modals.css, report.css, stats.css, tree.css, viewer.css:
     Imports: []
     ImportedBy: [app.ts]
-  # --- Subproject -- rust-core/pkg ---
-  rust-core/pkg/package.json, rust_core.d.ts:
-    Imports: []
-    ImportedBy: []
-  rust_core.js:
-    Imports: [rust_core_bg.wasm.d.ts]
-    ImportedBy: [scan.worker.ts]
-  rust_core_bg.wasm.d.ts:
-    Imports: []
-    ImportedBy: [rust_core.js, scan.worker.ts]
 ```

@@ -28,13 +28,6 @@
     "doc_coverage": 1.0
   },
   {
-    "file": "rust-core/pkg/package.json",
-    "hotspot_score": 0.0,
-    "fan_in": 0,
-    "cognitive_complexity_max": 0,
-    "doc_coverage": 1.0
-  },
-  {
     "file": "tsconfig.json",
     "hotspot_score": 0.0,
     "fan_in": 0,
@@ -75,27 +68,6 @@
     "fan_in": 0,
     "cognitive_complexity_max": 22,
     "doc_coverage": 1.0
-  },
-  {
-    "file": "rust-core/pkg/rust_core.d.ts",
-    "hotspot_score": 0.0,
-    "fan_in": 0,
-    "cognitive_complexity_max": 0,
-    "doc_coverage": 0.3333333
-  },
-  {
-    "file": "rust-core/pkg/rust_core.js",
-    "hotspot_score": 0.34666666,
-    "fan_in": 1,
-    "cognitive_complexity_max": 21,
-    "doc_coverage": 1.0
-  },
-  {
-    "file": "rust-core/pkg/rust_core_bg.wasm.d.ts",
-    "hotspot_score": 0.0,
-    "fan_in": 0,
-    "cognitive_complexity_max": 0,
-    "doc_coverage": 0.0
   },
   {
     "file": "src/ts/app.ts",
@@ -288,9 +260,9 @@
   },
   {
     "file": "src/ts/ui/index.ts",
-    "hotspot_score": 0.3466667,
+    "hotspot_score": 0.36,
     "fan_in": 4,
-    "cognitive_complexity_max": 6,
+    "cognitive_complexity_max": 7,
     "doc_coverage": 0.0
   }
 ]

@@ -57,7 +57,7 @@ export function initLayout(): void {
 
         <div id="extFilterBar" style="display:none;">
           <div class="ext-filter-head">
-            <span class="ext-filter-label">File types</span>
+            <span class="ext-filter-label">Select by type</span>
           </div>
           <div id="extPills" class="ext-pills"></div>
         </div>
@@ -99,7 +99,7 @@ export function initLayout(): void {
                   </svg>
                 </div>
                 <div class="dz-title">Drop a folder here</div>
-                <div class="dz-sub">… or any file selection — Mashu figures out the shape.</div>
+                <div class="dz-sub">or drag individual files — Mashu groups them by folder.</div>
                 <div class="dz-or">OR</div>
                 <button id="selectFolderBtn" class="dz-browse" data-help="Open your file browser to select a folder. Mashu scans it locally — nothing is uploaded.">Browse for folder</button>
                 <p class="dz-privacy">Everything stays in your browser</p>
