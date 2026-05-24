@@ -85,9 +85,9 @@ export function initLayout(): void {
           <section class="empty-state-hero">
             <div class="empty-state-copy">
               <h1 class="empty-state-title">
-                Turn any folder into <span class="empty-state-title-accent">readable</span> text.
+                Turn any folder into <span class="empty-state-title-accent">clean</span> text.
               </h1>
-              <p class="empty-state-sub">Modern AI tools don't just read uploads — they navigate them. MashuPack exports your project as a structured, file-addressable artifact that AI tools can grep, search, and explore like a real codebase.</p>
+              <p class="empty-state-sub">Drop a folder, get a single text file with everything in it — structure intact, binaries excluded automatically. Paste it anywhere.</p>
             </div>
 
             <div id="mainAction" class="empty-state-drop-wrap">
