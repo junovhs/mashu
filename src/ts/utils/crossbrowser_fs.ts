@@ -307,46 +307,93 @@ function entryToFile(entry: FSFileEntry): Promise<File | null> {
 // FOLDER PICKER (programmatic)
 // ============================================================================
 
+// Minimal types for the File System Access API (showDirectoryPicker).
+// Used internally; avoids conflicts with legacy FileSystemEntry types above.
+interface _FSAFileHandle {
+  readonly kind: "file";
+  readonly name: string;
+  getFile(): Promise<File>;
+}
+
+interface _FSADirectoryHandle {
+  readonly kind: "directory";
+  readonly name: string;
+  values(): AsyncIterableIterator<_FSAFileHandle | _FSADirectoryHandle>;
+}
+
+type _ShowDirectoryPickerFn = (opts: { mode: string }) => Promise<_FSADirectoryHandle>;
+
+// Wrap a native FileSystemDirectoryHandle into our VirtualDirectoryHandle shape.
+// Files are read lazily one directory at a time — same pattern as drag-and-drop.
+function wrapFSADir(handle: _FSADirectoryHandle): VirtualDirectoryHandle {
+  return {
+    kind: "directory",
+    name: handle.name,
+    async *values() {
+      for await (const entry of handle.values()) {
+        if (entry.kind === "file") {
+          const file = await (entry as _FSAFileHandle).getFile();
+          yield {
+            kind: "file" as const,
+            name: file.name,
+            size: file.size,
+            getFile: () => Promise.resolve(file),
+          };
+        } else {
+          yield wrapFSADir(entry as _FSADirectoryHandle);
+        }
+      }
+    },
+  };
+}
+
 /**
  * Show a folder selection dialog.
+ * Prefers the File System Access API (showDirectoryPicker) — no "upload" dialog,
+ * no secondary "are you sure?" confirmation. Falls back to <input webkitdirectory>
+ * for browsers that don't support it (Firefox, older Safari).
  * Returns null if cancelled.
  */
 export function showFolderPicker(): Promise<VirtualDirectoryHandle | null> {
+  const fsaPicker = (window as unknown as { showDirectoryPicker?: _ShowDirectoryPickerFn }).showDirectoryPicker;
+  if (typeof fsaPicker === "function") {
+    console.log("[picker] using showDirectoryPicker");
+    return fsaPicker.call(window, { mode: "read" })
+      .then((handle) => wrapFSADir(handle))
+      .catch((err: unknown) => {
+        console.log("[picker] showDirectoryPicker error:", err);
+        // User dismissed the picker — not an error
+        if (err instanceof DOMException && (err.name === "AbortError" || err.name === "NotAllowedError")) {
+          return null;
+        }
+        // Unexpected error — fall back to input method
+        return showFolderPickerInput();
+      });
+  }
+  console.log("[picker] showDirectoryPicker unavailable, using input fallback");
+  return showFolderPickerInput();
+}
+
+function showFolderPickerInput(): Promise<VirtualDirectoryHandle | null> {
   return new Promise((resolve) => {
-    console.log("[showFolderPicker] Creating input element");
-    
     const input = document.createElement("input");
     input.type = "file";
     input.setAttribute("webkitdirectory", "");
     input.multiple = true;
 
-    // Some browsers need element in DOM
     input.style.position = "fixed";
     input.style.top = "-10000px";
     input.style.left = "-10000px";
     document.body.appendChild(input);
 
     input.addEventListener("change", async () => {
-      console.log("[showFolderPicker] Change event fired");
-      
       const files = input.files;
       input.remove();
-
-      if (!files || files.length === 0) {
-        console.log("[showFolderPicker] No files selected");
-        resolve(null);
-        return;
-      }
-
-      console.log(`[showFolderPicker] Got ${files.length} files`);
+      if (!files || files.length === 0) { resolve(null); return; }
       const handle = await buildFromFileListAsync(files);
-      console.log("[showFolderPicker] Built handle:", handle);
       resolve(handle);
     });
 
-    // Note: Removed the focus-based cancel detection as it interferes with
-    // browser confirmation dialogs ("Upload X files?")
-    
     input.click();
   });
 }

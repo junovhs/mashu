@@ -340,51 +340,15 @@ function getFileListRootName(files: FileList): string | null {
 // ============================================================================
 
 async function handleSelect(): Promise<void> {
-  console.log("[handleSelect] Called, processingInProgress:", appState.processingInProgress);
   if (appState.processingInProgress) return;
-
-  const hiddenInput = document.getElementById("hiddenFolderInput") as HTMLInputElement | null;
-  if (hiddenInput) {
-    hiddenInput.click();
-    return;
-  }
-
   const handle = await showFolderPicker();
-  console.log("[handleSelect] Got handle:", handle);
-  if (handle) {
-    await processDirectory(handle);
-  } else {
-    console.log("[handleSelect] No handle returned (cancelled or error)");
-  }
+  if (handle) await processDirectory(handle);
 }
 
 // ============================================================================
 // HIDDEN FILE INPUT FOR FALLBACK (already in DOM via layout)
 // ============================================================================
 
-function setupHiddenInput(): void {
-  // Check if there's already a hidden input, if not create one
-  let hiddenInput = document.getElementById("hiddenFolderInput") as HTMLInputElement | null;
-  
-  if (!hiddenInput) {
-    hiddenInput = document.createElement("input");
-    hiddenInput.type = "file";
-    hiddenInput.id = "hiddenFolderInput";
-    hiddenInput.setAttribute("webkitdirectory", "");
-    hiddenInput.multiple = true;
-    hiddenInput.style.display = "none";
-    document.body.appendChild(hiddenInput);
-  }
-
-  hiddenInput.addEventListener("change", async () => {
-    const files = hiddenInput!.files;
-    if (files && files.length > 0) {
-      await processFileList(files);
-    }
-    // Reset for next use
-    hiddenInput!.value = "";
-  });
-}
 
 function setupListeners(): void {
   // Full-page drop is handled separately
@@ -731,7 +695,6 @@ async function init() {
   populateElements();
   initTabs();
   initSidebarResizer();
-  setupHiddenInput();
   initWorker();
 
   // Load filetype data

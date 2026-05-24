@@ -19,28 +19,27 @@
       --bg-2:   oklch(0.95 0.007 80);
       --line:   oklch(0.88 0.006 80);
       --accent: oklch(0.52 0.18 255);
+      --accent-soft: oklch(0.94 0.04 255);
       --font-sans: "Inter Tight", system-ui, sans-serif;
       --font-mono: "JetBrains Mono", monospace;
       --font-display: "Fraunces", Georgia, serif;
+      --sidebar-w: 220px;
     }
 
-    html { background: var(--bg); color: var(--ink); font-family: var(--font-sans); }
+    html { background: var(--bg); color: var(--ink); font-family: var(--font-sans); scroll-behavior: smooth; }
 
-    body {
-      min-height: 100vh;
-      padding: 0 20px 80px;
-    }
-
-    /* Nav */
+    /* ── Top nav ── */
     .site-nav {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 24px 0 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+      padding: 0 32px;
+      height: 52px;
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 20px;
     }
     .nav-brand {
       font-family: var(--font-display);
@@ -49,7 +48,7 @@
       color: var(--ink);
       text-decoration: none;
     }
-    .nav-sep { color: var(--line); }
+    .nav-sep { color: var(--ink-4); }
     .nav-page { font-size: 13px; color: var(--ink-3); }
     .nav-back {
       margin-left: auto;
@@ -60,17 +59,71 @@
       border: 1px solid var(--line);
       border-radius: 6px;
       padding: 4px 10px;
+      white-space: nowrap;
     }
     .nav-back:hover { color: var(--ink-2); border-color: var(--ink-4); }
 
-    /* Content */
-    .doc-content {
-      max-width: 680px;
+    /* ── Layout ── */
+    .doc-layout {
+      display: flex;
+      max-width: 1040px;
       margin: 0 auto;
-      padding-top: 56px;
+      padding: 0 32px 100px;
+      gap: 64px;
+      align-items: flex-start;
     }
 
-    .doc-header { margin-bottom: 56px; }
+    /* ── Sidebar ── */
+    .doc-sidebar {
+      flex-shrink: 0;
+      width: var(--sidebar-w);
+      position: sticky;
+      top: 72px;
+      max-height: calc(100vh - 92px);
+      overflow-y: auto;
+      padding: 32px 0 32px;
+    }
+    .doc-sidebar::-webkit-scrollbar { width: 4px; }
+    .doc-sidebar::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    .sidebar-label {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      margin-bottom: 12px;
+      padding-left: 10px;
+    }
+    .sidebar-nav { list-style: none; }
+    .sidebar-nav li + li { margin-top: 1px; }
+    .sidebar-nav a {
+      display: block;
+      font-size: 13px;
+      color: var(--ink-3);
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border-left: 2px solid transparent;
+      transition: color 0.12s, background 0.12s, border-color 0.12s;
+      line-height: 1.4;
+    }
+    .sidebar-nav a:hover { color: var(--ink-2); background: var(--bg-2); }
+    .sidebar-nav a.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-left-color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ── Main content ── */
+    .doc-content {
+      flex: 1;
+      min-width: 0;
+      padding-top: 40px;
+    }
+
+    .doc-header { margin-bottom: 52px; }
     .doc-title {
       font-family: var(--font-display);
       font-size: 36px;
@@ -85,8 +138,8 @@
       color: var(--ink-2);
     }
 
-    /* Sections */
-    .doc-section { margin-bottom: 52px; }
+    /* ── Sections ── */
+    .doc-section { margin-bottom: 56px; scroll-margin-top: 72px; }
     h2 {
       font-family: var(--font-display);
       font-size: 22px;
@@ -104,18 +157,38 @@
     }
     p:last-child { margin-bottom: 0; }
 
-    ul, ol {
-      padding-left: 20px;
-      margin-bottom: 14px;
-    }
+    ul, ol { padding-left: 20px; margin-bottom: 14px; }
     li {
       font-size: 15px;
       line-height: 1.75;
       color: var(--ink-2);
       margin-bottom: 4px;
     }
+    li strong { color: var(--ink); }
 
-    /* Table */
+    /* ── Callout ── */
+    .callout {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 20px 0;
+    }
+    .callout p { font-size: 14px; margin-bottom: 0; }
+
+    /* ── Code ── */
+    code {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1px 5px;
+      color: var(--ink-2);
+    }
+
+    /* ── Table ── */
     .bench-table {
       width: 100%;
       border-collapse: collapse;
@@ -137,52 +210,38 @@
     }
     .bench-table td:last-child { text-align: right; color: var(--ink); font-weight: 500; }
 
-    /* Callout */
-    .callout {
-      background: var(--bg-2);
-      border: 1px solid var(--line);
-      border-left: 3px solid var(--accent);
-      border-radius: 6px;
-      padding: 14px 18px;
-      margin: 20px 0;
+    /* ── Shortcut grid ── */
+    .shortcuts {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 6px 20px;
+      margin: 16px 0;
     }
-    .callout p { font-size: 14px; margin-bottom: 0; }
-
-    /* Code */
-    code {
+    .shortcuts kbd {
       font-family: var(--font-mono);
-      font-size: 12.5px;
+      font-size: 12px;
       background: var(--bg-2);
       border: 1px solid var(--line);
       border-radius: 4px;
-      padding: 1px 5px;
+      padding: 2px 7px;
       color: var(--ink-2);
+      white-space: nowrap;
+      align-self: start;
+      margin-top: 2px;
+    }
+    .shortcuts span {
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.6;
     }
 
-    /* TOC */
-    .toc {
-      background: var(--bg-2);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 18px 22px;
-      margin-bottom: 48px;
+    /* ── Responsive ── */
+    @media (max-width: 760px) {
+      .doc-layout { flex-direction: column; gap: 0; padding: 0 20px 80px; }
+      .doc-sidebar { position: static; width: 100%; max-height: none; padding: 24px 0 0; }
+      .doc-content { padding-top: 24px; }
+      .site-nav { padding: 0 20px; }
     }
-    .toc-title {
-      font-size: 10px;
-      font-family: var(--font-mono);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-4);
-      margin-bottom: 10px;
-    }
-    .toc ol { margin-bottom: 0; }
-    .toc li { margin-bottom: 3px; }
-    .toc a {
-      font-size: 14px;
-      color: var(--ink-3);
-      text-decoration: none;
-    }
-    .toc a:hover { color: var(--accent); }
   </style>
 </head>
 <body>
@@ -194,127 +253,217 @@
     <a class="nav-back" href="/">Open app</a>
   </nav>
 
-  <div class="doc-content">
+  <div class="doc-layout">
 
-    <header class="doc-header">
-      <h1 class="doc-title">How MashuPack works</h1>
-      <p class="doc-lead">Everything you need to know about what MashuPack does, how your files are handled, and what to do with the output.</p>
-    </header>
-
-    <nav class="toc" aria-label="Contents">
-      <div class="toc-title">On this page</div>
-      <ol>
-        <li><a href="#what-it-does">What MashuPack does</a></li>
-        <li><a href="#privacy">Your files stay in your browser</a></li>
-        <li><a href="#how-to-use">How to use it</a></li>
-        <li><a href="#export-format">What the export looks like</a></li>
-        <li><a href="#large-repos">Large folders and scan time</a></li>
-        <li><a href="#with-ai">Using the export with AI tools</a></li>
+    <aside class="doc-sidebar">
+      <div class="sidebar-label">On this page</div>
+      <ul class="sidebar-nav">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#loading">Loading a project</a></li>
+        <li><a href="#tree">Browsing the tree</a></li>
+        <li><a href="#selecting">Selecting files</a></li>
+        <li><a href="#stats">Stats &amp; token toggle</a></li>
+        <li><a href="#exporting">Exporting</a></li>
+        <li><a href="#viewer">File viewer</a></li>
+        <li><a href="#export-format">Export format</a></li>
+        <li><a href="#large-repos">Large repos</a></li>
+        <li><a href="#with-ai">Using with AI tools</a></li>
         <li><a href="#tech">How it's built</a></li>
-      </ol>
-    </nav>
-
-    <section class="doc-section" id="what-it-does">
-      <h2>What MashuPack does</h2>
-      <p>MashuPack packages a local codebase into a single structured text file that AI tools can navigate like a real project.</p>
-      <p>The common objection: <em>"stuffing a whole repo into an AI ruins its attention."</em> That's true for naive copy-paste dumps. But modern AI tools like Claude and ChatGPT have internal environments — they can execute code, grep, search, and navigate structured text the same way a developer would in a terminal. When the export has clear file path headers and explicit boundaries, the AI doesn't have to read everything at once. It finds what it needs, reads that file, traces imports, and moves on.</p>
-      <p>MashuPack's job is to make that export as clean and navigable as possible: select the right files, package them with structured headers, and give the AI something it can actually work with — not a wall of text.</p>
-      <p>Everything runs in your browser. Nothing is uploaded to any server.</p>
-    </section>
-
-    <section class="doc-section" id="privacy">
-      <h2>Your files stay in your browser</h2>
-      <p>MashuPack reads your files through your browser's built-in file APIs. This is the same mechanism your browser uses when you upload a file to any website — except MashuPack never sends anything anywhere.</p>
-      <p>When you drop a folder or use the folder picker, your browser gives MashuPack read access to that folder. MashuPack builds the file tree, calculates stats, and holds everything in memory. No data is uploaded to any server. There is no MashuPack server for it to go to.</p>
-      <p>File contents are read only when you actually need them — when you preview a file, or when you export. Everything else (the tree, stats, file names, sizes) comes from filesystem metadata, which is much lighter.</p>
-
-      <div class="callout">
-        <p>If you export a combined text file and upload it to an AI tool, that upload is governed by that tool's privacy policy — not MashuPack's. MashuPack's job ends when the file lands on your disk.</p>
-      </div>
-    </section>
-
-    <section class="doc-section" id="how-to-use">
-      <h2>How to use it</h2>
-      <ol>
-        <li><strong>Drop a folder</strong> onto the app, or use the folder picker. MashuPack scans the folder and builds a tree.</li>
-        <li><strong>Browse the tree.</strong> You can filter by name using the search bar, or click a file to preview it.</li>
-        <li><strong>Select what matters.</strong> Tick files or folders to scope your export to just those items. Use the file-type pills to select all files of a given type at once. Leave everything unticked to export the full project.</li>
-        <li><strong>Export.</strong> Click "Export combined text" to download a single text file containing your selected files, clearly separated with file path headers.</li>
-      </ol>
-      <p>The "Download project .zip" button downloads the entire folder as a ZIP archive, regardless of selection — it is a separate action from the text export.</p>
-    </section>
-
-    <section class="doc-section" id="export-format">
-      <h2>What the export looks like</h2>
-      <p>The exported file is plain text. Each file starts with a clearly marked header showing its path, followed by the file contents. Files are separated with a divider.</p>
-      <p>It looks roughly like this:</p>
-      <div class="callout">
-        <p><code>// src/app.ts</code><br>
-        <code>// ─────────────────────────────</code><br>
-        <code>import { something } from "./lib";</code><br>
-        <code>...</code><br><br>
-        <code>// src/lib.ts</code><br>
-        <code>// ─────────────────────────────</code><br>
-        <code>export function something() { ... }</code></p>
-      </div>
-      <p>This structure gives AI tools a file-addressable artifact to work with. Instead of one undifferentiated blob of text, the model can see which code belongs to which file and how the project is organized.</p>
-      <p>It works well with AI tools that accept file uploads or large text pastes, especially those with file-analysis or search capabilities.</p>
-    </section>
-
-    <section class="doc-section" id="large-repos">
-      <h2>Large folders and scan time</h2>
-      <p>For most projects, MashuPack feels instant. For very large repositories — tens of thousands of files — the initial scan can take 10–20 seconds.</p>
-      <p>This time is spent on browser filesystem enumeration: your browser has to read the metadata for every file in the folder before MashuPack can build the tree. This is a browser-level operation and cannot be meaningfully sped up on MashuPack's end.</p>
-      <p>Once the scan is complete, everything else — browsing the tree, selecting files, filtering, exporting — is fast regardless of project size. MashuPack uses a virtualized tree renderer and Rust/WebAssembly for selection math, so even a 28,000-file repository navigates smoothly.</p>
-
-      <table class="bench-table" aria-label="Performance benchmark with kubernetes/kubernetes">
-        <thead>
-          <tr>
-            <th>Step</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Filesystem scan (28,481 files)</td><td>13.3s</td></tr>
-          <tr><td>Tree initialization</td><td>16ms</td></tr>
-          <tr><td>Tree render</td><td>7ms</td></tr>
-          <tr><td>UI refresh</td><td>3.4s</td></tr>
-          <tr><td>Visible load total</td><td>~20.9s</td></tr>
-        </tbody>
-      </table>
-
-      <p>Tested with the <code>kubernetes/kubernetes</code> repository on a desktop browser. No backend. No upload.</p>
-    </section>
-
-    <section class="doc-section" id="with-ai">
-      <h2>Using the export with AI tools</h2>
-      <p>The obvious objection: <em>"stuffing a whole repo into an AI's context ruins its attention — the model can't reason over thousands of files."</em></p>
-      <p>That objection is correct for naive prompt dumps. But it misses how modern AI systems actually work.</p>
-      <p>Tools like ChatGPT and Claude don't just read uploaded files as raw context. They have internal environments where they can execute code, grep, search, and navigate structured text the same way a developer would in a terminal. When you upload a MashuPack export, the model can treat it as a virtual project — finding a function, tracing a dependency, or reading a specific file — without loading every byte into its attention window at once.</p>
-      <p>This is why the export format uses clear path headers and explicit file boundaries. The AI isn't reading the export like a wall of text. It's navigating it like a filesystem — and the headers are what make that navigation reliable.</p>
-      <p>No guarantees: this depends on the AI provider and the tool you're using. But with current Claude and ChatGPT file analysis capabilities, a well-structured MashuPack export of a real codebase is often more useful than pasting individual files — because the model can see the whole project layout and search for what it needs.</p>
-      <div class="callout">A few things that still help: select only the files relevant to your question, use file-type pills to skip assets and lock files, and check the file size before exporting — very large exports may behave differently depending on the tool.</div>
-    </section>
-
-    <section class="doc-section" id="tech">
-      <h2>How it's built</h2>
-      <p>MashuPack is a static browser app — no server, no backend, no build pipeline on your end. It deploys as plain files on GitHub Pages and runs entirely client-side.</p>
-      <p>The part I'm most proud of: the indexing and selection math runs in <strong>Rust compiled to WebAssembly</strong>.</p>
-      <p>When you load a large project, there's real computation involved — building a tree from tens of thousands of file entries, calculating selection state, tracking which files are included, computing stats. Doing that on the browser's main thread would block rendering and make the UI feel sluggish. Rust/WASM behind a Web Worker keeps all of that compute off the main thread and genuinely fast, even at the scale of the Kubernetes repository.</p>
-      <p>The full stack:</p>
-      <ul>
-        <li><strong>Rust + WebAssembly</strong> — tree construction, selection state, index math. Compiled with <code>wasm-pack</code>, runs in a Web Worker.</li>
-        <li><strong>TypeScript</strong> — all UI logic, event handling, filesystem coordination, export assembly.</li>
-        <li><strong>Vite</strong> — build tooling and dev server. Handles WASM imports cleanly via <code>vite-plugin-wasm</code>.</li>
-        <li><strong>File System Access API</strong> — the browser API that lets MashuPack read local folders without uploading them. Gives real directory handles with lazy file reading.</li>
-        <li><strong>Web Workers</strong> — the Rust/WASM engine runs in a Worker, keeping the main thread free for UI.</li>
-        <li><strong>Virtualized tree rendering</strong> — only the visible tree rows are in the DOM at any time. Scrolling through 28,000 files stays smooth because the browser isn't rendering 28,000 elements.</li>
-        <li><strong>CodeMirror</strong> — syntax-highlighted file preview.</li>
       </ul>
-      <p>The result is an app that handles repositories most browser tools would choke on, while still running as a simple static site you can open from a URL.</p>
-    </section>
+    </aside>
 
+    <main class="doc-content">
+
+      <header class="doc-header">
+        <h1 class="doc-title">How MashuPack works</h1>
+        <p class="doc-lead">Everything you need to know about what MashuPack does, how your files are handled, and what to do with the output.</p>
+      </header>
+
+      <section class="doc-section" id="overview">
+        <h2>Overview</h2>
+        <p>MashuPack packages a local codebase into a single structured text file that AI tools can navigate like a real project.</p>
+        <p>The common objection: <em>"stuffing a whole repo into an AI ruins its attention."</em> That's true for naive copy-paste dumps. But modern AI tools like Claude and ChatGPT have internal environments — they can execute code, grep, search, and navigate structured text the same way a developer would in a terminal. When the export has clear file path headers and explicit boundaries, the AI doesn't have to read everything at once. It finds what it needs, reads that file, traces imports, and moves on.</p>
+        <p>MashuPack's job is to make that export as clean and navigable as possible: select the right files, package them with structured headers, and give the AI something it can actually work with — not a wall of text.</p>
+        <p>Everything runs in your browser. Nothing is uploaded to any server.</p>
+      </section>
+
+      <section class="doc-section" id="privacy">
+        <h2>Privacy</h2>
+        <p>MashuPack reads your files through your browser's built-in File System Access API. When you drop a folder or use the folder picker, your browser gives MashuPack read access to that folder. MashuPack builds the file tree, calculates stats, and holds everything in memory. No data is uploaded to any server. There is no MashuPack server for it to go to.</p>
+        <p>File contents are read only when you actually need them — when you preview a file in the viewer, or when you export. Everything else (the tree, stats, file names, sizes) comes from filesystem metadata, which is much lighter.</p>
+        <div class="callout">
+          <p>If you export a combined text file and upload it to an AI tool, that upload is governed by that tool's privacy policy — not MashuPack's. MashuPack's job ends when the file lands on your disk.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="loading">
+        <h2>Loading a project</h2>
+        <p>Two ways to load a folder:</p>
+        <ul>
+          <li><strong>Drag and drop</strong> — drag a folder from your file manager and drop it anywhere on the app. A full-screen drop target appears as you drag.</li>
+          <li><strong>Folder picker</strong> — click "Browse for folder" to open a native folder picker dialog.</li>
+        </ul>
+        <p>MashuPack scans the folder and builds the file tree. For most projects this is nearly instant. For very large repositories, see <a href="#large-repos">Large repos</a>.</p>
+        <p>To start fresh, click "Clear project" in the top bar. Your current project is discarded and the drop zone reappears.</p>
+      </section>
+
+      <section class="doc-section" id="tree">
+        <h2>Browsing the tree</h2>
+        <p>The left panel shows your project's file tree. Files are organized by folder, matching the structure on disk.</p>
+        <ul>
+          <li><strong>Click a folder row</strong> to expand or collapse it.</li>
+          <li><strong>Click a filename</strong> to preview it in the <a href="#viewer">File viewer</a>.</li>
+          <li><strong>Filter by name</strong> using the search bar at the top of the tree. Only files and folders matching the query stay visible.</li>
+          <li><strong>Expand all / Collapse all</strong> buttons open or close every folder at once.</li>
+        </ul>
+        <p>The sidebar is resizable — drag the handle on the right edge to adjust its width.</p>
+
+        <p><strong>Keyboard shortcuts</strong></p>
+        <div class="shortcuts">
+          <kbd>/</kbd>         <span>Focus the search / filter input</span>
+          <kbd>Shift+click</kbd> <span>Expand or collapse an entire folder subtree (all descendants)</span>
+          <kbd>Alt+click</kbd>  <span>Also expands or collapses a folder subtree</span>
+          <kbd>Esc</kbd>        <span>Close the Docs panel (when open)</span>
+        </div>
+      </section>
+
+      <section class="doc-section" id="selecting">
+        <h2>Selecting files</h2>
+        <p>Selection scopes your export and stats to just the files you care about. By default, with nothing selected, MashuPack operates on the full project.</p>
+        <ul>
+          <li><strong>Tick a checkbox</strong> next to any file or folder to include it in your export. Ticking a folder selects everything inside it.</li>
+          <li><strong>Select All / Deselect All</strong> — buttons in the tree toolbar to quickly select or clear everything.</li>
+          <li><strong>File-type pills</strong> (shown in the "Select by type" row) — click a pill to toggle selection for all files of that extension at once. The pill highlights when all files of that type are selected.</li>
+          <li><strong>File types table</strong> in the right panel — click any row to toggle selection for all files of that type, same as the pills.</li>
+        </ul>
+        <p>When you have a selection active, a <code>SELECTION</code> pill appears in the stats header, and all stats and export actions operate on your selection only. Click "Deselect all" to return to full-project mode.</p>
+      </section>
+
+      <section class="doc-section" id="stats">
+        <h2>Stats &amp; the token toggle</h2>
+        <p>The right panel shows live stats for the loaded project (or your selection, if active):</p>
+        <ul>
+          <li><strong>Files</strong> — total file count in scope.</li>
+          <li><strong>Folders</strong> — total folder count.</li>
+          <li><strong>Size</strong> — total bytes of all files in scope. <strong>Click this stat to toggle between bytes and estimated token count.</strong> The token estimate uses a ~4 characters per token approximation, consistent with GPT and Claude tokenizers for typical code. Useful for sanity-checking before uploading to a model with a token limit.</li>
+          <li><strong>Root</strong> — the name of the loaded folder.</li>
+        </ul>
+        <p>Below the summary stats:</p>
+        <ul>
+          <li><strong>Composition bar</strong> — a color-coded proportional bar showing how each file type contributes to total project size. Hover a segment for the exact type and percentage.</li>
+          <li><strong>File types table</strong> — lists every extension found, with file count and size. The size column respects the bytes/tokens toggle. Click any row to select all files of that type.</li>
+        </ul>
+      </section>
+
+      <section class="doc-section" id="exporting">
+        <h2>Exporting</h2>
+        <p>Three export actions are available in the top bar and report panel:</p>
+        <ul>
+          <li><strong>Export combined text</strong> — downloads a single structured <code>.txt</code> file containing all files in scope (your selection, or the full project if nothing is selected). This is the main output for AI tools.</li>
+          <li><strong>Download .zip</strong> — downloads the full project as a ZIP archive, <em>regardless of your selection</em>. It is a separate action from the text export.</li>
+          <li><strong>Copy to clipboard</strong> — copies the current text report to your clipboard. Useful for pasting directly into an AI chat without saving a file.</li>
+          <li><strong>Save as .txt</strong> — saves the current text report as a <code>.txt</code> file. Same content as "Export combined text" but triggered from within the report panel.</li>
+        </ul>
+        <p>The bottom status bar always shows how many files and how many bytes are currently in scope, so you can check the export size before downloading.</p>
+      </section>
+
+      <section class="doc-section" id="viewer">
+        <h2>File viewer</h2>
+        <p>Click any file in the tree to preview it in the File viewer tab. The viewer shows the file's contents with syntax highlighting (powered by CodeMirror), so you can read code without opening a separate editor.</p>
+        <p>Viewing a file in the preview does <em>not</em> include it in your export — inclusion is controlled entirely by checkboxes in the tree. The viewer is read-only and has no effect on what gets exported.</p>
+        <p>Switch between "Text report" and "File viewer" using the tabs above the main panel. The text report tab shows the full combined output for your current scope.</p>
+      </section>
+
+      <section class="doc-section" id="export-format">
+        <h2>Export format</h2>
+        <p>The exported file is plain text. It starts with a directory tree of the exported project, then each file wrapped in explicit START/END markers with its full path:</p>
+        <pre style="font-family:var(--font-mono);font-size:13px;line-height:1.65;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:16px 20px;margin:16px 0;color:var(--ink-2);overflow-x:auto;white-space:pre;">// ===== START OF FILE: src/app.ts ===== //
+import { something } from "./lib";
+...
+// ===== END OF FILE: src/app.ts ===== //
+
+
+// ===== START OF FILE: src/lib.ts ===== //
+export function something() { ... }
+// ===== END OF FILE: src/lib.ts ===== //</pre>
+        <p>The START/END markers are what allow AI tools to grep, search, and navigate the export as a virtual project. Without them, the model sees one undifferentiated blob. With them, it can locate a specific file, read it, trace what it imports, and move on — the same way you would in a terminal.</p>
+        <p>The file is preceded by a directory tree showing the full structure of the exported project. This gives the AI a map before it reads any file contents.</p>
+      </section>
+
+      <section class="doc-section" id="large-repos">
+        <h2>Large repos</h2>
+        <p>For most projects, MashuPack feels instant. For very large repositories — tens of thousands of files — the initial scan can take 10–20 seconds.</p>
+        <p>This time is spent on browser filesystem enumeration: your browser has to read the metadata for every file in the folder before MashuPack can build the tree. This is a browser-level operation and cannot be meaningfully sped up on MashuPack's end.</p>
+        <p>Once the scan is complete, everything else — browsing the tree, selecting files, filtering, exporting — is fast regardless of project size. MashuPack uses a virtualized tree renderer and Rust/WebAssembly for selection math, so even a 28,000-file repository navigates smoothly.</p>
+
+        <table class="bench-table" aria-label="Performance benchmark with kubernetes/kubernetes">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Filesystem scan (28,481 files)</td><td>13.3s</td></tr>
+            <tr><td>Tree initialization</td><td>16ms</td></tr>
+            <tr><td>Tree render</td><td>7ms</td></tr>
+            <tr><td>UI refresh</td><td>3.4s</td></tr>
+            <tr><td>Visible load total</td><td>~20.9s</td></tr>
+          </tbody>
+        </table>
+        <p>Tested with the <code>kubernetes/kubernetes</code> repository on a desktop browser. No backend. No upload.</p>
+      </section>
+
+      <section class="doc-section" id="with-ai">
+        <h2>Using the export with AI tools</h2>
+        <p>The obvious objection: <em>"stuffing a whole repo into an AI's context ruins its attention — the model can't reason over thousands of files."</em></p>
+        <p>That objection is correct for naive prompt dumps. But it misses how modern AI systems actually work.</p>
+        <p>Tools like ChatGPT and Claude don't just read uploaded files as raw context. They have internal environments where they can execute code, grep, search, and navigate structured text the same way a developer would in a terminal. When you upload a MashuPack export, the model can treat it as a virtual project — finding a function, tracing a dependency, or reading a specific file — without loading every byte into its attention window at once.</p>
+        <p>This is why the export format uses clear path headers and explicit file boundaries. The AI isn't reading the export like a wall of text. It's navigating it like a filesystem — and the headers are what make that navigation reliable.</p>
+        <div class="callout">
+          <p>A few things that still help: select only the files relevant to your question, use file-type pills to skip assets and lock files, and check the token count (click the Size stat to toggle) before exporting — very large exports may hit context limits depending on the tool.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="tech">
+        <h2>How it's built</h2>
+        <p>MashuPack is a static browser app — no server, no backend, no build pipeline on your end. It deploys as plain files on GitHub Pages and runs entirely client-side.</p>
+        <p>The part worth calling out: the indexing and selection math runs in <strong>Rust compiled to WebAssembly</strong>.</p>
+        <p>When you load a large project, there's real computation involved — building a tree from tens of thousands of file entries, calculating selection state, tracking which files are included, computing stats. Doing that on the browser's main thread would block rendering and make the UI feel sluggish. Rust/WASM behind a Web Worker keeps all of that compute off the main thread and genuinely fast, even at the scale of the Kubernetes repository.</p>
+        <p>The full stack:</p>
+        <ul>
+          <li><strong>Rust + WebAssembly</strong> — tree construction, selection state, index math. Compiled with <code>wasm-pack</code>, runs in a Web Worker.</li>
+          <li><strong>TypeScript</strong> — all UI logic, event handling, filesystem coordination, export assembly.</li>
+          <li><strong>Vite</strong> — build tooling and dev server. Handles WASM imports cleanly via <code>vite-plugin-wasm</code>.</li>
+          <li><strong>File System Access API</strong> — the browser API that lets MashuPack read local folders without uploading them. Gives real directory handles with lazy file reading.</li>
+          <li><strong>Web Workers</strong> — the Rust/WASM engine runs in a Worker, keeping the main thread free for UI.</li>
+          <li><strong>Virtualized tree rendering</strong> — only the visible tree rows are in the DOM at any time. Scrolling through 28,000 files stays smooth because the browser isn't rendering 28,000 elements.</li>
+          <li><strong>CodeMirror</strong> — syntax-highlighted file preview in the File viewer tab.</li>
+        </ul>
+        <p>The result is an app that handles repositories most browser tools would choke on, while still running as a simple static site you can open from a URL.</p>
+      </section>
+
+    </main>
   </div>
+
+  <script>
+    // Active sidebar link tracking via IntersectionObserver
+    const sections = document.querySelectorAll('.doc-section[id]');
+    const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector(`.sidebar-nav a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+    sections.forEach(s => obs.observe(s));
+  </script>
 
 </body>
 </html>

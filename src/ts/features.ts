@@ -89,9 +89,14 @@ export async function downloadZip() {
     return showNotification("No project to download.", 3000);
 
   const zip = new JSZip();
-  showNotification("Preparing ZIP file...", 2000);
+  const isSelection = appState.selectedPaths.size > 0;
+  const files = isSelection
+    ? appState.fullScanData.allFilesList.filter(f => appState.selectedPaths.has(f.path))
+    : appState.fullScanData.allFilesList;
 
-  for (const file of appState.fullScanData.allFilesList) {
+  showNotification(`Preparing ZIP (${files.length} files)...`, 2000);
+
+  for (const file of files) {
     const readResult = await readFile(file.entryHandle);
     zip.file(
       file.path,

@@ -107,18 +107,6 @@ export function initLayout(): void {
               <div id="loader" class="loader">Scanning…</div>
             </div>
 
-            <section class="use-cases">
-              <p class="use-cases-label">Works great for</p>
-              <div class="use-cases-pills">
-                <button class="uc-pill" data-uc="new-project">Joining a project</button>
-                <button class="uc-pill" data-uc="security">Security review</button>
-                <button class="uc-pill" data-uc="incident">Incident response</button>
-                <button class="uc-pill" data-uc="docs">Writing docs</button>
-                <button class="uc-pill" data-uc="research">Open source research</button>
-                <button class="uc-pill" data-uc="handoff">Project handoff</button>
-              </div>
-              <div class="use-cases-detail" id="useCaseDetail" hidden></div>
-            </section>
 
           </section>
         </div>
@@ -202,57 +190,115 @@ export function initLayout(): void {
     `;
   }
 
-  // Docs overlay — injected outside appContainer so it covers everything
+  // Full-screen docs overlay
   const docsOverlay = document.createElement("div");
   docsOverlay.id = "docsOverlay";
   docsOverlay.setAttribute("aria-modal", "true");
   docsOverlay.setAttribute("role", "dialog");
   docsOverlay.setAttribute("aria-label", "Documentation");
   docsOverlay.innerHTML = `
-    <div class="docs-sheet">
-      <div class="docs-sheet-head">
-        <span class="docs-sheet-title">Documentation</span>
-        <a href="/docs.html" target="_blank" rel="noopener" class="docs-page-link" title="Open as full page">↗ Full page</a>
-        <button id="docsCloseBtn" class="docs-close" aria-label="Close documentation">✕</button>
-      </div>
-      <div class="docs-sheet-body">
+    <nav class="docs-topbar">
+      <button id="docsBackBtn" class="docs-back-btn" aria-label="Back to app">← Back to app</button>
+      <span class="docs-topbar-brand">MashuPack</span>
+      <span class="docs-topbar-sep">/</span>
+      <span class="docs-topbar-page">Documentation</span>
+    </nav>
+    <div class="docs-layout">
+      <aside class="docs-sidebar">
+        <div class="docs-sidebar-label">On this page</div>
+        <ul class="docs-sidebar-nav">
+          <li><a href="#ds-overview">Overview</a></li>
+          <li><a href="#ds-privacy">Privacy</a></li>
+          <li><a href="#ds-loading">Loading a project</a></li>
+          <li><a href="#ds-tree">Browsing the tree</a></li>
+          <li><a href="#ds-selecting">Selecting files</a></li>
+          <li><a href="#ds-stats">Stats &amp; token toggle</a></li>
+          <li><a href="#ds-exporting">Exporting</a></li>
+          <li><a href="#ds-viewer">File viewer</a></li>
+          <li><a href="#ds-format">Export format</a></li>
+          <li><a href="#ds-large">Large repos</a></li>
+          <li><a href="#ds-ai">Using with AI tools</a></li>
+          <li><a href="#ds-tech">How it's built</a></li>
+        </ul>
+      </aside>
+      <main class="docs-main">
+        <header class="ds-header">
+          <h1 class="ds-title">How MashuPack works</h1>
+          <p class="ds-lead">Everything you need to know about what MashuPack does, how your files are handled, and what to do with the output.</p>
+        </header>
 
-        <section class="ds">
-          <h2>What MashuPack does</h2>
+        <section class="ds" id="ds-overview">
+          <h2>Overview</h2>
           <p>MashuPack packages a local codebase into a single structured text file that AI tools can navigate like a real project.</p>
           <p>The common objection: <em>"stuffing a whole repo into an AI ruins its attention."</em> That's true for naive copy-paste dumps. But modern AI tools like Claude and ChatGPT have internal environments — they can execute code, grep, search, and navigate structured text the same way a developer would in a terminal. When the export has clear file path headers and explicit boundaries, the AI doesn't have to read everything at once. It finds what it needs, reads that file, traces imports, and moves on.</p>
-          <p>MashuPack's job is to make that export as clean and navigable as possible: select the right files, package them with structured headers, and give the AI something it can actually work with — not a wall of text.</p>
           <p>Everything runs in your browser. Nothing is uploaded to any server.</p>
         </section>
 
-        <section class="ds">
-          <h2>Your files stay in your browser</h2>
-          <p>MashuPack reads your files through your browser's built-in file APIs. When you drop a folder, your browser gives MashuPack read access to that folder. MashuPack builds the file tree, calculates stats, and holds everything in memory. No data is uploaded to any server. There is no MashuPack server for it to go to.</p>
-          <p>File contents are read only when you actually need them — when you preview a file, or when you export. Everything else (the tree, stats, file names, sizes) comes from filesystem metadata, which is much lighter.</p>
-          <div class="ds-callout">If you export a combined text file and upload it to an AI tool, that upload is governed by that tool's privacy policy. MashuPack's job ends when the file lands on your disk.</div>
+        <section class="ds" id="ds-privacy">
+          <h2>Privacy</h2>
+          <p>MashuPack reads your files through your browser's built-in File System Access API. When you drop a folder, your browser gives MashuPack read access to that folder. File contents are read only when you preview or export — everything else (tree, stats, file names, sizes) comes from filesystem metadata. No data is uploaded to any server. There is no MashuPack server for it to go to.</p>
+          <div class="ds-callout">If you export and upload to an AI tool, that upload is governed by that tool's privacy policy. MashuPack's job ends when the file lands on your disk.</div>
         </section>
 
-        <section class="ds">
-          <h2>How to use it</h2>
+        <section class="ds" id="ds-loading">
+          <h2>Loading a project</h2>
+          <p>Two ways to load a folder: <strong>drag and drop</strong> a folder anywhere on the app, or click <strong>Browse for folder</strong> to use the native picker. MashuPack scans the folder and builds the file tree.</p>
+          <p>To start fresh, click <strong>Clear project</strong> in the top bar.</p>
+        </section>
+
+        <section class="ds" id="ds-tree">
+          <h2>Browsing the tree</h2>
+          <p>Click a folder row to expand or collapse it. Click a filename to preview it in the File viewer. Use the search bar to filter by name — press <code>/</code> to focus it. <strong>Shift+click</strong> or <strong>Alt+click</strong> a folder to expand or collapse its entire subtree. Use the <strong>Expand all / Collapse all</strong> buttons to open or close every folder at once.</p>
+          <p>The left panel is resizable — drag the handle on its right edge to adjust its width.</p>
+        </section>
+
+        <section class="ds" id="ds-selecting">
+          <h2>Selecting files</h2>
+          <p>Tick any file or folder checkbox to scope your export. Ticking a folder selects everything inside it. Use <strong>Select All / Deselect All</strong>, or the <strong>file-type pills</strong> to toggle all files of a given extension at once. The right-panel file types table does the same — click any row to toggle that type.</p>
+          <p>When a selection is active, a <code>SELECTION</code> pill appears in the stats header and all exports operate on your selection only. Deselect all to return to full-project mode.</p>
+        </section>
+
+        <section class="ds" id="ds-stats">
+          <h2>Stats &amp; the token toggle</h2>
+          <p>The right panel shows live stats: Files, Folders, Size, and Root folder name. <strong>Click the Size stat to toggle between bytes and estimated token count</strong> (~4 chars/token, consistent with GPT and Claude tokenizers for typical code). Use this to check whether your export will fit in a model's context window before downloading. The size column in the file types table also switches when you toggle.</p>
+          <p>The <strong>Composition bar</strong> shows each file type's share of total project size. Hover a segment for the exact type and percentage. Below it, the <strong>File types table</strong> lists every extension with count and size — click a row to select or deselect all files of that type.</p>
+        </section>
+
+        <section class="ds" id="ds-exporting">
+          <h2>Exporting</h2>
           <ol>
-            <li><strong>Drop a folder</strong> onto the app, or use the folder picker. MashuPack scans the folder and builds a tree.</li>
-            <li><strong>Browse the tree.</strong> Filter by name using the search bar, or click a file to preview it.</li>
-            <li><strong>Select what matters.</strong> Tick files or folders to scope your export. Use the file-type pills to select all files of a given type at once. Leave everything unticked to export the full project.</li>
-            <li><strong>Export.</strong> Click "Export combined text" to download a single structured text file of your selection.</li>
+            <li><strong>Export combined text</strong> — downloads a single structured <code>.txt</code> with all in-scope files and a directory tree header. This is the main output for AI tools.</li>
+            <li><strong>Download .zip</strong> — downloads the full project as a ZIP archive, regardless of selection.</li>
+            <li><strong>Copy to clipboard</strong> — copies the text report directly. Paste into an AI chat without saving a file.</li>
+            <li><strong>Save as .txt</strong> — saves the text report. Same content as Export combined text, triggered from within the report panel.</li>
           </ol>
-          <p>"Download .zip" downloads the entire project as a ZIP archive regardless of selection — it is separate from the text export.</p>
+          <p>The bottom status bar always shows how many files and bytes are currently in scope.</p>
         </section>
 
-        <section class="ds">
-          <h2>What the export looks like</h2>
-          <p>The exported file is plain text. Each file starts with a clearly marked path header, followed by its contents, separated by a divider. The format is intentionally machine-readable — not just human-readable.</p>
-          <p>The path headers are what allow an AI's internal tools to grep, search, and navigate the export as a virtual project. Without them, the model sees one undifferentiated blob. With them, it can find <code>src/auth/session.ts</code>, read it, trace what it imports, and move on — the same way you would in a terminal.</p>
+        <section class="ds" id="ds-viewer">
+          <h2>File viewer</h2>
+          <p>Click any file in the tree to preview it in the <strong>File viewer</strong> tab with syntax highlighting (powered by CodeMirror). Viewing a file does <em>not</em> include it in your export — inclusion is controlled only by checkboxes in the tree.</p>
+          <p>Switch between <strong>Text report</strong> and <strong>File viewer</strong> using the tabs above the main panel.</p>
         </section>
 
-        <section class="ds">
-          <h2>Large folders and scan time</h2>
-          <p>For most projects, MashuPack feels instant. For very large repositories — tens of thousands of files — the initial scan can take 10–20 seconds. This time is browser filesystem enumeration: your browser has to read metadata for every file before MashuPack can build the tree. This is a browser-level operation.</p>
-          <p>Once the scan completes, browsing, selecting, and exporting are fast regardless of project size.</p>
+        <section class="ds" id="ds-format">
+          <h2>Export format</h2>
+          <p>The exported file is plain text. It starts with a directory tree of the exported project, then each file wrapped in explicit START/END markers with its full path:</p>
+          <pre class="ds-pre">// ===== START OF FILE: src/app.ts ===== //
+import { something } from "./lib";
+...
+// ===== END OF FILE: src/app.ts ===== //
+
+
+// ===== START OF FILE: src/lib.ts ===== //
+export function something() { ... }
+// ===== END OF FILE: src/lib.ts ===== //</pre>
+          <p>The START/END markers are what allow AI tools to grep, search, and navigate the export as a virtual project. Without them, the model sees one undifferentiated blob. With them, it can locate a specific file, read it, trace what it imports, and move on — the same way you would in a terminal.</p>
+        </section>
+
+        <section class="ds" id="ds-large">
+          <h2>Large repos</h2>
+          <p>For most projects, MashuPack feels instant. For very large repositories — tens of thousands of files — the initial scan can take 10–20 seconds. This is browser filesystem enumeration and cannot be sped up on MashuPack's end. Once the scan completes, browsing, selecting, and exporting are fast regardless of project size.</p>
           <table class="ds-table">
             <thead><tr><th>Step</th><th>Time</th></tr></thead>
             <tbody>
@@ -265,33 +311,28 @@ export function initLayout(): void {
           <p class="ds-note">Tested with <code>kubernetes/kubernetes</code> on a desktop browser. No backend. No upload.</p>
         </section>
 
-        <section class="ds">
-          <h2>Using the export with AI tools</h2>
-          <p>The obvious objection: <em>"stuffing a whole repo into an AI's context ruins its attention — the model can't reason over thousands of files."</em></p>
-          <p>That objection is correct for naive prompt dumps. But it misses how modern AI systems actually work.</p>
-          <p>Tools like ChatGPT and Claude don't just read uploaded files as raw context. They have internal environments where they can execute code, grep, search, and navigate structured text the same way a developer would in a terminal. When you upload a MashuPack export, the model can treat it as a virtual project — finding a function, tracing a dependency, or reading a specific file — without loading every byte into its attention window at once.</p>
-          <p>This is why the export format uses clear path headers and explicit file boundaries. The AI isn't reading the export like a wall of text. It's navigating it like a filesystem — and the headers are what make that navigation reliable.</p>
-          <p>No guarantees: this depends on the AI provider and the tool you're using. But with current Claude and ChatGPT file analysis capabilities, a well-structured MashuPack export of a real codebase is often more useful than pasting individual files — because the model can see the whole project layout and search for what it needs.</p>
-          <div class="ds-callout">A few things that still help: select only the files relevant to your question, use file-type pills to skip assets and lock files, and check the file size before exporting — very large exports may behave differently depending on the tool.</div>
+        <section class="ds" id="ds-ai">
+          <h2>Using with AI tools</h2>
+          <p>Upload a MashuPack export to Claude or ChatGPT and the model can treat it as a virtual project — finding a function, tracing a dependency, reading a specific file — without loading every byte into its attention window at once. The path headers are what make navigation reliable.</p>
+          <p>No guarantees: this depends on the AI provider and the tool you're using. But with current Claude and ChatGPT file analysis capabilities, a well-structured MashuPack export is often more useful than pasting individual files — because the model can see the whole project layout and search for what it needs.</p>
+          <div class="ds-callout">Check the token count before exporting. Click the Size stat to toggle from bytes to estimated tokens, then compare against your tool's context limit.</div>
         </section>
 
-        <section class="ds">
+        <section class="ds" id="ds-tech">
           <h2>How it's built</h2>
           <p>MashuPack is a static browser app — no server, no backend. It deploys as plain files on GitHub Pages and runs entirely client-side.</p>
-          <p>The part I'm most proud of: the indexing and selection math runs in <strong>Rust compiled to WebAssembly</strong>.</p>
-          <p>When you load a large project, there's real computation involved — building a tree from tens of thousands of file entries, calculating selection state, tracking included files, computing stats. Doing that on the browser's main thread would block rendering. Rust/WASM behind a Web Worker keeps all of that compute off the main thread and genuinely fast, even at the scale of the Kubernetes repository.</p>
+          <p>The indexing and selection math runs in <strong>Rust compiled to WebAssembly</strong>. Doing that on the browser's main thread would block rendering. Rust/WASM behind a Web Worker keeps all of that compute off the main thread and genuinely fast, even at the scale of the Kubernetes repository.</p>
           <ul>
             <li><strong>Rust + WebAssembly</strong> — tree construction, selection state, index math. Compiled with <code>wasm-pack</code>, runs in a Web Worker.</li>
             <li><strong>TypeScript</strong> — all UI logic, event handling, filesystem coordination, export assembly.</li>
             <li><strong>Vite</strong> — build tooling and dev server, with <code>vite-plugin-wasm</code> for clean WASM imports.</li>
             <li><strong>File System Access API</strong> — lets MashuPack read local folders without uploading them. Real directory handles, lazy file reading.</li>
-            <li><strong>Web Workers</strong> — the Rust/WASM engine runs in a Worker, keeping the main thread free for UI.</li>
-            <li><strong>Virtualized tree rendering</strong> — only visible rows are in the DOM. Scrolling through 28,000 files stays smooth because the browser isn't rendering 28,000 elements.</li>
-            <li><strong>CodeMirror</strong> — syntax-highlighted file preview.</li>
+            <li><strong>Virtualized tree rendering</strong> — only visible rows are in the DOM. Scrolling through 28,000 files stays smooth.</li>
+            <li><strong>CodeMirror</strong> — syntax-highlighted file preview in the File viewer tab.</li>
           </ul>
         </section>
 
-      </div>
+      </main>
     </div>
   `;
   document.body.appendChild(docsOverlay);
@@ -313,16 +354,36 @@ export function initLayout(): void {
   document.body.appendChild(mobileFallback);
 
   const docsToggle = document.getElementById("docsToggleBtn");
-  const docsClose = document.getElementById("docsCloseBtn");
-  const openDocs = () => docsOverlay.classList.add("open");
+  const docsBack = document.getElementById("docsBackBtn");
+  const openDocs = () => { docsOverlay.classList.add("open"); docsOverlay.scrollTop = 0; };
   const closeDocs = () => docsOverlay.classList.remove("open");
   docsToggle?.addEventListener("click", openDocs);
-  docsClose?.addEventListener("click", closeDocs);
-  docsOverlay.addEventListener("click", (e) => {
-    if (e.target === docsOverlay) closeDocs();
-  });
+  docsBack?.addEventListener("click", closeDocs);
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && docsOverlay.classList.contains("open")) closeDocs();
+  });
+
+  // Sidebar active link tracking
+  const docsSections = docsOverlay.querySelectorAll<HTMLElement>(".ds[id]");
+  const sidebarLinks = docsOverlay.querySelectorAll<HTMLAnchorElement>(".docs-sidebar-nav a");
+  const sidebarObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        sidebarLinks.forEach(a => a.classList.remove("active"));
+        const active = docsOverlay.querySelector<HTMLAnchorElement>(`.docs-sidebar-nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add("active");
+      }
+    });
+  }, { root: docsOverlay, rootMargin: "-15% 0px -75% 0px", threshold: 0 });
+  docsSections.forEach(s => sidebarObs.observe(s));
+
+  // Sidebar link smooth scroll within overlay
+  sidebarLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = docsOverlay.querySelector(link.getAttribute("href") ?? "");
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   });
 
   const emptyChooseBtn = document.getElementById("emptyChooseFolderBtn");
@@ -343,38 +404,6 @@ export function initLayout(): void {
       <button id="saveReportButton" class="btn small ghost" data-help="Save the current text output as a .txt file." disabled>Save as .txt</button>
     `;
     reportPanel.appendChild(actions);
-  }
-
-  // Wire use-case pill cloud
-  const UC_DESCRIPTIONS: Record<string, string> = {
-    "new-project": "Dropped into an unfamiliar codebase as a new hire, freelancer, or open-source contributor? Export the project and ask an AI to map the architecture, identify entry points, and explain what each module does — before you touch a single file.",
-    "security": "Package the codebase and ask an AI to look for exposed secrets, missing auth checks, injection surfaces, and hardcoded credentials. Scope it to the code that actually ships — skip the test fixtures.",
-    "incident": "Something broke in production. Export the relevant service, configs, and utilities and ask an AI to trace the execution path and isolate the failure — faster than reading cold code under pressure.",
-    "docs": "Export the files that need documentation and ask an AI to write accurate READMEs, API references, or inline comments grounded in the actual code — not a generic template.",
-    "research": "Studying a complex open-source project? Export a curated slice — a subsystem, a feature, a module — and ask an AI to explain the design decisions, trace a data flow, or compare the approach to alternatives.",
-    "handoff": "Leaving a project or bringing someone new in? Export the relevant modules and let an AI generate the briefing document nobody ever writes — architecture, ownership, known quirks, what to touch first.",
-  };
-  const ucDetail = document.getElementById("useCaseDetail") as HTMLElement | null;
-  document.querySelectorAll<HTMLButtonElement>(".uc-pill").forEach((pill) => {
-    pill.addEventListener("click", () => {
-      const uc = pill.dataset.uc ?? "";
-      const isActive = pill.dataset.active === "true";
-      document.querySelectorAll<HTMLButtonElement>(".uc-pill").forEach((p) => { p.dataset.active = "false"; });
-      if (isActive || !ucDetail) {
-        if (ucDetail) { ucDetail.textContent = ""; ucDetail.hidden = true; }
-      } else {
-        pill.dataset.active = "true";
-        ucDetail.textContent = UC_DESCRIPTIONS[uc] ?? "";
-        ucDetail.hidden = false;
-      }
-    });
-  });
-  // Open first pill by default so the detail block is already in layout (prevents shift on first click)
-  const firstPill = document.querySelector<HTMLButtonElement>(".uc-pill");
-  if (firstPill && ucDetail) {
-    firstPill.dataset.active = "true";
-    ucDetail.textContent = UC_DESCRIPTIONS[firstPill.dataset.uc ?? ""] ?? "";
-    ucDetail.hidden = false;
   }
 
   initHelpSystem();
