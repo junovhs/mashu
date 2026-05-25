@@ -134,9 +134,9 @@
   },
   {
     "file": "src/ts/ui/layout.ts",
-    "hotspot_score": 0.20000002,
+    "hotspot_score": 0.17333335,
     "fan_in": 1,
-    "cognitive_complexity_max": 10,
+    "cognitive_complexity_max": 8,
     "doc_coverage": 0.0
   },
   {

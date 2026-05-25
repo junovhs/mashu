@@ -314,7 +314,7 @@
     "semantic_summary": "async side-effecting stateful module with external API surface that logs and continues",
     "analysis": {
       "functions": {
-        "total": 31,
+        "total": 30,
         "public": 0,
         "max_cognitive_complexity": 18,
         "avg_cognitive_complexity": 3
@@ -324,14 +324,14 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 341,
-        "resolved_calls": 58,
-        "unresolved_calls": 283,
-        "resolution_rate": 0.17008798
+        "total_calls": 324,
+        "resolved_calls": 56,
+        "unresolved_calls": 268,
+        "resolution_rate": 0.17283951
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 97
+        "cognitive_complexity": 93
       },
       "error_handling": {
         "total_sites": 2,
@@ -340,20 +340,20 @@
         "propagated": 0
       },
       "concurrency": {
-        "total_sites": 26,
+        "total_sites": 23,
         "has_async": true,
         "has_locks": false,
         "has_spawn": true
       },
       "activation": {
-        "total_sites": 70,
+        "total_sites": 66,
         "kinds": [
           "callback-surface",
           "registration-site"
         ]
       },
       "guards": {
-        "total_sites": 5
+        "total_sites": 4
       }
     }
   },
@@ -383,10 +383,10 @@
         "avg_cognitive_complexity": 2
       },
       "calls": {
-        "total_calls": 55,
+        "total_calls": 57,
         "resolved_calls": 5,
-        "unresolved_calls": 50,
-        "resolution_rate": 0.09090909
+        "unresolved_calls": 52,
+        "resolution_rate": 0.0877193
       },
       "control_flow": {
         "max_nesting_depth": 2,
@@ -547,24 +547,24 @@
     ],
     "hotspot": false,
     "fan_in": 0,
-    "risk_score": 7.0,
+    "risk_score": 6.6,
     "semantic_summary": "side-effecting",
     "analysis": {
       "functions": {
         "total": 6,
         "public": 6,
-        "max_cognitive_complexity": 10,
+        "max_cognitive_complexity": 8,
         "avg_cognitive_complexity": 2
       },
       "calls": {
-        "total_calls": 62,
-        "resolved_calls": 7,
-        "unresolved_calls": 55,
-        "resolution_rate": 0.11290322
+        "total_calls": 68,
+        "resolved_calls": 6,
+        "unresolved_calls": 62,
+        "resolution_rate": 0.0882353
       },
       "control_flow": {
         "max_nesting_depth": 1,
-        "cognitive_complexity": 14
+        "cognitive_complexity": 12
       },
       "concurrency": {
         "total_sites": 1,
@@ -584,7 +584,7 @@
         ]
       },
       "guards": {
-        "total_sites": 4
+        "total_sites": 3
       }
     }
   },
@@ -647,7 +647,7 @@
     "path": "src/ts/ui/pretext.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Creates pretext text.",
+    "description": "Sets the pretext text.",
     "exports": [
       "syncPretextTree",
       "initPretextText",
@@ -833,7 +833,7 @@
     "path": "src/ts/ui/viewer.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Implements open file.",
+    "description": "Updates viewer.",
     "exports": [
       "openFile",
       "closeViewer",
@@ -926,27 +926,27 @@
     "semantic_summary": "async side-effecting adapter",
     "analysis": {
       "functions": {
-        "total": 16,
+        "total": 19,
         "public": 5,
         "max_cognitive_complexity": 14,
         "avg_cognitive_complexity": 3
       },
       "types": {
-        "total": 9,
+        "total": 12,
         "public": 2
       },
       "calls": {
-        "total_calls": 135,
-        "resolved_calls": 40,
-        "unresolved_calls": 95,
-        "resolution_rate": 0.2962963
+        "total_calls": 151,
+        "resolved_calls": 48,
+        "unresolved_calls": 103,
+        "resolution_rate": 0.3178808
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 43
+        "cognitive_complexity": 50
       },
       "concurrency": {
-        "total_sites": 23,
+        "total_sites": 26,
         "has_async": true,
         "has_locks": false,
         "has_spawn": true
@@ -956,7 +956,7 @@
         "undocumented_public": 3
       },
       "activation": {
-        "total_sites": 22,
+        "total_sites": 25,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -1147,7 +1147,7 @@
     "path": "docs.html",
     "layer": 3,
     "file_kind": "production",
-    "description": "Mashu — Documentation",
+    "description": "MashuPack — Documentation",
     "exports": [],
     "hotspot": false,
     "fan_in": 0,
@@ -1158,7 +1158,7 @@
     "path": "index.html",
     "layer": 3,
     "file_kind": "production",
-    "description": "Mashu",
+    "description": "MashuPack",
     "exports": [],
     "hotspot": false,
     "fan_in": 0,
@@ -1296,7 +1296,7 @@
     "path": "src/ts/ui/index.ts",
     "layer": 3,
     "file_kind": "production",
-    "description": "Implements show notification.",
+    "description": "Updates selection ui.",
     "exports": [
       "resetUIForProcessing",
       "copyCurrentReport",

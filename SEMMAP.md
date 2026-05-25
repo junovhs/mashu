@@ -204,7 +204,7 @@ Exports: applyPreferredSidebarRatio, clampSidebarWidth, initSidebarResizer, reap
 Semantic: side-effecting stateful module
 
 `src/ts/ui/pretext.ts`
-Creates pretext text. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
+Sets the pretext text. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
 Exports: syncPretextTree, initPretextText, setPretextText
 Semantic: side-effecting stateful module
 
@@ -219,7 +219,7 @@ Exports: applyRustSelectionState, setSelectionByExtension, toggleAllFolders, ini
 Semantic: side-effecting stateful adapter
 
 `src/ts/ui/viewer.ts`
-Implements open file. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
+Updates viewer. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
 Exports: openFile, closeViewer, updateViewer
 Semantic: async side-effecting adapter that logs and continues
 
@@ -247,10 +247,10 @@ Semantic: async side-effecting stateful module that logs and continues
 ## Layer 3 -- App / Entrypoints
 
 `docs.html`
-Mashu — Documentation
+MashuPack — Documentation
 
 `index.html`
-Mashu
+MashuPack
 
 `src/css/app.css`
 Implements app functionality. styles.
@@ -284,7 +284,7 @@ Implements serializable folder entry. [HOTSPOT] [QUALITY:undocumented]
 Exports: WorkerInboundMessage, WorkerOutboundMessage, FileTypeData, SerializableFolderEntry
 
 `src/ts/ui/index.ts`
-Implements show notification. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,concurrency-heavy]
+Updates selection ui. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-state,async] [QUALITY:undocumented,concurrency-heavy]
 Exports: resetUIForProcessing, copyCurrentReport, saveCurrentReport, disableUIControls
 Semantic: async side-effecting stateful module
 

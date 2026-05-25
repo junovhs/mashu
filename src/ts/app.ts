@@ -354,15 +354,6 @@ function setupListeners(): void {
   // Full-page drop is handled separately
   setupFullPageDrop();
 
-  document.addEventListener("click", (event: MouseEvent) => {
-    if (!appState.isViewerActive) return;
-    const target = event.target;
-    const viewer = elements.fileViewer as HTMLElement | undefined;
-    if (!(target instanceof HTMLElement) || !viewer) return;
-    if (viewer.contains(target)) return;
-    closeViewer();
-  });
-
   document.addEventListener("keydown", (event: KeyboardEvent) => {
     if (event.key !== "/" || !appState.fullScanData) return;
     const target = event.target;
