@@ -176,7 +176,7 @@ Implements app functionality. [COUPLING:mixed] [BEHAVIOR:owns-state,async,logs-a
 Semantic: async side-effecting stateful module with external API surface that logs and continues
 
 `src/ts/features.ts`
-Implements export combined. [COUPLING:mixed] [BEHAVIOR:persists,async]
+Implements download zip. [COUPLING:mixed] [BEHAVIOR:persists,async]
 Exports: downloadZip, exportCombined
 Semantic: async side-effecting adapter
 
@@ -204,7 +204,7 @@ Exports: applyPreferredSidebarRatio, clampSidebarWidth, initSidebarResizer, reap
 Semantic: side-effecting stateful module
 
 `src/ts/ui/pretext.ts`
-Sets the pretext text. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
+Creates pretext text. [COUPLING:mixed] [BEHAVIOR:owns-state] [QUALITY:undocumented]
 Exports: syncPretextTree, initPretextText, setPretextText
 Semantic: side-effecting stateful module
 
@@ -219,7 +219,7 @@ Exports: applyRustSelectionState, setSelectionByExtension, toggleAllFolders, ini
 Semantic: side-effecting stateful adapter
 
 `src/ts/ui/viewer.ts`
-Updates viewer. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
+Implements open file. [HOTSPOT] [COUPLING:mixed] [BEHAVIOR:owns-const-state,persists,async,logs-and-continues] [QUALITY:undocumented,concurrency-heavy]
 Exports: openFile, closeViewer, updateViewer
 Semantic: async side-effecting adapter that logs and continues
 

@@ -3,7 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MashuPack</title>
+  <title>MashuPack - Turn Repositories into Clean Text for ChatGPT and Claude</title>
+  <meta name="description" content="MashuPack turns local repositories into clean text for ChatGPT and Claude. Select exact files or subsystems, export one structured text file, and keep your code in the browser." />
+  <meta name="keywords" content="repo to text, codebase to text, ChatGPT codebase context, Claude codebase context, repository export, browser AI workflow, code context packing" />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="application-name" content="MashuPack" />
+  <meta name="theme-color" content="#f2eee5" />
+  <link rel="canonical" href="https://mashupack.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="MashuPack" />
+  <meta property="og:title" content="MashuPack - Turn Repositories into Clean Text for ChatGPT and Claude" />
+  <meta property="og:description" content="Select exact parts of a repository and compile them into one clean text file for ChatGPT and Claude. No backend. No account. No repo upload." />
+  <meta property="og:url" content="https://mashupack.com/" />
+  <meta property="og:image" content="https://mashupack.com/assets/og-preview.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MashuPack - Turn Repositories into Clean Text for ChatGPT and Claude" />
+  <meta name="twitter:description" content="Browser-based repo packing for AI chats. Select files or subsystems, export one clean text file, and keep everything local." />
+  <meta name="twitter:image" content="https://mashupack.com/assets/og-preview.png" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "MashuPack",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "url": "https://mashupack.com/",
+      "description": "MashuPack turns local repositories into clean text for ChatGPT and Claude. Select exact files or subsystems, export one structured text file, and keep your code in the browser.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Select exact files and folders before export",
+        "Export one structured text file for ChatGPT and Claude",
+        "Runs entirely in the browser",
+        "No repo upload or backend required",
+        "Preview files, stats, and composition before export"
+      ]
+    }
+  </script>
 
   <!-- Fonts used by the new Paper design — swap or self-host as you prefer. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,10 +60,125 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/meta.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/mode/loadmode.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background: #f7f2e9;
+      color: #1c1a17;
+      font-family: "Inter Tight", system-ui, sans-serif;
+    }
+    .seo-fallback {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 72px 24px 96px;
+    }
+    .seo-eyebrow {
+      margin-bottom: 20px;
+      font: 600 12px/1.4 "JetBrains Mono", monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #8a5a2b;
+    }
+    .seo-title {
+      margin: 0 0 18px;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+    }
+    .seo-title em {
+      font-style: italic;
+      color: #d68245;
+    }
+    .seo-lead {
+      max-width: 760px;
+      margin: 0 0 28px;
+      font-size: 1.16rem;
+      line-height: 1.7;
+      color: #4f473f;
+    }
+    .seo-points {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 0 0 30px;
+      padding: 0;
+      list-style: none;
+    }
+    .seo-points li {
+      padding: 16px 18px;
+      border: 1px solid rgba(28, 26, 23, 0.12);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.62);
+      line-height: 1.6;
+    }
+    .seo-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .seo-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .seo-link.primary {
+      background: #d68245;
+      color: #fff;
+    }
+    .seo-link.secondary {
+      border: 1px solid rgba(28, 26, 23, 0.14);
+      color: #1c1a17;
+      background: rgba(255, 255, 255, 0.72);
+    }
+    .seo-copy {
+      max-width: 760px;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: #3f3933;
+    }
+    .seo-copy p {
+      margin: 0 0 16px;
+    }
+    noscript p {
+      margin-top: 18px;
+      color: #6a625b;
+      font-size: 0.95rem;
+    }
+  </style>
 </head>
 <body>
-  <!-- App shell — the redesigned layout.ts populates this with topBar / leftSidebar / sidebarResizer / mainView / rightStatsPanel / bottomBar. -->
-  <div id="appContainer"></div>
+  <!-- Semantic fallback for search crawlers and no-JS browsers. The application replaces this shell at runtime. -->
+  <div id="appContainer">
+    <main class="seo-fallback">
+      <div class="seo-eyebrow">Browser-based code context packing</div>
+      <h1 class="seo-title">Turn repositories into <em>clean</em> text for ChatGPT and Claude.</h1>
+      <p class="seo-lead">MashuPack helps you select exact files or subsystems from a local codebase and compile them into one structured text file for browser AI workflows. It is built for planning, debugging, architecture review, and codebase understanding without messy copy-pasting or file-limit friction.</p>
+      <ul class="seo-points">
+        <li><strong>Select exact context.</strong> Choose only the files and folders you want the model to see.</li>
+        <li><strong>Export one clean text file.</strong> Preserve structure while avoiding binary junk and scattered uploads.</li>
+        <li><strong>Keep code local.</strong> MashuPack runs in the browser, with no backend, account, or repo upload.</li>
+      </ul>
+      <div class="seo-links">
+        <a class="seo-link primary" href="https://mashupack.com/docs.html">Read the docs</a>
+        <a class="seo-link secondary" href="https://mashupack.com">Open MashuPack</a>
+      </div>
+      <div class="seo-copy">
+        <p>MashuPack is for people who still use ChatGPT, Claude, and similar web UIs for long-form software planning, research, and debugging. When file-count limits or upload friction get in the way, a single structured text file is the one format every model can reliably accept.</p>
+        <p>Instead of manually packing small groups of source files every time you want to discuss a subsystem or ask a high-level question about a codebase, MashuPack gives you a visual browser-based interface for curating the right slice of context and exporting it cleanly.</p>
+      </div>
+      <noscript>
+        <p>JavaScript is required for the interactive app, but the documentation and core product summary are still available here for search engines and no-JS browsers.</p>
+      </noscript>
+    </main>
+  </div>
 
   <!-- Entry point. Vite picks up CSS imports via src/ts/app.ts. -->
   <script type="module" src="/src/ts/app.ts"></script>

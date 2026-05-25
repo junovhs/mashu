@@ -291,12 +291,12 @@
   },
   {
     "from": "src/ts/app.ts",
-    "to": "src/ts/ui/viewer.ts",
+    "to": "src/ts/features.ts",
     "kind": "call"
   },
   {
     "from": "src/ts/app.ts",
-    "to": "src/ts/features.ts",
+    "to": "src/ts/ui/viewer.ts",
     "kind": "call"
   },
   {

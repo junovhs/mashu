@@ -324,14 +324,14 @@
         "public": 0
       },
       "calls": {
-        "total_calls": 324,
+        "total_calls": 318,
         "resolved_calls": 56,
-        "unresolved_calls": 268,
-        "resolution_rate": 0.17283951
+        "unresolved_calls": 262,
+        "resolution_rate": 0.17610063
       },
       "control_flow": {
         "max_nesting_depth": 3,
-        "cognitive_complexity": 93
+        "cognitive_complexity": 90
       },
       "error_handling": {
         "total_sites": 2,
@@ -346,7 +346,7 @@
         "has_spawn": true
       },
       "activation": {
-        "total_sites": 66,
+        "total_sites": 64,
         "kinds": [
           "callback-surface",
           "registration-site"
@@ -361,7 +361,7 @@
     "path": "src/ts/features.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Implements export combined.",
+    "description": "Implements download zip.",
     "exports": [
       "downloadZip",
       "exportCombined"
@@ -647,7 +647,7 @@
     "path": "src/ts/ui/pretext.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Sets the pretext text.",
+    "description": "Creates pretext text.",
     "exports": [
       "syncPretextTree",
       "initPretextText",
@@ -833,7 +833,7 @@
     "path": "src/ts/ui/viewer.ts",
     "layer": 1,
     "file_kind": "production",
-    "description": "Updates viewer.",
+    "description": "Implements open file.",
     "exports": [
       "openFile",
       "closeViewer",

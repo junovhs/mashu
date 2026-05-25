@@ -7,7 +7,7 @@
     "javascript"
   ],
   "total_files": 42,
-  "total_lines": 10188,
+  "total_lines": 10179,
   "subsystems": [
     "ui-utils",
     "ts-data"
@@ -16,12 +16,12 @@
     "index.html",
     "src/ts/ui/index.ts"
   ],
-  "generated_at": "2026-05-25T04:56:17Z",
+  "generated_at": "2026-05-25T06:45:01Z",
   "omni_ast_version": "0.4.27",
   "file_hashes": {
     "README.md": "0e26c16777bcdd13e3f8739be16e06063cb3862b747e267f15eea80faf3db119",
     "REDESIGN_README.md": "aefb27a7edfc9271f2a77d9302c1c9f16f13bb625f0771b79f93ae3c5a729c33",
-    "SEMMAP.md": "7751f80ddb0ca66da17101c3a107a5193c79c41b47916584311ce20e673e66bb",
+    "SEMMAP.md": "d4ab411c3d0d1cd83fdca9202ce7526b8c66f7b9aecd27468bd2fe23ab2b16fb",
     "docs.html": "41f036cd5e3c7fd311b4cf05d16590b90c56a5c82312212a5ee79ccf2b603ca3",
     "index.html": "372f37a7b08c574d1591e48f8a7557bbddcb98fd4e3f7efb55d07a09f7e14200",
     "package-lock.json": "75e07c9f295b632d5012adc98a659afa5bb2b79962fc9a1ccc50398b068f30bb",
@@ -41,7 +41,7 @@
     "src/css/stats.css": "1a30aac0c1f7dc31dc19ea143ad94458e226e5e50303c889deb67b7d7c6dbd61",
     "src/css/tree.css": "d1eeae4f3ac05c916de95239abd41bc8432c53ec942209a67480e42587f76152",
     "src/css/viewer.css": "7bc80d1d9ed2ac4713b69d8954650ee7a506459783f927c7a3de211807b9f806",
-    "src/ts/app.ts": "9f1d2cc7b5dd84308aaa6921ee1aa44aae62f887ae9816abef68b1e89f5aa605",
+    "src/ts/app.ts": "02b8efbb3f80e10f803ef66f59805a1231fbe251db94f04a932dfd14cd4ccab4",
     "src/ts/features.ts": "fc4a6d2bc7f8c2419e67211f6271b29c17d573854aaee416568826bdc8a816a1",
     "src/ts/filesystem.ts": "a37e71c1ad7cf4734043e4ab63b48016c4e0807802afda1a69cdacf9fc6ff0e7",
     "src/ts/global.d.ts": "dada0e1d9eaf81599b765b9a3587c5199cce6d82003fc85a9f4852afe9610979",
@@ -62,5 +62,5 @@
     "ux-progress.md": "77ea59305b4134cdd9ead622dd3d3c077e867ec1644114f81bf327dcc9c8526d",
     "vite.config.ts": "baff6430d3567f13742e3028c57fa4f3a63be65351f5bc620025cc61b0711362"
   },
-  "generated_at_commit": "2be7e3804cf3d14982299a819477771132fdae47"
+  "generated_at_commit": "bd7c3ffbe6d59a75da4fcbd7e8a25ac62d68047e"
 }
