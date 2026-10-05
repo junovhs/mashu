@@ -38,3 +38,6 @@ marketing.md
 # Rust build artifacts
 rust-core/target/
 rust-core/pkg/
+
+# Ishoo (store rides a sidecar ref; never tracked)
+.ishoo/
